@@ -9,7 +9,7 @@ export const NAV_BLOG_LABEL = "Guides";
 export const SITE_CONTACT_EMAIL = "editor@aipromptgear.com";
 export const SITE_THEME_COLOR = "#0d7a70";
 export const SITE_FOOTER_NOTE =
-	"Built as a commerce-ready AI reference brand with structured topic clusters, polished sponsor placeholders, and long-life editorial pages.";
+	"Built as a commerce-ready AI reference brand with structured topic clusters, reserved sponsor inventory, and long-life editorial pages.";
 export const SITE_KEYWORDS = [
 	"AI prompts",
 	"prompt engineering",
