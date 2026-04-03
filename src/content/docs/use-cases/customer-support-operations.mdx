@@ -1,0 +1,47 @@
+---
+title: Customer Support Operations
+description: A practical reference path for support teams building AI-assisted retrieval, drafting, and escalation workflows.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Customer Support Operations
+
+Support operations are one of the strongest long-term fits for prompt systems because they combine repeated tasks, visible quality signals, and clear human accountability.
+
+## Strong use cases
+
+- Response drafting with approved knowledge sources.
+- Internal retrieval for agents or escalations.
+- Ticket triage and routing support.
+- Summaries that help humans review faster without removing judgment.
+
+## Design pressures
+
+- Source quality matters more than prompt cleverness.
+- Escalation rules must be explicit before automation expands.
+- Evaluation should focus on factual grounding, actionability, and tone control.
+
+## Recommended next reads
+
+<div class="portal-links">
+	<LinkCard
+		title="Operator runbooks"
+		href="/workflows/operator-runbooks/"
+		description="Map checkpoints, handoffs, and reusable support response flows."
+	/>
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Choose when faster models are sufficient and when higher reasoning depth is worth the tradeoff."
+	/>
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Protect quality once prompts, policies, and knowledge sources begin evolving."
+	/>
+</div>

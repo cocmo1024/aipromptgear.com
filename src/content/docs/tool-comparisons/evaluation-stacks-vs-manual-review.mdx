@@ -1,0 +1,41 @@
+---
+title: Evaluation Stacks vs Manual Review
+description: A practical comparison of structured evaluation tooling and disciplined manual review for prompt operations teams.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Quarterly review
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Evaluation Stacks vs Manual Review
+
+Evaluation tooling is valuable when it makes decisions safer and review faster. It is less valuable when it produces scores nobody trusts or workflows nobody follows.
+
+## Manual review remains strong when
+
+- The team is still small and the workflow surface is limited.
+- Quality expectations are nuanced enough that human judgment is the main bottleneck.
+- The cost of added tooling would exceed the operational benefit.
+
+## Structured evaluation stacks become stronger when
+
+- Prompt or model changes happen frequently.
+- Multiple teams need shared evidence and regression discipline.
+- The workflow has expensive failure modes that require repeatable checks.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Connect the comparison to the actual review process that protects quality over time."
+	/>
+	<LinkCard
+		title="Prompt workspaces vs general docs"
+		href="/tool-comparisons/prompt-workspaces-vs-general-docs/"
+		description="Evaluation needs often determine whether lightweight tooling is still enough."
+	/>
+</div>

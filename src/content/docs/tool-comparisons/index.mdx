@@ -1,0 +1,43 @@
+---
+title: Tool Comparisons
+description: Comparison pages for prompt workspaces, evaluation stacks, and the tooling choices that shape prompt operations maturity.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Quarterly review
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Tool Comparisons
+
+Tool comparison pages are where buying intent becomes explicit. They should help readers compare stacks by workflow fit, governance needs, team size, and operating maturity rather than by feature volume alone.
+
+## Core paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Prompt workspaces vs general docs"
+		href="/tool-comparisons/prompt-workspaces-vs-general-docs/"
+		description="Compare dedicated prompt collaboration tools with general documentation systems and lightweight internal setups."
+	/>
+	<LinkCard
+		title="Evaluation stacks vs manual review"
+		href="/tool-comparisons/evaluation-stacks-vs-manual-review/"
+		description="Understand when evaluation tooling is justified and when disciplined manual review is still the better answer."
+	/>
+	<LinkCard
+		title="Prompt operations stack"
+		href="/tooling/promptops-stack/"
+		description="Return to the broader tooling architecture after narrowing the comparison context."
+	/>
+</div>
+
+## Comparison sequence
+
+<Steps>
+	1. Start with team workflow and governance needs rather than the tool vendor.
+	2. Compare what problem the tooling removes and what burden it adds.
+	3. Test whether the tool fits the existing review and versioning model.
+	4. Choose the smallest stack that meaningfully improves operations.
+</Steps>

@@ -13,6 +13,7 @@ export default defineConfig({
 			description:
 				'Reference system for production prompting, agent workflows, model routing, team operations, and evaluation.',
 			tagline: 'Production prompting, agent operations, and model decisions organized for reusable systems instead of one-off hacks.',
+			lastUpdated: true,
 			social: [
 				{
 					icon: 'github',
@@ -25,7 +26,7 @@ export default defineConfig({
 					label: 'Reference Areas',
 					items: [
 						{
-							label: 'Use Cases',
+							label: 'Team Scenarios',
 							autogenerate: { directory: 'use-cases' },
 						},
 						{
@@ -41,6 +42,10 @@ export default defineConfig({
 							autogenerate: { directory: 'tooling' },
 						},
 						{
+							label: 'Tool Comparisons',
+							autogenerate: { directory: 'tool-comparisons' },
+						},
+						{
 							label: 'Evaluation',
 							autogenerate: { directory: 'evaluation' },
 						},
@@ -49,13 +54,26 @@ export default defineConfig({
 				{
 					label: 'Site',
 					collapsed: true,
-					items: ['about', 'contact', 'privacy', 'disclaimer'],
+					items: [
+						'about',
+						'contact',
+						'privacy',
+						'terms-of-use',
+						'disclaimer',
+						'editorial-policy',
+						'advertising',
+						'affiliate-disclosure',
+					],
 				},
 			],
 			customCss: ['./src/styles/global.css'],
 			pagefind: true,
 			favicon: '/favicon.svg',
 			credits: false,
+			components: {
+				PageSidebar: './src/components/PageSidebar.astro',
+				Footer: './src/components/Footer.astro',
+			},
 		}),
 		sitemap(),
 	],

@@ -2,12 +2,16 @@
 title: AI Prompt Gear
 description: Reference system for production prompting, agent workflows, model routing, team operations, and evaluation.
 template: splash
+referenceType: home
+adProfile: foundation
+commercialIntent: medium
+reviewCadence: Monthly review
 hero:
   title: |
     AI Prompt Gear
   tagline: Reference system for production prompting, agent workflows, model routing, team operations, and evaluation.
   actions:
-    - text: Browse use cases
+    - text: Browse team scenarios
       link: /use-cases/
       icon: right-arrow
     - text: Explore workflows
@@ -30,6 +34,9 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 	<Card title="Tooling" icon="setting">
 		Prompt operations stacks, versioning habits, observability signals, and production change control.
 	</Card>
+	<Card title="Tool comparisons" icon="starlight">
+		Comparison pages for workspaces, evaluation layers, and software choices with real implementation consequences.
+	</Card>
 	<Card title="Evaluation" icon="approve-check-circle">
 		Regression design, human review loops, benchmark discipline, and reliability guardrails.
 	</Card>
@@ -39,7 +46,7 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 
 <div class="portal-links">
 	<LinkCard
-		title="Browse use cases"
+		title="Browse team scenarios"
 		href="/use-cases/"
 		description="Start from the business job to be done and work backward into workflow shape, tooling, and evaluation."
 	/>
@@ -57,6 +64,11 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 		title="Set up tooling"
 		href="/tooling/"
 		description="Define the stack for versioning, observability, review, and ongoing prompt operations."
+	/>
+	<LinkCard
+		title="Compare tools"
+		href="/tool-comparisons/"
+		description="Compare collaboration, evaluation, and stack decisions on pages built for active tooling research."
 	/>
 	<LinkCard
 		title="Design evaluation loops"
@@ -97,6 +109,8 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 	<a href="/contact/">Contact</a>
 	<span aria-hidden="true"> / </span>
 	<a href="/privacy/">Privacy</a>
+	<span aria-hidden="true"> / </span>
+	<a href="/terms-of-use/">Terms</a>
 	<span aria-hidden="true"> / </span>
 	<a href="/disclaimer/">Disclaimer</a>
 </p>

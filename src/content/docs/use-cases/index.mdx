@@ -1,26 +1,30 @@
 ---
-title: Use Cases
-description: Production AI use cases organized around the operating work teams are trying to improve.
+title: Team Scenarios
+description: Team-based AI implementation scenarios organized around repeatable operational work.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Quarterly review
 ---
 
 import { LinkCard, Steps } from '@astrojs/starlight/components';
 
-# Use Cases
+# Team Scenarios
 
-Start here when the real question is not "which model should we use?" but "what kind of work are we trying to improve?" This section keeps coverage anchored to teams, outcomes, and operating constraints before technology choices enter the picture.
+Start here when the real question is not "which model should we use?" but "which team is trying to improve which recurring work?" This section organizes prompting and agent systems around real operating contexts rather than generic AI enthusiasm.
 
 <div class="signal-strip">
 	<div>
 		<strong>Best for</strong>
-		<p>Support, research, operations, knowledge work, and other repeatable processes with clear review boundaries.</p>
+		<p>Support, revenue, research, and operations teams working on repeatable processes with visible review points.</p>
 	</div>
 	<div>
 		<strong>Avoid this mistake</strong>
-		<p>Do not jump straight into prompts or models until the workflow owner, inputs, outputs, and review point are clear.</p>
+		<p>Do not jump straight into prompts or models until the workflow owner, source material, output format, and review boundary are clear.</p>
 	</div>
 	<div>
 		<strong>What comes next</strong>
-		<p>After the use case is framed, move into workflows, then models, then tooling and evaluation.</p>
+		<p>After the team scenario is framed, move into workflows, then models, then tooling and evaluation.</p>
 	</div>
 </div>
 
@@ -28,27 +32,37 @@ Start here when the real question is not "which model should we use?" but "what 
 
 <div class="portal-links">
 	<LinkCard
-		title="Operator support and knowledge workflows"
-		href="/use-cases/operator-support-and-knowledge-workflows/"
-		description="A high-intent lane covering support teams, internal knowledge retrieval, and human-in-the-loop execution."
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="A high-intent lane covering drafting, retrieval, routing, escalation, and human-in-the-loop support workflows."
+	/>
+	<LinkCard
+		title="Sales and revenue teams"
+		href="/use-cases/sales-and-revenue-teams/"
+		description="Prompt systems for response drafting, account research, internal enablement, and pipeline support."
+	/>
+	<LinkCard
+		title="Research and analysis teams"
+		href="/use-cases/research-and-analysis-teams/"
+		description="Prompt-assisted synthesis, comparison work, and structured knowledge production for teams handling high information volume."
 	/>
 	<LinkCard
 		title="Workflow design"
 		href="/workflows/"
-		description="Translate a use case into steps, prompts, operator checkpoints, and reusable patterns."
+		description="Translate a team scenario into steps, prompts, operator checkpoints, and reusable patterns."
 	/>
 	<LinkCard
 		title="Evaluation"
 		href="/evaluation/"
-		description="Define how a use case is judged in production and which failures matter enough to block rollout."
+		description="Define how a scenario is judged in production and which mistakes are too expensive to tolerate."
 	/>
 </div>
 
 ## Decision flow
 
 <Steps>
-	1. Define the job to be done, the team owner, and the output that must improve.
-	2. Identify the sources of truth, required guardrails, and whether a human reviewer must approve output.
-	3. Decide where the prompt system should assist, draft, route, or decide.
+	1. Define the team, the recurring task, and the output that must improve.
+	2. Identify the sources of truth, review boundary, and the highest-cost failure modes.
+	3. Decide where the system should assist, draft, route, or escalate.
 	4. Move into workflow and model design only after those boundaries are written down.
 </Steps>
