@@ -1,30 +1,82 @@
 ---
 title: Customer Support Operations
-description: A practical reference path for support teams building AI-assisted retrieval, drafting, and escalation workflows.
+description: A practical reference for designing AI customer support workflows that improve response speed without losing escalation safety, policy discipline, or human review.
 referenceType: team-scenario
 adProfile: team-scenario
 commercialIntent: high
 reviewCadence: Monthly review
+primaryKeyword: ai customer support workflows
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Support leaders
+  - CX operations managers
+  - PromptOps teams
+  - Knowledge managers
+contentStatus: cornerstone
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
 # Customer Support Operations
 
-Support operations are one of the strongest long-term fits for prompt systems because they combine repeated tasks, visible quality signals, and clear human accountability.
+Customer support is one of the strongest long-term use cases for prompt systems because the work is repetitive enough to benefit from structure, but important enough that bad automation is expensive. Teams care about response speed, queue health, escalation quality, policy alignment, and customer trust at the same time. That combination makes support a high-value AI workflow category rather than a generic prompt experiment.
 
-## Strong use cases
+## Why support teams adopt AI workflows
 
-- Response drafting with approved knowledge sources.
-- Internal retrieval for agents or escalations.
-- Ticket triage and routing support.
-- Summaries that help humans review faster without removing judgment.
+Most support teams are not trying to replace judgment. They are trying to reduce slow manual work around:
 
-## Design pressures
+- first-draft response creation;
+- case summarization for escalation;
+- internal retrieval across policies, product notes, and historical resolutions;
+- classification or routing support for incoming tickets.
 
-- Source quality matters more than prompt cleverness.
-- Escalation rules must be explicit before automation expands.
-- Evaluation should focus on factual grounding, actionability, and tone control.
+The economic value is usually not one dramatic productivity claim. It is the combination of faster handling time, more consistent internal guidance, and lower cognitive load for human agents.
+
+## What a durable support workflow looks like
+
+A strong support workflow usually has four layers:
+
+1. `Intake`: classify the ticket, detect urgency, and identify whether the request is eligible for assisted drafting.
+2. `Retrieval`: gather the approved sources, policy fragments, and product context needed for a grounded answer.
+3. `Drafting`: create a response candidate with explicit constraints around tone, actionability, and escalation boundaries.
+4. `Review and escalation`: keep humans in charge of final send, exception handling, and high-risk cases.
+
+This is why support is a workflow problem before it becomes a prompt problem. If source ownership, escalation rules, and review checkpoints are weak, a more sophisticated prompt will not fix the system.
+
+## Design pressures that matter most
+
+The strongest support implementations usually optimize for:
+
+- grounded answers over fluent answers;
+- fast review over long model output;
+- explicit escalation over confident guessing;
+- stable operational rules over prompt cleverness.
+
+Support teams often fail when they optimize for a demo instead of an operating model. A demo proves the model can answer. A real workflow has to prove that the team can trust, review, and improve the system over time.
+
+## Failure patterns worth catching early
+
+Common failure patterns include:
+
+- pulling from weak or stale source material;
+- hiding uncertainty instead of escalating it;
+- generating drafts that are too long for agents to review quickly;
+- treating all tickets as equal when only part of the queue should be automated first.
+
+The best first deployments start with narrower scopes: billing explanation, internal knowledge retrieval, structured response drafting, or low-risk triage support. Those workflows create evidence without forcing the team to automate the hardest support cases on day one.
+
+## What to measure
+
+The most useful scorecards usually track:
+
+- review speed and acceptance rate;
+- factual grounding against approved sources;
+- escalation correctness;
+- measurable effect on queue handling or internal time-to-resolution;
+- failure categories that still need manual safeguards.
+
+Those metrics create the bridge between prompt experimentation and real support operations.
 
 ## Recommended next reads
 
@@ -32,16 +84,16 @@ Support operations are one of the strongest long-term fits for prompt systems be
 	<LinkCard
 		title="Operator runbooks"
 		href="/workflows/operator-runbooks/"
-		description="Map checkpoints, handoffs, and reusable support response flows."
+		description="Map checkpoints, handoffs, review logic, and escalation rules into a support-safe operating flow."
 	/>
 	<LinkCard
 		title="Model routing"
 		href="/models-and-apis/model-routing/"
-		description="Choose when faster models are sufficient and when higher reasoning depth is worth the tradeoff."
+		description="Decide when cheaper models are good enough and when customer-facing work needs stronger reasoning or safer review paths."
 	/>
 	<LinkCard
 		title="Regression loops"
 		href="/evaluation/regression-loops/"
-		description="Protect quality once prompts, policies, and knowledge sources begin evolving."
+		description="Protect support quality as prompts, knowledge sources, and model choices evolve."
 	/>
 </div>

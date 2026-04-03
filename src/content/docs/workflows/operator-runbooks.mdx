@@ -1,26 +1,84 @@
 ---
 title: Operator Runbooks
-description: A framework for designing prompt-assisted workflows that support operators instead of bypassing them.
+description: A framework for building prompt-assisted operating runbooks with clear triggers, bounded steps, review checkpoints, and reliable escalation paths.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: prompt operations runbook
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - PromptOps teams
+  - Operations leaders
+  - Support managers
+  - AI program owners
+contentStatus: cornerstone
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
 # Operator Runbooks
 
-The most durable prompt systems tend to support an operator rather than pretending no operator exists. A runbook structure makes ownership visible and keeps workflow design compatible with real teams.
+The most durable prompt systems behave like runbooks, not magic boxes. A runbook makes the workflow explicit: what triggers the task, which sources are allowed, where human review happens, what counts as failure, and how escalation should work. That structure is what lets teams scale AI-assisted work without losing control.
 
-## Core ingredients
+## Why runbooks matter
 
-- A clear trigger, such as a ticket, lead, incident, or research request.
-- A bounded task sequence instead of a single oversized prompt.
-- Review checkpoints where a person can edit, approve, or escalate.
-- Logging that captures inputs, outputs, and the model or prompt version used.
+Teams often begin with isolated prompts and quickly discover the same operational questions:
 
-## Failure modes to plan for
+- Which inputs are required before the model runs?
+- Which outputs can be used directly, and which must be reviewed?
+- What happens if the answer is incomplete, contradictory, or uncertain?
+- How do we know whether the workflow got better or worse after a change?
 
-- Source material is incomplete or contradictory.
-- The system answers confidently when it should ask for clarification.
-- The human reviewer receives too much output to audit quickly.
+Runbooks answer those questions in a reusable form. They make the system auditable, easier to train around, and easier to improve over time.
+
+## Core parts of a good runbook
+
+Most effective runbooks include:
+
+1. `Trigger`: define the exact event that starts the workflow, such as a ticket, an incident, a lead, or a research request.
+2. `Inputs`: specify what sources, fields, and context must be available before generation starts.
+3. `Processing steps`: break the workflow into smaller units instead of one oversized prompt.
+4. `Human review`: define where a person approves, edits, or rejects the output.
+5. `Escalation rules`: identify what the system should not attempt to resolve by itself.
+6. `Logging and evidence`: capture enough information to debug failures and compare changes later.
+
+This structure is what separates a prompt experiment from an operating process.
+
+## Where teams usually go wrong
+
+Runbooks become fragile when:
+
+- a single prompt is expected to do too much;
+- allowed sources are vague or weakly governed;
+- reviewers receive too much output to audit efficiently;
+- escalation is treated as failure instead of a normal safety mechanism.
+
+The cost of weak runbooks usually appears later. Quality drifts, teams stop trusting outputs, and nobody can explain whether the workflow is improving.
+
+## What a scalable runbook looks like
+
+A scalable runbook is usually narrow before it is broad. It starts with a bounded outcome, such as drafting a support reply or summarizing a case, then adds structure around:
+
+- approved source hierarchy;
+- versioned prompts or instructions;
+- output format requirements;
+- test cases for high-risk variations;
+- role ownership for maintenance.
+
+That makes it easier to swap models, update policies, or add evaluation later without rewriting the whole workflow.
+
+## What to operationalize first
+
+If a team is early, the first operational layer should usually be:
+
+- source control for the instructions and approved references;
+- a short review checklist for humans;
+- failure tagging for bad outputs;
+- a repeatable set of sample cases that can be re-run after changes.
+
+Those pieces create enough discipline to expand later into routing, evaluation, or deeper tooling.
 
 ## Compare next
 
@@ -28,11 +86,16 @@ The most durable prompt systems tend to support an operator rather than pretendi
 	<LinkCard
 		title="Prompt operations stack"
 		href="/tooling/promptops-stack/"
-		description="Set up the supporting infrastructure for versioning, rollout, and oversight."
+		description="See which systems support versioning, rollout, visibility, and maintenance once the runbook becomes operational."
 	/>
 	<LinkCard
 		title="Regression loops"
 		href="/evaluation/regression-loops/"
-		description="Track whether a workflow keeps performing after prompts and models change."
+		description="Runbooks become reliable when every major change can be pressure-tested against known cases."
+	/>
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Use a real team scenario to understand why runbooks matter in high-volume, human-reviewed work."
 	/>
 </div>
