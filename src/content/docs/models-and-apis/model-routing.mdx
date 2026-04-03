@@ -1,0 +1,38 @@
+---
+title: Model Routing
+description: A practical guide to using multiple models and APIs based on task difficulty, latency, and cost discipline.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Model Routing
+
+Routing matters when a single default model is either too expensive for routine work or too weak for edge cases. A routing layer lets teams reserve higher-cost inference for the tasks that truly need it.
+
+## Use routing when
+
+- Request complexity varies sharply across the same workflow.
+- Teams need predictable cost controls without flattening quality.
+- Different steps in the flow need different strengths, such as extraction, reasoning, or structured output.
+
+## Routing signals
+
+- Input length and document complexity.
+- Required answer format and tool use.
+- Whether the task is customer-facing or internal draft work.
+- Whether human review is guaranteed before delivery.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Operator support workflows"
+		href="/use-cases/operator-support-and-knowledge-workflows/"
+		description="See where routing becomes valuable in a high-volume, human-reviewed environment."
+	/>
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Routing only works when teams can measure whether the cheaper path stays within acceptable bounds."
+	/>
+</div>

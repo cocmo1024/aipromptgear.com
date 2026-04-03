@@ -1,0 +1,38 @@
+---
+title: Prompt Operations Stack
+description: The minimum viable tooling stack for versioning, observability, review, and controlled rollout of prompt systems.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Prompt Operations Stack
+
+The best prompt operations stack is usually smaller than teams expect. A handful of reliable capabilities beats a noisy toolchain that nobody trusts enough to use during incidents or regressions.
+
+## Minimum viable capabilities
+
+- Prompt and workflow version control.
+- Example capture for both successful and failed outputs.
+- Traceability from a production result back to the prompt, model, and input context used.
+- Review and rollback mechanisms that do not depend on memory or chat history.
+
+## Do not optimize too early for
+
+- Fancy dashboards without operational response playbooks.
+- Benchmarks that do not map to real workflow outcomes.
+- Tool sprawl before the review process itself is stable.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Operator runbooks"
+		href="/workflows/operator-runbooks/"
+		description="Use workflow ownership to define what the tooling actually needs to support."
+	/>
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Model strategy affects logging, fallback logic, and how traces should be segmented."
+	/>
+</div>

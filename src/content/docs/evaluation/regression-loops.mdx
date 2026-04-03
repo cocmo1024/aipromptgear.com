@@ -1,0 +1,38 @@
+---
+title: Regression Loops
+description: A framework for rechecking prompt systems after changes to prompts, models, tools, policies, or source material.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Regression Loops
+
+Prompt systems rarely break in dramatic ways. More often they drift. Regression loops exist to catch that drift before a team notices it through lost trust, slower work, or customer-visible mistakes.
+
+## Trigger a recheck when
+
+- A prompt, retrieval source, or policy instruction changes.
+- A provider or model version changes behavior.
+- A workflow adds or removes a review step.
+- Costs or latency targets force routing adjustments.
+
+## Review layers
+
+- Fast spot checks on representative examples.
+- Structured regression sets tied to the workflow's highest-risk outcomes.
+- Human review of ambiguous cases where scores alone are misleading.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Routing changes are one of the most common reasons a system needs a fresh evaluation cycle."
+	/>
+	<LinkCard
+		title="Prompt operations stack"
+		href="/tooling/promptops-stack/"
+		description="Regression discipline becomes much easier when examples, traces, and versions are easy to inspect."
+	/>
+</div>

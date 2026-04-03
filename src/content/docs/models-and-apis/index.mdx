@@ -1,0 +1,39 @@
+---
+title: Models and APIs
+description: Reference material for model routing, API tradeoffs, latency planning, and operational model fit.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Models and APIs
+
+Model choice is only valuable when connected to task shape, risk tolerance, and operating cost. This section frames APIs and models as components in a production system, not as abstract benchmark winners.
+
+## Core paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Decide when routing, fallback, or tiered models make more sense than a single default model."
+	/>
+	<LinkCard
+		title="Use cases"
+		href="/use-cases/"
+		description="Start with the task and operating risk before narrowing the model or API layer."
+	/>
+	<LinkCard
+		title="Evaluation"
+		href="/evaluation/"
+		description="Tie model choice to measurable quality, not only anecdotal prompt demos."
+	/>
+</div>
+
+## Routing questions
+
+<Steps>
+	1. What minimum capability is required for the task to clear the bar?
+	2. Which requests justify slower or more expensive reasoning?
+	3. What should happen when a provider degrades, rate limits, or changes behavior?
+	4. Which tasks need deterministic formatting, policy enforcement, or tool calling support?
+</Steps>

@@ -1,0 +1,54 @@
+---
+title: Use Cases
+description: Production AI use cases organized around the operating work teams are trying to improve.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Use Cases
+
+Start here when the real question is not "which model should we use?" but "what kind of work are we trying to improve?" This section keeps coverage anchored to teams, outcomes, and operating constraints before technology choices enter the picture.
+
+<div class="signal-strip">
+	<div>
+		<strong>Best for</strong>
+		<p>Support, research, operations, knowledge work, and other repeatable processes with clear review boundaries.</p>
+	</div>
+	<div>
+		<strong>Avoid this mistake</strong>
+		<p>Do not jump straight into prompts or models until the workflow owner, inputs, outputs, and review point are clear.</p>
+	</div>
+	<div>
+		<strong>What comes next</strong>
+		<p>After the use case is framed, move into workflows, then models, then tooling and evaluation.</p>
+	</div>
+</div>
+
+## Core paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Operator support and knowledge workflows"
+		href="/use-cases/operator-support-and-knowledge-workflows/"
+		description="A high-intent lane covering support teams, internal knowledge retrieval, and human-in-the-loop execution."
+	/>
+	<LinkCard
+		title="Workflow design"
+		href="/workflows/"
+		description="Translate a use case into steps, prompts, operator checkpoints, and reusable patterns."
+	/>
+	<LinkCard
+		title="Evaluation"
+		href="/evaluation/"
+		description="Define how a use case is judged in production and which failures matter enough to block rollout."
+	/>
+</div>
+
+## Decision flow
+
+<Steps>
+	1. Define the job to be done, the team owner, and the output that must improve.
+	2. Identify the sources of truth, required guardrails, and whether a human reviewer must approve output.
+	3. Decide where the prompt system should assist, draft, route, or decide.
+	4. Move into workflow and model design only after those boundaries are written down.
+</Steps>

@@ -1,0 +1,38 @@
+---
+title: Operator Runbooks
+description: A framework for designing prompt-assisted workflows that support operators instead of bypassing them.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Operator Runbooks
+
+The most durable prompt systems tend to support an operator rather than pretending no operator exists. A runbook structure makes ownership visible and keeps workflow design compatible with real teams.
+
+## Core ingredients
+
+- A clear trigger, such as a ticket, lead, incident, or research request.
+- A bounded task sequence instead of a single oversized prompt.
+- Review checkpoints where a person can edit, approve, or escalate.
+- Logging that captures inputs, outputs, and the model or prompt version used.
+
+## Failure modes to plan for
+
+- Source material is incomplete or contradictory.
+- The system answers confidently when it should ask for clarification.
+- The human reviewer receives too much output to audit quickly.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Prompt operations stack"
+		href="/tooling/promptops-stack/"
+		description="Set up the supporting infrastructure for versioning, rollout, and oversight."
+	/>
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Track whether a workflow keeps performing after prompts and models change."
+	/>
+</div>

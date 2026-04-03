@@ -1,0 +1,39 @@
+---
+title: Tooling
+description: Prompt operations tooling for version control, observability, review, and change management.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Tooling
+
+Tooling is where prompt systems become maintainable. The goal is not to collect every possible platform, but to choose the minimum stack that supports visibility, review, versioning, and reliable rollout.
+
+## Core paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Prompt operations stack"
+		href="/tooling/promptops-stack/"
+		description="A baseline stack for storing prompts, tracing outputs, testing changes, and auditing production behavior."
+	/>
+	<LinkCard
+		title="Workflows"
+		href="/workflows/"
+		description="Use workflow design to determine which tooling is essential and which is optional complexity."
+	/>
+	<LinkCard
+		title="Evaluation"
+		href="/evaluation/"
+		description="Evaluation design determines whether your tooling is helping or just generating more dashboards."
+	/>
+</div>
+
+## Tooling choices should answer
+
+<Steps>
+	1. Where are prompts stored and versioned?
+	2. How are prompts connected to workflow versions and model versions?
+	3. What traces or examples can reviewers inspect when quality drifts?
+	4. How quickly can a bad prompt change be rolled back?
+</Steps>

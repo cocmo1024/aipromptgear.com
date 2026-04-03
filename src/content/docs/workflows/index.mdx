@@ -1,0 +1,39 @@
+---
+title: Workflows
+description: Workflow patterns for prompt systems, agents, operator handoffs, and repeatable production routines.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Workflows
+
+Workflow design is where prompting becomes an operating system instead of a bag of isolated prompts. This section is about sequencing, review boundaries, escalation logic, and reusable runbooks.
+
+## Core paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Operator runbooks"
+		href="/workflows/operator-runbooks/"
+		description="Design prompt flows that align with ownership, approvals, and repeatable team operations."
+	/>
+	<LinkCard
+		title="Use cases"
+		href="/use-cases/"
+		description="Return to the business problem when workflow design starts drifting into tool-first complexity."
+	/>
+	<LinkCard
+		title="Tooling"
+		href="/tooling/"
+		description="Choose the stack for prompt versioning, observability, and controlled rollout."
+	/>
+</div>
+
+## What good workflow pages should answer
+
+<Steps>
+	1. What starts the flow and what data does the system receive?
+	2. Which steps are deterministic, which are model-driven, and where does a human intervene?
+	3. What output is produced, where is it stored, and how is it verified?
+	4. What happens when confidence is low, sources disagree, or policy rules are triggered?
+</Steps>

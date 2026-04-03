@@ -1,0 +1,39 @@
+---
+title: Evaluation
+description: Evaluation patterns for prompt systems, regressions, human review loops, and long-term quality control.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Evaluation
+
+Evaluation is the discipline that keeps prompt systems from drifting into anecdote-driven operations. This section focuses on test design, review loops, and ongoing quality control once teams start shipping changes regularly.
+
+## Core paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="A practical pattern for protecting quality when prompts, models, retrieval, or workflows change."
+	/>
+	<LinkCard
+		title="Use cases"
+		href="/use-cases/"
+		description="Good evaluation starts by understanding which mistakes are most expensive in the underlying workflow."
+	/>
+	<LinkCard
+		title="Tooling"
+		href="/tooling/"
+		description="Choose tooling that supports judgment, not just score collection."
+	/>
+</div>
+
+## Evaluation questions
+
+<Steps>
+	1. Which errors are acceptable, and which ones block deployment?
+	2. Which examples should be reviewed by a human every cycle?
+	3. What changes trigger a regression pass?
+	4. How frequently should high-value pages or workflows be re-reviewed?
+</Steps>

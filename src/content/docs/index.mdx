@@ -1,43 +1,102 @@
 ---
 title: AI Prompt Gear
-description: Practical reference material for prompt systems, agent workflows, model operations, and evaluation.
+description: Reference system for production prompting, agent workflows, model routing, team operations, and evaluation.
 template: splash
 hero:
   title: |
     AI Prompt Gear
-  tagline: Practical reference for prompt systems, agent workflows, model operations, and evaluation.
+  tagline: Reference system for production prompting, agent workflows, model routing, team operations, and evaluation.
   actions:
+    - text: Browse use cases
+      link: /use-cases/
+      icon: right-arrow
     - text: Explore workflows
       link: /workflows/
-      icon: right-arrow
-    - text: About this site
-      link: /about/
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 
 <CardGrid stagger>
+	<Card title="Use cases" icon="open-book">
+		Buyer-intent coverage for support operations, research systems, team workflows, and AI-assisted execution.
+	</Card>
 	<Card title="Workflow design" icon="rocket">
-		Reusable prompt flows, orchestration patterns, and operator-ready playbooks.
+		Reusable prompt flows, orchestration patterns, escalation logic, and operator handoff patterns.
 	</Card>
 	<Card title="Models and APIs" icon="document">
-		Model selection, API tradeoffs, latency constraints, and operational fit.
+		Model selection, routing, latency planning, capability fit, and API operating constraints.
 	</Card>
 	<Card title="Tooling" icon="setting">
-		Editors, observability, evaluation helpers, and prompt operations infrastructure.
+		Prompt operations stacks, versioning habits, observability signals, and production change control.
 	</Card>
 	<Card title="Evaluation" icon="approve-check-circle">
-		Test design, regression discipline, and output quality review for production use.
+		Regression design, human review loops, benchmark discipline, and reliability guardrails.
 	</Card>
 </CardGrid>
 
-<p class="mt-8 text-sm text-[var(--sl-color-gray-3)]">
+## Navigate by decision
+
+<div class="portal-links">
+	<LinkCard
+		title="Browse use cases"
+		href="/use-cases/"
+		description="Start from the business job to be done and work backward into workflow shape, tooling, and evaluation."
+	/>
+	<LinkCard
+		title="Build workflow logic"
+		href="/workflows/"
+		description="Map orchestration patterns, operator handoffs, escalation thresholds, and reusable runbooks."
+	/>
+	<LinkCard
+		title="Choose models and APIs"
+		href="/models-and-apis/"
+		description="Frame capability fit, latency budgets, cost controls, and routing logic before implementation."
+	/>
+	<LinkCard
+		title="Set up tooling"
+		href="/tooling/"
+		description="Define the stack for versioning, observability, review, and ongoing prompt operations."
+	/>
+	<LinkCard
+		title="Design evaluation loops"
+		href="/evaluation/"
+		description="Decide how quality is measured, reviewed, refreshed, and protected from silent regression."
+	/>
+</div>
+
+## What this site optimizes
+
+<div class="signal-strip">
+	<div>
+		<strong>Research model</strong>
+		<p>Application first, workflow second, model and tooling last. This keeps coverage grounded in real operating work.</p>
+	</div>
+	<div>
+		<strong>High-value traffic</strong>
+		<p>Intent is strongest around team workflows, model routing, implementation tradeoffs, and software buying decisions.</p>
+	</div>
+	<div>
+		<strong>Long-term edge</strong>
+		<p>Reference pages can be reviewed and updated without being rewritten from scratch whenever models, tools, or costs shift.</p>
+	</div>
+</div>
+
+## How to use this reference
+
+<Steps>
+	1. Start with the team or workflow category that matches the operating problem.
+	2. Move into workflow design to shape prompts, steps, escalation rules, and handoffs.
+	3. Use models and APIs to pressure-test fit, latency, cost, and deployment boundaries.
+	4. Use tooling and evaluation to turn a promising prompt flow into a maintainable operating system.
+</Steps>
+
+<p class="footnote-links">
 	<a href="/about/">About</a>
-	<span aria-hidden="true"> · </span>
+	<span aria-hidden="true"> / </span>
 	<a href="/contact/">Contact</a>
-	<span aria-hidden="true"> · </span>
+	<span aria-hidden="true"> / </span>
 	<a href="/privacy/">Privacy</a>
-	<span aria-hidden="true"> · </span>
+	<span aria-hidden="true"> / </span>
 	<a href="/disclaimer/">Disclaimer</a>
 </p>

@@ -11,8 +11,8 @@ export default defineConfig({
 		starlight({
 			title: 'AI Prompt Gear',
 			description:
-				'Practical reference material for prompt systems, agent workflows, model operations, and evaluation.',
-			tagline: 'Prompt systems, agent workflows, and model operations explained with production discipline.',
+				'Reference system for production prompting, agent workflows, model routing, team operations, and evaluation.',
+			tagline: 'Production prompting, agent operations, and model decisions organized for reusable systems instead of one-off hacks.',
 			social: [
 				{
 					icon: 'github',
@@ -22,8 +22,29 @@ export default defineConfig({
 			],
 			sidebar: [
 				{
-					label: 'Core Areas',
-					items: ['workflows', 'models-and-apis', 'tooling', 'evaluation'],
+					label: 'Reference Areas',
+					items: [
+						{
+							label: 'Use Cases',
+							autogenerate: { directory: 'use-cases' },
+						},
+						{
+							label: 'Workflows',
+							autogenerate: { directory: 'workflows' },
+						},
+						{
+							label: 'Models and APIs',
+							autogenerate: { directory: 'models-and-apis' },
+						},
+						{
+							label: 'Tooling',
+							autogenerate: { directory: 'tooling' },
+						},
+						{
+							label: 'Evaluation',
+							autogenerate: { directory: 'evaluation' },
+						},
+					],
 				},
 				{
 					label: 'Site',
