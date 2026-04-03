@@ -1,0 +1,132 @@
+:root {
+	--accent: #0d7a70;
+	--accent-strong: #085e57;
+	--ink: 19, 31, 33;
+	--muted: 83, 108, 111;
+	--muted-soft: 118, 145, 148;
+	--paper: #edf8f6;
+	--paper-strong: #dff0ec;
+	--panel: rgba(247, 255, 253, 0.94);
+	--panel-strong: rgba(240, 251, 248, 0.98);
+	--line: #bddcd7;
+	--line-strong: #98c9c1;
+	--shadow: 0 24px 80px rgba(8, 77, 71, 0.1);
+	--shadow-soft: 0 12px 28px rgba(8, 77, 71, 0.08);
+	--display-font: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+	--body-font: "Atkinson", "Gill Sans", sans-serif;
+	--mono-font: "Consolas", "Courier New", monospace;
+	--shell-radius: 36px;
+	--card-radius: 28px;
+}
+
+body {
+	background:
+		radial-gradient(circle at top left, rgba(13, 122, 112, 0.16), transparent 28%),
+		radial-gradient(circle at top right, rgba(50, 180, 162, 0.18), transparent 22%),
+		linear-gradient(180deg, #f8fffd 0%, #eaf6f3 100%);
+}
+
+.site-frame {
+	border-radius: 36px;
+	background: rgba(250, 255, 254, 0.82);
+}
+
+.site-header {
+	border-bottom-color: rgba(13, 122, 112, 0.14);
+}
+
+.site-domain {
+	border-color: rgba(13, 122, 112, 0.2);
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(226, 247, 243, 0.95));
+	box-shadow: 0 10px 26px rgba(13, 122, 112, 0.08);
+}
+
+.primary-nav a {
+	border-radius: 999px;
+	border-color: rgba(13, 122, 112, 0.12);
+	background: rgba(13, 122, 112, 0.07);
+}
+
+.primary-nav a.active {
+	background: rgba(13, 122, 112, 0.16);
+}
+
+.header-note {
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(231, 247, 244, 0.96)),
+		radial-gradient(circle at top right, rgba(13, 122, 112, 0.08), transparent 54%);
+}
+
+.page-intro,
+.hero-panel {
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(240, 251, 248, 0.96)),
+		repeating-linear-gradient(
+			90deg,
+			transparent,
+			transparent 18px,
+			rgba(13, 122, 112, 0.03) 18px,
+			rgba(13, 122, 112, 0.03) 19px
+		);
+}
+
+.page-intro h1,
+.hero-panel h2,
+.post-card-title {
+	letter-spacing: -0.04em;
+}
+
+.sidebar-card,
+.section-block,
+.post-card,
+.ad-slot,
+.article-shell,
+.detail-card,
+.policy-card,
+.contact-card,
+.hub-card,
+.callout-card,
+.stat-card {
+	border-radius: 28px;
+}
+
+.hero-panel,
+.detail-card,
+.hub-card,
+.callout-card {
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(238, 250, 247, 0.96)),
+		radial-gradient(circle at top right, rgba(13, 122, 112, 0.08), transparent 48%);
+}
+
+.post-card.featured {
+	background: linear-gradient(135deg, rgba(13, 122, 112, 0.08), rgba(237, 248, 246, 0.94));
+}
+
+.meta-pill {
+	background: rgba(13, 122, 112, 0.12);
+	color: var(--accent-strong);
+}
+
+.stat-card {
+	background: linear-gradient(180deg, rgba(13, 122, 112, 0.92), rgba(8, 94, 87, 0.96));
+	color: rgba(255, 255, 255, 0.94);
+}
+
+.stat-card strong,
+.stat-card h4,
+.stat-card p {
+	color: rgba(255, 255, 255, 0.97);
+}
+
+.taxonomy-link,
+.taxonomy-tag,
+.footer-links a {
+	border-color: rgba(13, 122, 112, 0.18);
+	background: rgba(240, 251, 248, 0.92);
+}
+
+.site-footer {
+	background: linear-gradient(180deg, rgba(242, 252, 249, 0.72), rgba(233, 247, 243, 0.88));
+	border-top-color: rgba(13, 122, 112, 0.14);
+}

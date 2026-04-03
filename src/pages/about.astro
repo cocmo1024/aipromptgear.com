@@ -1,0 +1,106 @@
+---
+import SidebarCard from '../components/SidebarCard.astro';
+import ClassicShell from '../layouts/ClassicShell.astro';
+import { SITE_CONTACT_EMAIL, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE } from '../consts';
+---
+
+<ClassicShell
+	title={`${SITE_TITLE} | About`}
+	description={SITE_DESCRIPTION}
+	pageTitle="About AI Prompt Gear"
+	pageIntro="AI Prompt Gear is being built as an English-language reference brand for operators, consultants, and software buyers who need AI content that stays useful after the trend cycle passes."
+	introLabel="About"
+	keywords={[...SITE_KEYWORDS, 'about AI Prompt Gear']}
+	breadcrumbs={[
+		{ name: 'Home', path: '/' },
+		{ name: 'About', path: '/about/' },
+	]}
+>
+	<Fragment slot="left-rail">
+		<SidebarCard title="Audience" eyebrow="Who It Helps">
+			<ul>
+				<li>Operators building repeatable AI workflows</li>
+				<li>Teams comparing copilots, assistants, and model tooling</li>
+				<li>Readers who value reusable systems over generic AI commentary</li>
+			</ul>
+		</SidebarCard>
+
+		<SidebarCard title="Editorial Bias" eyebrow="What We Favor">
+			<p>
+				We favor durable frameworks, clean information architecture, and pages that remain useful long
+				enough to become meaningful assets.
+			</p>
+		</SidebarCard>
+	</Fragment>
+
+	<section class="section-block">
+		<div class="section-head">
+			<div>
+				<p class="eyebrow">Editorial Thesis</p>
+				<h2>Prompt content should behave like infrastructure</h2>
+			</div>
+		</div>
+		<p>
+			Instead of chasing shallow updates, this site is structured around prompt systems, agent
+			workflows, and tool evaluation pages that can rank, convert, and remain useful for a long time.
+			The three-column layout supports that by keeping navigation, reading flow, and future commercial
+			surfaces clearly separated.
+		</p>
+	</section>
+
+	<div class="detail-grid">
+		<section class="detail-card">
+			<p class="section-kicker">SEO Logic</p>
+			<h3>Long-tail, system-oriented queries</h3>
+			<p>
+				The strongest pages will target repeatable jobs to be done: writing workflows, research
+				processes, prompt libraries, and buyer comparison queries with commercial intent.
+			</p>
+		</section>
+
+		<section class="detail-card">
+			<p class="section-kicker">Trust</p>
+			<h3>Clarity beats volume</h3>
+			<p>
+				The brand goal is to look and feel deliberate, not crowded. Sponsor placeholders exist, but
+				user value and readability come first so the site can mature without feeling extractive.
+			</p>
+		</section>
+
+		<section class="detail-card">
+			<p class="section-kicker">Growth Path</p>
+			<h3>Libraries, playbooks, comparisons</h3>
+			<p>
+				Those three content shapes create a natural moat, stronger internal linking, and cleaner paths
+				for future revenue from software sponsors, premium assets, and direct partnerships.
+			</p>
+		</section>
+	</div>
+
+	<section class="section-block">
+		<div class="section-head">
+			<div>
+				<p class="eyebrow">Planning Surface</p>
+				<h2>The long-term framework is visible inside the site</h2>
+			</div>
+		</div>
+		<p>
+			The <a href="/topics/">topic map</a> defines the clusters worth building, while the
+			<a href="/methodology/"> methodology page</a> explains how the archive should stay useful and
+			trustworthy as commercially important pages grow.
+		</p>
+	</section>
+
+	<section class="section-block">
+		<div class="section-head">
+			<div>
+				<p class="eyebrow">Reach Out</p>
+				<h2>Editorial notes and future partnerships</h2>
+			</div>
+		</div>
+		<p>
+			For corrections, topic ideas, or future sponsor conversations, email <a href={`mailto:${SITE_CONTACT_EMAIL}`}>{SITE_CONTACT_EMAIL}</a>.
+			The infrastructure is already being prepared for a cleaner long-term business, but the current priority is building a high-quality editorial base first.
+		</p>
+	</section>
+</ClassicShell>

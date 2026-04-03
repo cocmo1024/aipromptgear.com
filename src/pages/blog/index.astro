@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import AdSlot from '../../components/AdSlot.astro';
+import PostPreviewCard from '../../components/PostPreviewCard.astro';
+import SidebarCard from '../../components/SidebarCard.astro';
+import ClassicShell from '../../layouts/ClassicShell.astro';
+import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE } from '../../consts';
+import { sortPosts } from '../../utils/content';
+
+const posts = sortPosts(await getCollection('blog'));
+---
+
+<ClassicShell
+	title={`${SITE_TITLE} | Blog`}
+	description={SITE_DESCRIPTION}
+	pageTitle="Prompt archive and AI workflow stream"
+	pageIntro="Stack evergreen workflow content in the middle column, keep navigational clusters in the left rail, and use deliberate ad breaks to monetize commercial-intent visits."
+	introLabel="Archive"
+	keywords={[...SITE_KEYWORDS, 'AI workflow archive', 'prompt archive']}
+	breadcrumbs={[
+		{ name: 'Home', path: '/' },
+		{ name: 'Guides', path: '/blog/' },
+	]}
+>
+	<Fragment slot="left-rail">
+		<SidebarCard title="Archive Strategy" eyebrow="Evergreen">
+			<p>
+				The best posts here should age into durable assets: prompt packs, role-based workflows,
+				comparison pages, and software shortlist guides.
+			</p>
+		</SidebarCard>
+	</Fragment>
+
+	<section class="section-block">
+		<div class="section-head">
+			<div>
+				<p class="eyebrow">All Entries</p>
+				<h3>Latest AI prompt gear coverage</h3>
+			</div>
+		</div>
+
+		<div class="post-stream">
+			{posts.length === 0 ? (
+				<p>No posts yet. The archive is ready for your first reusable workflow article.</p>
+			) : (
+				posts.map((post, index) => (
+					<>
+						<PostPreviewCard post={post} featured={index === 0} />
+						{
+							index === 0 && (
+								<AdSlot
+									slotId="archive-inline-affiliate"
+									format="inline"
+									headline="Workflow tool comparison slot"
+									note="Place a high-intent comparison banner here after the featured article to capture clicks from readers already evaluating tools."
+								/>
+							)
+						}
+					</>
+				))
+			)}
+		</div>
+	</section>
+</ClassicShell>
