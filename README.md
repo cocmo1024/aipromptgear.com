@@ -1,22 +1,25 @@
-# aipromptgear.com
+# AI Prompt Gear
 
-Independent Astro site for `aipromptgear.com`.
+Static Astro site for [aipromptgear.com](https://aipromptgear.com/).
 
-## Positioning
-
-- Topic: prompt engineering, reusable AI workflows, agent ops, and tooling reviews
-- Layout: desktop-first three-column editorial blog with mobile single-column fallback
-- Monetization: sponsored tool placements, SaaS affiliates, newsletter sponsors, and prompt marketplace promotions
-
-## Quick Start
+## Local Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Content Direction
+## Build
 
-- Publish workflow kits and prompt stacks that solve narrow business tasks
-- Build evergreen comparison articles around models, copilots, and AI workbenches
-- Use the side rails for sponsor units, downloadable checklists, and newsletter CTAs
+```bash
+npm run build
+```
+
+## Foundation
+
+- Homepage
+- About page
+- Contact page
+- Privacy policy
+- Disclaimer
+- Sitemap, robots, RSS, and base SEO metadata
