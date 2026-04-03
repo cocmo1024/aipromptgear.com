@@ -1,6 +1,12 @@
 # AI Prompt Gear
 
-Static Astro site for [aipromptgear.com](https://aipromptgear.com/).
+Starlight-based documentation site for `aipromptgear.com`.
+
+## Focus
+
+- Prompt workflows and reusable operator playbooks
+- Model and API decision support
+- Tooling, evaluation, and prompt operations
 
 ## Local Development
 
@@ -15,11 +21,11 @@ npm run dev
 npm run build
 ```
 
-## Foundation
+## Deployment
 
-- Homepage
-- About page
-- Contact page
-- Privacy policy
-- Disclaimer
-- Sitemap, robots, RSS, and base SEO metadata
+Use Cloudflare Pages with:
+
+- Build command: `npm run build`
+- Output directory: `dist`
+
+Do not use `wrangler deploy` for this repository.
