@@ -1,0 +1,93 @@
+---
+title: Ticket Triage and Priority Routing
+description: A workflow reference for AI-assisted support intake systems that classify urgency, route queues, and keep high-risk tickets from getting buried in automation.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai ticket triage priority routing
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Support operations managers
+  - Queue managers
+  - PromptOps teams
+  - CX platform owners
+contentStatus: seed
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Ticket Triage and Priority Routing
+
+Triage is where support AI starts touching real queue economics. If the system can classify intent, urgency, and likely routing correctly, teams save time before any response draft is written. If it gets that logic wrong, good drafting later in the workflow will not repair the damage.
+
+## Workflow objective
+
+The purpose of triage is to decide:
+
+- what kind of request has arrived;
+- how urgent it really is;
+- which queue or team should own it;
+- whether the system should answer, draft, summarize, or immediately escalate.
+
+The triage layer is therefore not just a labeling feature. It is the gatekeeper for the rest of the support workflow.
+
+## Inputs and prerequisites
+
+Strong routing usually depends on:
+
+- well-defined issue categories and escalation classes;
+- examples of real tickets that map cleanly to those classes;
+- queue ownership rules that match how the organization actually operates;
+- clear logic for customer impact, service risk, and policy sensitivity.
+
+Without those inputs, triage becomes a confidence theater system that still needs manual rescue.
+
+## Step-by-step flow
+
+Most durable triage systems follow this pattern:
+
+1. classify the request intent and likely product or billing domain;
+2. score urgency using explicit markers, not vague tone alone;
+3. detect policy or account-sensitive issues that limit automation;
+4. route to the most appropriate queue with a short rationale;
+5. trigger drafting or escalation only after routing confidence is high enough.
+
+The best systems optimize for clear next ownership instead of trying to solve the whole ticket at intake.
+
+## Human review checkpoints
+
+Review matters most when:
+
+- an issue claims outage, security, fraud, or money impact;
+- the ticket contains mixed intents that map to different teams;
+- the model confidence is strong but the evidence is weak;
+- historical routing errors have clustered around similar cases.
+
+This is where routing logic and escalation logic should work together instead of being maintained as separate workflows.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Escalation and handoff design"
+		href="/workflows/escalation-and-handoff-design/"
+		description="Carry the triage decision cleanly into human ownership when automation should stop."
+	/>
+	<LinkCard
+		title="Billing and refund automation guardrails"
+		href="/use-cases/billing-and-refund-automation-guardrails/"
+		description="Use a high-risk billing scenario to test whether routing rules are actually protecting the queue."
+	/>
+	<LinkCard
+		title="Support quality scorecards"
+		href="/evaluation/support-quality-scorecards/"
+		description="Measure routing quality as an operational outcome instead of a one-time classifier metric."
+	/>
+	<LinkCard
+		title="Escalation audit sampling"
+		href="/evaluation/escalation-audit-sampling/"
+		description="Sample routed tickets to catch false urgency and missed high-risk cases."
+	/>
+</div>

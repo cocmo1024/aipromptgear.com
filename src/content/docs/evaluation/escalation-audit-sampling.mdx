@@ -1,0 +1,92 @@
+---
+title: Escalation Audit Sampling
+description: An evaluation reference for reviewing whether support AI systems escalate the right cases, miss the wrong cases, and preserve operational trust over time.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: support escalation audit sampling
+searchIntent: design
+decisionStage: operations
+targetRoles:
+  - Support QA managers
+  - CX operations leaders
+  - PromptOps teams
+  - Audit owners
+contentStatus: seed
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Escalation Audit Sampling
+
+Escalation logic looks reliable until teams inspect the edge cases. That is why audit sampling matters. If support AI handles thousands of low-risk interactions well but quietly misses the cases that should have escalated, the program accumulates invisible operational risk until a costly failure makes the pattern obvious.
+
+## Why this evaluation exists
+
+Audit sampling helps teams answer:
+
+- are high-risk tickets reaching people quickly enough;
+- are low-risk tickets escalating too often and creating queue drag;
+- which issue classes are producing the most routing ambiguity;
+- whether prompt or knowledge changes altered escalation behavior unexpectedly.
+
+This review is especially important in support systems that combine self-service, drafting, and queue routing.
+
+## What should be sampled
+
+A practical sample usually includes:
+
+- a slice of tickets that the system kept in automation;
+- a slice that it escalated immediately;
+- borderline cases with mixed intent or conflicting source signals;
+- recent tickets from categories that already have a history of mistakes.
+
+The point is not to review everything. It is to inspect the areas where trust can erode fastest.
+
+## Common failure patterns
+
+Audit sampling often reveals:
+
+- subtle overconfidence on billing, outage, or policy-sensitive tickets;
+- escalation rationale that sounds plausible but is unsupported;
+- drift after knowledge-base or prompt updates;
+- category-specific blind spots where certain intents are routinely downplayed.
+
+Those patterns are exactly what broad acceptance-rate metrics often fail to catch.
+
+## Review cadence and triggers
+
+Sampling should intensify when:
+
+- new queues or issue classes are added;
+- refund or account policies change;
+- model routing or retrieval logic is updated;
+- a notable customer-impact incident raises trust concerns.
+
+If the workflow is stable, a monthly cadence is often enough to keep the system honest.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Support quality scorecards"
+		href="/evaluation/support-quality-scorecards/"
+		description="Place escalation sampling inside the broader support review system."
+	/>
+	<LinkCard
+		title="Ticket triage and priority routing"
+		href="/workflows/ticket-triage-and-priority-routing/"
+		description="Trace routing choices back to the intake logic that created them."
+	/>
+	<LinkCard
+		title="Billing and refund automation guardrails"
+		href="/use-cases/billing-and-refund-automation-guardrails/"
+		description="Stress-test escalation behavior in one of the most expensive support categories."
+	/>
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Turn audit findings into repeatable checks before new prompt or model changes roll out."
+	/>
+</div>

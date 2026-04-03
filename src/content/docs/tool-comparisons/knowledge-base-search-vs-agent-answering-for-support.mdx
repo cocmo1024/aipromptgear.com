@@ -1,0 +1,85 @@
+---
+title: Knowledge Base Search vs Agent Answering for Support
+description: A support tooling comparison for teams deciding when retrieval-first help systems are enough and when answer orchestration becomes worth the added complexity.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: knowledge base search vs agent answering support
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - CX platform owners
+  - Knowledge managers
+  - Support leaders
+  - PromptOps teams
+contentStatus: seed
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Knowledge Base Search vs Agent Answering for Support
+
+Many support teams do not need an elaborate answer agent on day one. They need customers and agents to find the right approved information faster. The challenge is knowing when search-first retrieval is enough and when the workflow now needs answer composition, policy logic, or guided escalation behavior on top.
+
+## What is actually being compared
+
+This comparison is not “simple versus advanced AI.” It is a decision between:
+
+- a search-led experience that exposes approved content directly;
+- a more orchestrated answer layer that retrieves, interprets, and formats a response inside workflow boundaries.
+
+Both can be useful. The right fit depends on the workflow pressure, not on abstract model enthusiasm.
+
+## When search is enough
+
+Search-first systems are often enough when:
+
+- the help content is already strong and current;
+- the main problem is discoverability, not answer synthesis;
+- the team wants low operational overhead and high transparency;
+- customers can safely navigate to answers without strong account-specific context.
+
+In these environments, better retrieval may beat a more complex answer stack.
+
+## When agent-style answering becomes necessary
+
+An answer layer becomes more valuable when:
+
+- the workflow needs summarization across multiple approved sources;
+- response formatting and policy constraints must be consistent;
+- self-service and human-assist paths share logic;
+- the team needs explicit handoff, routing, or guarded answer behavior.
+
+That is usually where support workflows stop being a search problem and become an operating-system problem.
+
+## Tradeoffs
+
+Search-first systems are easier to audit and explain. Agent-style layers can be more helpful but require stronger governance, evaluation, and source control.
+
+The best question is not which system feels smarter. It is which one your support team can maintain without losing trust.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Knowledge sync and prompt governance"
+		href="/tooling/knowledge-sync-and-prompt-governance/"
+		description="Strengthen ownership before adding more orchestration on top of the knowledge layer."
+	/>
+	<LinkCard
+		title="Help center deflection and self-service"
+		href="/use-cases/help-center-deflection-and-self-service/"
+		description="See how retrieval and answer orchestration shape customer-facing self-service."
+	/>
+	<LinkCard
+		title="Billing and refund automation guardrails"
+		href="/use-cases/billing-and-refund-automation-guardrails/"
+		description="Use a sensitive support category to decide whether search-first is still enough."
+	/>
+	<LinkCard
+		title="Prompt workspaces vs general docs"
+		href="/tool-comparisons/prompt-workspaces-vs-general-docs/"
+		description="Decide whether the team now needs stronger operational tooling around the answer layer."
+	/>
+</div>
