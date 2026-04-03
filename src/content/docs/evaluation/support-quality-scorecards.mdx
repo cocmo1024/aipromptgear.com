@@ -1,0 +1,109 @@
+---
+title: Support Quality Scorecards
+description: A practical evaluation reference for teams measuring whether AI support workflows improve quality, escalation discipline, and queue performance.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai support quality scorecards
+searchIntent: design
+decisionStage: operations
+targetRoles:
+  - Support leaders
+  - QA managers
+  - PromptOps teams
+  - Knowledge managers
+contentStatus: seed
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Support Quality Scorecards
+
+Support AI programs usually fail in one of two ways: they either measure almost nothing beyond output fluency, or they create a giant evaluation framework that never becomes operational. Good scorecards sit in the middle. They focus on the small set of signals that actually determine whether the support workflow is safe, useful, and worth scaling.
+
+## Why evaluation exists
+
+The purpose of a support scorecard is not to prove the model is intelligent. It is to prove the workflow is dependable enough to operate. Teams usually need evidence that the system:
+
+- uses approved knowledge correctly;
+- respects escalation rules;
+- produces drafts that are fast to review;
+- improves handling quality rather than hiding mistakes behind polished language.
+
+Those are operational questions, not benchmark questions.
+
+## What should be measured
+
+A practical support scorecard usually includes:
+
+- **grounding quality**: did the answer rely on approved sources;
+- **policy compliance**: did the response stay inside written rules;
+- **escalation correctness**: was the case kept in lane or handed off at the right time;
+- **review efficiency**: how much editing did the human need to do;
+- **customer usefulness**: did the result actually resolve the issue or move it forward.
+
+These dimensions keep the review focused on what a support team actually buys and operates.
+
+## Common failure patterns
+
+The most useful scorecards are good at surfacing repeatable failures, such as:
+
+- fluent but weakly grounded answers;
+- over-deflection of cases that should have escalated;
+- drafts that are technically accurate but too long to review quickly;
+- inconsistent tone or incomplete action steps in account-sensitive workflows.
+
+Once those patterns are visible, the team can decide whether the fix belongs in retrieval, prompt design, knowledge cleanup, or routing logic.
+
+## Lightweight versus structured review
+
+A lightweight scorecard is often enough when:
+
+- the workflow scope is narrow;
+- only one queue or team is involved;
+- the main goal is to catch obvious drift quickly.
+
+A more structured review system becomes necessary when:
+
+- multiple support queues share the same prompt layer;
+- the workflow touches policy or financial risk;
+- the team wants to compare prompt versions or model-routing changes over time.
+
+The key is to make the scorecard strong enough to guide decisions without turning every weekly review into a research project.
+
+## Review cadence and update triggers
+
+Most support scorecards should be refreshed when:
+
+- the team changes the approved knowledge base structure;
+- escalation categories are rewritten;
+- routing logic or model selection changes materially;
+- a new failure pattern shows up in production.
+
+That is why support evaluation works best as a living operating system instead of a one-time QA artifact.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Turn scorecard findings into a repeatable review cycle as prompts and sources change."
+	/>
+	<LinkCard
+		title="Escalation and handoff design"
+		href="/workflows/escalation-and-handoff-design/"
+		description="Use scorecards to check whether cases are moving to humans at the right time and with the right context."
+	/>
+	<LinkCard
+		title="Help center deflection and self-service"
+		href="/use-cases/help-center-deflection-and-self-service/"
+		description="Measure whether self-service is reducing queue load without damaging resolution quality."
+	/>
+	<LinkCard
+		title="Knowledge sync and prompt governance"
+		href="/tooling/knowledge-sync-and-prompt-governance/"
+		description="Improve the source layer before blaming the model for recurring support failures."
+	/>
+</div>

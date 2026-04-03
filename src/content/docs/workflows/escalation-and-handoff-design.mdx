@@ -1,0 +1,102 @@
+---
+title: Escalation and Handoff Design
+description: A workflow reference for AI-assisted support systems that need clear boundaries between automated drafting, guided self-service, and human ownership.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai escalation handoff workflow design
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Support operations managers
+  - PromptOps teams
+  - CX systems owners
+  - Queue managers
+contentStatus: seed
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Escalation and Handoff Design
+
+Escalation design is where many support AI programs either become operationally trustworthy or quietly create chaos. It is not enough to generate good drafts. Teams need a reliable way to decide when automation can continue, when a human must review, and how context should move across that boundary without creating extra queue work.
+
+## Workflow objective
+
+The goal of a handoff workflow is simple: preserve speed while making sure the right cases reach the right human with the right context attached. Good handoff design usually improves:
+
+- escalation correctness;
+- review speed for human agents;
+- continuity between AI-assisted steps and the next queue owner;
+- auditability when a customer interaction becomes sensitive or high risk.
+
+## Inputs and prerequisites
+
+Before a support team automates handoffs, it should already have:
+
+- a written escalation policy for account, billing, outage, compliance, or safety issues;
+- ticket classes that distinguish low-risk from high-risk requests;
+- approved source material that can be attached or summarized cleanly;
+- queue ownership rules that define where escalated work should land.
+
+Without those inputs, escalation logic often turns into guesswork disguised as workflow design.
+
+## A practical handoff sequence
+
+Most durable handoff flows follow a pattern like this:
+
+1. classify the request and detect risk markers early;
+2. decide whether the AI layer is allowed to answer, draft, or only summarize;
+3. generate a concise handoff packet containing intent, history, policy context, and unresolved questions;
+4. route to the correct queue with explicit reason codes;
+5. let the human operator review, amend, and continue the interaction.
+
+The strongest workflows are short, opinionated, and easy for operators to trust. A handoff packet that is too long or too vague often slows the team down.
+
+## Human review checkpoints
+
+Human checkpoints matter most when:
+
+- the request involves money, service restoration, or account changes;
+- the knowledge sources disagree or look stale;
+- the system is uncertain about policy fit;
+- the customer is already frustrated and tone management matters.
+
+The right checkpoint is rarely “review everything forever.” It is more often “force human review on the categories where mistakes are expensive.”
+
+## Logging and regression requirements
+
+Every escalation workflow should create enough data to answer:
+
+- was the case escalated at the right time;
+- did the next human have the context needed to act quickly;
+- did the handoff summary introduce factual drift or omit something critical;
+- which routing rules are producing too many false positives or false negatives.
+
+That logging is what lets a team tune the system instead of arguing from anecdotes.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Frame escalation inside the larger support operating model."
+	/>
+	<LinkCard
+		title="Help center deflection and self-service"
+		href="/use-cases/help-center-deflection-and-self-service/"
+		description="Define which requests should be resolved upstream before they ever need a queue handoff."
+	/>
+	<LinkCard
+		title="Support quality scorecards"
+		href="/evaluation/support-quality-scorecards/"
+		description="Measure escalation correctness and review quality over time."
+	/>
+	<LinkCard
+		title="Operator runbooks"
+		href="/workflows/operator-runbooks/"
+		description="Extend handoff logic into a fuller operator sequence with checkpoints and controls."
+	/>
+</div>
