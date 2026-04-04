@@ -1,0 +1,39 @@
+export const siteMeta = {
+	name: 'AI Prompt Gear',
+	shortName: 'AI Prompt Gear',
+	domain: 'aipromptgear.com',
+	siteUrl: 'https://aipromptgear.com',
+	description:
+		'Reference system for production prompting, agent workflows, model routing, team operations, and evaluation.',
+	tagline:
+		'Production prompting, agent operations, and model decisions organized for reusable systems instead of one-off hacks.',
+	email: 'cqq365@gmail.com',
+	languageTag: 'en-US',
+	ogLocale: 'en_US',
+	themeColor: '#188d88',
+	backgroundColor: '#eef9f8',
+	faviconPath: '/favicon.svg',
+	ogImagePath: '/social-card.png',
+	ogImageAlt:
+		'AI Prompt Gear social share card for production prompting, agent workflows, and model decisions.',
+	icon192Path: '/icon-192.png',
+	icon512Path: '/icon-512.png',
+	appleTouchIconPath: '/apple-touch-icon.png',
+	repoUrl: 'https://github.com/cocmo1024/aipromptgear.com',
+	indexNowKey: '393db214-c90a-4453-b07d-4af42a7e2c5f',
+	keywords: [
+		'ai prompting',
+		'agent workflows',
+		'model routing',
+		'prompt operations',
+		'AI evaluation',
+	],
+	sectionLabels: {
+		'use-cases': 'Team Scenarios',
+		workflows: 'Workflows',
+		'models-and-apis': 'Models and APIs',
+		tooling: 'Tooling',
+		'tool-comparisons': 'Tool Comparisons',
+		evaluation: 'Evaluation',
+	},
+};

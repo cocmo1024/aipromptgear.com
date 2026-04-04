@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://aipromptgear.com/sitemap-index.xml
+Host: aipromptgear.com
