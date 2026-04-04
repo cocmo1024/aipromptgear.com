@@ -1,6 +1,6 @@
 ---
 title: Knowledge Base Search vs Agent Answering for Support
-description: A support tooling comparison for teams deciding when retrieval-first help systems are enough and when answer orchestration becomes worth the added complexity.
+description: A support tooling comparison for teams deciding when retrieval-first help systems are enough and when answer orchestration becomes worth the added complexity and cost.
 referenceType: tool-comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -13,51 +13,138 @@ targetRoles:
   - Knowledge managers
   - Support leaders
   - PromptOps teams
-contentStatus: seed
+contentStatus: cornerstone
+problemSolved: How to decide whether your support team only needs better search and retrieval or now needs a governed answer layer with higher workflow, quality, and software costs.
+readerTakeaway: You should leave with a practical threshold for staying search-first, a cost sanity check using current public pricing, and a clearer sense of when answer orchestration actually earns its keep.
+keyQuestions:
+  - When is a knowledge-base search layer enough to improve support outcomes?
+  - What operational signals justify moving to agent-style answer generation?
+  - How should teams think about real software and usage costs instead of abstract AI enthusiasm?
+notFor:
+  - Teams that do not yet have a usable knowledge base or approved source material
+  - Support organizations looking for a fully autonomous customer service stack
+  - Workflows where every reply must be individually approved by legal or finance
+updateTriggers:
+  - Major price changes in support-suite AI products or model APIs
+  - New support-platform capabilities that shift the search-versus-answer boundary
+  - Changes in how public help-center tooling exposes retrieval, analytics, or governance controls
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
 # Knowledge Base Search vs Agent Answering for Support
 
-Many support teams do not need an elaborate answer agent on day one. They need customers and agents to find the right approved information faster. The challenge is knowing when search-first retrieval is enough and when the workflow now needs answer composition, policy logic, or guided escalation behavior on top.
+The right comparison is not "basic" versus "advanced" AI. It is whether the support problem is still mostly about **finding approved answers** or has become a higher-risk workflow that now needs **retrieval, synthesis, policy boundaries, and controlled handoff**. Many teams jump to agent answering too early and pay for a more complex stack before their knowledge layer is stable. Other teams stay search-first too long and force agents and customers to manually assemble answers that should already be orchestrated.
 
-## What is actually being compared
+## Quick answer
 
-This comparison is not “simple versus advanced AI.” It is a decision between:
+Stay search-first when the main problem is discoverability, article freshness, and internal agent navigation. Move toward agent answering when the workflow depends on combining multiple approved sources, enforcing response structure, or deciding when to escalate instead of answer. The jump is rarely justified by model quality alone. It is justified when answer consistency, policy handling, and queue efficiency are now worth the extra software, evaluation, and governance burden.
 
-- a search-led experience that exposes approved content directly;
-- a more orchestrated answer layer that retrieves, interprets, and formats a response inside workflow boundaries.
+## The boundary most teams should use
 
-Both can be useful. The right fit depends on the workflow pressure, not on abstract model enthusiasm.
+Search-first is usually enough when all of the following are true:
 
-## When search is enough
+- the best answer already exists in a current article, macro, or internal note;
+- the user can safely consume that answer with little account-specific interpretation;
+- the team mostly wants better findability and lower handle time;
+- a wrong answer would be inconvenient, but not high-risk.
 
-Search-first systems are often enough when:
+Agent answering becomes worthwhile when one or more of these conditions appears:
 
-- the help content is already strong and current;
-- the main problem is discoverability, not answer synthesis;
-- the team wants low operational overhead and high transparency;
-- customers can safely navigate to answers without strong account-specific context.
+- the answer must combine two or more approved sources into one final response;
+- policy language needs to stay consistent across channels and queues;
+- the workflow needs controlled tone, structure, or mandatory disclaimers;
+- the system should route, defer, or escalate when confidence is weak or policy authority is missing.
 
-In these environments, better retrieval may beat a more complex answer stack.
+That is the point where the problem stops being search quality and starts becoming workflow design.
 
-## When agent-style answering becomes necessary
+## Where the money actually goes
 
-An answer layer becomes more valuable when:
+Teams often assume the model is the expensive part. In most support deployments it is not. The larger cost usually sits in the support platform, knowledge tooling, review labor, and operational ownership.
 
-- the workflow needs summarization across multiple approved sources;
-- response formatting and policy constraints must be consistent;
-- self-service and human-assist paths share logic;
-- the team needs explicit handoff, routing, or guarded answer behavior.
+## Public price snapshot checked April 4, 2026
 
-That is usually where support workflows stop being a search problem and become an operating-system problem.
+| Public plan or component | Published price snapshot | What it helps you estimate |
+| --- | --- | --- |
+| [Help Scout AI Resolutions](https://docs.helpscout.com/article/1746-ai-resolutions-pricing) | $0.75 per successful AI resolution | A search-first or light-answering cost baseline |
+| [Intercom pricing](https://www.intercom.com/pricing) | Essential from $29 per seat per month billed annually, plus Fin at $0.99 per outcome | Customer-facing answer orchestration with integrated helpdesk economics |
+| [Zendesk featured pricing](https://www.zendesk.com/in/pricing/featured/) | Support Team from $19 per agent per month billed annually, committed automated resolutions at $1.50 each | A support-suite baseline where automation is metered separately |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 mini at $0.75 per 1M input tokens and $4.50 per 1M output tokens | Underlying model cost for custom answer generation or evaluation |
 
-## Tradeoffs
+These published prices are useful because they show how often the model bill is the smallest line item. If a workflow produces 3,000 successful AI resolutions per month, that is roughly:
 
-Search-first systems are easier to audit and explain. Agent-style layers can be more helpful but require stronger governance, evaluation, and source control.
+- $2,250 on Help Scout resolution pricing;
+- $2,970 on Intercom Fin outcomes;
+- $4,500 on Zendesk committed automated resolutions.
 
-The best question is not which system feels smarter. It is which one your support team can maintain without losing trust.
+By contrast, a lightweight custom answer flow using GPT-5.4 mini can be far cheaper at the pure model layer. For example, 3,000 answers using roughly 1,500 input tokens and 500 output tokens each would be about 4.5M input tokens and 1.5M output tokens, or roughly **$10.13 in model cost** before search, logging, guardrails, QA, and platform work. That is exactly why teams get misled by token math. The orchestration and governance burden is what usually makes or breaks total cost.
+
+## Search-first is stronger than people think
+
+Search-first systems often deliver the best ROI when:
+
+- the help center is already high quality;
+- article ownership is clear;
+- customers mostly ask repetitive, low-context questions;
+- agent time is being burned on navigation, not judgment.
+
+In this environment, improving search, article structure, article freshness, and internal shortcuts can do more for customer outcomes than introducing a more elaborate agent layer. Search-first is also easier to audit because customers and agents can see the source directly.
+
+## Agent answering is stronger than people admit
+
+Agent answering becomes materially better when the support system needs to do one or more of these things reliably:
+
+- merge multiple approved sources into one response;
+- apply product, billing, or policy logic in a consistent structure;
+- decide when not to answer and send the case to a specialist;
+- reuse the same answer rules across chat, ticketing, and internal draft generation.
+
+This is why answer orchestration matters so much in refund, account, technical triage, and high-volume self-service environments. The answer layer is not just "smarter search." It is a workflow layer that decides how retrieval, formatting, and escalation should behave together.
+
+## The hidden tradeoff: who owns correctness?
+
+Search-first systems push correctness back to the source page and the person reading it. Agent answering moves more responsibility into the system itself. That changes your operating burden:
+
+- source quality still matters;
+- prompt or instruction changes matter more;
+- retrieval mistakes become less visible to the end user;
+- QA and regression testing become necessary, not optional.
+
+That is why some teams see better accuracy but lower trust after launching answer agents. The system sounds more finished, so mistakes become more expensive.
+
+## A better buying rule
+
+Use this sequence instead of buying by demo quality:
+
+1. **Measure search failure first.** Are users failing to find the right article, or is the article itself missing?
+2. **Tag questions that require synthesis.** Count the cases where one article is not enough.
+3. **Map the escalation boundary.** Identify where the system must defer to a human.
+4. **Estimate cost on successful resolutions, not total conversations.** Pricing models differ sharply here.
+5. **Pilot on one narrow queue.** Billing, account changes, or one product area is enough for proof.
+
+If your answer agent cannot outperform a better search layer on a narrow queue, the team probably has a knowledge problem, not an orchestration problem.
+
+## Failure patterns to avoid
+
+The most common mistakes are:
+
+- buying an answer layer before the knowledge base is clean;
+- assuming low token cost means low operational cost;
+- measuring deflection without reviewing answer quality and escalation quality;
+- letting a polished answer replace a necessary human decision;
+- forcing a complex answer stack into a queue where direct article exposure would be safer.
+
+## Implementation checklist
+
+Use this page as a green-light test:
+
+- the team can name the questions where search is still enough;
+- the team can name the workflows where synthesis is required;
+- published pricing has been compared on a successful-resolution basis, not marketing headlines;
+- source ownership and article freshness are already being managed;
+- escalation rules are defined before broader rollout.
+
+If those points are not true yet, keep the next phase small and retrieval-heavy.
 
 ## Compare next
 
@@ -65,21 +152,21 @@ The best question is not which system feels smarter. It is which one your suppor
 	<LinkCard
 		title="Knowledge sync and prompt governance"
 		href="/tooling/knowledge-sync-and-prompt-governance/"
-		description="Strengthen ownership before adding more orchestration on top of the knowledge layer."
+		description="If answer orchestration is growing, the next constraint is usually source ownership and change control."
 	/>
 	<LinkCard
 		title="Help center deflection and self-service"
 		href="/use-cases/help-center-deflection-and-self-service/"
-		description="See how retrieval and answer orchestration shape customer-facing self-service."
+		description="Use a real customer-facing workflow to decide whether search quality alone will move the metric."
 	/>
 	<LinkCard
 		title="Billing and refund automation guardrails"
 		href="/use-cases/billing-and-refund-automation-guardrails/"
-		description="Use a sensitive support category to decide whether search-first is still enough."
+		description="Pressure-test the search-versus-answer decision in a high-risk support category."
 	/>
 	<LinkCard
-		title="Prompt workspaces vs general docs"
-		href="/tool-comparisons/prompt-workspaces-vs-general-docs/"
-		description="Decide whether the team now needs stronger operational tooling around the answer layer."
+		title="Support quality scorecards"
+		href="/evaluation/support-quality-scorecards/"
+		description="If you deploy answer orchestration, quality review has to mature with it."
 	/>
 </div>
