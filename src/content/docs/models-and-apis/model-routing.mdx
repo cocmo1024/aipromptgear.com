@@ -1,38 +1,214 @@
 ---
-title: Model Routing
-description: A practical guide to using multiple models and APIs based on task difficulty, latency, and cost discipline.
+title: Model Routing for Support Operations
+description: A practical guide to designing model routing for support teams that need better cost control, safer escalation, and clearer role boundaries between retrieval, generation, and human review.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: model routing support operations
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - CX platform owners
+  - Support leaders
+  - AI operations teams
+  - PromptOps managers
+contentStatus: cornerstone
+problemSolved: How to decide when support operations should route work across multiple models instead of using one default model for every customer question, draft, and escalation step.
+readerTakeaway: You should leave with a routing framework tied to failure cost, queue design, and current public pricing so the team can reserve premium reasoning for the cases that actually need it.
+keyQuestions:
+  - When does one-model-for-everything become wasteful in support operations?
+  - Which support tasks belong on a cheaper retrieval or draft lane, and which require stronger reasoning?
+  - How should teams compare routing economics once model, grounding, and review costs are all counted?
+notFor:
+  - Small support teams that only use AI for low-risk internal drafting
+  - Organizations without approved knowledge sources or escalation rules
+  - Programs trying to remove human review from policy-sensitive support decisions
+updateTriggers:
+  - Major public price changes across premium and low-cost model tiers
+  - New provider capabilities that materially change routing boundaries
+  - Material changes in search grounding, tool use, or review workflow economics
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# Model Routing
+# Model Routing for Support Operations
 
-Routing matters when a single default model is either too expensive for routine work or too weak for edge cases. A routing layer lets teams reserve higher-cost inference for the tasks that truly need it.
+Model routing matters because support queues are not one problem. They contain simple retrieval tasks, structured drafts, edge-case reasoning, and situations where the right answer is to stop and escalate. Teams that use one default model for every lane usually overpay on routine work and under-govern the difficult work. Teams that route well do not chase benchmark bragging rights. They match model strength to operational risk.
 
-## Use routing when
+## Quick answer
 
-- Request complexity varies sharply across the same workflow.
-- Teams need predictable cost controls without flattening quality.
-- Different steps in the flow need different strengths, such as extraction, reasoning, or structured output.
+Routing becomes worth the effort when support work splits into visibly different lanes:
 
-## Routing signals
+- low-risk retrieval and reformulation work;
+- moderate-risk drafting that still follows approved policy;
+- higher-risk reasoning that combines sources or interprets account context;
+- situations where the system should stop and hand the case to a person.
 
-- Input length and document complexity.
-- Required answer format and tool use.
-- Whether the task is customer-facing or internal draft work.
-- Whether human review is guaranteed before delivery.
+If most of your queue is still one clearly bounded article lookup problem, do not build a complex routing layer yet. If the team now handles multiple answer types with different cost, speed, and error consequences, routing is usually healthier than pretending one model can do everything equally well.
 
-## Related paths
+## Why this topic matters more now
+
+This is not only a cost conversation. It is a system design conversation. Provider portfolios now include low-cost fast models, premium reasoning tiers, and separate charges for grounding or tool-heavy workflows. That makes routing more relevant than it was when teams only had one practical model lane. The durable part is not model churn. The durable part is that support organizations will always have mixed-value work and mixed-risk decisions.
+
+## Start with the queue, not the model
+
+The best routing plans begin by mapping the support queue into four buckets:
+
+| Queue type | What the system is trying to do | Better default lane |
+| --- | --- | --- |
+| Repetitive help-center lookups | Find and restate one approved answer | Search or lowest-cost draft lane |
+| Guided agent drafting | Assemble a clean internal draft from approved sources | Low-cost or mid-tier model lane |
+| Policy-aware synthesis | Combine multiple approved sources with format and tone rules | Premium reasoning lane with review |
+| Escalation and exception handling | Detect uncertainty, policy risk, or account-specific judgment | Human lane with explicit handoff |
+
+The point is not to maximize automation. The point is to stop paying premium-model economics for work that is really a retrieval or formatting problem.
+
+## Public pricing snapshot checked April 4, 2026
+
+These are public API anchors, not total operating cost:
+
+| Public pricing source | Published price snapshot | Why it matters for routing |
+| --- | --- | --- |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 nano at $0.20 per 1M input tokens and $1.25 per 1M output tokens | Useful reference for low-cost classification, extraction, and formatting lanes |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 mini at $0.75 per 1M input tokens and $4.50 per 1M output tokens | Strong mid-tier reference for large-volume support drafting and synthesis |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 at $2.50 per 1M input tokens and $15.00 per 1M output tokens | Premium lane reference where reasoning quality or policy complexity is higher |
+| [Gemini API pricing](https://ai.google.dev/pricing) | Gemini 2.5 Flash at $0.30 per 1M input tokens and $2.50 per 1M output tokens | Another fast-lane benchmark for high-volume support workloads |
+| [Gemini API pricing](https://ai.google.dev/pricing) | Gemini 2.5 Pro at $1.25 per 1M input tokens and $10.00 per 1M output tokens | A premium reasoning benchmark for harder synthesis lanes |
+| [Gemini API pricing](https://ai.google.dev/pricing) | Grounding with Google Search at $35 per 1,000 grounded prompts | Important reminder that retrieval and grounding choices can outweigh raw token math |
+
+These prices matter because they make a simple truth easier to see: model cost only stays low when you deliberately protect the premium lane.
+
+## A better routing rule than "fast versus smart"
+
+Most teams frame routing as fast models versus smart models. That is too shallow. The better question is:
+
+**What is the cost of being wrong on this step?**
+
+Use that question to assign work:
+
+### Lane 1: Retrieval or classification
+
+Use the cheapest reliable lane when the system only needs to:
+
+- classify the ticket;
+- detect intent;
+- choose the next workflow;
+- rewrite an already-approved answer into the right format.
+
+If the model is not making a meaningful judgment, do not pay premium rates.
+
+### Lane 2: Drafting inside tight boundaries
+
+Use a mid-tier lane when the model needs to:
+
+- combine one or two approved sources;
+- produce a clean internal draft;
+- enforce structure, tone, or required fields;
+- support a human who will still review before send.
+
+This is often where support teams get their best economic return.
+
+### Lane 3: Premium reasoning
+
+Use premium reasoning only when the answer genuinely requires:
+
+- multi-step interpretation across several approved sources;
+- subtle policy handling;
+- stronger decision logic before escalation;
+- a higher chance that a weak answer creates measurable customer or compliance risk.
+
+If the answer would be costly to get wrong, protect the lane and keep the volume low.
+
+### Lane 4: Stop and escalate
+
+The best routing systems are good at refusal. They recognize when the system should:
+
+- ask for a human review;
+- send the case to billing, legal, or technical specialists;
+- avoid fabricating confidence for a missing policy or unclear account state.
+
+This is where routing becomes governance, not just cost control.
+
+## The hidden cost is not only tokens
+
+Support teams regularly underestimate four things:
+
+1. **Grounding cost.** Search, retrieval, and tool use can change the economics more than base token pricing.
+2. **Review labor.** A premium answer that still needs heavy editing may not be a premium outcome.
+3. **Regression coverage.** Every routed lane creates another surface that has to be tested.
+4. **Ownership complexity.** Once routing exists, someone has to maintain thresholds, prompts, fallback behavior, and escalation rules.
+
+That is why a routing design should be justified by queue shape and failure cost, not just by how many providers are available.
+
+## What a strong routing design usually looks like
+
+In real support operations, strong routing is usually built from rules like these:
+
+- send simple article-backed questions to search-first or low-cost answer lanes;
+- send moderate synthesis tasks to a cheaper drafting model with fixed response structure;
+- send account-sensitive or policy-heavy cases to a premium lane with stricter review;
+- escalate any low-confidence or low-authority answer to a person.
+
+That structure keeps premium spend attached to the minority of cases where it changes the outcome.
+
+## Failure modes to avoid
+
+Routing creates more value when teams avoid these common mistakes:
+
+- routing by model brand instead of by queue risk;
+- forcing the low-cost lane to answer questions that should escalate;
+- measuring token savings without measuring answer quality or rework;
+- letting grounded search charges quietly erase the savings from cheaper models;
+- changing routes faster than the team can regression test them.
+
+These failures are why routing is an operations problem first and a prompt problem second.
+
+## A practical rollout sequence
+
+If the team is introducing routing now, use this order:
+
+1. map the top support queues by failure cost and answer pattern;
+2. isolate one narrow low-risk lane and one narrow higher-risk lane;
+3. compare total handling economics, including review time;
+4. add refusal and escalation rules before broadening scope;
+5. only then add more providers or more complicated routing logic.
+
+This rollout path keeps routing tied to real outcomes instead of turning it into architecture theater.
+
+## Implementation checklist
+
+Routing is mature enough to expand when:
+
+- the team can clearly name which queue patterns belong on each lane;
+- premium reasoning is reserved for work with real downside risk;
+- grounded search or tool charges are counted alongside token cost;
+- escalation rules are explicit and review ownership is clear;
+- each route has regression coverage and a rollback path.
+
+If those conditions are not true yet, the next improvement is probably better queue design, not more routing logic.
+
+## Compare next
 
 <div class="portal-links">
 	<LinkCard
-		title="Customer support operations"
-		href="/use-cases/customer-support-operations/"
-		description="See where routing becomes valuable in a high-volume, human-reviewed environment."
+		title="Knowledge base search vs agent answering for support"
+		href="/tool-comparisons/knowledge-base-search-vs-agent-answering-for-support/"
+		description="Decide whether the workflow even needs answer orchestration before making routing more complex."
+	/>
+	<LinkCard
+		title="Ticket triage and priority routing"
+		href="/workflows/ticket-triage-and-priority-routing/"
+		description="Start with queue shape and routing signals before deciding which model lane should take the work."
 	/>
 	<LinkCard
 		title="Regression loops"
 		href="/evaluation/regression-loops/"
-		description="Routing only works when teams can measure whether the cheaper path stays within acceptable bounds."
+		description="Routing only works when the cheaper lane and premium lane are both measured against the same quality bar."
+	/>
+	<LinkCard
+		title="Escalation and handoff design"
+		href="/workflows/escalation-and-handoff-design/"
+		description="The safest routing strategy is often the one that knows when to stop and defer to a person."
 	/>
 </div>
