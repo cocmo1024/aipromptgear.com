@@ -13,14 +13,51 @@ targetRoles:
   - Queue managers
   - PromptOps teams
   - CX platform owners
-contentStatus: seed
+contentStatus: cornerstone
+problemSolved: How to design AI-assisted support triage so urgent, sensitive, and costly tickets reach the right owner quickly instead of getting misrouted or over-automated.
+readerTakeaway: You should leave with an intake workflow, review checkpoints, routing criteria, and a measurement model for proving triage quality in production.
+keyQuestions:
+  - What should an AI triage layer decide before any draft response is created?
+  - How should urgency, risk, and ownership be separated so routing stays reliable?
+  - What review logic catches false confidence in intake classification?
+notFor:
+  - Teams with undefined queue ownership or unstable support taxonomy
+  - Organizations trying to fully automate high-risk intake
+  - Support stacks without escalation rules tied to business impact
+updateTriggers:
+  - Queue ownership changes
+  - New escalation categories around billing, security, or outages
+  - CRM, help desk, or intake form changes
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
 # Ticket Triage and Priority Routing
 
-Triage is where support AI starts touching real queue economics. If the system can classify intent, urgency, and likely routing correctly, teams save time before any response draft is written. If it gets that logic wrong, good drafting later in the workflow will not repair the damage.
+Triage is where support AI starts touching real queue economics. If the system can classify intent, urgency, and likely routing correctly, teams save time before any response draft is written. If it gets that logic wrong, good drafting later in the workflow will not repair the damage. The wrong owner will still receive the ticket late, the wrong SLA clock will still run, and the customer will still feel the delay.
+
+## Quick answer
+
+Triage should answer four questions before the workflow does anything else:
+
+1. what kind of request is this;
+2. how urgent is it operationally;
+3. who should own it next;
+4. should automation continue or stop here.
+
+That means triage is not a lightweight labeling feature. It is the gatekeeper for risk, ownership, and response path.
+
+## When this page should guide your workflow
+
+Use this page when your team sees problems like:
+
+- good agents still lose time manually sorting inbound work;
+- urgent tickets are mixed into general backlog until someone notices;
+- routing quality depends too much on a few experienced queue managers;
+- support automation exists downstream, but intake is still inconsistent;
+- billing, outage, fraud, or security tickets are occasionally landing in the wrong place.
+
+This page is less relevant if your organization still lacks stable queue ownership. AI triage cannot fix an intake model that humans have not defined clearly.
 
 ## Workflow objective
 
@@ -31,7 +68,20 @@ The purpose of triage is to decide:
 - which queue or team should own it;
 - whether the system should answer, draft, summarize, or immediately escalate.
 
-The triage layer is therefore not just a labeling feature. It is the gatekeeper for the rest of the support workflow.
+The triage layer is therefore not just a labeling feature. It is the first operational control point in the support system.
+
+## Separate urgency from complexity
+
+One of the most common design errors is treating “hard” tickets as “urgent” tickets. They are not the same thing.
+
+| Dimension | What it means | Example |
+| --- | --- | --- |
+| Urgency | How quickly harm grows if the ticket waits | Outage, fraud concern, production incident |
+| Complexity | How much reasoning or context is needed to solve it | Multi-product diagnostic issue |
+| Sensitivity | Whether policy, money, identity, or compliance risk is involved | Refund dispute, account access issue |
+| Ownership | Which team is actually accountable next | Billing ops, technical support, trust and safety |
+
+A strong triage system treats these as separate judgments. That is what keeps high-risk tickets from getting buried under “normal” complexity.
 
 ## Inputs and prerequisites
 
@@ -40,32 +90,84 @@ Strong routing usually depends on:
 - well-defined issue categories and escalation classes;
 - examples of real tickets that map cleanly to those classes;
 - queue ownership rules that match how the organization actually operates;
-- clear logic for customer impact, service risk, and policy sensitivity.
+- clear logic for customer impact, service risk, and policy sensitivity;
+- a shared understanding of which issues can continue into automation and which must stop.
 
 Without those inputs, triage becomes a confidence theater system that still needs manual rescue.
 
-## Step-by-step flow
+## A durable intake sequence
 
 Most durable triage systems follow this pattern:
 
 1. classify the request intent and likely product or billing domain;
 2. score urgency using explicit markers, not vague tone alone;
-3. detect policy or account-sensitive issues that limit automation;
+3. detect policy- or account-sensitive issues that limit automation;
 4. route to the most appropriate queue with a short rationale;
 5. trigger drafting or escalation only after routing confidence is high enough.
 
 The best systems optimize for clear next ownership instead of trying to solve the whole ticket at intake.
 
-## Human review checkpoints
+## What should trigger human review immediately
 
 Review matters most when:
 
 - an issue claims outage, security, fraud, or money impact;
 - the ticket contains mixed intents that map to different teams;
 - the model confidence is strong but the evidence is weak;
-- historical routing errors have clustered around similar cases.
+- historical routing errors have clustered around similar cases;
+- customer language is ambiguous but the business consequence of delay is high.
 
 This is where routing logic and escalation logic should work together instead of being maintained as separate workflows.
+
+## Failure modes that damage queue trust
+
+Support teams lose confidence in triage when:
+
+- the model appears confident on low-context tickets;
+- the same ticket class bounces between teams repeatedly;
+- urgency scoring is based too heavily on emotionally intense phrasing;
+- the system routes by keyword instead of business consequence;
+- intake categories drift while the triage model stays frozen.
+
+When that happens, agents stop trusting the system and begin manually re-triaging everything. At that point the workflow has become overhead instead of leverage.
+
+## What to measure in production
+
+The most useful triage scorecards usually track:
+
+- first-touch routing accuracy;
+- escalation correctness for high-risk categories;
+- manual reroute rate by category;
+- SLA breach exposure caused by misclassification;
+- intake-to-owner time for urgent queues;
+- review volume on borderline tickets.
+
+Those are operational metrics, not just model metrics. They tell you whether the routing system is truly improving support flow.
+
+## A rollout pattern that tends to work
+
+The safest way to introduce AI triage is usually:
+
+1. start in one queue family with well-defined ownership;
+2. run the model in recommendation mode before auto-routing;
+3. audit false positives and false negatives weekly;
+4. lock down high-risk categories before broadening scope;
+5. expand only when reroute rates and review burden stay acceptable.
+
+That path builds trust because the team sees the system become useful before it becomes authoritative.
+
+## Implementation checklist
+
+Before allowing triage to drive real routing, the team should be able to answer yes to these:
+
+- Do we have stable queue ownership?
+- Are urgency, sensitivity, and complexity treated separately?
+- Do we know which categories must always escalate?
+- Can we audit routed tickets by category?
+- Do we know what a routing failure costs operationally?
+- Are queue definitions reviewed when products, policies, or org structure changes?
+
+If several of those answers are no, the next step is operational cleanup, not broader automation.
 
 ## Related paths
 
