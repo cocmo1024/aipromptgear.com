@@ -1,0 +1,236 @@
+---
+title: Human Review and Approval Workflows for Agentic Support
+description: A practical workflow guide for support teams deciding where agentic systems can move autonomously and where human review, approval, and escalation still create the highest operational value.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: human review approval workflows agentic support
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Support leaders
+  - CX platform owners
+  - AI operations teams
+  - PromptOps managers
+contentStatus: cornerstone
+problemSolved: How to design human review and approval steps for agentic support workflows so the team gets real automation gains without letting policy-sensitive, account-specific, or low-confidence cases move unchecked.
+readerTakeaway: You should leave with a lane-by-lane framework for where approval belongs, how expensive over-review can become, and how to reserve stronger models and human attention for the cases that actually need them.
+keyQuestions:
+  - Which support tasks should be fully automated and which still need human approval?
+  - How should teams assign review rules by risk instead of by vague discomfort?
+  - When does human review improve quality, and when does it only recreate the old queue with new software?
+notFor:
+  - Support teams that only use AI for low-risk internal brainstorming
+  - Organizations with no approved knowledge sources or escalation ownership
+  - Programs attempting zero-human autonomy for policy-sensitive support actions
+updateTriggers:
+  - Major changes in model pricing or support-platform automation pricing
+  - New provider capabilities that shift the agent-versus-review boundary
+  - Material changes in support-team operating models around approvals and escalation
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Human Review and Approval Workflows for Agentic Support
+
+Agentic support is current for a reason: more teams now have enough retrieval, workflow, and tool-calling capability to automate parts of support that used to be strictly human. The mistake is assuming the next decision is "approve everything" or "approve nothing." The better question is where human review actually creates leverage. Approval design is a workflow problem, not a philosophical one.
+
+## Quick answer
+
+Human review belongs where the cost of a wrong answer is materially higher than the cost of waiting for a person. It usually does **not** belong on every agent output. Over-review destroys the economics of automation and often recreates the original queue with more software in the middle. The healthiest support teams use approval only for the lanes where:
+
+- the answer depends on policy interpretation;
+- the system is acting on account-specific risk;
+- the workflow has refund, security, compliance, or contract implications;
+- confidence is low or source authority is weak.
+
+Everything else should be pushed toward either approved automation or explicit escalation.
+
+## Why this matters now
+
+Current model portfolios make it much easier to separate simple draft work from premium reasoning. That is useful, but it also makes it easier to over-automate. If the workflow can generate polished answers cheaply, teams are tempted to treat polish as safety. That is exactly when approval logic starts to matter more.
+
+## The real approval question
+
+Approval should not be attached to "AI" in general. It should be attached to **risk type**. Use four lanes:
+
+| Lane | Typical support task | Better control model |
+| --- | --- | --- |
+| Approved automation | Article-backed self-service, simple status messages, low-risk routing | No human approval, strong source discipline |
+| Reviewed drafting | Internal drafts for agents, structured summaries, queue preparation | Human edits before send |
+| Approval-gated action | Refunds, credits, account changes, contract exceptions | Explicit human approval before action or send |
+| Escalation-only | Legal, fraud, security, ambiguous account issues | Direct human ownership, no automated decision |
+
+The biggest gains come from drawing these boundaries clearly, not from adding more approval steps everywhere.
+
+## Public pricing snapshot checked April 8, 2026
+
+These are public software and model anchors, not total support-stack costs:
+
+| Public pricing source | Published price snapshot | Why it matters |
+| --- | --- | --- |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 nano at $0.20 per 1M input tokens and $1.25 per 1M output tokens | Cheap enough for routing, tagging, and bounded drafting lanes |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 mini at $0.75 per 1M input tokens and $4.50 per 1M output tokens | Strong reference for mid-tier support drafting and synthesis |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 at $2.50 per 1M input tokens and $15.00 per 1M output tokens | Premium reasoning anchor for sensitive, harder cases |
+| [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) | Gemini 2.5 Flash at $0.30 per 1M input tokens and $2.50 per 1M output tokens | A fast-lane benchmark for grounded support tasks |
+| [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) | Gemini 2.5 Pro at $1.25 per 1M input tokens and $10.00 per 1M output tokens | A premium reasoning benchmark where approval sensitivity is higher |
+| [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing) | Google Search grounding after free allowance at $35 per 1,000 grounded prompts | Reminder that tool and grounding choices can outweigh raw token math |
+
+These prices matter because they reveal the real trap: teams often obsess over whether a person should review the final answer, while ignoring that grounding and routing design may decide more of the cost structure than the model tier itself.
+
+## Where approval is usually worth it
+
+Human approval usually creates value in support when the workflow can:
+
+- initiate a financial action;
+- expose account-specific information that could be wrong or incomplete;
+- interpret policy rather than quote policy;
+- send a final answer that could create contractual or compliance friction;
+- choose a resolution path that is hard to reverse.
+
+This is why approval-heavy lanes are often billing, refunds, enterprise account exceptions, security inquiries, and complex technical support with side effects.
+
+## Where approval is usually waste
+
+Approval often becomes a tax when it sits on:
+
+- article-backed answers that already come from approved content;
+- repetitive formatting work;
+- low-risk triage outcomes;
+- summaries that are only meant for internal queue preparation;
+- responses where the human is not really reviewing substance, only clicking through.
+
+If reviewers do not change the answer often, or only correct superficial phrasing, the lane probably needs stronger source and workflow design instead of mandatory approval.
+
+## The better workflow: approve actions, not every sentence
+
+A strong support system often uses this principle:
+
+- automate safe outputs;
+- review higher-variance drafts;
+- explicitly approve risky actions;
+- escalate ambiguous cases.
+
+This is better than forcing people to review all AI output because it protects the expensive and risky moments without strangling the rest of the queue.
+
+## Approval design by failure mode
+
+Use the dominant failure mode to decide the control:
+
+### Wrong but harmless
+
+Example: slightly awkward wording in an internal draft.  
+Best response: lower-cost draft lane plus lightweight QA, not formal approval.
+
+### Wrong and customer-visible
+
+Example: misquoted troubleshooting steps or wrong entitlement guidance.  
+Best response: reviewed drafting or stronger retrieval rules.
+
+### Wrong and financially or contractually consequential
+
+Example: refund approval, credit exception, cancellation promise, SLA language.  
+Best response: explicit approval or direct human ownership.
+
+### Confident but unauthorized
+
+Example: agent answers a question that no approved source actually supports.  
+Best response: refusal and escalation, not approval-after-the-fact.
+
+This framework works better than broad rules like "all AI needs approval."
+
+## The hidden cost of over-review
+
+Teams underestimate how expensive approval can become:
+
+- queue time rises;
+- supervisors become bottlenecks;
+- agents wait for permission instead of handling work;
+- the system appears "safe" while still failing to define real escalation rules;
+- support leaders conclude AI has weak ROI when the workflow was overconstrained from the start.
+
+If human review is attached to every step, the real gain from agentic support collapses.
+
+## A practical threshold for requiring approval
+
+Require approval when **two or more** of these are true:
+
+- the system is taking or recommending an irreversible action;
+- the answer depends on account-specific interpretation;
+- there is meaningful legal, compliance, or financial downside;
+- the approved source base is incomplete or contradictory;
+- the model is synthesizing several sources rather than quoting one authoritative source.
+
+If none or only one of those is true, the better control is often better routing, better grounding, or direct escalation.
+
+## Implementation pattern that usually works
+
+Start with a narrow control design:
+
+1. map support lanes by failure cost;
+2. define one low-risk lane with no approval;
+3. define one approval-gated lane with clear decision rights;
+4. track where reviewers actually changed the outcome;
+5. remove approvals that are not materially improving quality.
+
+This keeps approval logic accountable to operations instead of fear.
+
+## Signals the approval design is healthy
+
+The system is maturing when:
+
+- reviewers intervene because of real policy or account risk, not habit;
+- low-risk lanes are clearly automated without rising complaint rates;
+- escalation is treated as a normal control, not a failure;
+- premium reasoning and human approval are both reserved for the minority of high-cost cases;
+- queue efficiency improves without increasing policy mistakes.
+
+## Failure modes to avoid
+
+The most common mistakes are:
+
+- putting human review on every agent step;
+- approving wording instead of approving risk-bearing actions;
+- assuming a better model removes the need for escalation rules;
+- measuring approval volume instead of measuring whether approvals changed outcomes;
+- using approval as a substitute for incomplete knowledge governance.
+
+Those mistakes create the illusion of control while quietly breaking the business case.
+
+## Implementation checklist
+
+This workflow is ready when:
+
+- each support lane has a named risk profile;
+- the team can identify which actions require approval versus review versus escalation;
+- reviewers have real decision rights, not ceremonial clicks;
+- the system tracks where human intervention changed the outcome;
+- approval volume is low enough that automation still has economic value.
+
+If those conditions are missing, the next improvement should be workflow clarity, not more approval steps.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Ticket triage and priority routing"
+		href="/workflows/ticket-triage-and-priority-routing/"
+		description="Approval logic works better when the queue has already been split into meaningful lanes."
+	/>
+	<LinkCard
+		title="Escalation and handoff design"
+		href="/workflows/escalation-and-handoff-design/"
+		description="The strongest approval system is usually the one with a clean escalation path."
+	/>
+	<LinkCard
+		title="Model routing for support operations"
+		href="/models-and-apis/model-routing/"
+		description="Reserve expensive model and human attention for the cases where the downside risk is real."
+	/>
+	<LinkCard
+		title="Billing and refund automation guardrails"
+		href="/use-cases/billing-and-refund-automation-guardrails/"
+		description="Pressure-test approval design in one of the most policy-sensitive support lanes."
+	/>
+</div>
