@@ -1,26 +1,208 @@
 ---
 title: Regression Loops
 description: A framework for rechecking prompt systems after changes to prompts, models, tools, policies, or source material.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: regression loops for prompt systems
+searchIntent: deploy
+decisionStage: operations
+targetRoles:
+  - AI operations teams
+  - PromptOps managers
+  - QA leads
+  - Support platform owners
+contentStatus: cornerstone
+problemSolved: How to design regression loops that catch prompt and workflow drift before it turns into customer-visible failures, policy mistakes, or quiet trust erosion.
+readerTakeaway: You should leave with a practical recheck model tied to change triggers, risk lanes, example sets, and human review instead of treating regression as an occasional cleanup task.
+keyQuestions:
+  - Which prompt or workflow changes should trigger a regression pass immediately?
+  - How should teams separate fast smoke checks from higher-cost regression reviews?
+  - When do human reviewers add more value than automated scoring alone?
+notFor:
+  - One-off experiments with no production users
+  - Teams that cannot yet identify their highest-risk workflow outcomes
+  - Programs expecting benchmark scores to replace example review entirely
+updateTriggers:
+  - Material model behavior changes or pricing changes that affect routing
+  - Workflow or policy releases that alter customer-visible behavior
+  - New failure patterns that expose gaps in current regression sets
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
 # Regression Loops
 
-Prompt systems rarely break in dramatic ways. More often they drift. Regression loops exist to catch that drift before a team notices it through lost trust, slower work, or customer-visible mistakes.
+Prompt systems rarely fail with a single dramatic collapse. More often they drift: a routing change raises hallucination risk, a retrieval tweak changes answer coverage, a policy edit narrows escalation behavior, or a model swap changes tone and exception handling in ways that nobody notices until trust has already dropped. Regression loops exist to catch that drift while the team still has time to do something sane about it.
 
-## Trigger a recheck when
+## Quick answer
 
-- A prompt, retrieval source, or policy instruction changes.
-- A provider or model version changes behavior.
-- A workflow adds or removes a review step.
-- Costs or latency targets force routing adjustments.
+Every production prompt system needs at least three regression layers:
 
-## Review layers
+1. a fast smoke check for obvious breakage;
+2. a structured regression set for the highest-risk outcomes;
+3. a human review lane for cases where scores or heuristics hide the real failure.
 
-- Fast spot checks on representative examples.
-- Structured regression sets tied to the workflow's highest-risk outcomes.
-- Human review of ambiguous cases where scores alone are misleading.
+If one of those layers is missing, the team is either moving too slowly or flying too blind.
+
+## Why regression loops matter more now
+
+Modern teams change prompt systems more often than they realize. They:
+
+- re-rank retrieval sources;
+- change model routing to manage cost or latency;
+- add approval steps;
+- update policies;
+- expand tool permissions;
+- revise fallback logic after incidents.
+
+Each of those may look small. Together, they create a continuous change stream. Regression loops are how the team keeps that stream from turning into uncontrolled drift.
+
+## What should trigger a regression pass
+
+The most important triggers are:
+
+- prompt text or instruction changes;
+- retrieval source or ranking changes;
+- model or routing changes;
+- workflow changes that alter escalation or human review;
+- policy, entitlement, or safety-rule updates;
+- new failure modes observed in real traffic.
+
+The key rule is simple: if the change can alter user-visible behavior or policy safety, it should hit a regression lane before it is trusted.
+
+## Public price anchors checked April 9, 2026
+
+These are public anchors, not total evaluation-program cost:
+
+| Public pricing source | Published price snapshot | Why it matters |
+| --- | --- | --- |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 nano at $0.20 per 1M input tokens and $1.25 per 1M output tokens | Cheap models make broad smoke checks easier to run continuously |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 mini at $0.75 per 1M input tokens and $4.50 per 1M output tokens | A realistic mid-tier benchmark for richer regression runs |
+| [LangSmith pricing](https://www.langchain.com/pricing) | Plus at $39 per seat / month | Evaluation and tracing are now inexpensive enough that skipping regression is harder to justify |
+| [Langfuse pricing](https://langfuse.com/pricing) | Core at $29 / month | Small teams can instrument examples and traces without enterprise-scale software budgets |
+
+These numbers matter because regression cost is often overestimated. The real blocker is usually process discipline, not tooling affordability.
+
+## The three regression layers that work
+
+### 1. Smoke checks
+
+Use smoke checks for:
+
+- obvious prompt failures;
+- broken formatting;
+- missing tool calls;
+- empty or malformed outputs;
+- clear policy misses.
+
+This layer should be fast enough to run on every meaningful release.
+
+### 2. Structured regression sets
+
+These should cover the highest-risk workflow outcomes, such as:
+
+- refund boundaries;
+- escalation routing;
+- policy interpretation;
+- technical troubleshooting accuracy;
+- knowledge-grounded answers where source authority matters.
+
+This is the layer that prevents teams from declaring success based on friendly examples.
+
+### 3. Human review
+
+Human review belongs where:
+
+- outcomes are ambiguous;
+- scoring cannot capture correctness cleanly;
+- policy nuance matters more than style or format;
+- business consequence is higher than the cost of reviewer attention.
+
+Human review is not a replacement for the other layers. It is a targeted layer for the cases machines score poorly.
+
+## Why benchmark scores alone fail
+
+Regression programs go weak when teams depend too much on:
+
+- a single automated score;
+- a small set of curated success examples;
+- generic model evals not tied to the real workflow;
+- human review done only after a complaint arrives.
+
+Those practices create visibility theater instead of operational control.
+
+## What to put in a real regression set
+
+A credible set usually includes:
+
+- known-failure examples from production;
+- edge cases that frequently confuse the workflow;
+- policy-sensitive scenarios;
+- examples where retrieval quality matters;
+- examples representing the most commercially or operationally important outcomes.
+
+This makes the set useful because it maps to actual downside risk.
+
+## How many examples are enough
+
+There is no universal number. A better rule is:
+
+- run enough examples to represent the important failure modes;
+- add examples every time a new important failure appears;
+- retire examples only when they no longer represent a live risk.
+
+The strongest regression set is rarely the neatest one. It is the one that evolves with the workflow.
+
+## What should block a release
+
+The following should usually block or at least slow a release:
+
+- worse behavior on high-risk cases;
+- larger ambiguity with no compensating gain;
+- lower grounding reliability on source-dependent tasks;
+- increased escalation mistakes;
+- unexplained changes in behavior after a model or routing swap.
+
+If the team cannot answer why the behavior changed, the release is not ready.
+
+## The hidden cost of weak regression
+
+Teams pay for weak regression in:
+
+- slow trust erosion;
+- noisy incident handling;
+- repeated rediscovery of the same failures;
+- fear of change because nobody trusts releases;
+- low-confidence rollback decisions.
+
+That cost is usually higher than the compute or tooling budget required to run the checks properly.
+
+## A practical regression sequence
+
+Use this order:
+
+1. define the highest-risk workflow outcomes;
+2. build a small but real regression set around them;
+3. run smoke checks on every material change;
+4. require structured regression on medium and high-risk releases;
+5. use human review for ambiguous and policy-sensitive cases;
+6. add new examples every time production exposes a meaningful miss.
+
+This keeps the loop tied to operational learning rather than static test design.
+
+## Implementation checklist
+
+The regression program is credible when:
+
+- every significant workflow has a named set of high-risk outcomes;
+- smoke checks are routine, not optional;
+- structured sets include real production-derived failures;
+- human review is used where automated judgment is weak;
+- release decisions can point to regression evidence instead of intuition.
+
+That is the point where regression stops being a periodic audit and becomes part of the operating system.
 
 ## Related paths
 
@@ -34,5 +216,15 @@ Prompt systems rarely break in dramatic ways. More often they drift. Regression 
 		title="Prompt operations stack"
 		href="/tooling/promptops-stack/"
 		description="Regression discipline becomes much easier when examples, traces, and versions are easy to inspect."
+	/>
+	<LinkCard
+		title="Change management and release policies"
+		href="/tooling/change-management-and-release-policies-for-production-prompts/"
+		description="Regression loops matter most when they are explicitly tied to release lanes and rollback rights."
+	/>
+	<LinkCard
+		title="Support quality scorecards"
+		href="/evaluation/support-quality-scorecards/"
+		description="Use scorecards when the team needs a stable way to interpret quality across releases."
 	/>
 </div>

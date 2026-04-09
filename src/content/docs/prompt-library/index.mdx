@@ -1,0 +1,90 @@
+---
+title: Prompt Library
+description: High-value AI prompts for support operations, research, prompt governance, and evaluation, each with one-click copy.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI prompt library
+searchIntent: select
+decisionStage: implementation
+targetRoles:
+  - AI operations leads
+  - Support operations managers
+  - Research teams
+  - Prompt engineers
+  - Product and enablement teams
+contentStatus: cornerstone
+problemSolved: How to start from structured, reusable prompts that solve real operational problems instead of generic prompt examples that look good but fail in production.
+readerTakeaway: You should leave with copy-ready prompt templates tied to real business jobs, plus a clearer sense of which prompting patterns hold up in support, research, governance, and evaluation work.
+keyQuestions:
+  - Which prompt patterns are durable enough to reuse across real teams?
+  - How should teams structure prompts so outputs stay grounded, reviewable, and operationally useful?
+  - Which prompt types create the most leverage for support, research, and prompt operations teams?
+notFor:
+  - Hobby prompt collections built around novelty instead of operational use
+  - Teams looking for one-line viral prompts without process context
+  - Readers who only want model-specific hacks instead of durable prompting patterns
+updateTriggers:
+  - Major updates to official prompting guidance from core model vendors
+  - New enterprise prompt patterns that materially improve grounding, review, or routing discipline
+  - Repeated evidence that specific prompt structures fail in production use
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+import PromptLibrary from '../../../components/PromptLibrary.astro';
+
+# Prompt Library
+
+This module is built for teams that need prompts to survive real work. Every template on this page is designed to solve a durable operational job, not to generate a clever one-off demo. The collection is deliberately biased toward high-value prompts for support operations, research synthesis, prompt governance, and evaluation because those are the areas where reusable structure matters most.
+
+## What makes this library different
+
+- the prompts are designed around business jobs instead of generic "write a good answer" requests;
+- each template pushes the model toward grounding, structured outputs, and explicit uncertainty;
+- every prompt is easy to copy, adapt, and pressure-test against your own workflow;
+- the curation model is based on durable prompting patterns from official vendor guidance, not trend-chasing prompt dumps.
+
+## Curation sources
+
+- [OpenAI prompting guide](https://developers.openai.com/api/docs/guides/prompting)
+- [Anthropic prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+- [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+- [Google Gemini prompting strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
+- [Google Gemini prompt gallery](https://ai.google.dev/gemini-api/prompts)
+
+## Curated prompt collection
+
+<PromptLibrary />
+
+## How to use these prompts well
+
+- Replace the placeholders before production use.
+- Test the prompt with ambiguous, incomplete, and edge-case inputs before adopting it.
+- Add your own grounding sources, policy constraints, or formatting requirements.
+- Treat copied prompts as starting points for a controlled workflow, not as a finished operating system.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Use this cluster if you want the support prompts to connect to queue design, escalation boundaries, and service economics."
+	/>
+	<LinkCard
+		title="Prompt operations stack"
+		href="/tooling/promptops-stack/"
+		description="Move from prompt templates into versioning, observability, review, and prompt release infrastructure."
+	/>
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Use evaluation discipline to test whether copied prompts still behave correctly after changes."
+	/>
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Use routing logic when a prompt works well but should not always run on the same model tier."
+	/>
+</div>

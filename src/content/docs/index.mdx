@@ -28,6 +28,9 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 	<Card title="Workflow design" icon="rocket">
 		Reusable prompt flows, orchestration patterns, escalation logic, and operator handoff patterns.
 	</Card>
+	<Card title="Prompt library" icon="document">
+		Curated, copy-ready prompts for support operations, research synthesis, release governance, and evaluation work.
+	</Card>
 	<Card title="Models and APIs" icon="document">
 		Model selection, routing, latency planning, capability fit, and API operating constraints.
 	</Card>
@@ -56,6 +59,11 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 		description="Map orchestration patterns, operator handoffs, escalation thresholds, and reusable runbooks."
 	/>
 	<LinkCard
+		title="Open the prompt library"
+		href="/prompt-library/"
+		description="Start from curated, one-click-copy prompt templates built for real support, research, governance, and evaluation work."
+	/>
+	<LinkCard
 		title="Choose models and APIs"
 		href="/models-and-apis/"
 		description="Frame capability fit, latency budgets, cost controls, and routing logic before implementation."
@@ -74,6 +82,36 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 		title="Design evaluation loops"
 		href="/evaluation/"
 		description="Decide how quality is measured, reviewed, refreshed, and protected from silent regression."
+	/>
+</div>
+
+## Featured strategic clusters
+
+<div class="portal-links">
+	<LinkCard
+		title="Support agent controls"
+		href="/use-cases/customer-support-operations/"
+		description="A durable, high-intent cluster around support automation, approvals, guardrails, and workflow economics."
+	/>
+	<LinkCard
+		title="Prompt release governance"
+		href="/tooling/change-management-and-release-policies-for-production-prompts/"
+		description="A stronger governance cluster for teams running production prompts, agent workflows, and shared release responsibility."
+	/>
+	<LinkCard
+		title="High-value prompt library"
+		href="/prompt-library/"
+		description="A reusable prompt module with copy-ready templates drawn from durable prompting patterns instead of low-value prompt dumps."
+	/>
+	<LinkCard
+		title="Model routing economics"
+		href="/models-and-apis/model-routing/"
+		description="A commercial-intent cluster on model fit, latency, spend, and where premium reasoning is actually worth paying for."
+	/>
+	<LinkCard
+		title="Regression and review discipline"
+		href="/evaluation/regression-loops/"
+		description="An operations-first evaluation cluster built to catch drift before users, agents, or policy owners do."
 	/>
 </div>
 

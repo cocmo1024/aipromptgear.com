@@ -34,6 +34,10 @@ export default defineConfig({
 							autogenerate: { directory: 'workflows' },
 						},
 						{
+							label: 'Prompt Library',
+							autogenerate: { directory: 'prompt-library' },
+						},
+						{
 							label: 'Models and APIs',
 							autogenerate: { directory: 'models-and-apis' },
 						},

@@ -1,0 +1,88 @@
+---
+import type { PromptEntry } from '../data/prompt-library';
+import { promptLibrary } from '../data/prompt-library';
+
+const grouped = promptLibrary.reduce<Record<string, PromptEntry[]>>((acc, prompt) => {
+	if (!acc[prompt.category]) acc[prompt.category] = [];
+	acc[prompt.category].push(prompt);
+	return acc;
+}, {});
+
+const orderedCategories = ['Support Ops', 'Research', 'PromptOps', 'Evaluation'];
+---
+
+<div class="prompt-library">
+	{
+		orderedCategories.map((category) => {
+			const prompts = grouped[category] ?? [];
+			if (prompts.length === 0) return null;
+
+			return (
+				<section class="prompt-library__section" aria-labelledby={`prompt-category-${category}`}>
+					<div class="prompt-library__section-head">
+						<p class="prompt-library__eyebrow">Prompt cluster</p>
+						<h2 id={`prompt-category-${category}`}>{category}</h2>
+					</div>
+					<div class="prompt-library__grid">
+						{prompts.map((prompt) => (
+							<article class="prompt-card" id={prompt.id}>
+								<div class="prompt-card__top">
+									<div>
+										<p class="prompt-card__category">{prompt.category}</p>
+										<h3>{prompt.title}</h3>
+									</div>
+									<button class="prompt-card__copy" type="button" data-copy-button>
+										Copy prompt
+									</button>
+								</div>
+								<p class="prompt-card__summary">{prompt.summary}</p>
+								<div class="prompt-card__signal-grid">
+									<div>
+										<strong>Best for</strong>
+										<p>{prompt.bestFor}</p>
+									</div>
+									<div>
+										<strong>Why it works</strong>
+										<p>{prompt.whyItWorks}</p>
+									</div>
+									<div>
+										<strong>Source pattern</strong>
+										<p>
+											<a href={prompt.sourceUrl} target="_blank" rel="noreferrer">
+												{prompt.sourceLabel}
+											</a>
+										</p>
+									</div>
+								</div>
+								<div class="prompt-card__body">
+									<pre data-prompt-body>{prompt.prompt}</pre>
+								</div>
+							</article>
+						))}
+					</div>
+				</section>
+			);
+		})
+	}
+</div>
+
+<script is:inline>
+	document.querySelectorAll('[data-copy-button]').forEach((button) => {
+		button.addEventListener('click', async () => {
+			const card = button.closest('.prompt-card');
+			const body = card?.querySelector('[data-prompt-body]');
+			const text = body?.textContent?.trim();
+			if (!text) return;
+			const originalLabel = button.textContent;
+			try {
+				await navigator.clipboard.writeText(text);
+				button.textContent = 'Copied';
+			} catch {
+				button.textContent = 'Copy failed';
+			}
+			setTimeout(() => {
+				button.textContent = originalLabel;
+			}, 1800);
+		});
+	});
+</script>

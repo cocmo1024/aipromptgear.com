@@ -23,6 +23,8 @@ export const siteMeta = {
 	indexNowKey: '393db214-c90a-4453-b07d-4af42a7e2c5f',
 	keywords: [
 		'ai prompting',
+		'AI prompt library',
+		'copy prompts',
 		'agent workflows',
 		'model routing',
 		'prompt operations',
@@ -31,6 +33,7 @@ export const siteMeta = {
 	sectionLabels: {
 		'use-cases': 'Team Scenarios',
 		workflows: 'Workflows',
+		'prompt-library': 'Prompt Library',
 		'models-and-apis': 'Models and APIs',
 		tooling: 'Tooling',
 		'tool-comparisons': 'Tool Comparisons',
