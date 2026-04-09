@@ -33,6 +33,7 @@ export const siteMeta = {
 	sectionLabels: {
 		'use-cases': 'Team Scenarios',
 		workflows: 'Workflows',
+		'agent-systems': 'Agent Systems',
 		'prompt-library': 'Prompt Library',
 		'models-and-apis': 'Models and APIs',
 		tooling: 'Tooling',

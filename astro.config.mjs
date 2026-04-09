@@ -34,6 +34,10 @@ export default defineConfig({
 							autogenerate: { directory: 'workflows' },
 						},
 						{
+							label: 'Agent Systems',
+							autogenerate: { directory: 'agent-systems' },
+						},
+						{
 							label: 'Prompt Library',
 							autogenerate: { directory: 'prompt-library' },
 						},

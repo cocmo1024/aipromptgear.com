@@ -1,0 +1,44 @@
+---
+title: Agent Systems
+description: Reference pages for model context protocol, tool-connected agents, autonomy boundaries, and practical agent operating design.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Agent Systems
+
+This section exists because "AI agents" is now too broad to be useful. Real teams need to decide where tools belong, how autonomy should be constrained, when MCP helps, and what governance is required before agents touch internal systems or customer-facing workflows.
+
+## Core paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Model Context Protocol for enterprise teams"
+		href="/agent-systems/model-context-protocol-for-enterprise-ai-teams/"
+		description="Use this page to decide when MCP is a genuine architecture advantage and when normal function calling is still enough."
+	/>
+	<LinkCard
+		title="Agent workflows vs autonomous agents"
+		href="/agent-systems/agent-workflows-vs-autonomous-agents/"
+		description="Use this page to separate deterministic workflow design from open-ended autonomy before the team overbuilds."
+	/>
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Routing remains essential once the agent stack grows beyond one model lane or one risk class."
+	/>
+	<LinkCard
+		title="Prompt release governance"
+		href="/tooling/change-management-and-release-policies-for-production-prompts/"
+		description="Agent systems still need release control, rollback logic, and review discipline."
+	/>
+</div>
+
+## Questions this section is built to answer
+
+<Steps>
+	1. When does an agent actually need tool access, retrieval, or MCP integration?
+	2. When should the system stay workflow-first instead of pretending autonomy is the product?
+	3. Which parts of an agent design create the real risk: model choice, tool permissions, or approval boundaries?
+	4. How should teams stage agent adoption so they gain leverage without creating hidden operating risk?
+</Steps>

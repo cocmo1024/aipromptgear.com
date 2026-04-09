@@ -322,4 +322,144 @@ Rules:
 {{routing_context}}
 </routing_context>`,
 	},
+	{
+		id: 'mcp-server-evaluator',
+		title: 'MCP Server Evaluation Checklist',
+		category: 'PromptOps',
+		summary:
+			'Evaluate whether a proposed MCP server or connector should be adopted, hardened, or rejected before it becomes shared agent infrastructure.',
+		bestFor:
+			'AI platform and internal tools teams reviewing shared tool surfaces, connector reuse, and enterprise integration risk.',
+		whyItWorks:
+			'The prompt forces evaluation across interoperability, permission scope, maintenance burden, and approval risk instead of letting teams approve MCP servers on novelty alone.',
+		sourceLabel: 'Anthropic MCP overview',
+		sourceUrl: 'https://docs.anthropic.com/en/docs/mcp',
+		prompt: `You are reviewing a proposed MCP server for enterprise use.
+
+Use the information in <server_description> and <operating_context> to assess whether the server should be approved, revised, or rejected.
+
+Return:
+1. Intended use cases
+2. Shared infrastructure value
+3. Security and permission concerns
+4. Operational maintenance concerns
+5. Approval and human-review risks
+6. Recommendation: approve / revise / reject
+7. Required next actions before production use
+
+Rules:
+- Do not evaluate the server only on technical capability.
+- Pay attention to who can call it, what systems it touches, and who will maintain it.
+- If the operating context is underspecified, name what is missing.
+
+<server_description>
+{{server_description}}
+</server_description>
+
+<operating_context>
+{{operating_context}}
+</operating_context>`,
+	},
+	{
+		id: 'agent-stop-conditions',
+		title: 'Agent Stop Conditions and Escalation Prompt',
+		category: 'PromptOps',
+		summary:
+			'Define when an agent must stop, ask for review, or hand work back to a human instead of pushing forward with uncertain tool use.',
+		bestFor:
+			'Teams designing tool-using agents that need explicit safety, trust, or approval boundaries.',
+		whyItWorks:
+			'It frames escalation as a required design outcome, not a fallback after a model has already overreached.',
+		sourceLabel: 'OpenAI tools for agents',
+		sourceUrl: 'https://openai.com/index/new-tools-for-building-agents/',
+		prompt: `You are an operational safety reviewer for an AI agent workflow.
+
+Read the task description in <workflow> and define the stop conditions that should force the agent to pause, escalate, or request human approval.
+
+Return:
+1. Cases where the agent can proceed automatically
+2. Cases where the agent must ask for clarification
+3. Cases where the agent must stop and escalate
+4. Tool actions that require human approval
+5. Failure signals operators should monitor after launch
+
+Rules:
+- Assume that uncertainty should become visible, not hidden.
+- Focus on real operating and trust boundaries, not only safety policy language.
+- Prefer explicit escalation over confident guessing.
+
+<workflow>
+{{workflow_description}}
+</workflow>`,
+	},
+	{
+		id: 'deep-research-brief',
+		title: 'Deep Research Brief with Claim Ledger',
+		category: 'Research',
+		summary:
+			'Turn a research request into a high-discipline investigation brief with explicit questions, evidence requirements, and a final claim ledger.',
+		bestFor:
+			'Research, strategy, and diligence teams using AI for longer-form investigation and synthesis.',
+		whyItWorks:
+			'It prevents vague “research this for me” prompting by forcing a scope, evidence standard, and final claim log that can be reviewed.',
+		sourceLabel: 'Google Gemini prompting strategies',
+		sourceUrl: 'https://ai.google.dev/gemini-api/docs/prompting-strategies',
+		prompt: `You are preparing a deep research brief.
+
+Use the request in <research_request> to define a structured investigation plan before any final synthesis is written.
+
+Return:
+1. Research objective
+2. Specific questions to answer
+3. Evidence required for each question
+4. Likely weak points or uncertainty risks
+5. Suggested source categories
+6. Final output structure
+7. Claim ledger format the final report must use
+
+Rules:
+- Make the plan specific enough that another analyst could follow it.
+- Separate factual questions from judgment questions.
+- Require a final claim ledger with source-backed claims and uncertainty flags.
+
+<research_request>
+{{research_request}}
+</research_request>`,
+	},
+	{
+		id: 'agent-tool-selection',
+		title: 'Agent Tool Selection and Refusal Policy',
+		category: 'Evaluation',
+		summary:
+			'Define when an agent should use a tool, when it should decline, and when it should ask for a different route instead of making a weak call.',
+		bestFor:
+			'Teams building tool-using agents across support, operations, or internal knowledge systems.',
+		whyItWorks:
+			'The prompt turns tool use into an explicit policy decision with refusal logic, which is often what separates a reliable agent from a reckless one.',
+		sourceLabel: 'Anthropic prompting best practices',
+		sourceUrl: 'https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices',
+		prompt: `You are defining a tool-use policy for an AI agent.
+
+Use the agent role in <agent_role> and the available tools in <tool_list> to create a tool selection policy.
+
+Return:
+1. When each tool should be used
+2. When the agent should refuse to use a tool
+3. When the agent should ask for human help instead
+4. Common failure modes for each tool
+5. Confidence checks the agent should run before acting
+
+Rules:
+- Do not assume every tool should be used if available.
+- Tool access is not permission to act without judgment.
+- Prefer a refusal policy that is explicit and reviewable.
+
+<agent_role>
+{{agent_role}}
+</agent_role>
+
+<tool_list>
+{{tool_list}}
+</tool_list>`,
+	},
 ];
