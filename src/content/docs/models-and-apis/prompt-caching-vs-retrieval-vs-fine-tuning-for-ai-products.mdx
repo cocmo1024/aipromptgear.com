@@ -1,0 +1,224 @@
+---
+title: Prompt Caching vs Retrieval vs Fine-Tuning for AI Products
+description: A practical decision page for AI teams choosing whether repeated context, external knowledge, or model customization is the right lever for a product problem.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: prompt caching vs retrieval vs fine tuning
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Platform teams
+  - Applied AI engineers
+  - PromptOps owners
+contentStatus: cornerstone
+problemSolved: How to decide whether an AI product problem should be solved with prompt caching, retrieval, or fine-tuning instead of applying the wrong optimization lever.
+readerTakeaway: You should leave with a cleaner decision framework tied to repeated context, knowledge freshness, behavior shaping, and current public pricing rather than treating caching, retrieval, and fine-tuning as substitutes.
+keyQuestions:
+  - When does prompt caching save real money and latency?
+  - When is retrieval the real answer because the knowledge changes?
+  - When does a team finally have enough repetition and stability to justify fine-tuning?
+notFor:
+  - Teams still at the prototype stage with no stable traffic pattern
+  - Buyers looking only for the cheapest model rather than the right system design
+  - Products where plain prompting still solves the task reliably
+updateTriggers:
+  - Material changes in prompt caching pricing or model support
+  - Major fine-tuning pricing or capability shifts
+  - New provider guidance that changes the tradeoff between retrieval and model customization
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Prompt Caching vs Retrieval vs Fine-Tuning for AI Products
+
+These three ideas get mixed together because they all sound like "ways to improve the model." They solve different problems. Prompt caching is mainly about **reusing repeated context efficiently**. Retrieval is about **injecting the right external knowledge at runtime**. Fine-tuning is about **changing the model's learned behavior or task specialization**. Teams lose time and money when they apply the wrong lever to the wrong problem.
+
+## Quick answer
+
+Use **prompt caching** when large prompt sections repeat across many requests. Use **retrieval** when the information changes and must be fetched at runtime. Use **fine-tuning** when the model's behavior or task specialization needs to become more consistent than prompting alone can deliver. If the problem is "the same large instructions or context are repeated," caching is the first lever. If the problem is "the system needs current or user-specific knowledge," retrieval is the lever. If the problem is "the model still behaves wrong after the workflow and context are already well designed," fine-tuning becomes worth evaluating.
+
+## Why this page matters
+
+This is one of the most common expensive mistakes in applied AI:
+
+- teams use retrieval to compensate for weak instructions;
+- teams talk about fine-tuning when the real waste is repeated prompt context;
+- teams pay for giant repeated prompts that should have been cached;
+- teams fine-tune before they have stable evals, stable tasks, or stable schemas.
+
+The durable value here is systems design, not trend chasing.
+
+## Official capability signal checked April 10, 2026
+
+These official sources matter because they show each lever is now mature enough to evaluate directly:
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching) | Prompt caching is documented as a first-class cost and latency optimization feature | Repeated context is now something teams should deliberately design for |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI publishes separate cached-input pricing for supported models and fine-tuning prices for eligible models | Caching and fine-tuning are now explicit commercial decisions, not only technical ones |
+| [Anthropic prompt caching docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) | Anthropic documents cache hits, write multipliers, and workload fit | Repeated-context optimization is a cross-provider systems concern |
+| [OpenAI file search guide](https://developers.openai.com/api/docs/guides/tools-file-search) | Retrieval is treated as an explicit tool layer, not an accidental prompt habit | Teams should separate runtime knowledge access from static prompt design |
+
+## Prompt caching solves one thing very well
+
+Prompt caching is best when the expensive part of the request is **stable and repeated**:
+
+- large system instructions;
+- stable policy blocks;
+- long product documentation included in many requests;
+- repeated conversation scaffolding;
+- heavy tool descriptions reused across traffic.
+
+Caching does **not** make the model smarter. It makes repeated context cheaper and often faster to process.
+
+## Retrieval solves a different problem
+
+Retrieval is for knowledge that should be fetched dynamically:
+
+- changing product facts;
+- user-specific files or records;
+- internal knowledge base content;
+- account state;
+- current operational data.
+
+If the knowledge changes or differs by user, caching is not the main answer. Retrieval is.
+
+## Fine-tuning solves yet another problem
+
+Fine-tuning matters when the team needs stronger behavior consistency than prompting alone can reliably provide:
+
+- repetitive classification tasks;
+- stable domain formatting or transformation behavior;
+- highly repeated task patterns;
+- smaller models distilled for cost or latency reasons;
+- systems where prompt-only control keeps drifting.
+
+Fine-tuning is least justified when the workflow itself is still unstable. You should not tune the model around a messy application design.
+
+## The easiest way to stop mixing these up
+
+Ask three questions:
+
+1. **Is the expensive context repeated?** If yes, evaluate caching.
+2. **Does the knowledge vary by request or change over time?** If yes, evaluate retrieval.
+3. **Does the model still fail after prompt, workflow, and retrieval design are already strong?** If yes, fine-tuning becomes credible.
+
+That sequence eliminates most wasted platform work.
+
+## Public price signal checked April 10, 2026
+
+These public anchors are useful because they show how different the economics are:
+
+| Public pricing source | Published price snapshot | Why it matters |
+| --- | --- | --- |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 mini: $0.75 / 1M input tokens, $0.075 / 1M cached input tokens, $4.50 / 1M output tokens | Repeated context can become dramatically cheaper when the workload is cache-friendly |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-4.1 mini fine-tuning: $0.80 / 1M input, $0.20 / 1M cached input, $3.20 / 1M output, $5.00 / 1M training tokens | Fine-tuning has a real upfront training and ops cost that should be justified by stable repetition |
+| [Anthropic prompt caching docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) | Anthropic documents cache hits at 0.1x base input price and 5-minute cache writes at 1.25x base input price | Cross-provider economics still favor caching when the prefix is reused often enough |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | File Search tool call listed separately from model tokens | Retrieval has its own platform cost profile and should not be treated as "free context" |
+
+The point is not the exact dollar figure. The point is that these three levers create very different cost curves.
+
+## When prompt caching is the highest-value move
+
+Prompt caching is usually the first move when:
+
+- the prefix is large and reused constantly;
+- the model is already good enough;
+- latency and cost are both pressure points;
+- the context is stable for many requests.
+
+A common example is a support or research product with a large policy block or system scaffold repeated across most traffic.
+
+## When retrieval is the correct lever
+
+Retrieval is the right answer when:
+
+- facts must stay current;
+- the answer depends on customer-specific content;
+- the knowledge base is too large or variable to bake into a prompt;
+- the product needs citation or source traceability.
+
+Teams often talk about fine-tuning when the real issue is that the model does not have the right knowledge at runtime. That is usually a retrieval problem, not a tuning problem.
+
+## When fine-tuning is finally justified
+
+Fine-tuning becomes more credible when:
+
+- the task is narrow and repeated;
+- the output shape and success criteria are stable;
+- prompt-only improvements have flattened out;
+- the team has enough real examples to evaluate gains honestly;
+- a smaller cheaper model can inherit behavior from a stronger system through distillation or training.
+
+Fine-tuning is weakest when the team is still using it as a shortcut around poor workflow design.
+
+## The hidden failure mode in each path
+
+Each lever has a typical failure mode:
+
+- **Caching:** teams expect quality gains instead of cost and latency gains;
+- **Retrieval:** teams stuff too much irrelevant context into the prompt and call it knowledge management;
+- **Fine-tuning:** teams train around unstable requirements and then cannot explain what actually improved.
+
+That is why these choices should be staged, not mixed impulsively.
+
+## A practical decision sequence
+
+Use this order:
+
+1. clean up the prompt and workflow;
+2. add retrieval if the task needs changing or user-specific knowledge;
+3. add prompt caching if large prompt sections repeat frequently;
+4. only consider fine-tuning after the above layers are already behaving and the evals are credible.
+
+This order usually yields the best engineering return.
+
+## What high-value teams do differently
+
+The stronger teams separate the questions:
+
+- **knowledge problem?** retrieval;
+- **repeated context cost problem?** caching;
+- **behavior consistency problem?** fine-tuning.
+
+That sounds simple, but it is exactly the discipline missing in many AI product stacks.
+
+## Implementation checklist
+
+The choice is healthy when:
+
+- the team can name whether the problem is repeated context, changing knowledge, or behavior consistency;
+- cost measurements separate cached prefix savings from retrieval or generation cost;
+- retrieval is evaluated for relevance, not only connectedness;
+- fine-tuning is considered only after prompt and context design are already strong;
+- the chosen lever reduces future operational waste instead of only making the architecture look more advanced.
+
+That is the point where the optimization layer starts serving the product instead of becoming the product.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Structured outputs vs JSON mode"
+		href="/models-and-apis/structured-outputs-vs-json-mode-for-production-ai-workflows/"
+		description="Use this page when the downstream contract matters more than prompt flexibility."
+	/>
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Caching, retrieval, and fine-tuning decisions are stronger when the model lanes and task classes are already separated."
+	/>
+	<LinkCard
+		title="Responses API vs Chat Completions"
+		href="/models-and-apis/responses-api-vs-chat-completions-for-tool-using-ai-products/"
+		description="The API surface choice affects how tools, retrieval, and structured outputs are implemented."
+	/>
+	<LinkCard
+		title="PromptOps stack"
+		href="/tooling/promptops-stack/"
+		description="Capability-layer choices only hold up when the stack can observe, test, and roll them back."
+	/>
+</div>

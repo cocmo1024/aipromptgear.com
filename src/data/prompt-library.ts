@@ -462,4 +462,117 @@ Rules:
 {{tool_list}}
 </tool_list>`,
 	},
+	{
+		id: 'structured-output-schema-review',
+		title: 'Structured Output Schema Review',
+		category: 'PromptOps',
+		summary:
+			'Review whether a proposed JSON schema is strict enough for automation without becoming so rigid that it freezes the wrong workflow abstraction.',
+		bestFor:
+			'Application and platform teams introducing schema-constrained outputs into production workflows, tool calls, or typed state objects.',
+		whyItWorks:
+			'The prompt forces a review of required fields, enum stability, failure handling, and downstream consumer expectations instead of treating schema design like a formatting task.',
+		sourceLabel: 'OpenAI structured outputs guide',
+		sourceUrl: 'https://developers.openai.com/api/docs/guides/structured-outputs',
+		prompt: `You are reviewing a proposed JSON schema for a production AI workflow.
+
+Use the schema in <schema> and the workflow description in <workflow> to evaluate whether the contract is ready for production use.
+
+Return:
+1. What the schema gets right
+2. Fields that are underspecified
+3. Required fields that may be too strict or too weak
+4. Enum values or nested objects likely to cause production failures
+5. Missing validation or fallback behavior
+6. Recommendation: ready / revise / redesign
+7. Concrete schema changes to make next
+
+Rules:
+- Focus on downstream machine use, not only human readability.
+- Flag where the schema might freeze the wrong business abstraction.
+- If the schema is too flexible for automation, say so directly.
+
+<schema>
+{{json_schema}}
+</schema>
+
+<workflow>
+{{workflow_description}}
+</workflow>`,
+	},
+	{
+		id: 'cache-retrieval-tuning-decision',
+		title: 'Cache vs Retrieval vs Fine-Tuning Decision Prompt',
+		category: 'Evaluation',
+		summary:
+			'Decide whether a product problem should be solved with repeated-context optimization, dynamic knowledge access, or model customization.',
+		bestFor:
+			'AI product and platform teams trying to stop mixing prompt caching, retrieval, and fine-tuning into one vague optimization conversation.',
+		whyItWorks:
+			'The prompt separates repeated context, changing knowledge, and behavior-consistency problems so teams choose the right lever instead of the most fashionable one.',
+		sourceLabel: 'OpenAI prompt caching guide',
+		sourceUrl: 'https://developers.openai.com/api/docs/guides/prompt-caching',
+		prompt: `You are reviewing an AI product optimization problem.
+
+Use the information in <product_context> and <current_failure_pattern> to decide whether the highest-value next lever is prompt caching, retrieval, fine-tuning, or none of the above yet.
+
+Return:
+1. Root problem type: repeated context / changing knowledge / behavior consistency / unclear
+2. Recommended next lever
+3. Why that lever fits better than the alternatives
+4. Risks of choosing the wrong lever
+5. Data or metrics still missing
+6. Recommendation: proceed now / measure first / redesign workflow first
+
+Rules:
+- Do not recommend fine-tuning if the workflow and evaluation layer are still unstable.
+- Do not recommend retrieval if the real issue is repeated prompt prefix cost.
+- Do not recommend caching if the knowledge must change at runtime.
+
+<product_context>
+{{product_context}}
+</product_context>
+
+<current_failure_pattern>
+{{current_failure_pattern}}
+</current_failure_pattern>`,
+	},
+	{
+		id: 'mcp-permission-boundary-review',
+		title: 'MCP Permission Boundary Review',
+		category: 'PromptOps',
+		summary:
+			'Review an MCP tool surface before rollout and identify where read/write separation, user delegation, or approval boundaries are too weak.',
+		bestFor:
+			'AI platform, security, and internal tools teams exposing MCP-connected tools to assistants, agents, or internal copilots.',
+		whyItWorks:
+			'The prompt forces the review to focus on risk classes, side effects, and delegated access instead of approving a server only because the protocol is clean.',
+		sourceLabel: 'MCP authorization specification',
+		sourceUrl: 'https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization',
+		prompt: `You are reviewing an MCP server design before production rollout.
+
+Use the proposed tool inventory in <tool_inventory> and the operating model in <operating_model> to assess whether the permission and approval boundaries are credible.
+
+Return:
+1. Read-only tools
+2. Write-capable or side-effecting tools
+3. Tools that should require explicit approval
+4. Risks in user-scoped versus system-scoped access
+5. Logging and audit gaps
+6. Recommendation: approve / revise / reject
+7. Required controls before launch
+
+Rules:
+- Do not treat protocol compliance as proof of business-safe permissions.
+- Separate low-risk read access from consequential writes.
+- If approval requirements are ambiguous, recommend revision rather than approval.
+
+<tool_inventory>
+{{tool_inventory}}
+</tool_inventory>
+
+<operating_model>
+{{operating_model}}
+</operating_model>`,
+	},
 ];

@@ -1,0 +1,240 @@
+---
+title: MCP Security and Approval Boundaries for Enterprise AI Teams
+description: A practical guide to the security and approval decisions that matter before MCP-connected tools reach production workflows.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: MCP security enterprise ai
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security engineers
+  - Internal tools architects
+  - PromptOps owners
+contentStatus: cornerstone
+problemSolved: How to set sane security and approval boundaries before MCP-connected tools are exposed to production AI workflows.
+readerTakeaway: You should leave with a concrete design framework for separating read and write tools, user-scoped and system-scoped permissions, and approval gates before MCP adoption turns into uncontrolled tool access.
+keyQuestions:
+  - Which MCP tools should never be callable without approval?
+  - How should teams separate user-delegated access from system-level automation?
+  - What security work remains even when MCP authorization follows the spec?
+notFor:
+  - One-off local experiments with no shared or sensitive tool surface
+  - Teams looking for a protocol overview without operational security detail
+  - Organizations that have not yet decided which tools should exist at all
+updateTriggers:
+  - Material changes in the MCP authorization specification
+  - New provider guidance on remote MCP, connectors, or tool permissions
+  - Broader shifts in enterprise agent security practices for tool-connected workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# MCP Security and Approval Boundaries for Enterprise AI Teams
+
+MCP does not create security. It creates a cleaner way to expose tools and context. Teams get into trouble when they confuse those two things. The protocol can make a tool surface more interoperable, but that same interoperability increases the cost of weak permissions, sloppy approval rules, and blurred ownership. If several AI clients can reach the same server, bad access design scales faster.
+
+## Quick answer
+
+Treat MCP as a **distribution layer**, not a security layer. The minimum safe design is:
+
+- explicit separation between read tools and write tools;
+- clear distinction between user-delegated access and system-level automation;
+- approval requirements on tools that create external side effects;
+- logging that ties tool calls back to user, client, environment, and workflow version.
+
+If the team cannot explain those four things, MCP adoption is premature.
+
+## Why this topic matters now
+
+The current MCP conversation often stays too close to developer ergonomics. That misses the real enterprise question:
+
+**What happens when many clients can use the same tool surface?**
+
+The answer is that connector reuse becomes valuable, but so does every mistake:
+
+- over-broad tokens;
+- missing tenant scoping;
+- write-capable tools exposed like read-only utilities;
+- no approval gate between model suggestion and real-world action;
+- shared tools with unclear ownership.
+
+That is why MCP security is a durable topic, not a temporary trend.
+
+## What the current spec actually says
+
+The official MCP authorization spec matters because it is specific about scope and what it does *not* cover by magic:
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) | Authorization is optional overall, but HTTP-based implementations should follow the authorization spec and OAuth 2.1 patterns when supported | Teams cannot assume every MCP deployment is automatically governed the same way |
+| [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) | The spec distinguishes authorization code versus client credentials patterns | User-delegated access and application-level access are not the same security problem |
+| [MCP introduction](https://modelcontextprotocol.io/docs/getting-started/intro) | MCP is presented as a standard way to connect AI systems with external data sources and tools | The more broadly it is adopted, the more important shared tool-surface governance becomes |
+| [OpenAI developers docs](https://developers.openai.com/) | OpenAI now positions MCP and connectors as part of the broader tool-connected workflow stack | Tool interoperability is becoming part of mainstream AI product design, not a niche experiment |
+
+The spec is useful. It does not remove the need for product-level permission design.
+
+## The most important boundary: read versus write
+
+Do not model every tool the same way.
+
+**Read tools** include:
+
+- search internal docs;
+- read account state;
+- fetch tickets;
+- query knowledge bases;
+- inspect logs.
+
+**Write tools** include:
+
+- create or update tickets;
+- send messages or emails;
+- change billing state;
+- trigger workflows;
+- modify files or records;
+- execute code or system actions.
+
+Read tools can still be sensitive, but write tools should almost always be treated as a different risk class with stronger approval and narrower exposure.
+
+## The second boundary: user-scoped versus system-scoped access
+
+This is where many early MCP deployments get sloppy.
+
+There are at least two distinct modes:
+
+1. **User-scoped delegation.** The AI client acts on behalf of a named human and should inherit that user's visibility and approval limits.
+2. **System-scoped automation.** The AI workflow acts as an application or service with its own role and narrow purpose.
+
+Do not collapse these into one generic "agent token." That usually produces over-broad privileges and weak auditability.
+
+## What should require explicit approval
+
+MCP does not decide approval policy for you. Teams should explicitly require approval for:
+
+- any irreversible write;
+- anything that sends information outside the organization;
+- actions with billing, procurement, or customer-state impact;
+- actions that change production systems;
+- tools that chain into other privileged tools.
+
+The approval mechanism can vary. The boundary should not.
+
+## The real security questions happen before the first prompt
+
+Before exposing an MCP server, ask:
+
+1. Which tools are read-only, write-capable, or destructive?
+2. Which tools can operate cross-tenant or cross-customer?
+3. Which tools can leak sensitive context even without writing?
+4. Which clients should have access to which tools?
+5. What approval state must exist before a tool call is executed?
+
+Those answers should exist in a policy doc before they exist in a demo.
+
+## Common weak designs
+
+The riskiest recurring mistakes are:
+
+- using one broad service credential for many tools;
+- exposing internal admin tools to exploratory assistant workflows;
+- treating human approval as optional UX polish instead of a control layer;
+- relying on the model to infer whether a tool call is safe;
+- failing to log which client and workflow version made a call.
+
+These are operating-model failures, not protocol failures.
+
+## A practical security model
+
+The cleanest enterprise model usually looks like this:
+
+### Tier 1: safe read tools
+
+Low-risk tools that can be used without approval inside bounded workflows. Examples: internal doc search, policy lookup, read-only metadata queries.
+
+### Tier 2: sensitive read or light write tools
+
+Tools that may expose private data or make reversible changes. Examples: draft ticket creation, CRM note suggestions, internal comment drafting. These often need scoped approval or stronger workflow constraints.
+
+### Tier 3: consequential write tools
+
+Anything with external side effects, customer impact, billing impact, or production-state impact. These should usually require explicit approval, stronger identity controls, and tighter audit paths.
+
+If the tool catalog is not divided like this, the risk model is usually still too fuzzy.
+
+## Approval design should be workflow-specific
+
+Approval is not one global switch. It should reflect workflow consequence.
+
+Examples:
+
+- a support research bot may need no approval to search docs;
+- the same workflow may require approval to send a customer reply;
+- a finance operations workflow may allow record lookup but not status changes without review;
+- a coding workflow may permit local analysis tools but not production deploy actions.
+
+That means approval is part of workflow architecture, not only security review.
+
+## Why OAuth compliance is not enough
+
+The MCP spec's authorization guidance is useful and serious. It still does not answer:
+
+- which tools should exist;
+- which scopes are too broad;
+- when human approval is mandatory;
+- which actions should never be delegated to the model at all;
+- how tenant boundaries are enforced in the business system.
+
+OAuth compliance helps token handling. It does not decide business-risk boundaries.
+
+## The strongest design pattern
+
+The healthiest pattern is:
+
+- narrow tools;
+- narrow scopes;
+- explicit environment separation;
+- client-specific policy;
+- approval before side effects;
+- logs that make incident review straightforward.
+
+That design scales better than trying to recover control later from a too-powerful shared tool surface.
+
+## Implementation checklist
+
+The MCP design is credible when:
+
+- read and write tools are separated into different risk classes;
+- user-scoped and system-scoped access are handled differently;
+- approval policy is defined per workflow, not left to prompt wording;
+- logs capture client, user, tool, environment, and result status;
+- the team can explain why each exposed tool deserves to be exposed at all.
+
+That is the point where MCP becomes reusable infrastructure instead of reusable risk.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Model Context Protocol for enterprise AI teams"
+		href="/agent-systems/model-context-protocol-for-enterprise-ai-teams/"
+		description="Start here for the broader decision about whether MCP belongs in the architecture at all."
+	/>
+	<LinkCard
+		title="Agent workflows vs autonomous agents"
+		href="/agent-systems/agent-workflows-vs-autonomous-agents/"
+		description="Approval design gets easier once the autonomy boundary is explicit."
+	/>
+	<LinkCard
+		title="Human review and approval workflows"
+		href="/workflows/human-review-and-approval-workflows-for-agentic-support/"
+		description="Use this page when you need approval design patterns at the workflow layer."
+	/>
+	<LinkCard
+		title="Prompt release governance"
+		href="/tooling/change-management-and-release-policies-for-production-prompts/"
+		description="MCP security still depends on release control, rollback, and operator discipline."
+	/>
+</div>
