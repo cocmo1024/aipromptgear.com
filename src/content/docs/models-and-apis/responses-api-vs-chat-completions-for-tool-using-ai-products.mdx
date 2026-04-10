@@ -1,0 +1,170 @@
+---
+title: Responses API vs Chat Completions for Tool-Using AI Products
+description: A practical comparison for AI teams deciding whether new tool-using products should be built on the Responses API or kept on the older Chat Completions pattern.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: Responses API vs Chat Completions
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Application engineers
+  - Platform teams
+  - PromptOps owners
+contentStatus: cornerstone
+problemSolved: How to decide whether a new or evolving tool-using AI product should be built on the Responses API or whether the simpler Chat Completions pattern is still the healthier choice.
+readerTakeaway: You should leave with a practical migration and adoption framework tied to tool use, state management, roadmap risk, and operating complexity rather than treating the newer API as automatically better for every workload.
+keyQuestions:
+  - When should a product team treat Responses as the default instead of Chat Completions?
+  - Which workflows still fit the older chat pattern without creating roadmap risk?
+  - What migration costs matter most once tools, evaluation, and support ownership are counted?
+notFor:
+  - Teams building only simple prompt playgrounds or one-off internal demos
+  - Organizations with no plan to use tools, retrieval, or stateful multi-step flows
+  - Buyers looking for a model comparison instead of an API architecture decision
+updateTriggers:
+  - Major OpenAI platform changes in recommended API direction
+  - New tool or MCP capabilities that materially widen the Responses-first boundary
+  - Meaningful pricing or capability changes that alter implementation economics
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Responses API vs Chat Completions for Tool-Using AI Products
+
+The API choice matters because product teams often inherit years of workflow shape from the first endpoint they adopt. If the product will stay a narrow single-turn text generation layer, the older chat pattern can still be fine. If the roadmap already includes built-in tools, multi-step orchestration, MCP, richer state handling, or more agentic product behavior, the healthier default is now usually the Responses API.
+
+## Quick answer
+
+Use **Responses API** for most new tool-using AI products. Keep **Chat Completions** for narrow, stable, text-in/text-out workloads that do not need richer tool orchestration or state management yet. The decision is less about novelty and more about whether the product roadmap is clearly moving toward tools, structured outputs, retrieval, or multi-step execution.
+
+## Why this matters now
+
+This is one of the clearest current platform shifts in applied AI. OpenAI now positions the Responses API as the building block for new agentic and tool-connected products, while keeping Chat Completions available for compatibility and simpler interactions. That makes this a durable decision page, not just a release-note reaction: teams shipping products today need to know whether they are building on the long-term lane or keeping an older abstraction for a good reason.
+
+## Official platform direction checked April 10, 2026
+
+These are official capability signals, not community interpretation:
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Responses API docs](https://platform.openai.com/docs/api-reference/responses) | Responses is the main API surface for generating model outputs and coordinating newer tool-connected workflows | Strong signal that new product work should evaluate Responses first |
+| [OpenAI built-in tools guide](https://platform.openai.com/docs/guides/tools) | Built-in tools such as web search, file search, computer use, code interpreter, and remote MCP servers are documented under the Responses stack | Tool-heavy roadmaps now fit more naturally on Responses than on a minimal chat wrapper |
+| [OpenAI conversation state guide](https://platform.openai.com/docs/guides/conversation-state) | Responses supports state handling through response chaining and conversation context patterns | Stateful multi-step UX is easier to structure without hand-rolling every thread detail |
+| [OpenAI Chat Completions guide](https://platform.openai.com/docs/guides/chat-completions-api) | Chat Completions remains supported for message-based interactions | Existing products do not need a panic migration if the workload is still simple |
+| [OpenAI Assistants migration note](https://platform.openai.com/docs/guides/migrate-to-responses) | OpenAI explicitly guides teams toward Responses as the long-term surface for newer agentic patterns | Product teams should avoid building new complexity on an older abstraction by default |
+
+The takeaway is not "migrate everything immediately." It is that teams should stop treating both APIs as equally future-facing when the roadmap clearly depends on tools and orchestration.
+
+## When Responses should be the default
+
+Responses is usually the better default when the product needs any of the following:
+
+- built-in tools such as web search, file search, computer use, or code execution;
+- MCP-connected tools and remote server coordination;
+- multi-step workflows where the model result triggers another model or tool step;
+- richer state handling across a real task flow instead of one isolated completion;
+- a product roadmap that is obviously moving toward agentic behavior.
+
+In these cases, choosing Chat Completions first often means building a thinner short-term wrapper and then migrating once the product becomes more ambitious.
+
+## When Chat Completions is still a healthy choice
+
+Chat Completions still makes sense when:
+
+- the application is mostly single-turn or tightly bounded multi-turn chat;
+- the system does not need built-in tools;
+- the team already has a well-tested chat stack and the roadmap is intentionally narrow;
+- engineering bandwidth is better spent on evaluation, prompts, or retrieval quality than on API transition work right now.
+
+That is not technical debt by default. It only becomes debt when the product roadmap is clearly outgrowing the abstraction.
+
+## The real comparison is roadmap fit, not endpoint age
+
+The most useful decision frame is:
+
+**Will the product still look like a simple message exchange six months from now?**
+
+If the honest answer is "no," then a Responses-first design is usually healthier. If the answer is "yes, and we intend to keep it narrow," Chat Completions can remain the simpler operating choice.
+
+## Hidden migration costs teams undercount
+
+The main costs are not only code changes. Teams often underestimate:
+
+1. **Prompt refactoring.** Tool-connected flows often require clearer role boundaries and better step design.
+2. **Evaluation drift.** Once the orchestration pattern changes, old test cases can stop measuring the real behavior.
+3. **Support ownership.** The more tool-aware the system becomes, the more failure states the team must explain and operate.
+4. **State design.** Responses can simplify state handling, but it still forces product teams to decide what should persist and what should not.
+
+This is why migration should be justified by roadmap direction, not by platform fashion.
+
+## A practical rule for new builds
+
+Use this simple rule:
+
+- if the product is **text generation plus light formatting**, Chat Completions can still be enough;
+- if the product is **workflow orchestration, tool use, retrieval, or agent-like execution**, start on Responses.
+
+That rule is not perfect, but it avoids the most common mistake: building a tool-heavy product on a surface chosen mainly because the first demo was simple.
+
+## A practical migration sequence
+
+If the team already has a working Chat Completions product, migrate in this order:
+
+1. identify which workflows truly need tools or multi-step execution;
+2. migrate one contained flow instead of the entire product surface;
+3. refresh evaluations before comparing outcomes;
+4. measure new operational burden alongside quality gains;
+5. only widen the migration after the new path is clearly better.
+
+This keeps the shift architectural instead of theatrical.
+
+## When *not* to migrate yet
+
+Do not migrate yet if:
+
+- the product still solves one narrow chat problem well;
+- tool use is only hypothetical roadmap language;
+- the current bottleneck is retrieval quality, prompt clarity, or evaluation coverage;
+- the team cannot yet support more complex runtime behavior.
+
+In those cases, the higher-value move is to improve the current system rather than switching endpoints for symbolic progress.
+
+## Implementation checklist
+
+The decision is healthy when:
+
+- the team can explain whether the product is roadmap-simple or roadmap-agentic;
+- tool use, MCP, or stateful workflows are either explicitly required or explicitly deferred;
+- evaluation coverage matches the new orchestration behavior;
+- support and rollback ownership are clear;
+- the chosen API reduces future complexity instead of only today's coding friction.
+
+That is the point where the API choice becomes product strategy, not just SDK preference.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Model Context Protocol for enterprise AI teams"
+		href="/agent-systems/model-context-protocol-for-enterprise-ai-teams/"
+		description="Use this page if the roadmap already includes MCP-connected tools or broader agent infrastructure."
+	/>
+	<LinkCard
+		title="Agent workflows vs autonomous agents"
+		href="/agent-systems/agent-workflows-vs-autonomous-agents/"
+		description="Decide whether the product even needs broader autonomy before choosing the richer API path."
+	/>
+	<LinkCard
+		title="Model routing for support operations"
+		href="/models-and-apis/model-routing/"
+		description="The API decision is stronger when the model-routing and cost-control logic is already clear."
+	/>
+	<LinkCard
+		title="Change management and release policies for production prompts"
+		href="/tooling/change-management-and-release-policies-for-production-prompts/"
+		description="API transitions should be treated as controlled operating changes, not just implementation detail."
+	/>
+</div>
