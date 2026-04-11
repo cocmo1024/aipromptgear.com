@@ -1,0 +1,106 @@
+---
+title: Built-in search economics for AI products
+description: How to think about the cost, speed, and product tradeoffs of built-in search capabilities compared with simpler retrieval or no-search workflows.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams decide when built-in search adds enough product value to justify its latency and cost, and when it is an unnecessary layer for the workload.
+readerTakeaway: You should leave with a practical rule for where built-in search belongs, where retrieval is enough, and how to think about search economics at the workflow level.
+primaryKeyword: built-in search economics
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Application engineers
+  - Platform teams
+  - Product operations owners
+---
+
+## Quick answer
+
+Built-in search is worth paying for when the workflow depends on current external information, broad discovery, or source-grounded answers across an open web search space. It is wasteful when the task could be solved with:
+
+- internal retrieval,
+- a stable knowledge base,
+- or no external evidence at all.
+
+The economics only make sense when search changes the outcome enough to justify the added runtime and cost.
+
+## Official signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI tools guide](https://platform.openai.com/docs/guides/tools) | Web search is positioned as a built-in tool in the broader tool-connected stack | Search is now a deliberate architecture choice rather than only a custom integration |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Public pricing separates core model spend from optional workflow capabilities | Search decisions should be measured as workflow economics, not only model-token economics |
+| [OpenAI deep research announcement](https://openai.com/index/introducing-deep-research/) | Multi-step research capability depends on search plus synthesis rather than search alone | Search cost must be judged in the context of the final research value |
+
+## When built-in search earns its keep
+
+Search is usually worth it when:
+
+- freshness matters,
+- the answer depends on external sources,
+- the search space is too open for internal retrieval,
+- and the user expects source-grounded results instead of internal memory.
+
+Typical examples:
+
+- market scans,
+- competitive updates,
+- current-event or policy awareness,
+- and research assistants that must cite recent public information.
+
+## When search is a waste
+
+Search is often wasteful when:
+
+- the answer lives in internal docs,
+- the task is a transformation problem, not an information problem,
+- or the workflow can operate off curated retrieval instead of broad discovery.
+
+In those cases, built-in search adds cost and latency without improving decision quality.
+
+## The real economic unit is the workflow
+
+Teams often ask, "How much does search cost per call?" That is not the most useful question.
+
+The healthier question is:
+
+**How much better is the workflow when search is turned on?**
+
+If search adds:
+
+- better grounding,
+- fewer hallucinations,
+- stronger citations,
+- or materially better decisions,
+
+then the economics may work. If it only makes answers longer or slower, it probably does not.
+
+## The best decision rule
+
+Use built-in search when:
+
+- the task needs open-world evidence,
+- stale answers are expensive,
+- and the user benefit is measurable.
+
+Do not use it by default for internal copilots, narrow operational tasks, or any workflow where curated retrieval already solves the problem cleanly.
+
+## Implementation checklist
+
+Your search economics are probably healthy when:
+
+- the workflow clearly needs current external information,
+- search is not enabled on every request by default,
+- the value of search is measured against a no-search baseline,
+- latency and spend are tracked at the workflow level,
+- and retrieval or no-search fallbacks are used where appropriate.
+
+## Compare next
+
+- [Deep research workflows for AI teams](/use-cases/deep-research-workflows-for-ai-teams/)
+- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
+- [Model routing](/models-and-apis/model-routing/)

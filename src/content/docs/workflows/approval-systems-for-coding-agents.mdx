@@ -1,0 +1,96 @@
+---
+title: Approval systems for coding agents
+description: How engineering teams should design approval systems for coding agents so repository leverage grows without turning review, security, and release boundaries into guesswork.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams design approval systems for coding agents based on risk class, write scope, environment access, and verification burden.
+readerTakeaway: You should leave with a practical approval model for coding agents that separates safe automation from dangerous repo autonomy.
+primaryKeyword: approval systems for coding agents
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering leaders
+  - Platform teams
+  - Security owners
+  - Developer productivity teams
+---
+
+## Quick answer
+
+Coding agents need approval systems because "can edit code" is not one risk class. Reading a repo, proposing a diff, updating tests, changing CI config, and touching production infrastructure are different actions and should not share the same approval path.
+
+The right approval system is risk-based, not tool-based.
+
+## The simplest healthy model
+
+Split actions into at least four classes:
+
+1. read-only exploration,
+2. bounded code changes,
+3. workflow or infrastructure changes,
+4. production-impacting or security-sensitive changes.
+
+Each class should have a different approval expectation.
+
+## What should usually be auto-allowed
+
+Low-risk actions can often proceed without per-step human approval:
+
+- repo search,
+- file reading,
+- test discovery,
+- diff analysis,
+- and local reasoning over code.
+
+These actions create context, not change.
+
+## What should usually require review before merge
+
+Most code-writing activity belongs here:
+
+- bounded implementation,
+- test updates,
+- documentation edits,
+- refactors in a known scope.
+
+The agent can draft the work, but a human should still own the merge decision.
+
+## What should require stronger approval
+
+These usually need stricter gates:
+
+- dependency changes,
+- CI/CD modifications,
+- secrets or credentials handling,
+- infra or deployment changes,
+- or edits to security-sensitive code paths.
+
+This is where coding-agent leverage can quickly turn into operational risk.
+
+## The wrong approval model
+
+The wrong model is one binary rule:
+
+- either "the agent is trusted" or
+- "the agent is never trusted."
+
+Both are weak. One removes discipline; the other removes leverage. A graded approval model is the healthier operating system.
+
+## Implementation checklist
+
+Your coding-agent approval system is probably healthy when:
+
+- action classes are defined by risk;
+- read, write, merge, and deploy boundaries are separated;
+- the human reviewer remains accountable for consequential changes;
+- verification requirements scale with risk class;
+- and the team can explain why a given agent action did or did not need approval.
+
+## Compare next
+
+- [AI coding agents for engineering teams](/use-cases/ai-coding-agents-for-engineering-teams/)
+- [Human review and approval workflows for agentic support](/workflows/human-review-and-approval-workflows-for-agentic-support/)
+- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)

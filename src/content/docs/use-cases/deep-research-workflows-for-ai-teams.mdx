@@ -1,0 +1,105 @@
+---
+title: Deep research workflows for AI teams
+description: How teams should design deep research workflows that combine search, retrieval, synthesis, and human review without confusing long-form output with trustworthy research.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams turn deep research from a vague product promise into a real workflow with scoped questions, source handling, synthesis boundaries, and review logic.
+readerTakeaway: You should leave with a practical operating model for deep research systems, including where search, retrieval, reasoning, and human review belong.
+primaryKeyword: deep research workflows
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Research teams
+  - AI product leads
+  - Strategy teams
+  - Knowledge operations owners
+---
+
+## Quick answer
+
+Deep research is not "ask a bigger question and get a longer answer." A healthy deep research workflow separates:
+
+- question framing,
+- source acquisition,
+- source filtering,
+- synthesis,
+- and human review.
+
+If those layers collapse into one giant model response, teams usually get polished but weak research.
+
+## Why this topic matters now
+
+The current AI market pushes deep research as a premium capability, but the real value depends on workflow design, not branding. Teams need to know when search is enough, when retrieval is enough, and when a longer multi-step research run is worth the extra latency and cost.
+
+## Official signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI deep research announcement](https://openai.com/index/introducing-deep-research/) | OpenAI frames deep research as a capability for multi-step, source-based synthesis | The value proposition is investigation workflow, not only response length |
+| [OpenAI tools guide](https://platform.openai.com/docs/guides/tools) | Search and retrieval capabilities now live inside a broader tool-connected product model | Deep research belongs in a tool and workflow architecture, not only a prompt |
+| [OpenAI reasoning guide](https://platform.openai.com/docs/guides/reasoning) | Harder planning and synthesis steps fit reasoning-oriented execution | Deep research usually needs staged planning, not just direct answering |
+
+## What a real deep research workflow looks like
+
+The healthy sequence is:
+
+1. narrow the research objective,
+2. gather candidate sources,
+3. filter and rank for relevance,
+4. synthesize across evidence,
+5. surface uncertainty,
+6. send high-risk claims through review.
+
+That is why deep research is a workflow design problem before it is a model problem.
+
+## Where teams usually fail
+
+The most common failures are:
+
+- asking vague strategic questions with no scope limit,
+- accepting citations without source inspection,
+- confusing source count with source quality,
+- and skipping the final human judgment step on high-stakes claims.
+
+Deep research is strongest when it narrows uncertainty. It is weakest when it creates a polished illusion of certainty.
+
+## When deep research is worth the cost
+
+Deep research is usually worth it when:
+
+- the question has many moving parts,
+- the answer must reconcile conflicting sources,
+- the source search space is large,
+- and the output will influence strategy, planning, or high-cost decisions.
+
+It is usually not worth it for routine FAQs, narrow support tasks, or obvious structured retrieval problems.
+
+## The best production rule
+
+Use deep research when the workflow needs:
+
+- multiple search passes,
+- deliberate source ranking,
+- synthesis across evidence,
+- and uncertainty handling.
+
+If the task is mainly "find one fact quickly," use a simpler search or retrieval workflow instead.
+
+## Implementation checklist
+
+Your deep research flow is probably healthy when:
+
+- the question scope is explicit,
+- sources are inspectable,
+- synthesis is separated from retrieval,
+- uncertainty and gaps are surfaced clearly,
+- and high-stakes outputs still require human review.
+
+## Compare next
+
+- [Built-in search economics for AI products](/models-and-apis/built-in-search-economics-for-ai-products/)
+- [Reasoning models vs fast models for production AI workflows](/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/)
+- [Background mode and async agents for long-running AI tasks](/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/)

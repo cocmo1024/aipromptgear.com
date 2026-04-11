@@ -1,0 +1,93 @@
+---
+title: Agent evals for tool-using AI systems
+description: How to evaluate tool-using agents without reducing the problem to single-turn prompt quality or surface-level success rates.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams design evaluation loops for tool-using AI systems where success depends on planning, tool choice, tool arguments, and approval behavior rather than one text answer.
+readerTakeaway: You should leave with a practical evaluation framework for tool-using agents that measures the decisions that actually matter in production.
+primaryKeyword: agent evals tool use
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Evaluation owners
+  - Application engineers
+  - AI product leads
+---
+
+## Quick answer
+
+Tool-using agents should not be evaluated like ordinary chatbots. A good eval must check:
+
+- whether the agent chose the right tool,
+- whether it called the tool with the right arguments,
+- whether it escalated or paused when it should,
+- and whether the final outcome was correct.
+
+If you only score the final answer, you will miss the most expensive failures.
+
+## Why this is different from ordinary prompt evals
+
+A tool-using agent can fail in several distinct ways:
+
+- wrong plan,
+- wrong tool,
+- wrong arguments,
+- wrong order,
+- missing approval,
+- or wrong final answer.
+
+That means one top-line "accuracy" score hides too much.
+
+## What the eval should measure
+
+A healthy eval set usually measures:
+
+1. plan correctness,
+2. tool selection correctness,
+3. tool-argument correctness,
+4. approval or escalation correctness,
+5. final outcome quality.
+
+These layers expose whether the agent is reliable for the right reasons.
+
+## The failure that matters most
+
+The worst production failures are often not bad text. They are:
+
+- an unnecessary write action,
+- a missed approval gate,
+- a wrong external search path,
+- or a bad internal mutation triggered with high confidence.
+
+That is why eval design must reflect operational risk classes, not only benchmark style.
+
+## The practical eval design rule
+
+For every tool-using workflow, define:
+
+- the valid tool set,
+- the forbidden tool paths,
+- the approval-required boundaries,
+- and the acceptable final states.
+
+Then test those directly.
+
+## Implementation checklist
+
+Your agent evals are probably healthy when:
+
+- tool choice is measured explicitly;
+- approval behavior is scored;
+- final answer quality is only one layer of the rubric;
+- regression tests include real failure modes from production;
+- and the team can identify whether a failure came from planning, tool use, or execution.
+
+## Compare next
+
+- [Regression loops](/evaluation/regression-loops/)
+- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
+- [Human review and approval workflows for agentic support](/workflows/human-review-and-approval-workflows-for-agentic-support/)
