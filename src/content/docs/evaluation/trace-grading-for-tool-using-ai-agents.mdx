@@ -1,0 +1,102 @@
+---
+title: Trace grading for tool-using AI agents
+description: How to grade agent traces so teams can evaluate planning, tool choice, escalation, and final outcome instead of only scoring the last message.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams evaluate tool-using agents at the trace level by grading decisions across the run, not only the final answer.
+readerTakeaway: You should leave with a trace-grading model that makes agent failures diagnosable and therefore improvable.
+primaryKeyword: trace grading for ai agents
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Evaluation owners
+  - Agent engineers
+  - AI product leads
+---
+
+## Quick answer
+
+Trace grading means evaluating the whole agent run:
+
+- what it planned,
+- which tools it chose,
+- how it used them,
+- where it escalated,
+- and whether the final outcome was acceptable.
+
+If you only score the last answer, you miss the most expensive agent failures.
+
+## Why output-only scoring is weak
+
+Tool-using agents can fail in ways that a final-text score hides:
+
+- wrong plan but lucky final answer,
+- right plan but wrong tool,
+- right tool with wrong arguments,
+- no approval when approval was required,
+- expensive or unnecessary tool use,
+- failure to stop when evidence was insufficient.
+
+Those are system failures, not wording failures.
+
+## What a trace should be graded on
+
+A practical trace-grading rubric should usually cover:
+
+| Dimension | What to check |
+| --- | --- |
+| Plan quality | Did the agent choose a reasonable approach for the task? |
+| Tool selection | Were the right tools used and the wrong ones avoided? |
+| Tool arguments | Were inputs specific and correct enough to trust the call? |
+| Approval behavior | Did the agent pause, escalate, or seek review when required? |
+| Outcome quality | Did the final result solve the task acceptably? |
+
+This makes evaluation much closer to the real operating risk.
+
+## When trace grading matters most
+
+Trace grading is especially important when:
+
+- the agent can call multiple tools,
+- tool usage carries real cost,
+- approvals are part of the workflow,
+- or a bad decision can still produce a superficially plausible answer.
+
+That is why it matters more as agents become more capable.
+
+## The most useful trace questions
+
+Ask:
+
+1. Did the agent understand what kind of task this was?
+2. Did it choose the correct tool path?
+3. Did it stop or escalate when uncertainty increased?
+4. Did it make unnecessary calls that increased spend without value?
+5. Did the trace reveal a repeatable failure class?
+
+Good trace grading should explain why a run failed, not just that it failed.
+
+## What to avoid
+
+Do not create a rubric so detailed that graders cannot use it consistently. A good trace rubric is:
+
+- tight,
+- repeatable,
+- and connected to real deployment risk.
+
+Too many categories create noise. Too few hide system behavior.
+
+## A strong operating model
+
+Use output grading to decide whether the user-facing result is acceptable. Use trace grading to decide whether the agent behavior is safe, efficient, and governable. Teams that separate those two layers usually improve faster.
+
+## Compare next
+
+- [Agent evals for tool-using AI systems](/evaluation/agent-evals-for-tool-using-ai-systems/)
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
+- [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/)
+- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)

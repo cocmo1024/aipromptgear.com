@@ -1,0 +1,149 @@
+---
+title: Deep research briefs that produce better reports
+description: How to write deep research briefs that improve source quality, scope control, and final report usefulness instead of just making the agent work longer.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams brief deep research systems so they return better source-grounded reports with clearer scope, evidence expectations, and decision usefulness.
+readerTakeaway: You should leave with a briefing model for deep research that improves report quality before you spend more on runtime.
+primaryKeyword: deep research prompt
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Research teams
+  - Product strategists
+  - Market intelligence teams
+  - AI workflow owners
+---
+
+## Quick answer
+
+Better deep research results usually come from better briefs, not from simply allowing more runtime. A strong brief should define:
+
+1. the exact question;
+2. the decision the report is meant to support;
+3. the acceptable source types;
+4. the output shape;
+5. the stop conditions.
+
+Without those, deep research systems tend to return longer reports, not better ones.
+
+## Why this matters
+
+Teams often treat deep research like a premium search box. That creates weak results because the system is being asked to solve:
+
+- scope definition,
+- source policy,
+- synthesis structure,
+- and final report usefulness
+
+all at once.
+
+The better pattern is to brief those constraints explicitly.
+
+## What a strong deep research brief must include
+
+### 1. The decision question
+
+The system should know what decision the report is serving:
+
+- vendor shortlisting,
+- market sizing,
+- competitor analysis,
+- technical due diligence,
+- or internal strategy review.
+
+If the decision is vague, the report drifts toward generic summary.
+
+### 2. Source expectations
+
+The brief should define whether the report should prioritize:
+
+- official vendor documentation,
+- public filings,
+- technical docs,
+- benchmark or pricing pages,
+- analyst commentary,
+- or a mix with clear weighting.
+
+This matters because "find sources" is too weak as a quality instruction.
+
+### 3. Scope boundaries
+
+Good briefs say what is out of scope:
+
+- geographies,
+- time windows,
+- product categories,
+- unsupported claims,
+- and topics that should be acknowledged but not expanded.
+
+This prevents research sprawl.
+
+### 4. Output structure
+
+The system should know whether the final output is:
+
+- an executive memo,
+- a comparison matrix,
+- a shortlist brief,
+- a technical due-diligence report,
+- or a source map for human follow-up.
+
+The structure should fit the consumer of the report, not the agent's default writing style.
+
+### 5. Stop conditions
+
+A healthy brief defines when enough research has been done. Examples:
+
+- three credible sources per claim area,
+- at least one primary source per vendor,
+- stop when conflicting claims are isolated and explained,
+- stop when evidence quality stops improving.
+
+Without a stop rule, the runtime expands faster than the value.
+
+## The failure pattern most teams miss
+
+Teams often add more tool access, more runtime, or more search without fixing the brief. That usually produces:
+
+- source sprawl,
+- duplicated findings,
+- poor prioritization,
+- and long reports with weak decision value.
+
+The brief is what turns deep research from broad search into useful synthesis.
+
+## A practical briefing template
+
+Use this structure:
+
+1. **Decision to support**
+2. **Core question**
+3. **Must-cover subquestions**
+4. **Allowed and preferred source types**
+5. **Out-of-scope topics**
+6. **Required output format**
+7. **What counts as sufficient evidence**
+
+This is usually more valuable than tuning prompt style.
+
+## When deep research is the wrong tool
+
+Deep research is a poor fit when:
+
+- the answer should come from stable internal knowledge;
+- the question is really operational, not investigative;
+- the team needs deterministic extraction rather than synthesis;
+- the user has not defined what a good answer looks like.
+
+In those cases, retrieval or a narrower workflow is often cheaper and better.
+
+## Compare next
+
+- [Deep research workflows for AI teams](/use-cases/deep-research-workflows-for-ai-teams/)
+- [Built-in search economics for AI products](/models-and-apis/built-in-search-economics-for-ai-products/)
+- [Web search vs RAG for AI products](/models-and-apis/web-search-vs-rag-for-ai-products/)
+- [Operator runbooks](/workflows/operator-runbooks/)

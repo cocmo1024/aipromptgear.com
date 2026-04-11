@@ -1,0 +1,124 @@
+---
+title: Web search vs RAG for AI products
+description: How to decide when an AI product needs built-in web search, when RAG is enough, and when using both only adds latency and cost.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether product answers should come from open-web search, retrieval against owned knowledge, or a more limited no-search design.
+readerTakeaway: You should leave with a practical rule for choosing between web search, RAG, and hybrid search patterns based on freshness, trust boundaries, and workflow economics.
+primaryKeyword: web search vs rag for ai products
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Application engineers
+  - Platform teams
+  - Product operations owners
+---
+
+## Quick answer
+
+Use **RAG** when the answer should come from material your team owns, curates, or is willing to govern. Use **web search** when the workflow depends on current external information, broad discovery, or source finding outside your controlled corpus. Use both only when the product truly needs both internal context and live external evidence.
+
+The expensive mistake is enabling search everywhere because it feels more capable. In many products, search increases latency and cost without improving the decision.
+
+## Why teams confuse these two
+
+Both patterns appear to "bring in outside information," but they solve different problems:
+
+- **RAG** is about grounding the model in a known body of information.
+- **Web search** is about discovering or checking information outside that body.
+
+This matters because the evaluation logic, trust model, and user expectations are different.
+
+## Official signals checked April 12, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI tools guide](https://platform.openai.com/docs/guides/tools) | Web search is positioned as a built-in tool alongside other runtime tools | Search is now a first-class architectural choice, not only a custom integration |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Tool-connected workflows should be evaluated at full workflow cost, not only base model tokens | Search decisions should be priced as system behavior |
+| [OpenAI deep research announcement](https://openai.com/index/introducing-deep-research/) | Deep research combines multi-step search with synthesis and source use | Search should be judged by the final workflow value, not just by availability |
+
+## When RAG is the healthier default
+
+RAG is usually the right first move when:
+
+- the product is answering from internal docs, policies, or owned datasets;
+- correctness depends on source control and document governance;
+- the answer should not drift based on the public web;
+- the team can version, review, and refresh the underlying knowledge.
+
+RAG is especially strong when the real issue is not discovery but stable retrieval from a known truth set.
+
+## When web search is justified
+
+Web search earns its keep when:
+
+- the workflow depends on current public information;
+- the user expects source discovery beyond your corpus;
+- freshness matters more than tightly governed consistency;
+- the product is explicitly doing research, market scanning, or source-grounded synthesis.
+
+If the user needs the open web, pretending RAG can replace search usually creates a worse product.
+
+## Where hybrid designs make sense
+
+Both together make sense when the product needs:
+
+- internal policy or account context,
+- plus current public information,
+- plus an explicit way to separate which source drove which claim.
+
+Examples include:
+
+- account research with internal CRM plus public company updates;
+- support systems using internal docs plus live status pages or vendor advisories;
+- research workflows that combine proprietary notes with fresh public evidence.
+
+The design only works if source boundaries stay visible.
+
+## The mistake that drives cost up fastest
+
+The most common system mistake is using web search as a default fallback for weak product design. That happens when teams have not decided:
+
+- which questions should be answered from owned knowledge,
+- which require freshness,
+- which are too open-ended to answer reliably at all.
+
+Search then becomes a runtime tax on every request instead of a targeted capability.
+
+## Decision matrix
+
+| Situation | Better fit |
+| --- | --- |
+| Stable internal knowledge base | RAG |
+| Fast-changing public information | Web search |
+| Mixed internal + public evidence | Hybrid |
+| Deterministic operational workflow with known inputs | Usually neither |
+
+That last row matters. Some products do not need search at all.
+
+## What to test before you ship search
+
+Before enabling search broadly, check:
+
+1. whether freshness changes answer quality enough to matter;
+2. whether the latency is acceptable in the real workflow;
+3. whether users can tell internal knowledge from public evidence;
+4. whether search results are being cited or just consumed blindly;
+5. whether the same outcome could be achieved with better internal retrieval.
+
+If these are unresolved, search is still a product gamble, not a feature.
+
+## A healthier product rule
+
+RAG is for **known truth**. Search is for **fresh discovery**. Hybrid is for **explicitly mixed evidence**. If the workflow cannot explain which of those it needs, it is too early to choose the architecture.
+
+## Compare next
+
+- [Built-in search economics for AI products](/models-and-apis/built-in-search-economics-for-ai-products/)
+- [Deep research workflows for AI teams](/use-cases/deep-research-workflows-for-ai-teams/)
+- [Prompt caching vs retrieval vs fine-tuning for AI products](/models-and-apis/prompt-caching-vs-retrieval-vs-fine-tuning-for-ai-products/)
+- [Responses API vs Chat Completions for tool-using AI products](/models-and-apis/responses-api-vs-chat-completions-for-tool-using-ai-products/)

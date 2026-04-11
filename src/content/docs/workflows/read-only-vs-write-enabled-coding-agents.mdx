@@ -1,0 +1,120 @@
+---
+title: Read-only vs write-enabled coding agents
+description: How engineering teams should separate read-only coding agents from write-enabled ones so agent leverage grows without collapsing repo safety and review discipline.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps engineering teams decide when coding agents should stay read-only, when write access is justified, and how approval boundaries should change between those two modes.
+readerTakeaway: You should leave with a practical gating model for read-only and write-enabled coding agents based on risk, review cost, and operational maturity.
+primaryKeyword: read-only vs write-enabled coding agents
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - Engineering leaders
+  - Platform teams
+  - Developer productivity teams
+  - Security owners
+---
+
+## Quick answer
+
+Read-only and write-enabled coding agents are not the same product category. Read-only agents are usually research, explanation, search, and diagnosis tools. Write-enabled agents create change-management, review, and rollback risk immediately. Teams should not use the same approval model for both.
+
+## Why this distinction matters
+
+Many teams ask whether a coding agent is "safe," but the more useful question is:
+
+**Safe to do what?**
+
+There is a large difference between:
+
+- reading a repository,
+- summarizing diffs,
+- proposing a patch,
+- applying a patch,
+- opening a PR,
+- merging or deploying.
+
+The read/write boundary is one of the clearest points where governance should split.
+
+## What read-only agents are good at
+
+Read-only coding agents are a strong fit for:
+
+- repository exploration,
+- code explanation,
+- impact analysis,
+- bug-trace investigation,
+- search across large codebases,
+- test-failure triage.
+
+They create value quickly because they improve developer speed without immediately introducing write risk.
+
+## When write-enabled agents become worth it
+
+Write-enabled agents become more defensible when:
+
+- the repo already has strong review discipline;
+- the team has clear ownership boundaries;
+- automated tests and validation exist;
+- PR workflows are mature enough to absorb machine-generated changes;
+- the organization knows which areas are safe and unsafe for autonomous edits.
+
+Without that foundation, write access usually increases review burden faster than it creates leverage.
+
+## The biggest mistake teams make
+
+The most common failure is moving too quickly from "this agent explains code well" to "this agent should edit anything." Explanation quality does not prove change quality. Repository safety depends on:
+
+- write scope,
+- file criticality,
+- test coverage,
+- deployment coupling,
+- and approval rules.
+
+Those factors need their own governance model.
+
+## A healthy approval split
+
+This is a workable default:
+
+| Mode | Typical allowed actions | Approval expectation |
+| --- | --- | --- |
+| Read-only | Search, summarize, explain, trace, propose | Usually low-friction |
+| Write-enabled, bounded | Edit docs, tests, low-risk code paths | Review required, scope limited |
+| Write-enabled, sensitive | Infra, CI, auth, payments, production paths | High-friction approvals and tighter controls |
+
+The point is not to slow everything down equally. The point is to align speed with risk.
+
+## Signals that a team should stay read-only longer
+
+Stay read-only longer when:
+
+- test coverage is weak,
+- ownership is unclear,
+- reviewers already struggle with change volume,
+- the repo has sensitive deployment or security coupling,
+- or the team has not defined safe edit zones.
+
+In that state, read-only leverage is still real and often much easier to operationalize.
+
+## Signals that write mode is maturing well
+
+Write-enabled agents are becoming more defensible when:
+
+- the team can define safe file classes,
+- generated diffs are reviewed consistently,
+- failures are caught quickly,
+- approval rules are explicit,
+- and rollback is cheap.
+
+That means the process can handle agent edits as a governed change source, not as magic.
+
+## Compare next
+
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
+- [AI coding agents for engineering teams](/use-cases/ai-coding-agents-for-engineering-teams/)
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
+- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
