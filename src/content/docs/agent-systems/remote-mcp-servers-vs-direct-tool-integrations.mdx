@@ -1,0 +1,164 @@
+---
+title: Remote MCP servers vs direct tool integrations
+description: How to decide whether AI products should expose tools through remote MCP servers or stay with direct built-in tool integrations and function layers.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: remote MCP servers vs direct tool integrations
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Application engineers
+  - Security reviewers
+  - Internal tools owners
+contentStatus: cornerstone
+problemSolved: How to choose between remote MCP servers and direct tool integrations when AI products need access to external systems, internal APIs, or shared enterprise tools.
+readerTakeaway: You should leave with a decision framework based on reuse, approval, permission boundaries, and platform governance instead of adopting MCP only because it is current.
+keyQuestions:
+  - When is a remote MCP server actually better than direct tool wiring?
+  - Which security and approval costs arrive when MCP becomes shared infrastructure?
+  - What kinds of products should keep direct integrations longer?
+notFor:
+  - Teams with no tool use or external system access
+  - Readers evaluating generic API gateways unrelated to AI tool execution
+  - Organizations that cannot yet support any shared tool governance
+updateTriggers:
+  - OpenAI remote MCP capability changes
+  - MCP specification changes around authorization or tool behavior
+  - Platform shifts that change the cost of shared tool infrastructure
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Remote MCP servers vs direct tool integrations
+
+Tool-connected AI systems now face a design choice that did not exist in the same way a year ago. Teams can still wire tools directly into the application, or they can expose them through remote MCP servers and treat tool access as a shared platform surface. Both paths can be correct. The mistake is acting as if MCP is automatically the superior abstraction before the organization is ready for shared permissions, approval boundaries, and runtime ownership.
+
+## Quick answer
+
+Choose **direct tool integrations** when the application owns a small number of tools, the product boundary is clear, and the team wants the simplest reliable path. Choose **remote MCP servers** when several products or assistants need the same tools, when tool discovery and shared access matter, and when the organization can govern permissions and approval boundaries centrally.
+
+## Why this matters now
+
+Remote MCP is no longer only a protocol curiosity. OpenAI documents remote MCP inside the broader tools surface, which means application teams now have a supported path for model-to-tool connectivity that is more shared and system-like than a one-off function wrapper. That raises the architectural bar. Shared tool surfaces can unlock leverage, but they can also centralize risk.
+
+## Official signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI remote MCP guide](https://platform.openai.com/docs/guides/tools-remote-mcp) | Remote MCP is documented as part of the tool stack for modern AI products | MCP is not just speculative; it is now part of real product design decisions |
+| [OpenAI built-in tools guide](https://platform.openai.com/docs/guides/tools) | Tool-connected workflows are core to the current platform direction | Teams need a deliberate strategy for how tools enter the runtime |
+| [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) | Authorization is a first-class concern in the protocol ecosystem | Shared tool access without permission design is not a credible production posture |
+
+## When direct integrations are still healthier
+
+Direct integrations are usually better when:
+
+- one product owns the tool surface,
+- the tool count is small,
+- product-specific logic matters more than reusability,
+- security review is easier when permissions stay local to the app,
+- or the team is still proving the workflow before turning it into platform infrastructure.
+
+This is often the right answer for early products, narrow support copilots, and internal workflows with clear ownership.
+
+## When remote MCP becomes valuable
+
+Remote MCP becomes more useful when:
+
+- several assistants or applications need the same tools,
+- tool discovery should be standardized,
+- access policy needs to be shared across products,
+- the organization wants a cleaner boundary between application logic and tool infrastructure,
+- or tool ecosystems are growing faster than any one app team can manage directly.
+
+That is the moment when MCP stops being novelty and starts becoming platform leverage.
+
+## The hidden cost of MCP too early
+
+Teams that move to shared MCP servers too early often inherit:
+
+- permission ambiguity,
+- unclear user-scoped versus system-scoped access,
+- harder incident diagnosis,
+- more infrastructure before the workflows are stable,
+- and approval logic that is scattered between the app, the server, and human operators.
+
+This is why MCP should follow real reuse pressure, not hype pressure.
+
+## The hidden cost of staying direct too long
+
+Direct integrations also have a cost if they persist too long:
+
+- duplicated tool wrappers,
+- inconsistent access rules,
+- fragmented audit behavior,
+- and several teams reinventing the same tool interface.
+
+The question is not "which model is cleaner on paper?" It is "where is shared governance worth the extra platform responsibility?"
+
+## A practical decision test
+
+Use direct integrations if the honest answers are:
+
+- only one product needs the tool,
+- the app team owns the full workflow,
+- and the permission model is easiest to keep local.
+
+Use remote MCP when the honest answers are:
+
+- tool reuse is already real,
+- the organization needs a shared access plane,
+- and someone can own policy, logging, and approval centrally.
+
+If no one owns the shared layer, do not build one yet.
+
+## Approval and permission boundaries matter more than protocol elegance
+
+The real production question is not whether the MCP protocol is elegant. It is whether the runtime can answer:
+
+- who is allowed to use each tool,
+- whether use is delegated from a user or a system,
+- which tools are read-only,
+- which actions require approval,
+- and how those actions are logged and reviewed.
+
+That is where good shared tool platforms are won or lost.
+
+## Implementation checklist
+
+The architecture is healthy when:
+
+- the team can explain why tool access should be local or shared,
+- user-scoped versus system-scoped permissions are explicit,
+- approval requirements for consequential actions are written down,
+- and runtime ownership is clear before rollout.
+
+Without those conditions, the more conservative architecture is usually the better one.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Model Context Protocol for enterprise AI teams"
+		href="/agent-systems/model-context-protocol-for-enterprise-ai-teams/"
+		description="Use the broader MCP architecture page when the organization is still deciding whether MCP belongs at all."
+	/>
+	<LinkCard
+		title="MCP security and approval boundaries"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Go deeper on the approval and permission design that determines whether shared tool infrastructure is safe."
+	/>
+	<LinkCard
+		title="Background mode and async agents"
+		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
+		description="Many MCP-heavy workflows also create longer runtimes, which changes how the runtime should be structured."
+	/>
+	<LinkCard
+		title="Agent workflows vs autonomous agents"
+		href="/agent-systems/agent-workflows-vs-autonomous-agents/"
+		description="Shared tool surfaces are only worth it when the surrounding workflow remains bounded and operable."
+	/>
+</div>

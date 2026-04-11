@@ -1,0 +1,169 @@
+---
+title: Background mode and async agents for long-running AI tasks
+description: When AI teams should move long-running work into background mode instead of forcing every agent task through a synchronous response loop.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: background mode for AI agents
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Application engineers
+  - Platform teams
+  - Operations owners
+contentStatus: cornerstone
+problemSolved: How to decide when AI work should run in background mode or async orchestration instead of staying inside an interactive request-response flow.
+readerTakeaway: You should leave with a clear boundary for which jobs belong in an interactive session, which should run asynchronously, and where approval or human follow-up should enter the design.
+keyQuestions:
+  - Which AI tasks should move into background mode?
+  - What breaks when long-running work is forced through a synchronous UX?
+  - How should teams structure retrieval, tool use, and approval around async work?
+notFor:
+  - Teams building only single-turn text transformations
+  - Readers looking for generic job queue architecture without AI-specific tradeoffs
+  - Organizations with no plan for tool-connected or multi-minute workflows
+updateTriggers:
+  - OpenAI platform changes around background mode and long-running task patterns
+  - New provider guidance on async tool execution and agent workflows
+  - Major pricing or latency shifts that change when background execution is economical
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Background mode and async agents for long-running AI tasks
+
+The easiest way to make an AI product feel unreliable is to force every task through an interactive request-response loop, even when the work obviously does not belong there. Long-running retrieval, document transforms, multi-step research, and tool-heavy workflows usually need an async operating model. That is where background mode becomes useful: it lets the product stop pretending the user should wait on work that is inherently slower, more failure-prone, or more review-sensitive.
+
+## Quick answer
+
+Use **background mode** when the task can safely finish after the live session, when it depends on longer tool chains, or when the result should be reviewed before delivery. Keep work **interactive** only when the user truly benefits from immediate completion. If the task can create side effects, add a human or explicit approval boundary whether it runs synchronously or not.
+
+![AI runtime map for interactive, background, and approval lanes](/agent-runtime-map.svg)
+
+## Why this matters now
+
+OpenAI now documents background mode and longer-running agent patterns explicitly instead of treating all model work as one synchronous surface. That matters because the product decision is no longer just "call the model." It is "which runtime lane fits the task?" Teams that answer that early build calmer products and cleaner support boundaries.
+
+## Official platform signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Background mode topic](https://developers.openai.com/topics/background) | Background execution is presented as a first-class pattern for longer-running work | Strong signal that async AI work should be designed intentionally, not bolted on later |
+| [OpenAI Responses API reference](https://platform.openai.com/docs/api-reference/responses) | Responses is the main surface for newer tool-connected output patterns | Async work increasingly belongs inside the newer response-oriented runtime model |
+| [OpenAI built-in tools guide](https://platform.openai.com/docs/guides/tools) | Tool-connected workflows are central to the modern API surface | Longer tasks are often longer because tool orchestration, retrieval, or file work is involved |
+
+## Which tasks belong in background mode
+
+Background mode is a better fit when the task includes one or more of these:
+
+- document analysis across large files,
+- report generation that chains retrieval, reasoning, and formatting,
+- long-running web or file research,
+- code or data jobs that are not user-facing in real time,
+- support or operations flows that should draft first and publish only after review.
+
+These are not slow because the model is bad. They are slow because the workflow is actually multi-step.
+
+## Which tasks should stay interactive
+
+Keep the workflow interactive when:
+
+- the user is actively steering the result,
+- the answer is short and can complete within a normal product wait time,
+- tool use is narrow and fast,
+- or the primary value is conversational responsiveness rather than background completion.
+
+Do not move work async just because the system is architecturally elegant. Move it async when the user experience and operational control genuinely improve.
+
+## The hidden cost of forcing async work into live UX
+
+When teams keep long-running work in an interactive lane, they usually inherit:
+
+- spinner fatigue and abandoned sessions,
+- unclear timeout behavior,
+- partial results with no stable handoff,
+- poor failure messaging,
+- and operators who cannot tell whether a job is still running or silently failed.
+
+That is not only a UX problem. It also damages trust, support load, and incident diagnosis.
+
+## A three-lane operating model
+
+The cleanest runtime model usually looks like this:
+
+1. **Interactive lane** for short answers and fast tool calls.
+2. **Background lane** for long-running jobs and research-grade tasks.
+3. **Approval lane** for anything that can change state, spend money, or affect customers.
+
+This matters because async work and autonomous work are not the same thing. A background task can still be tightly bounded and reviewable.
+
+## When approval belongs in the async path
+
+Approval is most important when the job can:
+
+- send customer-facing communication,
+- change records,
+- trigger purchases or credits,
+- write into production systems,
+- or publish content without a human sanity check.
+
+That is why the best async systems are not "fully autonomous." They are designed to finish work, surface status, and stop before consequential action.
+
+## A practical implementation rule
+
+Use background mode when all three are true:
+
+1. the result still has value if it arrives after the current session,
+2. the task depends on several steps or potentially slow tool calls,
+3. the product can show status, retry behavior, and final result retrieval cleanly.
+
+If any of those are false, the workflow may still belong in the live lane.
+
+## Failure modes to avoid
+
+The common design mistakes are:
+
+- hiding async work behind a fake synchronous experience,
+- not showing job status or completion state,
+- letting background tasks write directly without review,
+- and failing to distinguish "still running" from "failed and needs intervention."
+
+These are the real reasons async AI products feel brittle.
+
+## Implementation checklist
+
+The design is healthy when:
+
+- the team can name which jobs belong in each runtime lane,
+- status and failure states are visible to the user or operator,
+- approval boundaries are explicit for consequential actions,
+- and evaluation covers not just answer quality but timeout, retry, and completion behavior.
+
+That is when background mode becomes operating leverage instead of architectural theater.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Responses API vs Chat Completions"
+		href="/models-and-apis/responses-api-vs-chat-completions-for-tool-using-ai-products/"
+		description="The async design question is stronger once the underlying API surface is chosen deliberately."
+	/>
+	<LinkCard
+		title="Remote MCP servers vs direct tool integrations"
+		href="/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/"
+		description="Long-running work often expands because several tools are involved; this page helps decide how those tools should be exposed."
+	/>
+	<LinkCard
+		title="Agent workflows vs autonomous agents"
+		href="/agent-systems/agent-workflows-vs-autonomous-agents/"
+		description="Async execution still needs bounded workflow logic instead of vague autonomy language."
+	/>
+	<LinkCard
+		title="Human review and approval workflows"
+		href="/workflows/human-review-and-approval-workflows-for-agentic-support/"
+		description="Use this page when the async path needs operator approval before anything consequential happens."
+	/>
+</div>

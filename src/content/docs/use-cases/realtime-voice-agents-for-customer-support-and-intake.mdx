@@ -1,0 +1,163 @@
+---
+title: Realtime voice agents for customer support and intake
+description: When voice agents are actually justified for support and intake, and what operating boundaries matter before teams deploy them into customer-facing workflows.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: realtime voice agents for customer support
+searchIntent: design
+decisionStage: solution-aware
+targetRoles:
+  - Support leaders
+  - AI product managers
+  - Contact center teams
+  - Operations owners
+contentStatus: growing
+problemSolved: How to decide whether realtime voice agents belong in support and intake workflows, and what approval, handoff, and quality boundaries are required before deployment.
+readerTakeaway: You should leave with a practical framework for where voice agents help, where they still create more risk than value, and how to stage rollout without damaging service quality.
+keyQuestions:
+  - Which support and intake workflows are good fits for realtime voice agents?
+  - Where should the system escalate to a human immediately?
+  - What operational design matters more than the voice demo itself?
+notFor:
+  - Teams exploring novelty demos without a service workflow to improve
+  - Organizations with no human escalation path
+  - Buyers looking for generic speech-to-text or telephony comparisons only
+updateTriggers:
+  - OpenAI platform changes around realtime voice capabilities
+  - Material pricing or latency changes that alter voice-agent economics
+  - Shifts in enterprise adoption patterns for customer-facing voice automation
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Realtime voice agents for customer support and intake
+
+Voice agents are one of the clearest current AI traffic categories because they promise lower service cost, always-on intake, and faster triage. Those promises are real only when the workflow is narrow enough to automate and the human fallback is designed before launch. Support and intake teams should treat voice as an operating system decision, not a demo surface.
+
+## Quick answer
+
+Realtime voice agents are a strong fit for **structured intake**, **routing**, **basic verification**, and **repeatable support workflows** with clear escalation conditions. They are a weak fit for ambiguous, emotionally sensitive, policy-heavy, or high-consequence conversations unless a human can take over quickly and cleanly.
+
+## Why this matters now
+
+OpenAI's realtime guidance makes low-latency voice interaction a real product path instead of a lab curiosity. That creates immediate traffic around "voice agents" and "AI phone support." The durable question is still the same one support leaders should ask about any automation:
+
+**Which part of the service workflow becomes faster without becoming less trustworthy?**
+
+## Official signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Realtime guide](https://platform.openai.com/docs/guides/realtime) | Realtime multimodal interaction is documented as a production design surface | Voice is no longer just a custom lab stack; it is a supported product pattern |
+| [OpenAI tools guide](https://platform.openai.com/docs/guides/tools) | Tool-connected AI workflows are core to the current platform | Voice agents become useful when they can verify, route, search, or retrieve under tight boundaries |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Pricing remains an explicit operating factor in model and modality choice | Voice rollout needs real queue economics, not only demo enthusiasm |
+
+## Best-fit voice workflows
+
+The strongest first use cases are:
+
+- intake and qualification,
+- account or identity pre-check steps,
+- appointment or service scheduling,
+- routing to the right queue,
+- repetitive first-line support questions with strong knowledge grounding.
+
+These workflows share one trait: they can be judged on clear outcome rules, not only conversational charm.
+
+## Poor-fit voice workflows
+
+Voice agents are a weak fit when:
+
+- the issue is complex and emotionally charged,
+- refunds, disputes, or legal commitments are involved,
+- policy interpretation is nuanced,
+- or the caller expects free-form expert diagnosis.
+
+In those cases, the system should collect enough structure to help a human, not pretend it should finish the conversation alone.
+
+## The real design boundary: intake versus resolution
+
+Most support teams should separate two jobs:
+
+1. **Intake and routing**: collect facts, classify urgency, direct the customer.
+2. **Resolution**: solve the issue or make a binding decision.
+
+Voice agents can do the first much earlier than they can safely do the second.
+
+## The hidden failure modes
+
+The common mistakes are:
+
+- chasing natural-sounding voice instead of reliable workflow outcome,
+- failing to surface uncertainty,
+- not handling interruptions and caller correction gracefully,
+- and giving the voice layer authority it has not earned operationally.
+
+Those failures increase contact-center load instead of reducing it.
+
+## A better rollout path
+
+Start with:
+
+- after-hours intake,
+- structured triage,
+- low-risk repetitive verification,
+- or queue routing.
+
+Only expand after the team can show:
+
+- successful containment,
+- low harmful handoff error,
+- clean fallback behavior,
+- and a support organization that trusts the logs and transcripts.
+
+## What "good" looks like
+
+A healthy voice-agent rollout has:
+
+- explicit escalation triggers,
+- transcript review and QA,
+- narrow tool permissions,
+- operator ownership,
+- and a defined set of tasks the system refuses to handle.
+
+The refusal policy is as important as the speaking ability.
+
+## Implementation checklist
+
+The design is ready when:
+
+- the workflow has a clear start and finish state,
+- the human fallback is immediate and testable,
+- the system can surface uncertainty instead of bluffing,
+- tool access is bounded to what the voice flow truly needs,
+- and success is measured on service outcomes, not demo smoothness.
+
+That is when voice stops being a novelty channel and becomes part of a reliable support stack.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Ground the voice rollout inside the wider support operating model instead of treating voice as a separate experiment."
+	/>
+	<LinkCard
+		title="Ticket triage and priority routing"
+		href="/workflows/ticket-triage-and-priority-routing/"
+		description="Many voice agents should first act like structured triage systems before they try to resolve complex issues."
+	/>
+	<LinkCard
+		title="Human review and approval workflows"
+		href="/workflows/human-review-and-approval-workflows-for-agentic-support/"
+		description="Escalation and approval design matter more than sounding natural."
+	/>
+	<LinkCard
+		title="Background mode and async agents"
+		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
+		description="Voice intake often triggers follow-up jobs that should move into async review instead of staying inside the live call."
+	/>
+</div>
