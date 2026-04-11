@@ -1,0 +1,178 @@
+---
+title: Batch API vs background mode for large AI jobs
+description: How to decide whether large asynchronous AI workloads belong on the Batch API or on background mode, and why they solve different operating problems.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams distinguish between high-volume deferred AI jobs and long-running user-initiated jobs so they do not misuse batch processing for live workflows or background mode for bulk offline pipelines.
+readerTakeaway: You should leave with a concrete rule for when Batch is the right answer, when background mode is the right answer, and how each choice changes cost, product design, and operational expectations.
+primaryKeyword: batch api vs background mode
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - Application engineers
+  - AI product leads
+  - Platform teams
+  - Operations owners
+keyQuestions:
+  - When should teams choose Batch instead of background mode?
+  - Which asynchronous jobs are many independent tasks versus one long-running task?
+  - How do cost, latency, and product UX change depending on the asynchronous pattern?
+notFor:
+  - Small synchronous chatbot demos
+  - Teams with no deferred workload at all
+  - Buyers looking for a generic queueing-system tutorial
+updateTriggers:
+  - OpenAI changing Batch API pricing or scheduling rules
+  - Changes to background mode capabilities or lifecycle behavior
+  - New product patterns that shift the line between deferred and long-running work
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Batch API vs background mode for large AI jobs
+
+Teams often say they need "async AI," but that phrase hides two very different problems:
+
+- **many independent jobs** that can wait, or
+- **one user-relevant job** that may take a while but still belongs to a product workflow.
+
+Those are not the same operating pattern. Treating them as interchangeable leads to the wrong queue design, the wrong user expectations, and the wrong cost model.
+
+## Quick answer
+
+Use **Batch API** when you have large numbers of independent, non-urgent requests that can be processed asynchronously on a deferred SLA. Use **background mode** when one job may take longer than a normal response cycle but still belongs to a live product workflow that should be created, tracked, and later retrieved.
+
+Batch is a **bulk throughput tool**. Background mode is a **long-running task tool**.
+
+## Official signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous request sets with lower-cost deferred execution | It is built for backlog processing, not live user waiting loops |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI publicly positions Batch as offering materially lower cost for eligible workloads | Deferred bulk jobs can have very different economics from live requests |
+| [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode is framed around long-running tasks that are created, polled, and completed asynchronously | It fits product flows where one task may outlast a normal synchronous response |
+
+## The easiest way to separate the two
+
+Ask this first:
+
+**Is this one important job, or ten thousand independent jobs?**
+
+If it is one important job that a user, operator, or workflow needs to track, you are closer to background mode.
+
+If it is ten thousand independent jobs that can be completed later, you are closer to Batch.
+
+## When Batch is the right answer
+
+Use Batch when the workload looks like this:
+
+- nightly summarization,
+- backfill classification,
+- repository-wide tagging,
+- large-scale transcript cleanup,
+- mass enrichment,
+- or offline evaluation sweeps.
+
+These workloads share three traits:
+
+1. they are high volume,
+2. they do not need instant answers,
+3. and the unit of work is mostly independent from one request to the next.
+
+This is why Batch is often the healthier answer for analytics, content backfills, or large offline processing runs.
+
+## When background mode is the right answer
+
+Use background mode when the workload looks like this:
+
+- one deep analysis task,
+- a long-running research brief,
+- a multi-step tool-using task,
+- a large file or document processing flow,
+- or a user-triggered job that should not block a live UI request.
+
+These workloads share a different set of traits:
+
+1. the task is meaningful as one tracked job,
+2. a human or product flow still cares about the result,
+3. and the main requirement is not volume but time tolerance.
+
+This is where background mode fits better than Batch.
+
+## Cost and product design are different problems
+
+### Batch optimizes bulk economics
+
+Batch is strongest when cost per task matters more than immediate completion. This is the right pattern when the business benefit comes from processing a lot of work at lower cost.
+
+### Background mode optimizes product continuity
+
+Background mode is strongest when the product needs to hand work off, preserve user flow, and return results later without pretending the job is synchronous.
+
+One is mainly about deferred throughput. The other is mainly about product-safe async execution.
+
+## The hidden mistake teams make
+
+The most common mistake is using one pattern to solve the other's problem:
+
+- using Batch for user-facing work that needs job-level tracking and product continuity,
+- or using background mode for large backlogs that should really be queued and processed in bulk.
+
+That mistake usually shows up later as operational friction:
+
+- wrong user expectations,
+- awkward retry behavior,
+- unnecessary infrastructure,
+- or higher spend than the workload deserves.
+
+## The practical architecture rule
+
+Use this rule:
+
+- **many independent low-urgency jobs** -> Batch
+- **one long-running product job** -> background mode
+
+If the workflow contains both patterns, split them:
+
+- Batch for backfills and offline sweeps,
+- background mode for user-triggered or operator-triggered long jobs.
+
+That split is often much cleaner than one universal async layer.
+
+## Implementation checklist
+
+Your async choice is probably healthy when:
+
+- the team can clearly define the unit of work;
+- volume and urgency are measured separately;
+- product UX matches the actual completion model;
+- retries and failure handling are designed at the correct job granularity;
+- and cost expectations are tied to the right async lane.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Reasoning models vs fast models"
+		href="/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/"
+		description="Async choices become clearer once the team knows which jobs actually deserve premium reasoning."
+	/>
+	<LinkCard
+		title="Background mode and async agents"
+		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
+		description="Use this page when the discussion shifts from async execution in general to agentic long-running workflows specifically."
+	/>
+	<LinkCard
+		title="Realtime voice agents for support and intake"
+		href="/use-cases/realtime-voice-agents-for-customer-support-and-intake/"
+		description="A useful contrast page for workflows that should stay live instead of moving into deferred async lanes."
+	/>
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="After async design is clear, decide which jobs move to which model lane."
+	/>
+</div>

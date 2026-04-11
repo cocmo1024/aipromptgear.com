@@ -1,0 +1,198 @@
+---
+title: Reasoning models vs fast models for production AI workflows
+description: How to decide when a reasoning model is worth the cost and latency, when a faster model is enough, and why the best production architecture often uses both.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps AI teams decide which tasks deserve expensive reasoning models, which tasks should stay on faster lower-cost models, and how to avoid paying for reasoning where it creates no business value.
+readerTakeaway: You should leave with a concrete routing rule for planner tasks, execution tasks, and hybrid pipelines, tied to official product signals and current public price classes.
+primaryKeyword: reasoning models vs fast models
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Application engineers
+  - Platform teams
+  - PromptOps owners
+keyQuestions:
+  - Which production tasks justify slower, more expensive reasoning models?
+  - Which tasks should stay on fast models even if reasoning models score higher on difficult benchmarks?
+  - How should teams route work between planner and executor lanes instead of choosing one default model?
+notFor:
+  - Toy prompt demos with no production cost or latency target
+  - Buyers looking for a broad LLM vendor review instead of an operating decision
+  - Teams with no plan to measure quality, spend, or latency after launch
+updateTriggers:
+  - Meaningful changes in OpenAI reasoning guidance or recommended model usage
+  - Public price changes across flagship, mini, nano, or reasoning model classes
+  - New product capabilities that materially change where planner models are worth paying for
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Reasoning models vs fast models for production AI workflows
+
+Most teams waste money on AI for one of two reasons:
+
+1. they run every request through a premium reasoning lane even when the task is routine,
+2. or they route hard planning work to a fast cheap model and then wonder why the workflow becomes brittle.
+
+The right answer is usually not "pick the smartest model" or "pick the cheapest model." The right answer is to decide which step in the workflow is doing judgment, which step is doing execution, and which failure mode is actually expensive.
+
+## Quick answer
+
+Use **reasoning models** for ambiguous, high-stakes, planning-heavy, or policy-sensitive steps. Use **fast models** for routine execution, transformation, extraction, drafting, and high-throughput operations where the task shape is already clear.
+
+The highest-leverage production pattern is often:
+
+- a reasoning model to plan, route, or resolve ambiguity,
+- then a faster model to execute repeatable substeps at scale.
+
+## Official signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI reasoning guide](https://platform.openai.com/docs/guides/reasoning) | OpenAI frames reasoning models as the right fit for complex multi-step thinking, ambiguity, and harder planning workloads | Teams should stop treating every user request as if it needs a reasoning-first lane |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Current flagship, mini, nano, and reasoning classes have materially different input and output price profiles | Routing mistakes now show up quickly in real operating cost |
+| [OpenAI models reference](https://platform.openai.com/docs/models) | The model catalog makes capability and latency/cost tradeoffs explicit rather than implying one model class is always healthier | Product teams need to map model class to task class instead of defaulting by hype |
+
+## Public price snapshot checked April 11, 2026
+
+These are public OpenAI web pricing anchors, not total workflow costs:
+
+| Model class | Public pricing anchor | Why it matters |
+| --- | --- | --- |
+| GPT-5.4 | Input around $2.50 / 1M tokens, output around $15 / 1M tokens | Strong reminder that flagship quality must clear a real value threshold |
+| GPT-5 mini | Input around $0.25 / 1M tokens, output around $2 / 1M tokens | Fast execution lanes can be an order of magnitude cheaper |
+| GPT-5 nano | Input around $0.20 / 1M tokens, output around $1.25 / 1M tokens | Cheap deterministic or high-volume substeps should not borrow flagship economics by accident |
+| o3-pro | Input around $20 / 1M tokens, output around $80 / 1M tokens | Premium reasoning belongs on the narrowest set of tasks with the highest judgment burden |
+
+The lesson is not "never use premium reasoning." The lesson is that routing errors are now expensive enough to design around deliberately.
+
+## When reasoning models are worth paying for
+
+Reasoning models earn their keep when the step involves:
+
+- unclear objectives,
+- conflicting evidence,
+- multi-step plan construction,
+- exception handling across many rules,
+- policy-sensitive judgment,
+- or tool-use decisions where the wrong path is costly.
+
+Typical examples:
+
+- resolving ambiguous support escalations,
+- planning a multi-source research brief,
+- deciding which tool sequence an agent should run,
+- or generating a structured remediation plan from noisy operational evidence.
+
+In these cases, faster models often fail not because they are "bad," but because the workflow is asking them to do planning instead of execution.
+
+## When fast models are the healthier choice
+
+Fast models usually win when the task is already framed and the job is:
+
+- extraction,
+- classification,
+- short rewriting,
+- formatting,
+- summary normalization,
+- templated drafting,
+- or structured transformation after the hard decision is already made.
+
+This is where teams often overspend. Once the reasoning step is done, the execution lane usually does not need premium intelligence. It needs speed, predictable formatting, and acceptable quality at scale.
+
+## The planner-executor pattern
+
+The most practical production architecture is often a two-lane design:
+
+### Lane 1: planner
+
+A reasoning model:
+
+- interprets the request,
+- decides the path,
+- identifies missing inputs,
+- and sets the operating frame.
+
+### Lane 2: executor
+
+A faster model:
+
+- drafts the response,
+- transforms content,
+- fills a template,
+- classifies or tags output,
+- or handles repeated substeps.
+
+This pattern is usually stronger than choosing one premium model as the default for every step.
+
+## The failure modes that cost teams real money
+
+### 1. Premium-by-default architecture
+
+The team uses the flagship or reasoning lane for everything because the first demo looked better. That can work for prototypes and quietly fail in production economics.
+
+### 2. Cheap-by-default architecture
+
+The team sends ambiguous work to a fast model, then piles on prompts, retries, and fallbacks to compensate. That often looks cheaper until support load, operator review, and hidden rework are counted.
+
+### 3. No task decomposition
+
+The workflow is treated as one giant response instead of a sequence of planning and execution steps. This is where routing becomes guesswork.
+
+## A practical routing rule
+
+Use this routing rule:
+
+- if the step decides **what to do**, consider reasoning;
+- if the step performs **what was already decided**, use a faster model;
+- if the step is both ambiguous and user-visible, measure whether the extra cost actually moves the business metric that matters.
+
+That metric might be:
+
+- fewer escalations,
+- lower error rate,
+- less human review time,
+- faster task completion,
+- or higher conversion on a high-value workflow.
+
+Without that metric, teams tend to overpay for intelligence they cannot justify.
+
+## Implementation checklist
+
+Your routing strategy is probably healthy when:
+
+- the workflow is decomposed into planning steps and execution steps;
+- the premium lane is intentionally narrow;
+- the team can explain which failures are too expensive for a fast model;
+- latency and cost targets are measured at the workflow level, not only per request;
+- and evaluation distinguishes planner quality from executor quality.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Use this page to design the actual routing layer once the planner-vs-executor boundary is clear."
+	/>
+	<LinkCard
+		title="Batch API vs background mode for large AI jobs"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="The routing decision becomes more concrete once you decide whether the workflow is live, deferred, or high-volume asynchronous work."
+	/>
+	<LinkCard
+		title="Structured outputs vs JSON mode"
+		href="/models-and-apis/structured-outputs-vs-json-mode-for-production-ai-workflows/"
+		description="Fast execution lanes are strongest when the output contract is tightly defined."
+	/>
+	<LinkCard
+		title="AI coding agents for engineering teams"
+		href="/use-cases/ai-coding-agents-for-engineering-teams/"
+		description="A live high-value use case where the planner-executor split becomes operationally important very quickly."
+	/>
+</div>

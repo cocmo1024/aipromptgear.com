@@ -1,0 +1,191 @@
+---
+title: AI coding agents for engineering teams
+description: A practical operating guide for engineering teams deciding when coding agents are worth adopting, which tasks they should own, and where approvals and review still belong.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps engineering leaders and application teams decide where coding agents create real leverage, where they create operational risk, and how to set review and approval boundaries before the repo becomes the experiment.
+readerTakeaway: You should leave with a concrete adoption model for coding agents tied to task shape, repo safety, review expectations, and the economics of agent-assisted engineering work.
+primaryKeyword: ai coding agents
+searchIntent: select
+decisionStage: implementation
+targetRoles:
+  - Engineering leaders
+  - Platform teams
+  - Application engineers
+  - Developer productivity owners
+keyQuestions:
+  - Which engineering tasks are strong candidates for coding agents?
+  - Where should review, test, and approval boundaries stay firmly human-owned?
+  - How should teams evaluate coding-agent leverage without confusing activity for value?
+notFor:
+  - Teams looking for a no-review autonomous coding fantasy
+  - Organizations with no test discipline or no repository access controls
+  - Readers looking only for a model benchmark instead of an operating design
+updateTriggers:
+  - Meaningful changes in OpenAI Codex model guidance or tool support
+  - Public pricing changes for coding-focused model classes
+  - New operating patterns that materially change review or security boundaries for coding agents
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# AI coding agents for engineering teams
+
+Coding agents can create real leverage, but only when the team stops treating them like magical pair programmers and starts treating them like constrained software operators.
+
+The question is not "Can an AI write code?" The question is:
+
+**Which engineering work should an agent do, under what boundary, with whose review, and against what quality bar?**
+
+That is where the gains actually come from.
+
+## Quick answer
+
+Coding agents are strongest on:
+
+- bounded implementation tasks,
+- repo exploration,
+- test updates,
+- migration chores,
+- CI triage,
+- and repetitive refactors with clear success criteria.
+
+They are weak or risky when:
+
+- requirements are unstable,
+- architecture is still unresolved,
+- production write actions are under-reviewed,
+- or the repository has poor tests and weak ownership boundaries.
+
+## Official signals checked April 11, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Codex use cases](https://developers.openai.com/codex/use-cases) | OpenAI frames coding agents around concrete engineering workflows rather than vague autonomy | Teams should deploy coding agents against bounded software jobs, not as a universal replacement for engineering process |
+| [OpenAI Codex prompting guide](https://developers.openai.com/codex/prompting-guide) | Prompt quality for code work depends on scope clarity, constraints, environment context, and verification expectations | Engineering leverage comes from task framing as much as model capability |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Coding-focused model classes now have clear public price anchors | Repo-scale agent usage needs cost discipline, not only excitement |
+
+## Public price snapshot checked April 11, 2026
+
+These are public web pricing anchors, not total engineering workflow cost:
+
+| Model class | Public pricing anchor | Why it matters |
+| --- | --- | --- |
+| GPT-5.2-Codex | Input around $1.75 / 1M tokens, output around $14 / 1M tokens | Serious code generation is not free enough to ignore workflow waste |
+| GPT-5.3-Codex | Input around $1.75 / 1M tokens, output around $14 / 1M tokens | Newer coding lanes still need task selection discipline |
+| Lower-cost Codex or mini-class lanes | Lower-cost option for narrower tasks | Reviewable chores and scoped edits should not always borrow premium economics |
+
+The bigger cost, however, is not token spend. It is bad changes, wasted review time, and repos accumulating low-confidence edits.
+
+## Where coding agents create real leverage
+
+Coding agents usually perform best when the task is:
+
+- clearly scoped,
+- locally testable,
+- reversible,
+- and easy to verify.
+
+Examples:
+
+- updating imports during a migration,
+- fixing lint or typing regressions,
+- adding test cases around an already-understood behavior,
+- summarizing a failing CI run,
+- or implementing a bounded UI or API change with an obvious success signal.
+
+This is where agent speed converts into real engineering throughput.
+
+## Where coding agents create expensive noise
+
+Coding agents create noise when:
+
+- the repo has weak tests,
+- the task is architecture-first rather than implementation-first,
+- the request is underspecified,
+- or the agent is allowed to roam across too many files for too long.
+
+In those environments, the output may look busy while the real cost lands on human reviewers.
+
+## The healthiest adoption pattern
+
+The strongest adoption pattern is usually:
+
+1. start with bounded changes,
+2. keep write scope small,
+3. require tests or verification steps,
+4. keep a human reviewer accountable,
+5. and measure saved engineer time, not only number of generated commits.
+
+That converts coding agents from novelty into an engineering productivity system.
+
+## Review boundaries that should stay human-owned
+
+Even mature teams should usually keep humans responsible for:
+
+- architecture direction,
+- security-sensitive changes,
+- migration strategy,
+- production incident judgment,
+- dependency trust decisions,
+- and final approval on risky write paths.
+
+An agent can help explore, draft, test, or narrow the diff. It should not be the unreviewed owner of consequential repo changes.
+
+## How to evaluate whether coding agents are actually working
+
+Use metrics that reflect engineering outcomes:
+
+- review time saved,
+- cycle time on scoped tasks,
+- percentage of agent diffs accepted with minor edits,
+- defect rate after merge,
+- and human intervention required per completed task.
+
+Do not rely on vanity metrics such as "agent wrote 1,200 lines today." That measures output volume, not engineering value.
+
+## The implementation rule that matters most
+
+The safest core rule is:
+
+**Agents should own the first draft of bounded work, not the last word on system truth.**
+
+That keeps the leverage while preserving engineering standards.
+
+## Implementation checklist
+
+Your coding-agent rollout is probably healthy when:
+
+- tasks are explicitly scoped,
+- repos have test or verification hooks,
+- review ownership stays human,
+- the team measures accepted work rather than generated work,
+- and the agent is prevented from turning weak engineering process into faster weak engineering process.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Built-in tools vs external integrations for AI agents"
+		href="/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/"
+		description="Use this page when repo actions, shell access, search, or MCP become part of the coding-agent architecture."
+	/>
+	<LinkCard
+		title="Human review and approval workflows"
+		href="/workflows/human-review-and-approval-workflows-for-agentic-support/"
+		description="The same approval logic that protects support systems also matters for coding-agent change review."
+	/>
+	<LinkCard
+		title="Reasoning models vs fast models"
+		href="/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/"
+		description="Model economics matter quickly once code workflows become routine and high-volume."
+	/>
+	<LinkCard
+		title="Regression loops"
+		href="/evaluation/regression-loops/"
+		description="Agent-assisted code work is only healthy when regression detection is part of the operating system."
+	/>
+</div>
