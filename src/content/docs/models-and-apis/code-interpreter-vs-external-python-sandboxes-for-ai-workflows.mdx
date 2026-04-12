@@ -1,0 +1,144 @@
+---
+title: Code interpreter vs external Python sandboxes for AI workflows
+description: A practical guide to when built-in code execution is enough for an AI workflow and when the team should own a separate Python sandbox or execution service.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Quarterly review
+primaryKeyword: code interpreter vs python sandbox
+searchIntent: select
+decisionStage: shortlist
+targetRoles:
+  - AI engineers
+  - Platform teams
+  - Applied research teams
+  - Product engineers
+contentStatus: growing
+problemSolved: How to decide whether a managed code interpreter is enough for analysis and transformation workflows, or whether the product now needs an external Python execution layer with more control and operational ownership.
+readerTakeaway: You should leave with a clearer line between built-in code execution for fast delivery and external sandbox ownership for teams whose workflow logic, dependencies, or compliance needs now exceed the managed boundary.
+keyQuestions:
+  - When is built-in code execution enough?
+  - When does a product need its own Python sandbox or job service?
+  - What hidden support burden appears once execution leaves the managed layer?
+notFor:
+  - Teams that do not yet know why execution is needed at all
+  - Readers looking for Python performance benchmarks unrelated to AI workflow design
+  - Products where execution is prohibited by policy regardless of architecture
+updateTriggers:
+  - Major changes to built-in code execution capability or pricing
+  - Material shifts in external sandbox patterns, runtime security, or hosted job tooling
+  - New AI product patterns where execution becomes a more central workflow primitive
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Code interpreter vs external Python sandboxes for AI workflows
+
+Execution is another place AI teams get carried away. It starts as a clean idea: let the model run code to analyze data, transform files, or verify intermediate work. Then the product grows, dependencies pile up, and suddenly the team is debating whether to own an execution service, a sandbox platform, or a job system. Most teams should not start there. But some teams do eventually outgrow built-in execution, and when that happens the difference is operational, not cosmetic.
+
+## Quick answer
+
+Use **built-in code execution** when the workflow needs analysis, transformation, or light computation and the team benefits more from shipping the user workflow than from owning runtime infrastructure. Move to an **external Python sandbox** when the product needs tighter dependency control, custom runtime policy, stronger observability, or durable job ownership that a built-in interpreter no longer supports cleanly.
+
+## Why this decision matters
+
+Execution changes the shape of an AI product because it moves the system from:
+
+- language generation only
+to
+- language plus tool-backed computation.
+
+That usually improves quality for:
+
+- data analysis,
+- spreadsheet and CSV work,
+- structured transformations,
+- report generation,
+- and verification tasks.
+
+## Where built-in code execution is strongest
+
+Managed code execution usually wins when:
+
+- the workflow is still mostly inside one product boundary;
+- execution is important but not the core differentiated infrastructure;
+- the team wants fewer deployment and security concerns;
+- the execution environment does not need highly custom packages or long-lived state;
+- user value comes from analysis quality, not execution ownership.
+
+Official anchor:
+
+- [OpenAI code interpreter guide](https://platform.openai.com/docs/guides/tools-code-interpreter)
+
+## Where external sandboxes start to make sense
+
+External Python execution becomes more reasonable when:
+
+- the product needs custom libraries or environment control;
+- execution jobs must be integrated with a broader internal platform;
+- runtime observability is now a hard requirement;
+- security or compliance policy requires environment ownership;
+- execution is now a first-class product subsystem rather than a helpful tool.
+
+## The real difference is ownership
+
+The key difference is not feature count. It is ownership of:
+
+- runtime policy,
+- dependencies,
+- logs and traces,
+- job lifecycle,
+- failure handling,
+- and security boundaries.
+
+Built-in execution removes a lot of work. External sandboxes give a team more power, but only by reintroducing platform work that the managed layer was hiding.
+
+## What teams often underestimate
+
+Teams often underestimate:
+
+- dependency management,
+- sandbox security review,
+- execution failure triage,
+- queueing and job control,
+- runtime observability,
+- and long-run maintenance ownership.
+
+Those are not small add-ons. They are why many products should stay longer on built-in execution than their platform instincts first suggest.
+
+## A practical decision test
+
+Ask these questions:
+
+1. Is execution a feature, or now an infrastructure layer?
+2. Does the workflow need custom packages or just code-backed reasoning and transformation?
+3. Who will own runtime reliability?
+4. Is the business value in execution control, or in the user-facing workflow outcome?
+5. What breaks if the team keeps execution managed for another quarter?
+
+If the answer to the last question is "not much," keep the managed path longer.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Built-in tools vs external integrations"
+		href="/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/"
+		description="Use the broader tool-boundary page when execution is only one part of a larger built-in versus owned-tools decision."
+	/>
+	<LinkCard
+		title="Batch API vs background mode"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="Execution and async job design often get mixed together; separate runtime ownership from scheduling pattern."
+	/>
+	<LinkCard
+		title="Deep research workflows for AI teams"
+		href="/use-cases/deep-research-workflows-for-ai-teams/"
+		description="A workflow path for research systems that often need execution for analysis and synthesis."
+	/>
+	<LinkCard
+		title="AI coding agents for engineering teams"
+		href="/use-cases/ai-coding-agents-for-engineering-teams/"
+		description="Coding-agent systems pressure-test execution, sandboxing, and approval ownership especially quickly."
+	/>
+</div>

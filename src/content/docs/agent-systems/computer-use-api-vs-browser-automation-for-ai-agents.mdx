@@ -1,0 +1,142 @@
+---
+title: Computer Use API vs browser automation for AI agents
+description: A practical guide to when a managed computer-use model is the right tool for browser-facing AI agents and when product teams should keep explicit browser automation under their own control.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Quarterly review
+primaryKeyword: computer use api vs browser automation
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - AI product engineers
+  - Agent platform leads
+  - Automation teams
+  - Technical founders
+contentStatus: growing
+problemSolved: How to decide whether a browser-facing agent should rely on a managed computer-use capability or explicit browser automation owned by the product team.
+readerTakeaway: You should leave with a cleaner boundary between computer-use models for ambiguous UI work and deterministic browser automation for repeatable workflows, plus a better sense of when hybrid design is healthiest.
+keyQuestions:
+  - When is a computer-use model better than deterministic browser automation?
+  - When should browser automation stay explicit and product-owned?
+  - What failures appear when teams use the wrong control model for the task?
+notFor:
+  - Teams whose workflow has no browser or desktop interaction
+  - Readers looking for generic RPA platform comparisons
+  - Products that already know deterministic browser automation is the fixed long-term answer
+updateTriggers:
+  - Major changes to computer-use capabilities, safety boundaries, or pricing
+  - New hybrid product patterns combining UI understanding and deterministic automation
+  - Material changes in browser automation reliability or agent-control practice
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Computer Use API vs browser automation for AI agents
+
+Browser work is one of the fastest ways agent systems become confused. Some teams need a model that can interpret messy UI state, recover from variation, and act across a surface that was not designed for an API. Other teams already have a repeatable browser workflow and should not replace deterministic automation with model uncertainty. The right answer depends on whether the product needs **UI interpretation** or **repeatable control**.
+
+## Quick answer
+
+Use **computer-use models** when the workflow depends on interpreting changing interfaces, messy UI state, or semi-structured browser tasks that cannot be modeled cleanly as fixed selectors and steps. Use **explicit browser automation** when the workflow is repeatable, high-frequency, and operationally valuable precisely because it is deterministic. For many serious products, the healthiest design is hybrid: deterministic automation where the path is stable, model-driven UI handling where the surface is too variable to encode cleanly.
+
+## Why this is a real product decision
+
+The wrong choice causes different failures:
+
+- model-driven UI control can be too slow or too uncertain for repeatable, production-critical browser tasks;
+- pure browser automation can be too brittle when the real problem is UI variability, not step sequencing.
+
+This is why teams should stop asking which approach is more impressive and start asking what kind of control the workflow actually needs.
+
+## Where computer-use models are strongest
+
+Computer-use models are useful when:
+
+- the UI changes frequently;
+- the surface is not easily expressed as a stable automation script;
+- a human would normally interpret layout and context before acting;
+- the task benefits from visual reasoning rather than fixed selectors alone;
+- the product can tolerate a more review-heavy or higher-latency action model.
+
+Official anchor:
+
+- [OpenAI computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+
+## Where browser automation should stay explicit
+
+Explicit browser automation is usually better when:
+
+- the task is repeatable;
+- selectors and states are stable enough to maintain;
+- reliability matters more than UI flexibility;
+- the workflow is high-frequency enough that model cost and latency become material;
+- the product team wants tighter control over every action step.
+
+This is especially true for operational systems where "almost right" automation is still expensive.
+
+## The real control boundary
+
+The true decision is not "AI versus scripts." It is:
+
+- **UI understanding under uncertainty**
+vs
+- **deterministic control under stability**
+
+Teams get into trouble when they use a model for work that should stay scripted, or try to script work that is fundamentally interpretive.
+
+## Where a hybrid design wins
+
+Hybrid design often wins when:
+
+- the model identifies the right target or state;
+- deterministic automation executes the stable action;
+- or browser automation handles the repeatable parts while the model only resolves ambiguous UI segments.
+
+That keeps the expensive, uncertain layer small while still using model reasoning where the interface is genuinely messy.
+
+## What teams often underestimate
+
+Teams often underestimate:
+
+- how expensive it is to debug model-driven UI actions at scale;
+- how costly brittle selectors become in changing third-party interfaces;
+- how much approval and audit logic browser-facing agents need;
+- and how quickly user trust drops if browser agents appear magical but unreliable.
+
+## A practical decision test
+
+Ask these questions:
+
+1. Is the UI stable enough to encode?
+2. Does the workflow need visual interpretation or just repeatable control?
+3. What is the cost of a wrong click or wrong field action?
+4. Can the product add human approval at the right moments?
+5. Is the value in automating a known path or navigating unknown UI state?
+
+Those answers usually determine the architecture more clearly than any product demo.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Built-in tools vs external integrations"
+		href="/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/"
+		description="Use the broader tool-boundary page when browser work is only one part of the agent architecture."
+	/>
+	<LinkCard
+		title="MCP security and approval boundaries"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Browser-facing agents become governance problems quickly if tool access and approvals are weak."
+	/>
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="The same approval-design lessons apply once agents are taking actions instead of only generating text."
+	/>
+	<LinkCard
+		title="Agent evals for tool use"
+		href="/evaluation/agent-evals-for-tool-using-ai-systems/"
+		description="Use evaluation patterns that inspect behavior, not only final answers, once agents touch browser tasks."
+	/>
+</div>

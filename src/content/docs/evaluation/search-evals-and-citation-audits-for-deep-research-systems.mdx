@@ -1,0 +1,146 @@
+---
+title: Search evals and citation audits for deep research systems
+description: A practical evaluation guide for deep research systems that use search, browsing, or retrieval and need stronger source quality, citation discipline, and evidence audits.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Quarterly review
+primaryKeyword: deep research citation evals
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Applied AI teams
+  - Research platform engineers
+  - Evaluation leads
+  - Product owners
+contentStatus: growing
+problemSolved: How to evaluate deep research systems that use search or retrieval so teams can measure source quality, citation reliability, and evidence coverage instead of only checking whether the report sounds polished.
+readerTakeaway: You should leave with a concrete evaluation model for source selection, citation correctness, evidence sufficiency, and escalation behavior in deep research systems.
+keyQuestions:
+  - How should teams grade citation quality in deep research outputs?
+  - What does a good search or browsing eval look like beyond answer style?
+  - Which failures should trigger escalation instead of silent retries?
+notFor:
+  - Simple FAQ bots with no source-grounding requirements
+  - Teams that do not yet care whether outputs are evidence-backed
+  - Readers looking for generic benchmark prompts instead of workflow evaluation
+updateTriggers:
+  - Major shifts in built-in search, browsing, or retrieval behavior
+  - New research-system patterns around source quality and evidence review
+  - Changes in citation or attribution expectations for production AI products
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Search evals and citation audits for deep research systems
+
+Deep research systems fail in a predictable way: the report looks polished, so the team stops checking the evidence path. That is the wrong place to relax. Research systems that use search, browsing, or retrieval should be evaluated on whether they found the right sources, cited them correctly, represented them faithfully, and escalated when the evidence was thin. A fluent report with weak evidence is not a near miss. It is a different failure class.
+
+## Quick answer
+
+Evaluate deep research systems by grading **source selection**, **citation correctness**, **evidence sufficiency**, and **escalation behavior**, not just the final written answer. If the system uses search well but cites poorly, the product still fails. If it cites correctly but relies on weak or stale sources, the product still fails. Research quality has to be audited at the evidence layer.
+
+## Why this matters
+
+Deep research systems sit in an especially risky zone because users tend to overtrust:
+
+- long answers,
+- structured reports,
+- tables with references,
+- and confident synthesis language.
+
+That means weak research systems can look high quality long enough to get deployed into serious workflows.
+
+## What a deep research eval should inspect
+
+At minimum, a useful research eval should look at:
+
+1. **Source selection**
+2. **Citation accuracy**
+3. **Evidence sufficiency**
+4. **Coverage balance**
+5. **Escalation discipline**
+
+Those are product behaviors, not writing-style concerns.
+
+## Where teams usually under-evaluate
+
+Teams often overfocus on:
+
+- whether the answer reads well,
+- whether it is generally correct,
+- whether citations are present,
+- and whether the output format is polished.
+
+The harder and more useful questions are whether the right sources were chosen and whether the evidence really supports the confidence shown.
+
+## A grading model that works in practice
+
+Use a rubric with separate scores for:
+
+| Dimension | What to grade |
+| --- | --- |
+| Source quality | authority, relevance, freshness, and fit for the task |
+| Citation correctness | whether the citation actually supports the claim |
+| Evidence sufficiency | whether the answer has enough support to justify confidence |
+| Synthesis discipline | whether the answer preserves nuance and avoids overstating findings |
+| Escalation behavior | whether the system asks for review when evidence is weak or conflicting |
+
+## What should trigger escalation
+
+Escalation should happen when:
+
+- top sources conflict materially;
+- the available evidence is thin;
+- the highest-quality sources are unavailable or inaccessible;
+- citations support only part of the conclusion;
+- the topic is high stakes enough that weak sourcing is unacceptable.
+
+## Search and retrieval failures should be tagged differently
+
+Useful tags include:
+
+- weak source selected,
+- strong source missed,
+- citation attached to the wrong claim,
+- synthesis overstated relative to evidence,
+- missing counterevidence,
+- failure to escalate low-confidence evidence.
+
+This gives teams a way to improve behavior that is more specific than "hallucination."
+
+## The audit loop that actually helps
+
+A practical audit loop looks like this:
+
+1. choose real research tasks, not toy prompts;
+2. inspect the source list before reading the final answer;
+3. verify citation-to-claim mapping;
+4. judge whether the evidence supports the confidence level shown;
+5. tag failure modes by source, citation, synthesis, and escalation;
+6. rerun after search, prompt, or policy changes.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Deep research workflows for AI teams"
+		href="/use-cases/deep-research-workflows-for-ai-teams/"
+		description="Use the broader workflow page when the evaluation model still needs to stay tied to the research operating system."
+	/>
+	<LinkCard
+		title="Deep research source quality and citation policy"
+		href="/workflows/deep-research-source-quality-and-citation-policy/"
+		description="Turn source quality expectations into explicit policy before scoring failures against them."
+	/>
+	<LinkCard
+		title="Deep research briefs that produce better reports"
+		href="/workflows/deep-research-briefs-that-produce-better-reports/"
+		description="Better evals help most when the brief structure is already good enough to expose real research behavior."
+	/>
+	<LinkCard
+		title="Trace grading for tool-using agents"
+		href="/evaluation/trace-grading-for-tool-using-ai-agents/"
+		description="Use trace-level evaluation once browsing, search, and tool-use steps matter more than final prose style."
+	/>
+</div>
