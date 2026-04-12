@@ -1,0 +1,127 @@
+---
+title: PR checks and merge gates for coding agents
+description: How engineering teams should design pull request checks and merge gates for coding agents so repository automation increases without weakening release discipline.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams define the PR checks and merge gates coding-agent output must satisfy before human review or merge.
+readerTakeaway: You should leave with a practical merge-gate model that keeps coding-agent velocity compatible with engineering quality and release control.
+primaryKeyword: coding agent merge gates
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering leaders
+  - Platform teams
+  - Developer productivity teams
+  - Security owners
+---
+
+## Quick answer
+
+Coding agents should not merge because the diff looks small. They should merge only after the change passes the same gates a disciplined engineering team would require from a human developer, plus a few agent-specific ones.
+
+The minimum healthy merge-gate stack usually includes:
+
+- scope validation,
+- required tests,
+- policy checks,
+- reviewer ownership,
+- and explicit separation between PR creation and PR merge.
+
+## Why this matters
+
+Teams often over-focus on whether the agent can write code and under-focus on whether the repository can absorb that code safely.
+
+The real scaling question is not "can the agent produce diffs?" It is "can the repository process those diffs without degrading reliability?"
+
+That is a merge-gate problem.
+
+## The merge gates that matter most
+
+### 1. Scope gate
+
+The change should remain inside the approved write boundary. If the agent touched forbidden files or expanded beyond the expected scope, the PR should not advance automatically.
+
+### 2. Verification gate
+
+The change should satisfy the required checks for its risk class:
+
+- unit tests,
+- linting,
+- type checks,
+- integration tests,
+- or domain-specific validation.
+
+Low-risk documentation or local test updates may need fewer checks than workflow-sensitive changes.
+
+### 3. Policy gate
+
+The PR should be evaluated against explicit repository policy:
+
+- sensitive paths,
+- dependency changes,
+- infrastructure or CI changes,
+- security-critical files,
+- secrets handling.
+
+This gate should be machine-readable, not only reviewer memory.
+
+### 4. Review gate
+
+Even when the diff is acceptable, the owner of the affected area should remain accountable for the merge decision. This protects against quiet erosion of code ownership.
+
+### 5. Release gate
+
+Merge is not the same as deploy. If the coding agent can open or update PRs, that does not imply it should control release.
+
+## The agent-specific gate many teams forget
+
+Require evidence that the agent actually followed the intended path.
+
+Examples:
+
+- summary of changed files,
+- tests run,
+- unresolved limitations,
+- and whether the change crossed any approval boundaries during generation.
+
+This is the difference between reviewing a diff and reviewing a process.
+
+## When automatic merge may be reasonable
+
+Auto-merge may be reasonable only when all of these are true:
+
+- the change class is low risk,
+- the allowed path is narrow,
+- required checks passed,
+- no sensitive policy rules were triggered,
+- and repository owners agreed the class is safe for automation.
+
+That should be the exception, not the default.
+
+## Warning signs that your merge gates are weak
+
+Your coding-agent merge system is probably under-controlled if:
+
+- CI-sensitive files can be edited without stronger approval,
+- the agent can widen scope without being blocked,
+- reviewers cannot see what checks were actually run,
+- or merge authority quietly expands because "the agent has been fine so far."
+
+## Implementation checklist
+
+Your merge gates are probably healthy when:
+
+- write scope is validated before review;
+- required checks are tied to change class;
+- sensitive files trigger stronger policy automatically;
+- human ownership remains clear at merge time;
+- and merge authority is narrower than PR-authoring authority.
+
+## Compare next
+
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
+- [Policy as code for coding agent permissions](/workflows/policy-as-code-for-coding-agent-permissions/)
+- [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/)

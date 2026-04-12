@@ -1,0 +1,136 @@
+---
+title: Deep research source quality and citation policy
+description: How to set source quality rules and citation policies for deep research systems so long reports become more trustworthy instead of merely longer.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams define source quality, citation expectations, and exclusion rules for deep research systems before those systems produce polished but weak reports.
+readerTakeaway: You should leave with a practical source policy for deep research workflows that improves trust, reduces weak citations, and limits low-grade web noise.
+primaryKeyword: deep research source quality
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Research operations teams
+  - Product owners
+  - Knowledge managers
+---
+
+## Quick answer
+
+Deep research systems get better when they are judged on source quality before report quality.
+
+If the workflow accepts weak sources, duplicate sources, low-authority summaries, or uncited claims, the final report can look sophisticated while still being unreliable. A healthy deep research policy defines:
+
+- what counts as an acceptable source,
+- how many independent sources are required for major claims,
+- which source types need to be down-weighted or excluded,
+- and how the final report must expose uncertainty.
+
+## Why this matters
+
+The failure mode in deep research is rarely "the model wrote bad prose." The more expensive failure is that the system:
+
+- overuses secondary summaries,
+- cites SEO pages instead of primary material,
+- repeats one claim across many low-value sources,
+- or produces confident synthesis from weak evidence.
+
+That is a workflow problem, not only a model problem.
+
+## The minimum healthy source policy
+
+For most production research systems, define at least four source classes:
+
+1. **Primary sources**
+   Regulatory filings, official documentation, earnings materials, standards, vendor technical docs, direct transcripts, original datasets.
+2. **High-quality secondary sources**
+   Established trade publications, credible analysts, technical explainers with clear sourcing, reputable journalism.
+3. **Low-confidence secondary sources**
+   Thin listicles, affiliate content, SEO rewrite pages, anonymous summaries, unsourced aggregators.
+4. **Disallowed sources**
+   Scraped duplicates, AI-generated summaries without provenance, pages with no identifiable publisher, and any source the team cannot defend in review.
+
+The system should prefer class 1, selectively use class 2, heavily constrain class 3, and reject class 4.
+
+## The citation rule that prevents fake depth
+
+Do not let the report cite "many sources" if those sources are just the same claim restated.
+
+For material claims, require:
+
+- at least one primary source when possible,
+- or at least two independent high-quality secondary sources when a primary source does not exist,
+- and explicit uncertainty language when evidence remains incomplete.
+
+This prevents the common failure where five weak web pages look like consensus.
+
+## The source-quality rubric
+
+Before accepting a source into the research context, score it on:
+
+1. **Authority**
+   Is the publisher directly responsible for the information or clearly credible in the domain?
+2. **Specificity**
+   Does the source contain concrete facts, dates, numbers, or technical details?
+3. **Freshness**
+   Is the information recent enough for the topic?
+4. **Independence**
+   Is it genuinely independent, or just a rewrite of another source?
+5. **Traceability**
+   Can a reviewer easily find the original claim and inspect it?
+
+If a source fails two or more of these dimensions, it should not anchor an important conclusion.
+
+## The policy for missing evidence
+
+A deep research system should be allowed to say:
+
+- evidence is thin,
+- primary confirmation was not found,
+- or the answer is conditional on limited sources.
+
+Teams often weaken research quality by forcing every run to end as if the question has a clean answer. Better systems are comfortable returning constrained conclusions.
+
+## What the final report should show
+
+A healthy deep research report usually includes:
+
+- a short statement of scope,
+- the main conclusion,
+- the source basis behind each major claim,
+- the strongest known uncertainty,
+- and the next missing source that would improve confidence.
+
+This is more useful than burying source ambiguity under polished structure.
+
+## Practical workflow rule
+
+If the report quality is bad, inspect the source log before changing the model.
+
+In many teams, the real fix is:
+
+- better source filters,
+- better prompt guidance,
+- better citation requirements,
+- and better review of evidence quality.
+
+The model is often downstream of the real problem.
+
+## Implementation checklist
+
+Your deep research source policy is probably healthy when:
+
+- source classes are defined before report generation starts;
+- primary sources are explicitly preferred;
+- duplicate-summary inflation is treated as a failure;
+- major claims require traceable support;
+- and the report can say "uncertain" without being treated as broken.
+
+## Compare next
+
+- [Deep research workflows for AI teams](/use-cases/deep-research-workflows-for-ai-teams/)
+- [Deep research briefs that produce better reports](/workflows/deep-research-briefs-that-produce-better-reports/)
+- [Web search vs RAG for AI products](/models-and-apis/web-search-vs-rag-for-ai-products/)

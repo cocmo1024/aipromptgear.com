@@ -1,0 +1,153 @@
+---
+title: Policy as code for coding agent permissions
+description: How engineering teams can encode coding-agent permission rules so read, write, branch, merge, and deploy boundaries are explicit instead of dependent on ad hoc human judgment.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams turn vague coding-agent approval expectations into enforceable permission policy that scales across repositories and environments.
+readerTakeaway: You should leave with a practical model for expressing coding-agent permissions as explicit policy instead of one-off reviewer instinct.
+primaryKeyword: coding agent permissions
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Platform teams
+  - Security owners
+  - Engineering leaders
+  - Developer productivity teams
+---
+
+## Quick answer
+
+Coding-agent governance gets stronger when permissions are expressed as policy, not as reviewer mood.
+
+If your team cannot clearly state which agent may:
+
+- read a repository,
+- write code,
+- change tests,
+- touch CI,
+- open a pull request,
+- merge,
+- or deploy,
+
+then your approval model does not scale.
+
+## Why policy as code matters here
+
+Human review is still necessary for risky changes, but review alone is not a permissions system.
+
+When teams rely only on reviewer judgment, they create:
+
+- inconsistent boundaries across repositories,
+- unclear expectations for agents and developers,
+- weak auditability,
+- and approval drift over time.
+
+Policy as code fixes this by turning the boundary into something testable and repeatable.
+
+## The permission layers that should be explicit
+
+Most coding-agent programs should define policy for at least these layers:
+
+1. **Repository read**
+   Which repositories or paths can the agent inspect?
+2. **Bounded write**
+   Which files, folders, or change scopes can it modify?
+3. **Workflow-sensitive files**
+   Can it touch CI, infrastructure, dependency manifests, or security-critical paths?
+4. **Branch and PR actions**
+   Can it create branches, open pull requests, or update existing PRs?
+5. **Merge and deploy**
+   Can it trigger merge, rollout, or production actions?
+
+If these layers are not separately controlled, your permissions are too coarse.
+
+## What policy should encode
+
+Healthy policy typically encodes:
+
+- allowed repositories or path prefixes,
+- forbidden file classes,
+- environment access restrictions,
+- human approval requirements by action,
+- required checks before merge,
+- and conditions that force refusal or escalation.
+
+That gives teams a durable contract they can explain and review.
+
+## The practical rule
+
+Policy should block categories of risk, not only named commands.
+
+For example, "no direct changes to deployment manifests" is better than "do not run tool X," because the same risk may appear through different tools or workflows.
+
+## What not to encode
+
+Do not try to put every engineering decision into policy.
+
+Policy should define boundaries, not replace code review. Its job is to answer:
+
+- what the agent may do automatically,
+- what it may propose but not finalize,
+- and what it must never do without explicit human action.
+
+That is enough to create real leverage without pretending policy can solve architecture quality.
+
+## A simple permission ladder
+
+One healthy starting model:
+
+### Level 1: Read and analyze
+
+Allowed:
+
+- repo read,
+- search,
+- test discovery,
+- issue summarization,
+- risk analysis.
+
+### Level 2: Bounded draft changes
+
+Allowed:
+
+- edits in approved paths,
+- test updates in local scope,
+- documentation changes,
+- branch creation,
+- pull request draft creation.
+
+### Level 3: Sensitive workflow influence
+
+Requires stronger approval:
+
+- dependency changes,
+- CI changes,
+- configuration edits,
+- cross-service refactors.
+
+### Level 4: Merge or deploy impact
+
+Human-controlled by default:
+
+- merge,
+- release,
+- environment mutation,
+- secret-sensitive operations.
+
+## Implementation checklist
+
+Your coding-agent permission policy is probably healthy when:
+
+- read, write, branch, merge, and deploy are separate controls;
+- forbidden paths are defined explicitly;
+- risky file classes trigger stronger approval automatically;
+- and reviewers can explain the policy without relying on institutional memory.
+
+## Compare next
+
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
+- [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/)
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)

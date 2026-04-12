@@ -1,0 +1,138 @@
+---
+title: Tool selection evals and failure taxonomy for AI agents
+description: How to evaluate tool choice in AI agents with a failure taxonomy that separates wrong tool use, missing tool use, approval misses, and execution drift.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams evaluate tool-using agents with a cleaner taxonomy so failures can be fixed at the right layer instead of being hidden inside a generic pass or fail score.
+readerTakeaway: You should leave with a practical failure taxonomy and scoring model for evaluating tool selection in production AI agents.
+primaryKeyword: tool selection evals
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Evaluation owners
+  - AI platform teams
+  - Application engineers
+  - Product leads
+---
+
+## Quick answer
+
+If your agent can call tools, then "did the final answer look okay?" is not enough.
+
+You need to separate at least these failure classes:
+
+1. no tool used when a tool was required,
+2. wrong tool selected,
+3. right tool selected with wrong arguments,
+4. right tool used in the wrong order,
+5. approval or escalation missed,
+6. and correct tool behavior followed by a bad final synthesis.
+
+Without that taxonomy, teams fix the wrong thing.
+
+## Why top-line accuracy hides the expensive failures
+
+A tool-using agent can succeed or fail for different reasons:
+
+- The plan was good but the wrong tool was chosen.
+- The tool was correct but the arguments were malformed.
+- The execution path was correct but an approval gate was skipped.
+- The tool output was fine but the final explanation distorted it.
+
+These are not one problem. They are different defects with different owners.
+
+## The minimum healthy failure taxonomy
+
+For most production agents, track these buckets explicitly:
+
+### 1. Missing tool use
+
+The agent answered from prior knowledge or rough inference when it should have searched, retrieved, verified, or executed.
+
+### 2. Wrong tool choice
+
+The agent took an available tool path, but it chose the wrong one for the task.
+
+### 3. Wrong tool arguments
+
+The tool class was correct, but the request was incomplete, overly broad, malformed, or otherwise damaging.
+
+### 4. Wrong sequence or orchestration
+
+The agent called tools in the wrong order, repeated unnecessary steps, or failed to narrow scope before acting.
+
+### 5. Approval or escalation failure
+
+The agent took action when it should have paused, escalated, or asked for permission.
+
+### 6. Final synthesis failure
+
+The tool trace was mostly acceptable, but the final answer misrepresented the evidence or outcome.
+
+## What the eval should actually score
+
+A strong tool-selection eval should score at least four layers:
+
+1. **Need for tool use**
+   Did the agent correctly decide whether a tool was necessary?
+2. **Tool choice**
+   Did it pick the right tool from the allowed set?
+3. **Execution quality**
+   Were the arguments, sequence, and state transitions acceptable?
+4. **Policy behavior**
+   Did it respect approval, escalation, and stop conditions?
+
+The final output is still important, but it should sit on top of these layers, not replace them.
+
+## The high-value eval dataset pattern
+
+Do not build only "happy path" evals.
+
+Good datasets include:
+
+- ambiguous cases where the agent must choose whether to search,
+- misleading cases where a tempting tool is wrong,
+- cases where a tool is available but approval is required,
+- and cases where the evidence is incomplete and the correct behavior is to stop or hedge.
+
+That is how you measure operational judgment rather than demo fluency.
+
+## The grading rule that saves time
+
+Use the taxonomy to decide ownership:
+
+- missing tool use may be a prompting or planning issue,
+- wrong tool choice may be an orchestration or policy issue,
+- wrong arguments may be a schema or tool-description problem,
+- approval misses may be a governance problem,
+- and final synthesis failures may still be model behavior.
+
+This turns evals into a real debugging system.
+
+## What teams usually miss
+
+Many teams evaluate tools only when the agent used them. They fail to test:
+
+- when the agent should have used a tool and did not,
+- when it should have refused a tool path,
+- and when it should have stopped instead of continuing.
+
+Those are usually the costliest failures.
+
+## Implementation checklist
+
+Your tool-selection evals are probably healthy when:
+
+- failure classes are explicit instead of buried in one score;
+- approval behavior is graded alongside tool behavior;
+- datasets include ambiguous and risky cases, not only easy ones;
+- and the team can route failures to the right owner without re-reading every trace manually.
+
+## Compare next
+
+- [Agent evals for tool-using AI systems](/evaluation/agent-evals-for-tool-using-ai-systems/)
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
