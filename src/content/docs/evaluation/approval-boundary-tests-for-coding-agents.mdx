@@ -1,0 +1,117 @@
+---
+title: Approval boundary tests for coding agents
+description: How to test whether coding agents respect approval boundaries for read, write, CI, dependency, merge, and deploy actions before those boundaries are enforced only in production.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams test whether coding agents honor approval boundaries consistently instead of assuming policy rules will work because they exist on paper.
+readerTakeaway: You should leave with a practical test model for validating coding-agent approval boundaries before production trust expands.
+primaryKeyword: approval boundary tests
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Platform teams
+  - Security owners
+  - Developer productivity teams
+  - Evaluation owners
+---
+
+## Quick answer
+
+If coding-agent approval boundaries matter, they should be tested like any other production control.
+
+That means you need examples where the agent should:
+
+- proceed,
+- pause,
+- ask for approval,
+- refuse,
+- or escalate.
+
+Without those tests, the team only discovers approval failures after real repository risk appears.
+
+## Why policy documents are not enough
+
+A policy can look precise and still fail in operation.
+
+Common reasons:
+
+- the agent does not classify the action correctly,
+- the tool wrapper does not expose the relevant boundary,
+- the prompt conflicts with the policy,
+- or the reviewer assumes the system blocked something it only warned about.
+
+Approval boundaries become real only when they are exercised under test.
+
+## The minimum approval-boundary suite
+
+Most coding-agent programs should test at least:
+
+### 1. Allowed read actions
+
+The agent should proceed without unnecessary friction.
+
+### 2. Allowed bounded write actions
+
+The agent should propose or perform the action inside the approved scope.
+
+### 3. Sensitive file access
+
+The agent should pause or request approval when the task touches CI, dependency manifests, infrastructure, or security-sensitive paths.
+
+### 4. Merge or deploy attempts
+
+The agent should not silently treat authoring authority as merge or deploy authority.
+
+### 5. Ambiguous scope changes
+
+The agent should escalate instead of broadening the task automatically.
+
+## What to measure
+
+Approval-boundary tests should score:
+
+- whether the right boundary was triggered,
+- whether the agent explained the boundary correctly,
+- whether it chose the proper next action,
+- and whether it avoided hidden bypass behavior.
+
+This is both a behavioral and a governance test.
+
+## The failure that matters most
+
+The costliest failure is not always blatant abuse. Often it is **quiet boundary drift**:
+
+- the agent starts editing slightly broader scopes,
+- sensitive changes stop triggering stronger review,
+- or reviewers grow accustomed to approving without checking why a gate fired.
+
+Boundary tests are one of the only reliable ways to catch this early.
+
+## How to build the test set
+
+Good approval-boundary tests usually include:
+
+- near-boundary tasks,
+- deceptively simple tasks that touch sensitive files,
+- tasks that mix safe and unsafe actions,
+- and tasks that should stop because the request is underspecified.
+
+These are more valuable than obvious "red team" extremes alone.
+
+## Implementation checklist
+
+Your approval-boundary tests are probably healthy when:
+
+- each boundary class has positive and negative cases;
+- the expected action is explicit;
+- risky file classes and merge/deploy authority are tested directly;
+- and the team can detect drift before the repository absorbs it.
+
+## Compare next
+
+- [Policy as code for coding agent permissions](/workflows/policy-as-code-for-coding-agent-permissions/)
+- [PR checks and merge gates for coding agents](/workflows/pr-checks-and-merge-gates-for-coding-agents/)
+- [Eval datasets for coding agents and repository tasks](/evaluation/eval-datasets-for-coding-agents-and-repository-tasks/)

@@ -1,0 +1,116 @@
+---
+title: Human escalation thresholds for deep research systems
+description: How to decide when deep research systems should stop, escalate, or request human input instead of continuing to search and synthesize on their own.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams define escalation thresholds for deep research systems so ambiguous, high-risk, or low-evidence cases do not get pushed through as polished answers.
+readerTakeaway: You should leave with a practical escalation model for deep research workflows that separates acceptable automation from cases that still need human judgment.
+primaryKeyword: deep research escalation
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Research operations teams
+  - Product managers
+  - Governance owners
+---
+
+## Quick answer
+
+Deep research systems should escalate when the remaining uncertainty is more expensive than the delay of human review.
+
+That usually means escalating when:
+
+- source quality is weak,
+- sources materially disagree,
+- the task is high stakes,
+- the request is underspecified,
+- or the system is approaching a cost or runtime ceiling without reaching real confidence.
+
+## Why this matters
+
+The failure mode is not that the system says "I need help." The failure mode is that it keeps searching and then returns a polished answer anyway.
+
+That creates the appearance of confidence without the evidence quality to support it.
+
+## The practical escalation classes
+
+Most teams benefit from at least four escalation triggers:
+
+### 1. Clarification required
+
+The user intent is too underspecified for a trustworthy report.
+
+### 2. Evidence quality failure
+
+The available sources are thin, low-authority, or internally inconsistent.
+
+### 3. High-stakes decision boundary
+
+The question materially affects legal, financial, policy, or other high-risk choices.
+
+### 4. Budget exhaustion without confidence
+
+The system has consumed the allocated search/runtime budget but still lacks a defensible conclusion.
+
+These are not the same situation and should not all produce the same fallback message.
+
+## The wrong escalation rule
+
+The weakest rule is "only escalate when the model feels uncertain."
+
+That is too vague. Escalation thresholds should be grounded in:
+
+- source class,
+- claim importance,
+- conflict level,
+- missing information,
+- and workflow risk.
+
+## What a healthy escalation looks like
+
+A good escalation usually includes:
+
+- why the run was paused,
+- what information is missing,
+- which sources are conflicting or insufficient,
+- and what the human can do next.
+
+This preserves momentum instead of turning escalation into a dead end.
+
+## When not to escalate
+
+Do not escalate every mild uncertainty. That simply recreates a human queue with extra software in front of it.
+
+Escalation is most useful when the workflow can clearly distinguish between:
+
+- normal uncertainty that the system can expose and proceed through,
+- and uncertainty that changes the acceptability of the final answer.
+
+## The practical operating rule
+
+Escalate when the risk of being wrong exceeds the value of continued autonomous research.
+
+That usually happens earlier than teams expect in:
+
+- high-stakes questions,
+- contradictory-source situations,
+- and underspecified requests.
+
+## Implementation checklist
+
+Your escalation thresholds are probably healthy when:
+
+- escalation triggers are explicit instead of subjective;
+- source conflict and source weakness are treated differently;
+- the system can explain why it escalated;
+- and human reviewers receive a clear next action rather than a vague failure state.
+
+## Compare next
+
+- [Deep research source quality and citation policy](/workflows/deep-research-source-quality-and-citation-policy/)
+- [Deep research runtime budgets and cost controls](/workflows/deep-research-runtime-budgets-and-cost-controls/)
+- [Deep research briefs that produce better reports](/workflows/deep-research-briefs-that-produce-better-reports/)

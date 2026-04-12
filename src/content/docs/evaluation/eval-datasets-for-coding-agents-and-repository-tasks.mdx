@@ -1,0 +1,129 @@
+---
+title: Eval datasets for coding agents and repository tasks
+description: How to build evaluation datasets for coding agents so repository tasks are measured against realistic scopes, constraints, and failure modes rather than toy prompts.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams create evaluation datasets for coding agents that reflect real repository work instead of shallow benchmark prompts.
+readerTakeaway: You should leave with a practical design for coding-agent eval datasets that measure repository-relevant quality, not just answer fluency.
+primaryKeyword: coding agent eval dataset
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Evaluation owners
+  - Platform teams
+  - Developer productivity teams
+  - Engineering leads
+---
+
+## Quick answer
+
+Coding-agent eval datasets should look like repository work, not like generic coding questions.
+
+That means examples should encode:
+
+- realistic file scope,
+- repository constraints,
+- approval boundaries,
+- tests or checks that matter,
+- and the kinds of ambiguity engineers actually face in real change requests.
+
+## Why benchmark-style prompts are not enough
+
+A toy coding prompt may show whether a model can generate code. It says much less about whether an agent can:
+
+- navigate a real repository,
+- stay inside the allowed scope,
+- choose the right files,
+- avoid touching risky paths,
+- and stop when the task needs human judgment.
+
+That is why repository-aware eval data matters.
+
+## What a healthy coding-agent eval example includes
+
+Each example should usually define:
+
+1. the task request,
+2. the allowed write scope,
+3. the forbidden paths,
+4. the expected verification or checks,
+5. and the acceptable end state.
+
+Without those, the eval mostly measures coding fluency rather than operational discipline.
+
+## The most valuable example classes
+
+High-yield dataset classes usually include:
+
+### Local bounded change
+
+A small feature or fix in one narrow scope.
+
+### Ambiguous repository navigation
+
+The agent must find the right place to work without expanding scope unnecessarily.
+
+### Approval-sensitive change
+
+The task appears small but touches CI, dependencies, or another sensitive file class that should trigger stronger approval.
+
+### Test-alignment task
+
+The task requires updating or adding tests in a way that reflects the change instead of editing snapshots blindly.
+
+### Refusal or escalation case
+
+The correct behavior is not to proceed automatically.
+
+These classes reveal whether the agent behaves like a safe repository operator, not just a code generator.
+
+## The dataset design rule
+
+Use examples pulled from real engineering work whenever possible:
+
+- anonymized past tasks,
+- representative bug classes,
+- common refactor requests,
+- and real review comments that caused production confusion.
+
+That produces a dataset with much higher operational value than synthetic prompt-only tasks.
+
+## What to score
+
+For coding-agent eval datasets, score at least:
+
+- file/path selection,
+- scope discipline,
+- policy compliance,
+- verification behavior,
+- and final correctness.
+
+The change itself matters, but so does the path the agent used to get there.
+
+## What teams usually miss
+
+Teams often omit negative examples:
+
+- tasks that should be refused,
+- tasks that should be escalated,
+- or tasks where the request is underspecified.
+
+Those are crucial because repository safety depends on restraint as much as capability.
+
+## Implementation checklist
+
+Your coding-agent eval dataset is probably healthy when:
+
+- examples look like real repository work;
+- path and policy constraints are explicit;
+- escalation cases are included;
+- and success requires more than producing plausible code.
+
+## Compare next
+
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
+- [PR checks and merge gates for coding agents](/workflows/pr-checks-and-merge-gates-for-coding-agents/)
+- [Tool selection evals and failure taxonomy for AI agents](/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/)

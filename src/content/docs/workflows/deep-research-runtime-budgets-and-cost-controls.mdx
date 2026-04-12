@@ -1,0 +1,138 @@
+---
+title: Deep research runtime budgets and cost controls
+description: How to control runtime, source breadth, and spending in deep research systems so better research does not become uncontrolled research.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams set runtime and cost limits for deep research systems before research quality collapses under uncontrolled search scope and token spend.
+readerTakeaway: You should leave with a practical runtime and cost-control model for deep research systems that balances coverage, latency, and budget.
+primaryKeyword: deep research cost control
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Product owners
+  - Research operations teams
+  - Finance-conscious engineering teams
+---
+
+## Quick answer
+
+Deep research systems need budgets the same way cloud systems do.
+
+If the workflow does not define:
+
+- how long a run may continue,
+- how many search branches it may open,
+- what source depth is enough,
+- and when to stop instead of searching more,
+
+then "better research" quickly turns into uncontrolled cost and inconsistent runtime.
+
+## Why this matters
+
+Deep research is attractive because it can keep digging. The downside is that many teams confuse additional effort with additional value.
+
+The expensive failures are predictable:
+
+- too many low-value search branches,
+- duplicate evidence gathering,
+- oversized reports that add little confidence,
+- and user waits that exceed the business value of the task.
+
+These are budgeting failures, not just prompting failures.
+
+## The three budgets that matter
+
+A healthy deep research system usually enforces three separate budgets:
+
+### 1. Runtime budget
+
+How long can the run continue before it must finish or return partial results?
+
+### 2. Evidence budget
+
+How many source branches, documents, or citations should be gathered before confidence is considered sufficient?
+
+### 3. Spend budget
+
+How much token spend, search-tool spend, or end-to-end cost is acceptable for this request class?
+
+If you track only one of these, the other two will usually drift.
+
+## The practical control model
+
+Most teams benefit from defining at least three research tiers:
+
+### Fast answer
+
+- short runtime,
+- small source set,
+- good for directional questions and lightweight summaries.
+
+### Standard research
+
+- moderate runtime,
+- higher citation expectations,
+- good for normal business research and recurring competitive or market questions.
+
+### Premium research
+
+- long runtime,
+- broader source coverage,
+- stricter citation standards,
+- reserved for the highest-value tasks.
+
+That prevents every task from accidentally running as the most expensive tier.
+
+## Where cost usually leaks
+
+Deep research spend often leaks through:
+
+- repeated search reformulations that do not improve evidence quality,
+- redundant source collection,
+- oversized context from weak pages,
+- and prompts that encourage exhaustive exploration even when the decision does not require it.
+
+The answer is usually not "use a cheaper model first." The answer is often "reduce waste in the workflow."
+
+## The stop-condition rule
+
+Every deep research workflow should define explicit stop conditions.
+
+Examples:
+
+- enough independent sources have confirmed the main claim,
+- no new high-value evidence has appeared after N search branches,
+- the task has reached its maximum allowed spend,
+- or the remaining uncertainty should be handed back to a human instead of researched automatically.
+
+Without stop conditions, the system has no real idea when it is done.
+
+## What the user should see
+
+Healthy deep research products usually expose at least one of these:
+
+- research tier,
+- time expectation,
+- scope note,
+- or confidence caveat.
+
+That helps users understand why one task gets a short answer and another gets a long evidence-backed report.
+
+## Implementation checklist
+
+Your deep research runtime controls are probably healthy when:
+
+- runtime, evidence, and spend are tracked separately;
+- research tiers exist instead of one global behavior;
+- stop conditions are explicit;
+- and the team can explain why a run consumed the budget it did.
+
+## Compare next
+
+- [Deep research workflows for AI teams](/use-cases/deep-research-workflows-for-ai-teams/)
+- [Deep research source quality and citation policy](/workflows/deep-research-source-quality-and-citation-policy/)
+- [Built-in search economics for AI products](/models-and-apis/built-in-search-economics-for-ai-products/)
