@@ -1,0 +1,150 @@
+---
+title: Tool-use latency and cost budgets for AI products
+description: How to set practical latency and cost budgets for web search, file search, code execution, and multi-tool agent runs before tool use quietly destroys product economics.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams decide how much latency and spend a tool-using AI workflow can absorb before the product becomes too slow or too expensive to scale.
+readerTakeaway: You should leave with a workflow-level budgeting model for tool use, plus clearer rules for when search, retrieval, or execution should be optional rather than default.
+primaryKeyword: ai tool use cost
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Applied AI engineers
+  - Platform teams
+  - Product operations owners
+keyQuestions:
+  - How should teams budget latency across tool-using AI workflows?
+  - When do built-in tools add enough value to justify their workflow cost?
+  - Which tool calls should be optional instead of always-on defaults?
+notFor:
+  - Teams still validating whether a workflow needs tools at all
+  - Pure benchmark discussions with no production budget constraints
+updateTriggers:
+  - Changes in OpenAI tool pricing or runtime behavior
+  - New product patterns where tool calls materially change workflow economics
+  - Material latency changes in built-in search, file search, or code execution
+---
+
+## Quick answer
+
+Tool use should be budgeted at the **workflow** level, not the call level.
+
+That means teams should ask:
+
+- how much end-to-end latency the user will tolerate,
+- how much spend the workflow can absorb per successful task,
+- and which tool calls are essential versus optional.
+
+If a workflow only works when every request uses search, retrieval, and execution, it is usually overbuilt or underspecified.
+
+## Why this matters
+
+Teams often add tools because they improve answer quality in isolation. The product breaks later because:
+
+- search adds latency to requests that did not need freshness,
+- file search is enabled when the answer was already available in context,
+- code execution is used for work that did not need computation,
+- or several tools stack together until the experience becomes slow and expensive.
+
+The failure is not usually the tool. It is weak budgeting discipline.
+
+## Official signals checked April 13, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI pricing](https://platform.openai.com/docs/pricing/) | File search, web search, and code interpreter each add their own workflow costs | Tool economics should be planned explicitly instead of hidden inside model spend |
+| [OpenAI tools guide](https://platform.openai.com/docs/guides/tools) | Tool use is now a first-class product primitive | Teams need tool budgets the same way they need model budgets |
+| [OpenAI file search guide](https://platform.openai.com/docs/guides/tools-file-search/) | File search is managed retrieval, not free retrieval | Retrieval convenience still has storage and call economics |
+| [OpenAI code interpreter guide](https://platform.openai.com/docs/guides/tools-code-interpreter/) | Code execution is positioned as a sandboxed tool for analysis and transformation | Execution should be reserved for work that visibly benefits from it |
+
+## A practical budgeting model
+
+For each workflow, define four numbers:
+
+1. **Max acceptable latency**
+2. **Max acceptable cost per completed task**
+3. **Minimum uplift required from each tool**
+4. **Fallback mode if the tool is skipped**
+
+Without these, teams end up enabling tools by habit rather than by evidence.
+
+## The most common budget mistake
+
+The most common mistake is using tool calls as a proxy for product intelligence.
+
+That shows up as:
+
+- search on every request,
+- retrieval on every request,
+- execution on every vaguely analytical request,
+- or agent loops that keep calling tools until the answer looks sophisticated enough.
+
+This can improve demos while damaging real unit economics.
+
+## Where the budget usually belongs
+
+### Web search
+
+Use when:
+
+- freshness matters,
+- public evidence matters,
+- or source discovery is part of the user value.
+
+Do not make it a default tax on closed-world product tasks.
+
+### File search
+
+Use when:
+
+- the workflow genuinely depends on stored knowledge,
+- and the answer quality improves enough to justify retrieval overhead.
+
+Do not pay retrieval overhead for content already available in the prompt or app state.
+
+### Code execution
+
+Use when:
+
+- computation, transformation, or file analysis materially improves quality.
+
+Do not use it as a theatrical extra step for work the model can do directly.
+
+## The best operating rule
+
+Each tool should have:
+
+- a clear trigger,
+- a measurable uplift,
+- and a fallback.
+
+If the team cannot explain those three things, the tool is probably being used too often.
+
+## A concrete workflow test
+
+For any tool-connected workflow, compare:
+
+1. no-tool baseline,
+2. minimal-tool version,
+3. full-tool version.
+
+Measure:
+
+- latency,
+- cost,
+- completion rate,
+- evidence quality,
+- and user-value change.
+
+This is usually enough to show whether a tool is essential or just expensive.
+
+## Compare next
+
+- [Built-in search economics for AI products](/models-and-apis/built-in-search-economics-for-ai-products/)
+- [File search vs external vector databases for AI products](/models-and-apis/file-search-vs-external-vector-databases-for-ai-products/)
+- [Code interpreter vs external Python sandboxes for AI workflows](/models-and-apis/code-interpreter-vs-external-python-sandboxes-for-ai-workflows/)
+- [Batch API vs background mode for large AI jobs](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/)

@@ -1,0 +1,120 @@
+---
+title: Tool timeouts, retries, and idempotency for AI agents
+description: How to design timeout, retry, and idempotency rules for tool-using agents before slow tools and repeated actions quietly become production failures.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams define timeout and retry rules for tool-using agents so the system does not multiply failures, duplicate writes, or hide operational drift behind repeated tool attempts.
+readerTakeaway: You should leave with a practical control model for when agents should retry, when they should stop, and why idempotency matters more once tools can write or trigger side effects.
+primaryKeyword: ai agent retries
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Automation engineers
+  - Product engineers
+  - Reliability owners
+keyQuestions:
+  - When should an agent retry a failed tool call?
+  - Which tools need stronger idempotency guarantees?
+  - How should teams separate recoverable latency from dangerous repeated action?
+notFor:
+  - Pure model-prompt retries with no tool side effects
+  - General distributed-systems theory outside agent workflows
+updateTriggers:
+  - New official guidance around tool execution and background jobs
+  - Changes in provider-side tool orchestration patterns
+  - Material adoption changes in agent execution frameworks
+---
+
+## Quick answer
+
+Agents should retry only when the failure is **recoverable**, the action is **safe to repeat**, and the team can explain why another attempt is more likely to succeed.
+
+If the tool can write, purchase, submit, delete, or trigger side effects, idempotency matters before retry logic does.
+
+## Why this is an agent control problem
+
+Without explicit timeout and retry rules, agents tend to do the wrong thing in production:
+
+- wait too long on slow tools,
+- retry the wrong calls,
+- duplicate side effects,
+- or keep trying until the workflow looks busy enough to appear intelligent.
+
+This is not resilience. It is uncontrolled repetition.
+
+## The three controls that matter
+
+### 1. Timeouts
+
+Every tool class needs a deadline.
+
+If the task is interactive, timeout budgets should be tighter. If the task is backgrounded, longer budgets may be fine, but they still need a stop condition.
+
+### 2. Retries
+
+Retries should happen only for failures likely to recover:
+
+- transient network issues,
+- temporary rate limits,
+- or short-lived upstream instability.
+
+They should not be the default response to ambiguous tool errors.
+
+### 3. Idempotency
+
+Any tool with side effects needs a model for safe repetition. If the same request can create duplicate writes or repeated submissions, retries can make the system actively dangerous.
+
+## The practical retry rule
+
+Retry only when all three are true:
+
+1. the failure class is known and transient,
+2. the tool action is idempotent or safely replayable,
+3. another attempt has a realistic chance of success.
+
+If one of those is false, escalate or stop.
+
+## Where teams get this wrong
+
+The most common failures are:
+
+- using the same retry policy for read and write tools,
+- letting the model decide to "try again" without system constraints,
+- and ignoring whether the target system supports idempotency keys or deduplication logic.
+
+That leads to invisible duplication and confusing audit trails.
+
+## A practical policy split
+
+| Tool class | Healthier retry model |
+| --- | --- |
+| Read-only search or fetch | Limited retries on known transient errors |
+| File or retrieval lookups | Retries with bounded attempt count and timeout budget |
+| Write actions | Retry only with explicit idempotency support or human confirmation |
+| High-risk side effects | Prefer escalation over autonomous retries |
+
+This split is more useful than a global retry count.
+
+## What to log
+
+At minimum, log:
+
+- original tool request,
+- failure class,
+- retry count,
+- timeout reason,
+- idempotency token or dedupe key if used,
+- and whether the final action was completed, abandoned, or escalated.
+
+Without those logs, the team cannot tell whether the agent is resilient or just noisy.
+
+## Compare next
+
+- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
+- [Batch API vs background mode for large AI jobs](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/)
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)

@@ -1,0 +1,147 @@
+---
+title: EvalOps release gates and scorecard ownership for AI teams
+description: How to run evaluation operations in production AI teams, including release gates, score ownership, reviewer roles, and what should block a rollout.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams turn evaluation from occasional prompt testing into an operational release discipline with explicit gates, owners, and rollback criteria.
+readerTakeaway: You should leave with a practical EvalOps model for who owns scores, what blocks a release, and how to stop AI quality from drifting through process ambiguity.
+primaryKeyword: evalops
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Evaluation owners
+  - AI platform leads
+  - Product operations teams
+  - Applied AI engineers
+keyQuestions:
+  - Who should own AI scorecards and release decisions?
+  - Which eval failures should block rollout?
+  - How should teams operate evaluation as an ongoing release function instead of an occasional experiment?
+notFor:
+  - One-off prototypes with no release process
+  - Teams looking for a benchmark leaderboard rather than operating discipline
+updateTriggers:
+  - New OpenAI eval tooling or release workflow changes
+  - Shifts in agent release practice across production AI teams
+  - Material changes in quality control expectations for tool-using systems
+---
+
+## Quick answer
+
+Evaluation becomes operational when the team can answer three questions clearly:
+
+1. who owns the score,
+2. what score blocks release,
+3. and who has authority to override or roll back.
+
+Without those answers, evaluation stays advisory and quality drift becomes inevitable.
+
+## Why EvalOps matters
+
+Most AI teams do some evaluation. Far fewer operate evaluation as a release system.
+
+That gap shows up when:
+
+- prompt changes ship without a fresh regression pass,
+- nobody knows whether a failing score is informational or blocking,
+- teams disagree on whose judgment matters,
+- or a bad rollout stays live because rollback rules were never written.
+
+EvalOps exists to turn evaluation into a production control, not a research ritual.
+
+## The minimum operating model
+
+Every serious AI team should define:
+
+- a scorecard,
+- an owner for each score family,
+- a release gate,
+- a rollback trigger,
+- and a review cadence.
+
+If one of those is missing, the release discipline is probably weak.
+
+## What usually belongs on the scorecard
+
+The scorecard should include only metrics the team is willing to act on. Typical categories:
+
+- task success,
+- policy or safety compliance,
+- tool selection quality,
+- evidence or citation quality,
+- approval-boundary compliance,
+- latency and cost drift,
+- and reviewer disagreement rates for subjective tasks.
+
+The scorecard should be smaller than the team first wants, but stricter.
+
+## Who should own what
+
+A practical split is:
+
+| Area | Typical owner |
+| --- | --- |
+| Workflow success and user-value scores | product or applied AI owner |
+| Tool-use and trace scores | evaluation or platform team |
+| Approval and security boundary scores | platform or security owner |
+| Latency and cost regressions | platform or product operations owner |
+| Override decisions | named release authority, not consensus drift |
+
+Shared visibility is useful. Shared ownership is usually where accountability dies.
+
+## What should block a release
+
+Good blocking gates usually include:
+
+- regressions on high-value tasks,
+- approval-boundary failures,
+- citation or evidence failures in research workflows,
+- unacceptable cost drift,
+- or latency regressions large enough to break the product experience.
+
+What should *not* block a release are vanity metrics nobody trusts enough to act on.
+
+## A healthier release gate model
+
+Use three states:
+
+- **Pass**: rollout can proceed.
+- **Conditional**: rollout can proceed only with scope limits, approvals, or monitoring.
+- **Block**: rollout stops until the issue is fixed or formally overridden.
+
+This is better than pretending everything is binary when most AI releases are not.
+
+## Override discipline
+
+Overrides should be:
+
+- rare,
+- named,
+- recorded,
+- and tied to follow-up review.
+
+If overrides happen casually, the evaluation system is training the organization to ignore itself.
+
+## The best weekly operating loop
+
+EvalOps usually works best as a repeating loop:
+
+1. update the candidate change,
+2. run the release scorecard,
+3. inspect failing slices,
+4. classify failures by type,
+5. decide pass, conditional, or block,
+6. record override and rollback conditions,
+7. monitor live behavior after release.
+
+That loop is operational enough to scale without turning into bureaucracy.
+
+## Compare next
+
+- [Regression loops](/evaluation/regression-loops/)
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
+- [Approval boundary tests for coding agents](/evaluation/approval-boundary-tests-for-coding-agents/)
+- [Tool selection evals and failure taxonomy for AI agents](/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/)
