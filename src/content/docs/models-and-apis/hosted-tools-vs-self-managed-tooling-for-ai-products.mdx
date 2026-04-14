@@ -1,0 +1,102 @@
+---
+title: Hosted tools vs self-managed tooling for AI products
+description: How to decide when vendor-hosted search, retrieval, and execution tools are still cheaper and faster than owning internal tool infrastructure.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams decide when hosted tools remain the right operating choice and when self-managed tool infrastructure becomes economically and operationally justified.
+readerTakeaway: You should leave with a practical cost-and-control framework for deciding whether to keep using hosted tools or move parts of the stack in-house.
+primaryKeyword: hosted tools vs self managed tooling for ai products
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Applied AI engineers
+  - Platform teams
+  - Product operations owners
+keyQuestions:
+  - When are hosted tools still the cheaper answer?
+  - What control gaps actually justify self-managed tooling?
+  - Which teams move too early into infrastructure ownership?
+notFor:
+  - Teams that have not yet proven user demand for tool use
+  - Pure model benchmarking without workflow economics
+updateTriggers:
+  - Material changes in hosted tool capabilities or pricing
+  - New patterns in production teams replacing hosted retrieval or execution
+  - Shifts in enterprise control requirements for AI products
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Hosted tools vs self-managed tooling for AI products
+
+Teams often jump into self-managed retrieval, browser control, Python runtimes, or search infrastructure for the wrong reason. The trigger is usually discomfort, not evidence. Hosted tools feel limiting, so teams assume ownership equals maturity. In practice, many products lose months to infrastructure work before they have enough workflow volume or enough control requirements to justify it.
+
+## Quick answer
+
+Hosted tools are usually the right answer when:
+
+- the workflow is still being shaped;
+- the team needs faster iteration more than deeper control;
+- usage is meaningful but not yet large enough to create obvious cost pressure;
+- the product does not yet require custom retrieval, custom runtime dependencies, or tight internal network controls.
+
+Self-managed tooling becomes justified when the team has **measurable pressure** from one or more of these:
+
+- cost at steady volume;
+- missing control over data paths or runtime behavior;
+- missing integration depth with internal systems;
+- governance requirements that the hosted tool boundary cannot satisfy.
+
+## The real decision is not cost alone
+
+The actual decision has four dimensions:
+
+| Dimension | Hosted tools usually win when | Self-managed tools usually win when |
+| --- | --- | --- |
+| Time to value | The workflow still changes every few weeks | The workflow is stable enough to optimize |
+| Team capacity | Product and applied AI teams are small | Platform and operations ownership already exist |
+| Governance | Standard controls are acceptable | Data residency, custom auth, or internal runtime policy matter |
+| Economics | Tool cost is noticeable but tolerable | Tool cost compounds into a clear margin problem |
+
+If only one of those dimensions points toward self-management, the move is often premature.
+
+## Where teams move too early
+
+The common mistake is replacing hosted tools because they feel expensive before the team has proven the **workflow value** of the tool itself. That shows up as building a vector layer before retrieval quality is trusted, owning a sandbox runtime before execution frequency is clear, or wiring browser automation and agents into internal systems before permission boundaries are mature.
+
+## Signals that self-managed tooling is justified
+
+Self-management is more defensible when the team can show:
+
+- a repeated workflow where the tool shape has stopped changing;
+- consistent usage volume, not occasional spikes;
+- a control or integration requirement that is not negotiable;
+- clear internal ownership for uptime, debugging, and policy enforcement;
+- and a credible migration path that does not break current users.
+
+Without those, "we should own more of the stack" is usually an identity statement, not an operating decision.
+
+## A practical migration model
+
+The cleanest transition is almost never "replace hosted tools everywhere." It is usually:
+
+1. keep hosted tools for low-volume or low-risk workflows;
+2. move one expensive or control-sensitive path first;
+3. compare quality, runtime, failure modes, and support burden over a fixed period;
+4. expand only if the owned path is clearly better on the workflow that matters.
+
+## What product teams should measure first
+
+Before replacing hosted tools, measure tool invocation rate per completed task, latency added by each tool boundary, failure or fallback rates, workflow value with the tool enabled versus disabled, and engineering or on-call burden the internal version would create. If those are missing, the migration is happening too early.
+
+## Next-step references
+
+<div class="portal-links">
+  <LinkCard title="Tool-use latency and cost budgets" href="/models-and-apis/tool-use-latency-and-cost-budgets/" description="Use this page when the team needs a workflow-level budget before deciding whether hosted tools are too expensive." />
+  <LinkCard title="Built-in search economics" href="/models-and-apis/built-in-search-economics-for-ai-products/" description="Use this page when the immediate question is whether hosted search is creating enough value to stay enabled." />
+  <LinkCard title="Built-in tools vs external integrations" href="/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/" description="Use this page when the architecture boundary is vendor-managed tools versus internally owned integrations." />
+</div>

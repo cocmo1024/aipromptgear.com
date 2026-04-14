@@ -1,0 +1,94 @@
+---
+title: Tool-call success rates and ground truth for agent evals
+description: How to evaluate tool-using agents with the right success signals, ground truth, and failure splits instead of relying on final-answer quality alone.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: medium
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams measure whether tool-using agents are actually succeeding at tool choice, argument quality, and state transitions rather than only sounding correct in the final answer.
+readerTakeaway: You should leave with an eval model that separates tool success, workflow success, and answer quality into distinct measurable layers.
+primaryKeyword: tool call success rates for agent evals
+searchIntent: learn
+decisionStage: implementation
+targetRoles:
+  - Applied AI engineers
+  - Evaluation owners
+  - AI platform teams
+  - Product operations teams
+keyQuestions:
+  - What should count as a successful tool call?
+  - How should teams define ground truth for tool-using workflows?
+  - What failure splits matter most for agent evals?
+notFor:
+  - One-shot text generation systems with no tool use
+  - Teams looking only for model benchmark summaries
+updateTriggers:
+  - New practical patterns in agent evaluation
+  - Changes in how tool traces and tool outputs are captured
+  - Shifts in common review practice for tool-using systems
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Tool-call success rates and ground truth for agent evals
+
+Teams often say an agent "worked" because the final answer looked plausible. That is not enough once the system starts using search, retrieval, file access, browser control, or internal APIs. A tool-using workflow can fail long before the last answer. If evals only grade the answer, the team never learns whether the failure came from the wrong tool, the wrong arguments, the wrong sequence, or a weak approval decision.
+
+## Quick answer
+
+Tool-using agent evals should measure at least three layers:
+
+1. **tool-call success**: did the tool run correctly and return the needed data?
+2. **workflow success**: did the agent choose and sequence tools correctly?
+3. **task success**: did the overall outcome satisfy the user need or business rule?
+
+If those layers are collapsed into one pass/fail score, the eval system will hide the exact engineering work that needs to change.
+
+## What should count as tool-call success
+
+A tool call should usually be graded successful only if all of these are true:
+
+- the tool selected was acceptable for the step;
+- required arguments were present and materially correct;
+- the call completed without invalid side effects;
+- the returned data was actually usable for the next step.
+
+This matters because "HTTP 200" is not the same thing as workflow success.
+
+## The three ground-truth layers
+
+| Layer | What ground truth should describe |
+| --- | --- |
+| Tool layer | Which tool should have been used, with what argument expectations |
+| Workflow layer | What sequence, approvals, retries, or fallbacks were acceptable |
+| Outcome layer | What answer, state change, or artifact was the real desired result |
+
+Teams often have outcome labels but no tool-layer or workflow-layer truth. That makes diagnosis weak.
+
+## The failure taxonomy that matters
+
+At minimum, split failures into these buckets:
+
+- wrong tool chosen;
+- correct tool, bad arguments;
+- correct tool and arguments, bad sequencing;
+- approval or permission failure;
+- good trace, weak synthesis or final answer;
+- infrastructure failure such as timeout or stale dependency.
+
+This taxonomy matters because each bucket points to a different owner: prompting or policy, tool schema design, runtime reliability, or evaluation data quality.
+
+## What high-value eval sets look like
+
+Strong eval sets for tool use usually include tasks with one clearly right tool choice, tasks with multiple plausible tools but one better path, tasks where the correct behavior is to refuse or escalate, tasks where tool output is noisy or incomplete, and tasks where retries should stop instead of continue.
+
+If the eval set only covers happy-path calls, the team is measuring demo quality, not operating quality.
+
+## Next-step references
+
+<div class="portal-links">
+  <LinkCard title="Agent evals for tool-using AI systems" href="/evaluation/agent-evals-for-tool-using-ai-systems/" description="Use this page for the broader evaluation model around tool-connected agent systems." />
+  <LinkCard title="Trace grading for tool-using agents" href="/evaluation/trace-grading-for-tool-using-ai-agents/" description="Use this page when the team needs to inspect the full run instead of only the final answer." />
+  <LinkCard title="Tool selection evals and failure taxonomy" href="/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/" description="Use this page when the main problem is separating tool-choice mistakes from other agent failures." />
+</div>
