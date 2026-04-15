@@ -1,0 +1,229 @@
+---
+title: How do you calculate AI agent ROI?
+description: A practical way to calculate AI agent ROI using labor savings, throughput, error reduction, review cost, and deployment overhead instead of vague automation claims.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: how to calculate ai agent roi
+searchIntent: select
+decisionStage: shortlist
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Finance partners
+  - Technical buyers
+contentStatus: cornerstone
+problemSolved: Helps teams calculate AI agent ROI using workflow economics rather than hype metrics like conversations handled or demos completed.
+readerTakeaway: You should leave with a practical ROI model that connects agent cost to labor saved, throughput gained, risk reduced, and the ongoing review burden the workflow still carries.
+keyQuestions:
+  - What should count in AI agent ROI?
+  - Which gains are real and which ones are vanity metrics?
+  - How should teams handle review cost and failure overhead in the ROI model?
+notFor:
+  - Readers looking for a one-line payback formula with no workflow context
+  - Teams that have not identified a recurring workflow the agent is supposed to improve
+  - Prototype builders with no plan to measure post-launch outcomes
+updateTriggers:
+  - Major changes in model or tool pricing
+  - Material shifts in how enterprises benchmark AI automation outcomes
+  - New deployment patterns that change review or failure overhead
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How do you calculate AI agent ROI?
+
+## Quick answer
+
+AI agent ROI should be calculated against a **real workflow baseline**, not against a demo.
+
+A useful ROI model includes:
+
+- labor time saved,
+- throughput gained,
+- quality or error improvement,
+- software and runtime cost,
+- human review cost,
+- and failure or rework overhead.
+
+If the model only counts "tickets touched" or "tasks automated," it is usually overstating value.
+
+## The wrong ROI formula
+
+A weak agent ROI model usually says:
+
+**more handled tasks = positive ROI**
+
+That is not enough. A system can handle more tasks and still destroy value if it:
+
+- creates cleanup work,
+- escalates the wrong cases,
+- slows down specialists,
+- or inflates review time.
+
+ROI is about **net operating improvement**, not visible activity.
+
+## The better formula
+
+A more honest model looks like this:
+
+**ROI = (labor savings + throughput gain + quality gain + avoided loss) - (runtime cost + review cost + implementation cost + failure overhead)**
+
+This is more useful because it forces the team to count the costs that usually get hidden after the launch slide deck.
+
+## What should count as return
+
+### 1. Labor savings
+
+How much human effort did the workflow actually remove?
+
+Examples:
+
+- fewer minutes drafting repetitive replies,
+- less manual triage,
+- less context gathering before escalation,
+- or fewer hand-built reports.
+
+This is usually the first measurable gain.
+
+### 2. Throughput gain
+
+Can the team clear more work with the same headcount?
+
+Good agent systems often create ROI by:
+
+- reducing backlog,
+- shortening response time,
+- or allowing specialists to stay focused on the minority of high-value cases.
+
+### 3. Quality gain
+
+Quality matters when better consistency reduces:
+
+- policy mistakes,
+- rework,
+- missed follow-ups,
+- or customer-facing damage.
+
+If the agent reduces mistakes in expensive workflows, that improvement belongs in the ROI model.
+
+### 4. Avoided loss
+
+Some value comes from preventing bad outcomes:
+
+- SLA misses,
+- missed revenue opportunities,
+- weak escalations,
+- or unsafe writes into production systems.
+
+These are often harder to measure, but they matter in high-risk workflows.
+
+## What should count as cost
+
+### 1. Runtime cost
+
+This includes:
+
+- model usage,
+- search and retrieval,
+- execution tools,
+- storage,
+- and observability or orchestration services.
+
+### 2. Review cost
+
+If humans still need to check a large share of outputs, that review time is part of the cost structure.
+
+Agent systems that save drafting time but shift that time into heavy review may have weaker ROI than expected.
+
+### 3. Implementation and maintenance cost
+
+This includes:
+
+- workflow design,
+- eval creation,
+- prompt and policy maintenance,
+- incident handling,
+- and ongoing owner time.
+
+The bigger the agent surface, the more this cost matters.
+
+### 4. Failure overhead
+
+This is the hidden line item many teams ignore:
+
+- retries,
+- manual rescue work,
+- misroutes,
+- user confusion,
+- and expensive mistakes caused by weak boundaries.
+
+If failure overhead is excluded, the ROI is usually inflated.
+
+## The most useful baseline
+
+Compare the agent to the real alternative:
+
+- fully manual work,
+- deterministic automation,
+- search-first support,
+- or a draft-only assistant.
+
+Do not compare it only to "doing nothing." That makes almost any software look better than it is.
+
+## A practical ROI model by workflow
+
+The cleanest way to calculate ROI is to do it per workflow:
+
+1. define the baseline cost per task,
+2. define the new cost per successful task,
+3. measure success and review rates,
+4. compare the difference at actual monthly volume.
+
+This avoids turning several unrelated workflows into one vague ROI number.
+
+## The strongest early signal
+
+The best early ROI signal is often not full automation. It is whether the agent can:
+
+- reduce low-value human time,
+- keep failure rates acceptable,
+- and improve throughput without creating a bigger review queue.
+
+If it cannot do those three, the ROI case is still weak.
+
+## Implementation checklist
+
+Your ROI model is probably healthy when:
+
+- the baseline workflow is documented;
+- review cost is included explicitly;
+- failure overhead is counted;
+- gains are measured per workflow, not only sitewide;
+- and the team can explain why the agent beats simpler alternatives.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="How much does an AI agent cost in production?"
+		href="/models-and-apis/how-much-does-an-ai-agent-cost-in-production/"
+		description="Use this page when the budgeting question comes before the ROI question."
+	/>
+	<LinkCard
+		title="Cost per success and tool economics"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Use this page when the team needs to judge tools by successful outcomes instead of line-item API cost."
+	/>
+	<LinkCard
+		title="Knowledge-base search vs agent answering"
+		href="/tool-comparisons/knowledge-base-search-vs-agent-answering-for-support/"
+		description="Use this page when the ROI case depends on whether the workflow even needs an agent layer."
+	/>
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Use this page to anchor ROI in a concrete high-volume workflow where quality and escalation both matter."
+	/>
+</div>

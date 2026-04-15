@@ -1,0 +1,179 @@
+---
+title: AI chatbot vs AI agent for business
+description: How to decide whether a business really needs an AI agent or whether a simpler chatbot or workflow assistant is the healthier product and operating choice.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai chatbot vs ai agent for business
+searchIntent: compare
+decisionStage: solution-aware
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Technical founders
+  - Internal tools owners
+contentStatus: cornerstone
+problemSolved: Helps businesses choose between a chatbot, a workflow assistant, and a broader AI agent based on task shape, risk, and operating cost instead of trend language.
+readerTakeaway: You should leave with a clear decision rule for when a chatbot is enough, when a workflow assistant is stronger, and when an agent is actually justified.
+keyQuestions:
+  - What is the real difference between a chatbot and an AI agent?
+  - When is a chatbot enough for a business workflow?
+  - When does broader agent behavior create real leverage rather than more risk?
+notFor:
+  - Readers looking for consumer chatbot definitions with no business context
+  - Teams with no recurring workflow in mind
+  - Organizations treating "agent" as a branding label instead of a system choice
+updateTriggers:
+  - Major changes in agent tooling and business deployment patterns
+  - Clear enterprise shifts in how teams stage chatbot, assistant, and agent rollout
+  - New evidence that broader autonomy changes economics in common business workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# AI chatbot vs AI agent for business
+
+## Quick answer
+
+A business should use:
+
+- a **chatbot** when the main job is answering, guiding, or collecting simple input,
+- a **workflow assistant** when the system should help complete bounded steps,
+- and an **AI agent** only when the workflow genuinely benefits from planning, tool use, and controlled action across several steps.
+
+Most businesses need fewer "agents" than current marketing language suggests.
+
+## The real difference
+
+A chatbot mainly:
+
+- answers questions,
+- retrieves information,
+- or walks the user through a limited interaction.
+
+An agent usually does more:
+
+- chooses from several paths,
+- uses tools,
+- plans across steps,
+- and may trigger actions or handoffs.
+
+That difference matters because the operating cost, risk, and evaluation burden rise with each step away from simple answering.
+
+## Why businesses get this wrong
+
+Many teams ask for an "AI agent" when the actual need is:
+
+- better search,
+- a guided support flow,
+- a drafting assistant,
+- or a workflow tool with one or two model-driven steps.
+
+Calling everything an agent blurs the system boundary and usually leads to overbuilding.
+
+## When a chatbot is enough
+
+A chatbot is often the right answer when the business problem is:
+
+- FAQ deflection,
+- policy explanation,
+- lead qualification,
+- guided intake,
+- or simple answer retrieval from approved sources.
+
+In these cases, the value comes from access and speed, not from broad autonomous behavior.
+
+## When a workflow assistant is better than both labels
+
+Many successful business deployments are not really chatbots and not really open-ended agents. They are workflow assistants.
+
+They:
+
+- gather context,
+- draft a next step,
+- route work,
+- summarize records,
+- or package escalation context.
+
+This shape is often healthier than a general chatbot because it is more useful, and healthier than an agent because it stays bounded.
+
+## When an AI agent is justified
+
+An agent becomes worth the added complexity when the workflow truly needs:
+
+- several tools,
+- branching logic,
+- a sequence of dependent actions,
+- status tracking across time,
+- or controlled action after review.
+
+If the system is only answering questions, an agent is usually too much software for the job.
+
+## The business decision rule
+
+Ask these questions in order:
+
+1. Is the core problem answering, assisting, or acting?
+2. Does the system need tools or only knowledge retrieval?
+3. Must it plan across several steps?
+4. Will it create side effects or only propose them?
+
+If the answers stay narrow, a chatbot or workflow assistant is usually the better product.
+
+## Cost and risk rise with autonomy
+
+Moving from chatbot to agent usually increases:
+
+- evaluation complexity,
+- permission design work,
+- trace and observability needs,
+- failure cost,
+- and review burden.
+
+That extra cost is justified only when the workflow value rises with it.
+
+## The healthiest rollout pattern
+
+For most businesses, the safest progression is:
+
+1. search or answer layer,
+2. workflow assistant,
+3. agent behavior in narrow high-value paths,
+4. broader autonomy only after evidence.
+
+This keeps the team from buying agent complexity before it has earned the right to operate it.
+
+## Implementation checklist
+
+Your system choice is probably healthy when:
+
+- the workflow is defined before the label is chosen;
+- the team can explain why a chatbot is insufficient;
+- the need for tools and planning is explicit;
+- and the system's authority is narrower than the marketing language around it.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Agent workflows vs autonomous agents"
+		href="/agent-systems/agent-workflows-vs-autonomous-agents/"
+		description="Use this page when the remaining question is how much autonomy the system should actually have."
+	/>
+	<LinkCard
+		title="What should an AI agent be allowed to do in production?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Use this page when the next decision is permission scope and execution authority."
+	/>
+	<LinkCard
+		title="Knowledge-base search vs agent answering"
+		href="/tool-comparisons/knowledge-base-search-vs-agent-answering-for-support/"
+		description="Use this page when the business problem may still be better solved by search-first support."
+	/>
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Use this page when the chatbot-versus-agent decision sits inside a real support workflow."
+	/>
+</div>

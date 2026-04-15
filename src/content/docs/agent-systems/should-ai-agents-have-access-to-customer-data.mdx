@@ -1,0 +1,181 @@
+---
+title: Should AI agents have access to customer data?
+description: How to decide when AI agents should access customer data, what data should stay out of scope, and how to design narrow access with auditability and review.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: should ai agents have access to customer data
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Security owners
+  - AI platform teams
+  - Support systems owners
+  - Compliance-minded product leaders
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether AI agents should access customer data at all, and if so, how to narrow that access so the workflow stays useful without creating broad exposure.
+readerTakeaway: You should leave with a practical rule for scoping customer-data access by task, authority, data class, and auditability instead of granting broad visibility by default.
+keyQuestions:
+  - When is customer-data access justified for an AI agent?
+  - What kinds of data should usually stay out of scope?
+  - How should teams narrow access and preserve auditability?
+notFor:
+  - Teams building demos with no production data
+  - Readers looking for general privacy law summaries without system-design implications
+  - Organizations that have not defined the task the agent is supposed to perform
+updateTriggers:
+  - New enterprise controls around user-scoped access and AI audit trails
+  - Material changes in privacy, retention, or redaction expectations
+  - New deployment lessons around safe agent access to operational systems
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Should AI agents have access to customer data?
+
+## Quick answer
+
+Sometimes yes, but only when the workflow **cannot do its job without it** and the access is:
+
+- narrowly scoped,
+- tied to a legitimate task,
+- auditable,
+- and separated by data sensitivity.
+
+The default should not be "let the agent see everything so it can be useful." The default should be "give the agent the minimum customer data required for the specific job."
+
+## The wrong default
+
+The wrong default is broad read access because it feels operationally convenient.
+
+That usually creates:
+
+- unnecessary exposure,
+- harder review,
+- wider incident impact,
+- and weaker trust from both customers and internal owners.
+
+Broad visibility is easy to grant and hard to justify later.
+
+## When access is justified
+
+Customer-data access is usually justified when the agent is performing a workflow such as:
+
+- support case summarization,
+- status lookup,
+- account-specific troubleshooting,
+- eligibility checks,
+- or handoff preparation for a human team.
+
+In these cases, the data is part of the task boundary. Without it, the system is pretending to help while missing the real context.
+
+## When access is not justified
+
+Access is usually hard to justify when the agent is doing:
+
+- generic education,
+- public FAQ answering,
+- product marketing support,
+- basic lead qualification,
+- or retrieval from public documentation.
+
+These jobs often do not need customer-specific records at all.
+
+## Separate data classes before granting access
+
+Do not treat "customer data" as one bucket.
+
+Separate at least:
+
+- basic account context,
+- usage or transaction history,
+- support history,
+- sensitive personal information,
+- financial data,
+- and security-sensitive data.
+
+An agent may need one category without needing the rest.
+
+## The safest access model
+
+The healthiest pattern is:
+
+1. task-specific scope,
+2. least-privilege retrieval,
+3. redaction where possible,
+4. user-scoped or workflow-scoped identity,
+5. and a full audit trail.
+
+That gives the system enough information to help without making it a universal viewer of customer records.
+
+## Why read access still carries risk
+
+Teams sometimes say "it's only read-only."
+
+Read-only is still risky when the system can expose:
+
+- private details to the wrong operator,
+- sensitive fields in logs,
+- data that influences unsafe decisions,
+- or context that the workflow never truly needed.
+
+Read scope should be narrow for the same reason write scope should be narrow.
+
+## The most important decision
+
+The key question is not:
+
+**Can the agent use customer data?**
+
+It is:
+
+**Which exact customer data does this exact workflow require, and who should authorize that access?**
+
+That reframing usually removes a lot of unnecessary scope.
+
+## A practical rule
+
+Allow customer-data access only when all four are true:
+
+1. the workflow clearly needs customer-specific context,
+2. the data category required is documented,
+3. the access path is auditable and scoped,
+4. the team has a clear rule for escalation or refusal when the boundary is exceeded.
+
+If any of those are missing, the access model is still too loose.
+
+## Implementation checklist
+
+Your customer-data access model is probably healthy when:
+
+- the workflow cannot be completed safely without the data;
+- data classes are separated instead of bundled together;
+- the agent gets only the minimum fields needed;
+- access is tied to a clear identity and audit trail;
+- and the workflow can escalate when the data boundary is exceeded.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="User-scoped auth vs service accounts"
+		href="/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/"
+		description="Use this page when the next question is whose authority should govern customer-data access."
+	/>
+	<LinkCard
+		title="Least-privilege tool scopes"
+		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
+		description="Use this page when broad data access needs to be broken into narrower task-specific scopes."
+	/>
+	<LinkCard
+		title="What should an AI agent be allowed to do in production?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Use this page when customer-data access is part of a broader permission model."
+	/>
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Use this page when customer-data access is being debated inside a real support workflow."
+	/>
+</div>

@@ -1,0 +1,200 @@
+---
+title: When should an AI agent escalate to a human?
+description: A practical escalation rule for AI agents covering uncertainty, policy risk, low authority, emotional sensitivity, and actions that should always move to a human owner.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: when should ai agent escalate to human
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Operations leaders
+  - Support managers
+  - AI product leads
+  - Workflow owners
+contentStatus: cornerstone
+problemSolved: Helps teams define when AI agents should stop and escalate to a human instead of pushing weak answers or risky actions further down the workflow.
+readerTakeaway: You should leave with a practical escalation model based on authority, uncertainty, consequence, and workflow ownership rather than vague model confidence alone.
+keyQuestions:
+  - What should always trigger escalation?
+  - How should teams separate acceptable ambiguity from human-only cases?
+  - Why is model confidence alone a weak escalation rule?
+notFor:
+  - Teams with no human owner for the workflow
+  - Readers looking for generic support-queue triage with no AI boundary
+  - Organizations that still treat escalation as failure instead of a safety control
+updateTriggers:
+  - Changes in business policy or risk classification
+  - New failure patterns in escalation latency or false-negative escalations
+  - Major shifts in how agent teams instrument review and handoff systems
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# When should an AI agent escalate to a human?
+
+## Quick answer
+
+An AI agent should escalate when the remaining uncertainty, authority gap, or consequence is **more expensive than the delay of human review**.
+
+That usually means escalating when:
+
+- the agent lacks authority,
+- the case is high consequence,
+- the evidence is incomplete or conflicting,
+- the user is emotionally sensitive or adversarial,
+- or a side effect would be hard to reverse.
+
+Escalation is not a failure. It is a normal control boundary.
+
+## The weakest escalation rule
+
+The weakest rule is:
+
+**"Escalate when confidence is low."**
+
+That is too vague because:
+
+- models can sound confident when they should stop,
+- confidence is hard to compare across tasks,
+- and many escalation cases are about authority or risk, not uncertainty.
+
+A good escalation rule starts with workflow ownership, not model mood.
+
+## The four escalation triggers that matter most
+
+### 1. Authority trigger
+
+Escalate when the agent is being asked to decide something it does not own.
+
+Examples:
+
+- refunds or credits,
+- account recovery,
+- policy exceptions,
+- contract interpretation,
+- or access changes.
+
+Even a correct answer may still belong to a human owner.
+
+### 2. Evidence trigger
+
+Escalate when the agent does not have enough trustworthy evidence to proceed.
+
+Examples:
+
+- missing source documents,
+- conflicting records,
+- unclear customer history,
+- or retrieval that surfaces weak or incomplete support.
+
+This is especially important for research, support, and policy-heavy work.
+
+### 3. Consequence trigger
+
+Escalate when the downside of being wrong is high.
+
+Examples:
+
+- financial loss,
+- compliance exposure,
+- security impact,
+- customer trust damage,
+- or production-system mutations.
+
+Low-frequency, high-cost mistakes deserve human review even if average quality is strong.
+
+### 4. Sensitivity trigger
+
+Escalate when the case includes:
+
+- emotional volatility,
+- legal or threat language,
+- safety concerns,
+- reputational risk,
+- or unusual human judgment.
+
+These are often the moments where automation should get out of the way.
+
+## Where teams usually escalate too late
+
+Teams often escalate too late when they optimize for:
+
+- containment,
+- deflection,
+- automation rate,
+- or resolution metrics
+
+without giving equal weight to trust and handoff quality.
+
+The expensive part is not always the AI invoice. It is the rework created when the system held onto the wrong case for too long.
+
+## What a healthy escalation packet includes
+
+When the agent escalates, it should pass:
+
+- what the user asked,
+- what evidence was reviewed,
+- what actions were attempted,
+- why escalation happened,
+- and what the likely next step is.
+
+That preserves human time instead of forcing rediscovery.
+
+## The practical rule for most teams
+
+Escalate when any of these are true:
+
+1. the agent is outside its authority lane,
+2. the evidence is incomplete or conflicting,
+3. the action has irreversible or high-cost side effects,
+4. the case requires human judgment, empathy, or exception handling.
+
+That rule is much stronger than a single confidence threshold.
+
+## What not to do
+
+Avoid these mistakes:
+
+- escalating only after several weak retries,
+- hiding uncertainty behind polished language,
+- treating escalation as a metric failure,
+- or sending thin handoff packets that force humans to start over.
+
+Those patterns destroy operator trust fast.
+
+## Implementation checklist
+
+Your escalation model is probably healthy when:
+
+- authority boundaries are written down;
+- high-consequence categories always escalate;
+- evidence quality can trigger escalation;
+- humans receive useful handoff context;
+- and false-positive and false-negative escalations are reviewed over time.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Escalation and handoff design"
+		href="/workflows/escalation-and-handoff-design/"
+		description="Use this page for the broader workflow design behind escalation packets, queue ownership, and handoff quality."
+	/>
+	<LinkCard
+		title="Human review and approval workflows"
+		href="/workflows/human-review-and-approval-workflows-for-agentic-support/"
+		description="Use this page when escalation, approval, and review boundaries need to be separated clearly."
+	/>
+	<LinkCard
+		title="What should an AI agent be allowed to do in production?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Use this page when the escalation rule depends on narrow execution authority."
+	/>
+	<LinkCard
+		title="Escalation audit sampling"
+		href="/evaluation/escalation-audit-sampling/"
+		description="Use this page when the team needs to measure whether escalation behavior is actually working in production."
+	/>
+</div>
