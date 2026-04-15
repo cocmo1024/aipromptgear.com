@@ -1,0 +1,146 @@
+---
+title: Least privilege tool scopes for agent systems
+description: How to design narrow tool scopes, capability tiers, and approval boundaries for AI agents so useful automation does not quietly become overpowered infrastructure.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams translate least-privilege security into practical tool-scope design for AI agents, including read versus write boundaries, approval gates, and scoped capabilities.
+readerTakeaway: You should leave with a concrete model for limiting agent authority by tool scope instead of treating every integration as a binary allowed-or-blocked decision.
+primaryKeyword: least privilege ai agents
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security owners
+  - Developer productivity teams
+  - Internal tools architects
+keyQuestions:
+  - What does least privilege look like for tool-using agents?
+  - How should teams split read, write, and side-effecting capabilities into narrower scopes?
+  - When do tool scopes need approvals instead of simple allow lists?
+notFor:
+  - Generic cloud IAM design outside agent systems
+  - Teams with no tool-connected workflows
+updateTriggers:
+  - Changes in agent authorization guidance
+  - MCP and tool-use security practice changes
+  - New patterns for scoped tools and approval design in production agent systems
+---
+
+## Quick answer
+
+Least privilege for agents means the system should get only the smallest tool scope needed to complete the workflow it is responsible for.
+
+That usually means:
+
+- narrower read scopes,
+- separate write scopes,
+- separate side-effecting actions,
+- and explicit approvals when the workflow crosses risk boundaries.
+
+If one agent can browse, read sensitive data, modify records, and trigger automation under one broad scope, the system is already overpowered.
+
+## Why allow lists are not enough
+
+Teams often say an agent is "safe" because it only has access to approved tools.
+
+That is too coarse.
+
+Two agents may both have access to the same ticketing system, but one only needs:
+
+- read ticket metadata,
+- fetch related docs,
+- and suggest a reply.
+
+The other may be allowed to:
+
+- edit ticket fields,
+- close issues,
+- notify customers,
+- or trigger downstream automation.
+
+Those are not the same privilege level, even though the tool name is the same.
+
+## The correct unit of control
+
+The right unit of control is usually not the application. It is the **capability** inside the application.
+
+That means scopes should often be split by:
+
+- read versus write,
+- low-risk versus high-risk actions,
+- user-owned versus system-owned entities,
+- and reversible versus irreversible effects.
+
+This is where least privilege becomes operational instead of aspirational.
+
+## A practical tool-scope model
+
+A good pattern is to classify tool access into four layers:
+
+1. **Read-only context**
+2. **Draft or propose**
+3. **Low-risk writes**
+4. **High-risk writes or external effects**
+
+Each layer should have:
+
+- a different approval expectation,
+- different audit expectations,
+- and different rollout confidence requirements.
+
+## What should stay read-only longer
+
+Many teams should keep these read-only much longer than instinct suggests:
+
+- source repositories,
+- ticket systems,
+- internal docs,
+- CRM records,
+- dashboards,
+- and customer-facing messaging tools.
+
+Read-only access still creates risk, but it is easier to audit and contain than write power.
+
+## Where approvals should enter
+
+Approvals become important when the system can:
+
+- modify canonical records,
+- change production systems,
+- contact external parties,
+- or trigger downstream workflows that humans may not notice immediately.
+
+Approvals are not a sign of failure. They are often the mechanism that makes narrower tool scopes usable at all.
+
+## The common mistake
+
+The common mistake is granting one broad integration because it keeps implementation simple.
+
+That usually creates:
+
+- wider blast radius,
+- weaker auditability,
+- and pressure to trust the agent more than the workflow deserves.
+
+Implementation convenience is one of the worst reasons to widen tool scope.
+
+## A healthier rollout path
+
+For most teams, the safer path is:
+
+1. start with read-only scope,
+2. add proposal or draft actions,
+3. add narrow reversible writes,
+4. reserve broad or irreversible actions for explicit approval flows.
+
+That gives the team operational evidence before it expands authority.
+
+## Compare next
+
+- [User-scoped auth vs service accounts for AI agents](/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/)
+- [MCP security and approval boundaries for enterprise AI teams](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/)
+- [Prompt injection defenses for tool-using agents](/agent-systems/prompt-injection-defenses-for-tool-using-agents/)
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)

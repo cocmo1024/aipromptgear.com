@@ -43,9 +43,24 @@ This section exists because "AI agents" is now too broad to be useful. Real team
 		description="Use this page when browser-facing agents need a clearer boundary between UI interpretation and deterministic automation."
 	/>
 	<LinkCard
+		title="Prompt injection defenses for tool-using agents"
+		href="/agent-systems/prompt-injection-defenses-for-tool-using-agents/"
+		description="Use this page when the real security problem is untrusted content influencing tool choice, browsing, or side-effecting actions."
+	/>
+	<LinkCard
+		title="Agents SDK vs app-owned orchestration"
+		href="/agent-systems/agents-sdk-vs-app-owned-orchestration-for-production-agents/"
+		description="Use this page when the framework decision is now shaping workflow ownership, tracing, and runtime control."
+	/>
+	<LinkCard
 		title="User-scoped auth vs service accounts"
 		href="/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/"
 		description="Use this page when the real boundary is whose authority the agent is using, not just which tool it can call."
+	/>
+	<LinkCard
+		title="Least privilege tool scopes"
+		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
+		description="Use this page when the team needs narrower read, write, and side-effect boundaries instead of one broad integration scope."
 	/>
 	<LinkCard
 		title="Tool timeouts, retries, and idempotency"
@@ -112,6 +127,11 @@ This section exists because "AI agents" is now too broad to be useful. Real team
 		description="A high-intent control page for teams deciding when agents should inherit user scope and when a service identity is more appropriate."
 	/>
 	<LinkCard
+		title="Least-privilege tool scopes"
+		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
+		description="A stronger control-boundary page for teams breaking broad integrations into narrower read, write, and side-effect capabilities."
+	/>
+	<LinkCard
 		title="Retries, timeouts, and idempotency"
 		href="/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/"
 		description="A practical reliability page for teams trying to stop retry logic from turning tool failures into repeated side effects."
@@ -120,5 +140,15 @@ This section exists because "AI agents" is now too broad to be useful. Real team
 		title="Sandboxing and secret boundaries"
 		href="/agent-systems/sandboxing-network-permissions-and-secrets-for-coding-agents/"
 		description="A higher-intent control page for engineering teams deciding how much filesystem, network, and credential access coding agents should ever receive."
+	/>
+	<LinkCard
+		title="Prompt injection boundary"
+		href="/agent-systems/prompt-injection-defenses-for-tool-using-agents/"
+		description="A stronger security page for teams that now understand untrusted pages, files, and tool outputs can steer agent behavior if the runtime boundary is weak."
+	/>
+	<LinkCard
+		title="Agents SDK versus app-owned orchestration"
+		href="/agent-systems/agents-sdk-vs-app-owned-orchestration-for-production-agents/"
+		description="A current architecture page for teams deciding whether framework-managed orchestration is still helping or is now getting in the way of product-owned control."
 	/>
 </div>

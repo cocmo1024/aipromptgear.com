@@ -1,0 +1,155 @@
+---
+title: Ground truth collection and labeling for agent eval ops
+description: How to collect production-grounded examples, label agent traces, and build reusable evaluation datasets that reflect real workflow failure instead of benchmark theater.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams build evaluation datasets from real agent tasks, trace failures, and reviewer decisions so evals measure the work the product actually does.
+readerTakeaway: You should leave with a practical model for collecting, labeling, and maintaining ground truth for agent evaluation without drowning the team in annotation debt.
+primaryKeyword: agent eval dataset
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Evaluation owners
+  - Applied AI engineers
+  - Product operations teams
+  - AI platform teams
+keyQuestions:
+  - Where should agent eval examples come from?
+  - What should be labeled in a tool-using trace?
+  - How do teams keep evaluation data current without building an unmaintainable annotation program?
+notFor:
+  - Pure benchmark comparisons with no product-specific workflow
+  - Teams that do not intend to operate agent evals continuously
+updateTriggers:
+  - Changes in official grading or eval guidance
+  - New agent-trace instrumentation patterns
+  - Material changes in how product teams collect production examples for evaluation
+---
+
+## Quick answer
+
+The best evaluation dataset for an agent system usually starts in production-like work, not in synthetic benchmark prompts.
+
+Ground truth should be collected from:
+
+- real user tasks,
+- representative internal tasks,
+- trace failures,
+- approval decisions,
+- and corrected outcomes produced by humans.
+
+If the dataset does not reflect the real workflow, the eval program will measure the wrong thing very efficiently.
+
+## Why this is hard
+
+Agent systems create more labeling surface than simple text generation.
+
+A single run may involve:
+
+- tool choice,
+- tool arguments,
+- retrieved evidence,
+- approval decisions,
+- retries,
+- partial failures,
+- and a final answer.
+
+That means "label the answer" is often too shallow to train or evaluate the system properly.
+
+## What should count as ground truth
+
+Ground truth is not only the final correct answer.
+
+Depending on the workflow, it may include:
+
+- the correct tool choice,
+- the acceptable set of tool choices,
+- the required evidence set,
+- the right approval outcome,
+- the correct stop condition,
+- and the minimum acceptable final artifact.
+
+This is why agent evaluation datasets need structure, not just text labels.
+
+## The strongest data sources
+
+The best sources are usually:
+
+### 1. High-value production traces
+
+These show the actual work the system is being asked to do.
+
+### 2. Human-corrected failures
+
+These reveal where the system drifted and what a correct recovery looked like.
+
+### 3. Approval and override events
+
+These show where the system crossed a boundary that humans would not accept.
+
+### 4. Known brittle scenario libraries
+
+These capture edge cases that should stay in the regression set permanently.
+
+## What to label first
+
+Do not try to label everything.
+
+Start with the labels that support the most useful decisions:
+
+- success or failure of the workflow,
+- failure type,
+- tool-choice correctness,
+- approval correctness,
+- and whether human intervention was required.
+
+That is enough to build a meaningful evaluation loop before deeper annotation expands.
+
+## A practical labeling taxonomy
+
+For many agent teams, a minimal taxonomy is:
+
+- correct outcome,
+- wrong tool,
+- wrong arguments,
+- insufficient evidence,
+- policy or approval failure,
+- timeout or incomplete execution,
+- unnecessary human escalation,
+- and hidden failure masked by a plausible final answer.
+
+That taxonomy is much more actionable than one vague "bad answer" bucket.
+
+## How to avoid annotation debt
+
+Annotation programs become expensive when they chase completeness instead of leverage.
+
+A healthier operating model is:
+
+- sample important workflows,
+- label failures more aggressively than successes,
+- preserve canonical difficult cases,
+- and refresh slices when the product meaningfully changes.
+
+You do not need a perfect universal dataset. You need a living one that tracks business-critical failure.
+
+## The best maintenance rule
+
+Every eval example should justify its presence by doing at least one of these:
+
+- representing a common production task,
+- guarding a known expensive failure,
+- protecting an approval or security boundary,
+- or tracking a newly shipped capability.
+
+If an example does none of those, it is probably annotation debt.
+
+## Compare next
+
+- [Eval-driven development for agentic products](/evaluation/eval-driven-development-for-agentic-products/)
+- [Tool selection evals and failure taxonomy for AI agents](/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/)
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
+- [EvalOps release gates and scorecard ownership for AI teams](/evaluation/eval-ops-release-gates-and-scorecard-ownership/)

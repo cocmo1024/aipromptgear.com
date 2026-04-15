@@ -1,0 +1,114 @@
+---
+title: Prompt injection defenses for tool-using agents
+description: How to design prompt injection defenses for tool-using agents so untrusted instructions in web pages, files, or tool outputs do not quietly become system behavior.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: prompt injection defenses for tool using agents
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security engineers
+  - Applied AI engineers
+  - Product infrastructure leads
+contentStatus: growing
+problemSolved: Helps teams design prompt injection defenses around tool-connected agents where untrusted content can influence planning, tool choice, or side-effecting actions.
+readerTakeaway: You should leave with a practical model for separating trusted instructions from untrusted tool content and for reducing the blast radius of prompt injection in agent systems.
+keyQuestions:
+  - Where does prompt injection enter a tool-using agent system?
+  - Which defenses actually reduce risk, and which ones are only prompt wording?
+  - How should approval, allowlists, and tool design change when agents interact with untrusted pages or files?
+notFor:
+  - Basic chatbots with no tool use or external content ingestion
+  - Security discussions that ignore runtime architecture and tool permissions
+updateTriggers:
+  - Changes in official OpenAI safety guidance for computer use and tool-connected systems
+  - New production patterns for defending tool-using agents against prompt injection
+---
+
+## Quick answer
+
+Prompt injection defense starts with architecture, not wording.
+
+The minimum viable defense is:
+
+- treat tool outputs and retrieved content as untrusted;
+- restrict which tools the agent may call from untrusted contexts;
+- require approval before side-effecting actions;
+- and use explicit allowlists for browsing, execution, or system actions.
+
+If the system relies mainly on "the model should ignore malicious instructions," the defense is weak.
+
+## Why this matters now
+
+Tool-using agents now read:
+
+- web pages,
+- documents,
+- tickets,
+- code repositories,
+- and tool responses that may contain attacker-controlled text.
+
+That means the model is no longer only interpreting user input. It is interpreting untrusted operational content that can try to redirect tool use or policy behavior.
+
+## Official signals checked April 15, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [Computer use guide](https://platform.openai.com/docs/guides/tools-computer-use) | OpenAI explicitly calls out prompt injection risk and recommends allowlists for expected websites | Browser-facing agents need control-plane restrictions, not only prompt instructions |
+| [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) | Authorization structure remains a separate layer around tool access | Tool connectivity does not remove the need for strict permission and approval design |
+| [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) | Guardrails, tools, and handoffs are framework-level concepts | Injection defense has to be expressed at runtime and orchestration layers too |
+
+## Where injection actually enters
+
+Prompt injection usually enters through:
+
+- web search results,
+- browsed pages,
+- uploaded files,
+- retrieved knowledge chunks,
+- tool output that includes attacker-controlled text.
+
+The risk is not only bad prose. It is that the agent changes plan, tool choice, or action scope because it treated untrusted content as instructions.
+
+## The strongest defenses
+
+### 1. Trust-boundary separation
+
+System instructions, user instructions, and tool content should not be treated as the same authority.
+
+### 2. Tool restrictions
+
+Untrusted context should not unlock broad write-capable tools.
+
+### 3. Approval gates
+
+Any meaningful external side effect should require review or explicit confirmation.
+
+### 4. Allowlists
+
+Especially for browser and computer-use workflows, the safest design is to limit reachable domains or action classes.
+
+### 5. Narrow action design
+
+Tools should be specific enough that even a manipulated plan has limited blast radius.
+
+## What does not count as enough
+
+These are weak by themselves:
+
+- longer prompts that say "ignore malicious instructions";
+- generic safety statements with no runtime enforcement;
+- broad tools with no approval layer;
+- or post hoc logging with no prevention.
+
+They may help, but they do not meaningfully change the control boundary.
+
+## What to read next
+
+- [MCP security and approval boundaries for enterprise AI teams](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/)
+- [Computer Use API vs browser automation for AI agents](/agent-systems/computer-use-api-vs-browser-automation-for-ai-agents/)
+- [User-scoped auth vs service accounts for AI agents](/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/)
+

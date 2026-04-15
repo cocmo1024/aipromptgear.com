@@ -1,0 +1,137 @@
+---
+title: Shadow evals canary rollouts and gradual release for agent systems
+description: How to run shadow evaluation, canary slices, and staged release for tool-using agents so quality drift is caught before full rollout.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams move from one-shot evaluation to staged rollout discipline where agent changes are tested silently, exposed gradually, and monitored with explicit rollback logic.
+readerTakeaway: You should leave with a practical staged-release model for agent systems, including when to shadow, when to canary, and what should halt wider rollout.
+primaryKeyword: agent canary rollout
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Evaluation owners
+  - Product operations teams
+  - Applied AI engineers
+keyQuestions:
+  - When should agent changes run in shadow mode before they reach users?
+  - What belongs in a canary slice for tool-using systems?
+  - Which signals should trigger a halt or rollback during gradual release?
+notFor:
+  - One-off demos with no release process
+  - Teams that only want offline benchmarks and do not run live agent systems
+updateTriggers:
+  - Changes in official eval and grading guidance
+  - New release patterns for multi-step agent systems
+  - Material shifts in observability expectations for tool-using AI products
+---
+
+## Quick answer
+
+Offline evals are necessary but not sufficient.
+
+Agent systems should usually move through three stages:
+
+1. **shadow evaluation** against real traffic or realistic tasks,
+2. **canary rollout** to a small controlled slice,
+3. **gradual release** gated by live quality, policy, latency, and cost signals.
+
+If a team skips those stages, it is treating agent changes as prompt edits when they are really runtime changes.
+
+## Why staged release matters more for agents
+
+Tool-using systems fail differently from simple answer generation.
+
+They can:
+
+- call the wrong tool,
+- call the right tool with bad arguments,
+- cross an approval boundary,
+- recover badly from partial failure,
+- or pass offline grading while still behaving poorly under live system conditions.
+
+That is why rollout discipline has to cover more than final-answer quality.
+
+## What shadow mode is for
+
+Shadow mode is the cheapest place to catch structural errors before users feel them.
+
+A shadow run should answer:
+
+- does the agent pick the right tools,
+- does it follow policy,
+- does it respect auth boundaries,
+- and does the trace look healthy enough to deserve live traffic?
+
+The system is not yet acting for users. It is proving that it deserves the chance.
+
+## What a canary slice should include
+
+A canary should not be random traffic only. It should deliberately include:
+
+- representative task types,
+- high-value workflows,
+- known brittle scenarios,
+- and a small amount of higher-risk work if approvals and containment are ready.
+
+If the canary only contains easy traffic, it proves very little.
+
+## What should be monitored live
+
+For agent systems, live rollout should watch at least:
+
+- task success or accepted-result rate,
+- tool selection quality,
+- approval-boundary compliance,
+- latency drift,
+- cost drift,
+- and manual intervention rate.
+
+These are the signals that expose whether the new system is operationally better, not merely more novel.
+
+## When a rollout should halt
+
+Good halt conditions usually include:
+
+- policy or approval failures,
+- significant regressions on high-value workflows,
+- unexpected cost spikes,
+- repeated tool misuse,
+- or rising manual cleanup that wipes out any apparent automation gain.
+
+The halt rule should be written before the rollout starts.
+
+## The common failure pattern
+
+The most common failure pattern is this:
+
+- offline evals look good,
+- a full rollout goes live too quickly,
+- early failures are rationalized as edge cases,
+- and by the time rollback is discussed, the product has already trained users to distrust the feature.
+
+Staged release exists to avoid that sequence.
+
+## A healthier rollout model
+
+Use a repeatable path:
+
+1. run shadow evaluation,
+2. classify failures,
+3. fix or constrain the system,
+4. release to a canary slice,
+5. monitor explicit live gates,
+6. widen only when the canary is healthy,
+7. roll back quickly when gates are breached.
+
+This is slower than optimism and faster than recovering trust after a broken launch.
+
+## Compare next
+
+- [EvalOps release gates and scorecard ownership for AI teams](/evaluation/eval-ops-release-gates-and-scorecard-ownership/)
+- [Eval-driven development for agentic products](/evaluation/eval-driven-development-for-agentic-products/)
+- [Tool selection evals and failure taxonomy for AI agents](/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/)
+- [Approval boundary tests for coding agents](/evaluation/approval-boundary-tests-for-coding-agents/)

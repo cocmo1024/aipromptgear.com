@@ -1,0 +1,169 @@
+---
+title: Cost per success and tool economics for agentic products
+description: How to measure AI tool economics by successful task completion instead of only model tokens or per-call pricing, with practical rules for search, retrieval, and execution-heavy systems.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams stop evaluating agentic product cost at the call level and instead budget tool use against successful workflow completion and business value.
+readerTakeaway: You should leave with a practical model for measuring cost per successful task, deciding which tools earn their keep, and cutting features that look smart but fail product economics.
+primaryKeyword: ai agent cost per success
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Applied AI engineers
+  - Platform teams
+  - Product operations owners
+keyQuestions:
+  - Why is per-call spend a weak metric for agentic product economics?
+  - How should teams measure cost per successful task across search, retrieval, and execution?
+  - Which tool patterns improve user outcomes enough to justify their added runtime cost?
+notFor:
+  - Model benchmarking without production workflows
+  - Teams still deciding whether an agentic workflow should exist at all
+updateTriggers:
+  - Changes in OpenAI API and tool pricing
+  - New managed-tool patterns that alter workflow economics
+  - Material shifts in how AI product teams measure tool-connected ROI
+---
+
+## Quick answer
+
+The real cost metric for an agentic product is usually **cost per successful task**, not cost per model call.
+
+Per-call pricing is still necessary, but it is not enough. If a workflow uses search, retrieval, code execution, browsing, or multi-step orchestration, the team needs to ask:
+
+- how often the task succeeds,
+- how often it succeeds *without* human cleanup,
+- and what the whole workflow costs when it does.
+
+That is the only level where tool use can be judged honestly.
+
+## Why per-call thinking breaks down
+
+Per-call thinking fails because agentic systems do not sell API calls. They sell completed outcomes.
+
+A product can have:
+
+- a cheap average call cost but terrible completion rate,
+- a low model bill but a heavy managed-tools bill,
+- or a polished agent loop that still loses money once retries, human review, and failure cleanup are included.
+
+This is why a lower token bill can still hide a worse business.
+
+## Current official signals checked April 15, 2026
+
+| Source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Model pricing is only one part of runtime economics | Tool-connected systems need economics above the token layer |
+| [OpenAI API priority processing](https://openai.com/api-priority-processing) | Service tier changes can materially affect runtime spend | Product economics now include routing and service-tier choices |
+| [OpenAI tools guides](https://platform.openai.com/docs/guides/tools) | Search, file access, and execution are first-class workflow primitives | Tool calls should be budgeted as workflow decisions, not hidden implementation details |
+
+## The better metric stack
+
+For most serious products, track these together:
+
+1. **Cost per request**
+2. **Cost per attempted task**
+3. **Cost per successful task**
+4. **Cost per accepted result**
+5. **Cost per retained user workflow**
+
+Only the first number is easy. The third and fourth are where product truth usually appears.
+
+## What counts as success
+
+Do not define success as "the model answered."
+
+Success should usually mean:
+
+- the correct workflow completed,
+- required evidence or tool output was gathered,
+- the result met policy requirements,
+- and the user did not need to redo or manually repair the work.
+
+Anything weaker inflates apparent efficiency.
+
+## A practical cost-per-success formula
+
+Use a simple version first:
+
+**total workflow cost / successful workflow completions**
+
+Include:
+
+- model calls,
+- tool calls,
+- retries,
+- background runs,
+- review overhead,
+- and known cleanup or fallback cost when the workflow fails.
+
+Even a rough version of this metric is more useful than a precise token spreadsheet that ignores human rework.
+
+## Where tool economics usually go wrong
+
+### Search everywhere
+
+Teams enable search on every request, even when the task is stable or closed-world. That improves demos but inflates cost per success on routine work.
+
+### Retrieval without evidence of uplift
+
+Managed file search or external retrieval is added because it feels architecturally mature, not because it improves successful completion enough to justify the stack.
+
+### Execution without product necessity
+
+Execution tools are often used because they make answers look serious. If the user value barely changes, the runtime cost is simply product drag.
+
+### Retry loops disguised as resilience
+
+Retries, fallbacks, and multiple tool paths can rescue some tasks, but they also raise the cost of every eventual success. The product must decide which rescues are worth buying.
+
+## The operating rule that works
+
+Every major tool path should answer three questions:
+
+1. What does this tool increase?
+2. What does it cost?
+3. Which user or business outcome justifies the difference?
+
+If the team cannot answer all three, the tool is probably being paid for on hope rather than evidence.
+
+## A useful experiment design
+
+For a target workflow, compare:
+
+1. model-only baseline,
+2. minimal-tool version,
+3. full-tool version.
+
+Measure:
+
+- latency,
+- total workflow cost,
+- success rate,
+- accepted-result rate,
+- and need for human intervention.
+
+This usually reveals whether tools are increasing real success or only expensive sophistication.
+
+## The product-level implication
+
+The right decision is not always "cheaper."
+
+Sometimes a more expensive tool path is justified because it:
+
+- increases completion rate enough to lower cost per accepted result,
+- cuts rework sharply,
+- or raises quality enough to support a higher-value use case.
+
+But teams need to prove that at the workflow level, not assume it from model or tool marketing.
+
+## Compare next
+
+- [Tool-use latency and cost budgets for AI products](/models-and-apis/tool-use-latency-and-cost-budgets/)
+- [Built-in search economics for AI products](/models-and-apis/built-in-search-economics-for-ai-products/)
+- [Flex processing vs priority and batch for AI cost control](/models-and-apis/flex-processing-vs-priority-and-batch-for-ai-cost-control/)
+- [File search vs external vector databases for AI products](/models-and-apis/file-search-vs-external-vector-databases-for-ai-products/)

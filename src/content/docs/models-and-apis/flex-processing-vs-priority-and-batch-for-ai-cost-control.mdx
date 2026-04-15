@@ -1,0 +1,149 @@
+---
+title: Flex processing vs priority and batch for AI cost control
+description: How to decide between flex processing, priority processing, and batch execution when AI costs need to fall without quietly breaking latency or reliability expectations.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams choose the right service tier or async pattern when model spend is growing and the product needs cleaner cost control without guessing.
+readerTakeaway: You should leave with a practical way to separate low-priority flex-eligible work from latency-critical requests and true batch workloads.
+primaryKeyword: flex processing vs priority processing
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - Applied AI engineers
+  - AI product leads
+  - Platform teams
+  - FinOps owners
+keyQuestions:
+  - When is flex processing a real cost advantage instead of a hidden reliability risk?
+  - How should teams separate priority traffic from batch traffic and flex-eligible traffic?
+  - Which AI tasks should never be moved onto slower or opportunistic service tiers?
+notFor:
+  - Teams with no production latency target or no cost-control pressure
+  - Pure benchmark discussions disconnected from product workloads
+updateTriggers:
+  - Changes in OpenAI pricing or service-tier guidance
+  - New product patterns where flex or priority materially changes economics
+  - Material reliability or latency changes in service-tier behavior
+---
+
+## Quick answer
+
+Use:
+
+- **priority processing** when the request is user-facing and degraded latency would materially damage the product;
+- **batch** when the workload is truly offline and can wait for a longer completion window;
+- **flex processing** when the task is important enough to run, but not important enough to demand predictable speed or availability.
+
+The failure mode is treating all three as generic "cheaper async" options. They solve different operating problems.
+
+## Why this matters now
+
+As AI products get more tool-heavy and more stateful, token cost is no longer the only budget. Teams are now paying for:
+
+- model usage,
+- tool usage,
+- service tier,
+- and the business damage caused by slow or delayed completion.
+
+That makes service-tier choice part of product design, not just infrastructure tuning.
+
+## Official signals checked April 15, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI now exposes **priority processing**, **batch**, and **flex processing** as distinct service options | Teams should stop treating cost control as only a model-choice problem |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Batch emphasizes lower-cost asynchronous processing over a longer completion window | Batch belongs to deferred workloads, not interactive request paths |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Flex processing explicitly trades lower price for slower response and occasional resource unavailability | Flex is a queueing and reliability decision, not just a discount |
+| [Priority processing](https://openai.com/api-priority-processing) | Priority is positioned around speed and reliability guarantees for faster production traffic | Priority spend should be reserved for requests with real business-value sensitivity |
+
+## The cleanest workload split
+
+The most useful split is usually:
+
+### Priority lane
+
+Use when:
+
+- a user is actively waiting,
+- the workflow gates a conversion or customer action,
+- or degraded latency creates trust damage immediately.
+
+Examples:
+
+- customer-facing copilots,
+- time-sensitive support replies,
+- live agent handoffs,
+- synchronous internal tools used in active workflows.
+
+### Batch lane
+
+Use when:
+
+- the work is clearly offline,
+- completion within hours is acceptable,
+- and the product does not need per-request interactive visibility.
+
+Examples:
+
+- nightly classification,
+- large document enrichment,
+- low-urgency reprocessing,
+- archive backfills.
+
+### Flex lane
+
+Use when:
+
+- the work is still request-addressable,
+- but it is low-priority enough to accept delay or occasional resource scarcity,
+- and the business outcome tolerates queue softness.
+
+Examples:
+
+- low-priority internal research jobs,
+- optional enrichment,
+- non-urgent report generation,
+- lower-tier feature access where cost matters more than speed.
+
+## Where teams misuse flex
+
+Teams misuse flex when they put onto it:
+
+- premium paid-user interactions,
+- approval-sensitive workflows,
+- time-boxed support promises,
+- or long tool chains where extra queue variance compounds already-high latency.
+
+Flex only helps if the product can survive slower and less predictable completion.
+
+## Batch versus flex is not the same decision
+
+| Question | Batch | Flex |
+| --- | --- | --- |
+| Is the workload clearly offline? | Strong fit | Sometimes, but not necessary |
+| Does the product need predictable completion timing? | Usually no | Not strongly |
+| Can the system tolerate slower or variable turnaround? | Yes | Yes, but often in shorter workflow form |
+| Is the request still part of a live product path? | Usually no | Often yes |
+
+If the work is really a queue-based offline job, batch is usually cleaner than flex.
+
+## The practical decision rule
+
+Before choosing a tier, answer:
+
+1. What is the maximum acceptable completion time?
+2. What is the real business damage of missing that time?
+3. Does the workflow still need interactive progress and intervention?
+4. Is the cost problem caused by volume, latency expectations, or both?
+
+Those four answers usually make the right tier obvious.
+
+## What to read next
+
+- [Tool-use latency and cost budgets for AI products](/models-and-apis/tool-use-latency-and-cost-budgets/)
+- [Batch API vs background mode for large AI jobs](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/)
+- [Background mode and async agents for long-running AI tasks](/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/)
+

@@ -1,0 +1,116 @@
+---
+title: Agents SDK vs app-owned orchestration for production agents
+description: How to decide when an agents SDK is a real productivity advantage and when production teams should keep orchestration logic directly inside their own application stack.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: agents sdk vs app owned orchestration
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - Applied AI engineers
+  - AI platform teams
+  - Engineering managers
+  - Product infrastructure leads
+contentStatus: growing
+problemSolved: Helps teams decide whether an agents SDK reduces orchestration work or whether it adds another abstraction layer that the product team still has to own operationally.
+readerTakeaway: You should leave with a clearer boundary between SDK-assisted orchestration and application-owned control flow for production agent systems.
+keyQuestions:
+  - When does an agents SDK save real engineering time?
+  - When should orchestration stay directly in application code?
+  - What production responsibilities remain even when an SDK provides agents, handoffs, and guardrails?
+notFor:
+  - Teams still deciding whether they need agents at all
+  - Local demos with no production monitoring or approval requirements
+updateTriggers:
+  - Changes in the OpenAI Agents SDK feature set
+  - New production patterns around agent orchestration, tracing, and guardrails
+  - Material shifts in how teams use SDK-managed versus app-managed orchestration
+---
+
+## Quick answer
+
+Use an agents SDK when:
+
+- the team wants faster access to agent loops, handoffs, tracing, and guardrails,
+- the orchestration pattern is still evolving,
+- and the product benefits from shared abstractions more than from total control.
+
+Keep orchestration app-owned when:
+
+- the workflow already has clear state machines, approval gates, and business rules,
+- the product needs strong deterministic control,
+- or the team would end up bypassing most of the SDK abstractions anyway.
+
+The real question is not "SDK or no SDK." It is which layer should own the workflow truth.
+
+## Why this is a real production decision
+
+The market conversation often treats agent SDKs like neutral accelerators. In practice they change:
+
+- where control flow lives,
+- how state is represented,
+- how traces are collected,
+- and how much agent behavior becomes framework-shaped instead of product-shaped.
+
+That makes SDK adoption an architecture decision, not a convenience decision.
+
+## Official signals checked April 15, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) | The SDK is positioned as a lightweight, production-ready agent framework with tools, handoffs, guardrails, tracing, and sessions | Teams now have a serious framework choice, not just code snippets |
+| [Agent orchestration](https://openai.github.io/openai-agents-python/multi_agent/) | The SDK explicitly distinguishes LLM-driven orchestration from code-driven orchestration | App-owned control flow is still a first-class pattern, not a failure to "go fully agentic" |
+| [Agents](https://openai.github.io/openai-agents-python/agents/) | Agent definitions expose models, tools, guardrails, handoffs, sessions, and runtime behavior | SDK adoption shapes how teams express core orchestration concepts |
+| [Running agents](https://openai.github.io/openai-agents-python/running_agents/) | The SDK includes durable execution and resume-oriented runtime concerns | Runtime continuity is now part of the framework decision, not just tool calling |
+
+## Where an SDK really helps
+
+An agents SDK usually helps most when the product needs:
+
+- fast experimentation with multi-agent patterns,
+- built-in tracing and runtime introspection,
+- standard tool and handoff wiring,
+- and a cleaner path to guardrails without building every primitive from scratch.
+
+This is especially useful when the team is still discovering the shape of the workflow.
+
+## Where app-owned orchestration wins
+
+Application-owned orchestration usually wins when:
+
+- business workflow is already strongly modeled;
+- approval steps and fallbacks are explicit and narrow;
+- product state must remain consistent with existing backend logic;
+- or the team needs deterministic failure handling more than agentic flexibility.
+
+In those cases, the SDK can become an extra indirection layer that the application still has to override.
+
+## The strongest rule of thumb
+
+| Situation | Better default |
+| --- | --- |
+| New agent product, evolving workflow, need tracing and handoffs quickly | Agents SDK |
+| Mature product workflow with strict business-state transitions | App-owned orchestration |
+| Many experimental tools, unclear delegation shape | Agents SDK |
+| Narrow workflow with strong existing service boundaries | App-owned orchestration |
+
+If the workflow truth already exists in the app, keep it there unless the SDK clearly lowers total operating cost.
+
+## What teams underestimate
+
+Teams often underestimate:
+
+- migration cost if the SDK abstraction stops fitting later,
+- the operational impact of framework-shaped traces and sessions,
+- and the fact that approvals, permissions, retries, and incident handling still belong to the product team.
+
+The SDK can accelerate implementation. It does not remove system ownership.
+
+## What to read next
+
+- [Agent workflows vs autonomous agents](/agent-systems/agent-workflows-vs-autonomous-agents/)
+- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
+- [Tool timeouts, retries, and idempotency for AI agents](/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/)
+

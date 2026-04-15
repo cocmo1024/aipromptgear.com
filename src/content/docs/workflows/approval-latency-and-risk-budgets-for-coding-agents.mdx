@@ -1,0 +1,134 @@
+---
+title: Approval latency and risk budgets for coding agents
+description: How to balance approval speed, repository risk, and operator load when coding agents need permissions to edit code, open PRs, run checks, or touch deployment paths.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps engineering teams design approval systems for coding agents that protect repositories and release paths without making every useful action too slow to matter.
+readerTakeaway: You should leave with a practical model for trading off approval delay, repository risk, and operator effort across coding-agent workflows.
+primaryKeyword: coding agent approval
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering leads
+  - Developer productivity teams
+  - AI platform teams
+  - Security owners
+keyQuestions:
+  - How much approval latency is acceptable for different coding-agent actions?
+  - Which repository actions deserve synchronous approval and which can be pre-approved by policy?
+  - How do teams keep approval systems useful instead of turning them into slow human bottlenecks?
+notFor:
+  - Teams not allowing coding agents near real repositories
+  - Generic code review policy unrelated to agent workflows
+updateTriggers:
+  - Changes in coding-agent operational patterns
+  - New policy and approval tooling for code-writing agents
+  - Material shifts in repository governance for AI-assisted development
+---
+
+## Quick answer
+
+Approval systems for coding agents should be designed around **risk budgets**, not around the assumption that every action deserves the same human delay.
+
+The right question is:
+
+**What level of risk is the team buying down with each approval, and is the delay worth it?**
+
+If the approval cost exceeds the risk reduction, the workflow will either slow to a crawl or be bypassed.
+
+## Why this matters now
+
+Coding-agent systems are no longer limited to "suggest code."
+
+They may:
+
+- read repositories,
+- edit files,
+- run tests,
+- open PRs,
+- update issues,
+- or interact with broader systems.
+
+That means approval design is no longer a UI nicety. It is part of repository control.
+
+## The wrong mental model
+
+The wrong mental model is:
+
+"Higher risk means more approval."
+
+That is incomplete. The real model is:
+
+"Higher risk may deserve more approval, unless policy, sandboxing, and workflow boundaries already reduced the risk enough."
+
+Otherwise teams create approval queues that are expensive but not actually safer.
+
+## A useful risk ladder
+
+For most teams, coding-agent actions fall into tiers:
+
+1. **Read-only analysis**
+2. **Local draft edits**
+3. **Proposed repository changes**
+4. **Merge-adjacent actions**
+5. **Deployment-adjacent or cross-system actions**
+
+Each tier needs a different balance of:
+
+- approval latency,
+- automated checks,
+- and human review effort.
+
+## Where approval latency is cheap
+
+Approval latency is usually acceptable when:
+
+- the task is rare and high impact,
+- the action is hard to reverse,
+- the target is production-adjacent,
+- or the repository is security-sensitive.
+
+In these cases, extra delay is often a rational price for control.
+
+## Where approval latency is expensive
+
+Approval latency becomes product poison when:
+
+- the task is low-risk and high-frequency,
+- the action is easy to reverse,
+- the agent is only proposing a draft,
+- or human reviewers are now spending more time approving than they would fixing the task directly.
+
+At that point the system is not safer. It is just slower.
+
+## The practical control rule
+
+Use policy and automation to remove approval from routine low-risk steps, then reserve synchronous approval for genuinely expensive actions.
+
+That often means:
+
+- read-only and local draft actions can be pre-approved,
+- repository write proposals may rely on PR checks and review,
+- merge and release-adjacent actions need much tighter gates,
+- and cross-system side effects need the strongest controls.
+
+## The operational failure pattern
+
+The common failure pattern is:
+
+- start with strict approvals everywhere,
+- watch teams get frustrated,
+- soften controls informally,
+- and end up with a system that is both slow and weakly governed.
+
+Good approval design avoids that by treating human review time as a scarce resource.
+
+## Compare next
+
+- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
+- [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/)
+- [PR checks and merge gates for coding agents](/workflows/pr-checks-and-merge-gates-for-coding-agents/)
+- [Least privilege tool scopes for agent systems](/agent-systems/least-privilege-tool-scopes-for-agent-systems/)

@@ -1,0 +1,112 @@
+---
+title: Eval-driven development for agentic products
+description: How to turn evals into a real development loop for agentic products instead of treating evaluation as a post-launch reporting layer.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: eval driven development for agents
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Applied AI engineers
+  - AI product leads
+  - Evaluation owners
+  - Platform teams
+contentStatus: growing
+problemSolved: Helps teams make evaluation part of everyday product development so agent behavior is shaped by tests and release gates instead of anecdotal demos.
+readerTakeaway: You should leave with a clearer model for using evals before feature launch, during release, and after deployment as part of the normal agent development loop.
+keyQuestions:
+  - What makes eval-driven development different from occasional benchmark runs?
+  - Which evals belong in prototyping, which belong in release gating, and which belong in post-launch monitoring?
+  - How should teams connect golden tasks, graders, and human review to actual product change velocity?
+notFor:
+  - Teams still exploring toy prompts with no real product workflow
+  - Research-only benchmark work disconnected from shipping decisions
+updateTriggers:
+  - Changes in OpenAI eval tooling and graders guidance
+  - New production patterns for agent evaluation and release control
+  - Material shifts in how teams operationalize graders and evaluation gates
+---
+
+## Quick answer
+
+Eval-driven development means:
+
+- writing or refining eval cases before changing prompts, tools, or workflows;
+- using those evals to decide whether the change should ship;
+- and keeping the eval set aligned with the failures the product actually sees.
+
+If evaluation only happens after launch, it is not driving development. It is documenting drift.
+
+## Why this matters now
+
+Agentic products change along more dimensions than traditional prompt apps:
+
+- tool contracts,
+- approval behavior,
+- runtime orchestration,
+- retrieval and search paths,
+- and model behavior itself.
+
+That makes "it looked good in staging" a weak quality bar. Evals need to become part of implementation, not just reporting.
+
+## Official signals checked April 15, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [Agent evals](https://platform.openai.com/docs/guides/agent-evals) | OpenAI now frames agent evals around end-to-end agent performance, tools, and outcomes | Evaluation is moving closer to real workflow behavior |
+| [Graders](https://platform.openai.com/docs/guides/graders/) | OpenAI positions graders as part of a structured evaluation workflow, not only ad hoc review | Teams can operationalize evaluation earlier in the development loop |
+| [Agents SDK](https://openai.github.io/openai-agents-python/) | The SDK includes tracing and evaluation-oriented workflow support | Runtime instrumentation is now tightly connected to eval practice |
+
+## What eval-driven development actually changes
+
+Without eval-driven development, teams usually:
+
+- tweak prompts or tool behavior,
+- run a few hand-picked examples,
+- and ship if the demo still looks good.
+
+With eval-driven development, teams instead:
+
+1. define the behavior change they want;
+2. add or update eval cases for that behavior;
+3. run the change against those cases;
+4. decide release readiness from the eval result and human review where needed.
+
+That is a different operating rhythm.
+
+## The three eval layers
+
+### Prototyping evals
+
+These help decide whether an approach is promising enough to keep building.
+
+### Release evals
+
+These block or allow production changes. They should be stable, owned, and hard to game.
+
+### Post-launch evals
+
+These watch for drift, new failure modes, and regression against real traffic patterns.
+
+The mistake is trying to make one eval set do all three jobs.
+
+## What belongs in the first release set
+
+The first useful release eval set usually covers:
+
+- representative happy-path tasks,
+- known high-cost failures,
+- approval-boundary behavior,
+- tool-choice correctness,
+- and a few difficult edge cases that product owners care about.
+
+That is enough to shape development without creating an unmaintainable eval program on day one.
+
+## What to read next
+
+- [Agent evals for tool-using AI systems](/evaluation/agent-evals-for-tool-using-ai-systems/)
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
+- [EvalOps release gates and scorecard ownership](/evaluation/eval-ops-release-gates-and-scorecard-ownership/)
+
