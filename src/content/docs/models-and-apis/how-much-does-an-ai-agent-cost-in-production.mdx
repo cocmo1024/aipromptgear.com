@@ -1,0 +1,216 @@
+---
+title: How much does an AI agent cost in production?
+description: What really drives AI agent cost in production, why token pricing is only part of the picture, and how teams should budget around successful outcomes.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent cost in production
+searchIntent: select
+decisionStage: shortlist
+targetRoles:
+  - AI product leads
+  - Platform teams
+  - Operations owners
+  - Technical buyers
+contentStatus: cornerstone
+problemSolved: Helps teams estimate production AI agent cost by breaking the problem into model, tool, review, and failure economics instead of looking only at prompt-call pricing.
+readerTakeaway: You should leave with a practical way to budget AI agent cost per successful outcome and a clearer view of which design choices make agent economics healthy or dangerous.
+keyQuestions:
+  - What is the real unit of cost for an AI agent in production?
+  - Which parts of the stack make agent cost rise fastest?
+  - How should teams budget before they launch a tool-using workflow?
+notFor:
+  - Teams looking for a simple token pricing table with no workflow context
+  - Readers evaluating toy demos with no tool use, no review, and no production support cost
+  - Organizations that have not yet defined the workflow the agent is supposed to improve
+updateTriggers:
+  - Major provider pricing changes for models, search, retrieval, or hosted tools
+  - New billing patterns that change the economics of tool-connected runtimes
+  - Clear shifts in how teams measure cost per successful workflow rather than cost per call
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How much does an AI agent cost in production?
+
+## Quick answer
+
+An AI agent is not expensive because one model call is expensive. It is expensive when the **full workflow cost per successful outcome** gets out of line with the value of the task.
+
+The real cost stack usually includes:
+
+- model usage,
+- search, retrieval, or execution tools,
+- retries and failed runs,
+- human review,
+- infrastructure and observability,
+- and the support burden created when the workflow is hard to trust.
+
+That is why two agents using the same model can have radically different economics.
+
+## The wrong mental model
+
+Many teams still ask this like a chatbot question: "What does one response cost?"
+
+That is too narrow for production work. A tool-using agent may:
+
+- plan across several steps,
+- search or retrieve multiple times,
+- call external systems,
+- wait for approval,
+- retry partial failures,
+- and generate work that still needs a human to review or fix.
+
+The correct unit is usually **cost per completed job** or, better, **cost per successful outcome**.
+
+## The cost formula that matters
+
+For a production workflow, a more honest budget model looks like this:
+
+**Cost per successful outcome = model cost + tool cost + infrastructure cost + review cost + failure overhead**
+
+That last term matters more than many teams expect. If ten percent of runs trigger retries, manual cleanup, or customer-facing recovery work, the agent is more expensive than the pricing page suggests.
+
+## The five cost drivers that matter most
+
+### 1. Model lane selection
+
+The fastest way to overspend is to route every task to the most capable model by default.
+
+Healthy systems separate:
+
+- cheap routine classification or extraction work,
+- medium-complexity drafting or transformation work,
+- and slower premium reasoning for the minority of cases that genuinely need it.
+
+If routing is absent, the agent usually pays enterprise-grade reasoning economics for ordinary queue work.
+
+### 2. Tool stack sprawl
+
+Every search, file read, browser step, or execution path adds more than direct tool cost. It also adds latency, failure modes, and evaluation burden.
+
+An agent that touches four tools is not only paying for four tools. It is paying for:
+
+- orchestration,
+- retries,
+- status handling,
+- and a wider surface for debugging and policy control.
+
+### 3. Human review rate
+
+Review is not a failure. For many production systems, it is the right control boundary.
+
+But review changes the economics:
+
+- a draft-only workflow can still be attractive if it saves meaningful operator time,
+- a high-review workflow may still be healthy for risky tasks,
+- and a write-capable workflow becomes expensive very quickly if review is still required on nearly every run.
+
+If the agent cannot reduce or sharpen human effort, the economics stay weak.
+
+### 4. Failure and retry overhead
+
+Many agent systems look efficient until teams inspect:
+
+- timeout rates,
+- duplicate tool calls,
+- partial runs,
+- escalations,
+- and operator cleanup work.
+
+That overhead is often the hidden gap between a promising demo and a sustainable production system.
+
+### 5. Workflow value
+
+An agent can cost more per run than a basic automation and still be the right decision if the underlying workflow is valuable enough.
+
+That is why cost questions should always be paired with:
+
+- task value,
+- error tolerance,
+- turnaround expectations,
+- and the cost of the status quo.
+
+## What a cheap agent usually looks like
+
+A cheap production agent is usually:
+
+- tightly scoped,
+- routed to the cheapest model lane that clears the bar,
+- light on tool calls,
+- easy to observe,
+- and attached to a workflow where review is selective rather than universal.
+
+These systems often behave more like bounded workflow engines than like open-ended autonomous assistants.
+
+## What makes cost explode
+
+Agent cost usually inflates when teams combine:
+
+- premium reasoning on every request,
+- broad tool access,
+- long traces with repeated searches,
+- weak stopping rules,
+- and no clear rule for when humans should step in.
+
+This is also why vague autonomy language is dangerous. It encourages systems that keep thinking, searching, and calling tools without a sharp economic boundary.
+
+## A practical budgeting rule
+
+Before launch, estimate cost at four levels:
+
+1. **Per run**: the raw technical cost of one normal execution.
+2. **Per reviewed run**: the same run plus expected human review time.
+3. **Per successful outcome**: the run cost adjusted for failures, retries, and manual rescue work.
+4. **Per month at target volume**: the operating budget once normal traffic arrives.
+
+If the economics only work at level one, the system is not ready for production budgeting.
+
+## The best comparison benchmark
+
+Do not compare the agent only to "doing nothing."
+
+Compare it to the real baseline:
+
+- macros and deterministic automation,
+- human-only handling,
+- workflow assistants that stop at draft mode,
+- or simpler retrieval systems with no agent layer.
+
+This is how teams learn whether they are buying real leverage or just more moving parts.
+
+## Implementation checklist
+
+Your cost model is probably healthy when:
+
+- the team knows the target cost per successful outcome;
+- routing keeps premium models away from low-value work;
+- tool use is budgeted, not treated as free convenience;
+- review rates are measured explicitly;
+- and failed runs are included in the economics instead of excluded from the spreadsheet.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Cost per success and tool economics"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Use this page to move from call pricing into workflow-level economics and operating leverage."
+	/>
+	<LinkCard
+		title="Tool-use latency and cost budgets"
+		href="/models-and-apis/tool-use-latency-and-cost-budgets/"
+		description="Use this page when the stack keeps adding search, retrieval, and execution cost without a clear budget rule."
+	/>
+	<LinkCard
+		title="Reasoning models vs fast models"
+		href="/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/"
+		description="Use this page when routing discipline is the easiest way to cut spend without lowering quality."
+	/>
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Use this page to anchor cost discussions in a real workflow where quality, review, and resolution speed all matter."
+	/>
+</div>

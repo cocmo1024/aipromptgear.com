@@ -1,0 +1,194 @@
+---
+title: Do you need RAG for an AI agent or AI product?
+description: How to tell when RAG is genuinely necessary, when it is premature architecture, and which alternatives fit better for smaller or more stable AI systems.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: do you need rag for ai agent
+searchIntent: design
+decisionStage: solution-aware
+targetRoles:
+  - AI product leads
+  - Application engineers
+  - Platform teams
+  - Technical founders
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether retrieval-augmented generation belongs in the system at all, rather than assuming every AI product needs RAG by default.
+readerTakeaway: You should leave with a clear rule for when RAG is worth its indexing, retrieval, and evaluation burden and when simpler patterns are healthier.
+keyQuestions:
+  - When is RAG the right architecture choice?
+  - When is RAG solving a problem that does not actually exist?
+  - What should teams use instead when knowledge needs are smaller or more stable?
+notFor:
+  - Teams building generic chat demos with no real knowledge boundary
+  - Readers looking only for vector database implementation tutorials
+  - Organizations that have not defined which knowledge the product must answer from
+updateTriggers:
+  - Major changes in managed retrieval and file-search tooling
+  - Provider guidance that materially changes retrieval economics or ergonomics
+  - Clear shifts in how teams combine RAG with search, caching, or fine-tuning
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Do you need RAG for an AI agent or AI product?
+
+## Quick answer
+
+You need **RAG** when the system must answer from knowledge that is:
+
+- too large to fit reliably in prompts,
+- private or organization-specific,
+- changing often enough that model memory is the wrong place to rely on,
+- or valuable enough that source grounding is required.
+
+You probably do **not** need RAG when the task depends mostly on workflow logic, small stable instructions, or tool outputs that can be fetched directly at runtime.
+
+## The most common mistake
+
+RAG became default architecture language so quickly that many teams now add retrieval before proving the product needs it.
+
+That creates unnecessary complexity:
+
+- indexing pipelines,
+- chunking decisions,
+- stale knowledge risk,
+- retrieval latency,
+- citation expectations,
+- and a harder evaluation problem.
+
+Retrieval is useful when the knowledge boundary is real. It is wasteful when it is only fashionable.
+
+## When RAG is clearly justified
+
+RAG belongs in the design when the answer depends on content such as:
+
+- internal policies or playbooks,
+- product documentation that changes often,
+- support articles or knowledge-base entries,
+- contract and policy source material,
+- or large document collections that must be cited or inspected selectively.
+
+In those cases, retrieval is part of the truth boundary. The model is not supposed to "remember" the content. It is supposed to find and use it.
+
+## When you probably do not need RAG
+
+RAG is often unnecessary when:
+
+- the instructions are small and stable;
+- the workflow depends more on tool use than on document recall;
+- the needed facts can be fetched deterministically from an API;
+- the product is still narrow enough to work from prompt context alone;
+- or the real problem is model routing, not knowledge retrieval.
+
+Many teams say they need RAG when what they really need is:
+
+- better system prompts,
+- stronger workflow boundaries,
+- tool calling,
+- caching,
+- or a cleaner source-of-truth API.
+
+## Do not confuse RAG with direct system access
+
+If the agent needs the current ticket status, order data, CRM record, or user permissions, that is usually a **tool or API access problem**, not a RAG problem.
+
+RAG is strongest for text-like knowledge retrieval. It is weaker as a substitute for live structured system access.
+
+## The right question is not "Should we use RAG?"
+
+The better question is:
+
+**What knowledge does the system need, and where should that knowledge come from at runtime?**
+
+Possible answers include:
+
+- prompt context,
+- cached context,
+- retrieved documents,
+- live web search,
+- managed file search,
+- direct API calls,
+- or fine-tuned behavior.
+
+That framework usually makes the RAG decision much easier.
+
+## Three signals that RAG is probably worth it
+
+RAG is usually the right move when all three are true:
+
+1. the answer depends on content outside the model's reliable prompt window,
+2. the content changes or is private enough that embedded knowledge is unsafe,
+3. the workflow benefits from showing or preserving source grounding.
+
+If those conditions are weak, the retrieval layer may be premature.
+
+## Three signals that RAG is being overused
+
+RAG is often the wrong answer when:
+
+1. retrieval is added before the team defines which documents should ever be used;
+2. the main user complaint is workflow quality, not missing knowledge;
+3. the system keeps retrieving documents that the agent did not truly need.
+
+That usually means the architecture is covering for a product-definition problem.
+
+## What to use instead
+
+Healthy alternatives include:
+
+- **prompt caching** for repeated stable context,
+- **direct tools or APIs** for structured current-state data,
+- **web search** for live external information,
+- **fine-tuning** when the need is behavioral consistency rather than knowledge recall,
+- and **smaller scoped prompts** when the problem is still narrow.
+
+These are not anti-RAG positions. They are ways to avoid using retrieval where a simpler layer fits better.
+
+## A practical decision rule
+
+Use RAG when the knowledge is large, changing, private, and source-sensitive.
+
+Do not use RAG when the problem is mainly one of:
+
+- action selection,
+- prompt quality,
+- model routing,
+- or tool access to live systems.
+
+In those cases, retrieval adds cost and latency without solving the real bottleneck.
+
+## Implementation checklist
+
+Your RAG decision is probably healthy when:
+
+- the team can name the document sets that actually belong in retrieval;
+- the system separates retrieved knowledge from live system state;
+- evaluation checks whether retrieval improved outcomes instead of only adding citations;
+- and the team can explain why simpler alternatives are insufficient.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Web search vs RAG"
+		href="/models-and-apis/web-search-vs-rag-for-ai-products/"
+		description="Use this page when the system must separate live external discovery from owned internal knowledge."
+	/>
+	<LinkCard
+		title="File search vs external vector databases"
+		href="/models-and-apis/file-search-vs-external-vector-databases-for-ai-products/"
+		description="Use this page when retrieval is justified and the remaining choice is managed search versus owned indexing."
+	/>
+	<LinkCard
+		title="Prompt caching vs retrieval vs fine-tuning"
+		href="/models-and-apis/prompt-caching-vs-retrieval-vs-fine-tuning-for-ai-products/"
+		description="Use this page when the optimization question is bigger than retrieval alone."
+	/>
+	<LinkCard
+		title="Built-in search economics"
+		href="/models-and-apis/built-in-search-economics-for-ai-products/"
+		description="Use this page when retrieval or search looks useful but the team still needs an economic rule."
+	/>
+</div>

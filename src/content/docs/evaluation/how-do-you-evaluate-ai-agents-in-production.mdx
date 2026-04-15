@@ -1,0 +1,221 @@
+---
+title: How do you evaluate AI agents in production?
+description: A practical production evaluation model for AI agents that checks outcomes, traces, approvals, tool use, and live failure patterns instead of only offline prompt quality.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: how to evaluate ai agents in production
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Evaluation owners
+  - Application engineers
+  - Operations leads
+contentStatus: cornerstone
+problemSolved: Shows teams how to evaluate production AI agents in a way that reflects actual workflow risk, tool behavior, approvals, and live failure modes.
+readerTakeaway: You should leave with a concrete framework for measuring AI agent quality in production without collapsing the problem into a single pass-fail answer score.
+keyQuestions:
+  - What should production agent evals actually measure?
+  - How do live review loops connect to offline test sets?
+  - Which failures matter most before agents reach customers or internal systems?
+notFor:
+  - Teams evaluating only single-turn text generation with no tools or workflow steps
+  - Readers looking for one benchmark metric to replace operational judgment
+  - Organizations with no plan to observe live runs after launch
+updateTriggers:
+  - Major changes in agent tracing, tool-use, and evaluation tooling
+  - New deployment patterns that shift where approval and human review belong
+  - Clear industry movement toward new release-gate or live-audit norms
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How do you evaluate AI agents in production?
+
+## Quick answer
+
+Production agent evaluation should score **more than the final answer**.
+
+A useful evaluation loop checks:
+
+- whether the agent selected the right path,
+- whether it used tools correctly,
+- whether it paused or escalated when required,
+- whether the final outcome helped the workflow,
+- and what happened when the run met real-world messiness.
+
+If the eval only asks "Was the answer good?", it is missing the parts that usually create the biggest operational risk.
+
+## Why production evaluation is different
+
+An agent can look excellent in offline examples and still fail in production because production includes:
+
+- ambiguous inputs,
+- missing data,
+- unstable tools,
+- permission boundaries,
+- review queues,
+- and users who push the system outside the neat demo path.
+
+That means production evaluation has to combine **offline tests**, **live sampling**, and **release discipline**.
+
+## The five layers that should be measured
+
+### 1. Task outcome quality
+
+Did the workflow actually reach an acceptable end state?
+
+Examples:
+
+- correct resolution,
+- useful draft,
+- successful routing,
+- accurate synthesis,
+- or safe escalation.
+
+This is the business-facing layer.
+
+### 2. Trace quality
+
+Did the agent take a reasonable path?
+
+Even when the final answer looks fine, the trace may reveal:
+
+- unnecessary searches,
+- duplicated tool calls,
+- confused branching,
+- or near-miss policy failures.
+
+Trace quality is how teams catch brittle success before it becomes expensive failure.
+
+### 3. Tool behavior
+
+The eval must check:
+
+- tool choice,
+- argument quality,
+- failure handling,
+- retries,
+- and stop conditions.
+
+Tool behavior is often where production agents drift first.
+
+### 4. Approval and escalation behavior
+
+Agents should be scored on whether they:
+
+- stopped when a human should decide,
+- escalated risky cases,
+- respected write boundaries,
+- and handled uncertainty safely.
+
+These behaviors matter as much as answer quality once real systems are involved.
+
+### 5. Live operational health
+
+Production evaluation also needs live signals:
+
+- completion rate,
+- retry rate,
+- review rate,
+- manual rescue rate,
+- policy exceptions,
+- and time to a trusted result.
+
+This is where the system's actual operating quality appears.
+
+## Start with failure classes, not benchmarks
+
+Before writing a single eval case, define the failure classes that matter:
+
+- harmless style mistakes,
+- wrong but reversible outputs,
+- workflow delays,
+- policy misses,
+- unsafe tool actions,
+- and expensive customer-facing or system-facing errors.
+
+A production eval is only useful when it distinguishes these classes clearly.
+
+## How offline and live evaluation should work together
+
+Healthy teams usually use:
+
+1. **Offline evals** for repeatable baseline checks.
+2. **Pre-release review** for risky changes.
+3. **Shadow or sampled live review** after deployment.
+4. **Regression updates** driven by real failures.
+
+Offline evals protect consistency. Live review protects reality.
+
+## What to log from live runs
+
+A production agent is much easier to evaluate when the team logs:
+
+- task type,
+- model lane,
+- tools used,
+- approvals requested,
+- final status,
+- reviewer outcome,
+- and a stable trace or event history.
+
+Without this, "evaluation" turns into anecdote and vague operator memory.
+
+## The most useful production question
+
+Ask this after every important workflow:
+
+**If this run had gone wrong, would we be able to see why?**
+
+If the answer is no, the evaluation system is still too thin.
+
+## Release gates that actually matter
+
+For high-value or risky workflows, do not ship changes just because average quality improved.
+
+Hold a change until the team can show:
+
+- no increase in high-cost failure classes,
+- stable or improved approval behavior,
+- acceptable completion rates,
+- and no new trace patterns that imply silent risk.
+
+This is how evaluation becomes operating control rather than reporting theater.
+
+## Implementation checklist
+
+Your production evaluation loop is probably healthy when:
+
+- failure classes are defined before the scorecards;
+- outcome, trace, tool, and approval behavior are all measured;
+- live sampling exists after release, not only before it;
+- regressions are updated from real incidents;
+- and owners know which metrics can actually block deployment.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Agent evals for tool-using AI systems"
+		href="/evaluation/agent-evals-for-tool-using-ai-systems/"
+		description="Use this page for the core framework behind plan, tool, approval, and outcome scoring."
+	/>
+	<LinkCard
+		title="Trace grading for tool-using agents"
+		href="/evaluation/trace-grading-for-tool-using-ai-agents/"
+		description="Use this page when the missing piece is how to judge the full run instead of only the final output."
+	/>
+	<LinkCard
+		title="EvalOps release gates and scorecard ownership"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Use this page when evaluation needs named owners and real release consequences."
+	/>
+	<LinkCard
+		title="Shadow evals and canary rollouts"
+		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
+		description="Use this page when the system is moving from offline confidence into live rollout discipline."
+	/>
+</div>

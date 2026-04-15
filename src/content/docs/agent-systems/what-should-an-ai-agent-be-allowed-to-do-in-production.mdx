@@ -1,0 +1,186 @@
+---
+title: What should an AI agent be allowed to do in production?
+description: A practical permission model for production AI agents covering read access, draft actions, approvals, write boundaries, and the safest way to expand scope over time.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent permissions in production
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security owners
+  - Application engineers
+  - Operations leads
+contentStatus: cornerstone
+problemSolved: Helps teams decide what production AI agents should be allowed to read, propose, write, execute, or trigger without creating broad and fragile permission boundaries.
+readerTakeaway: You should leave with a practical rule for designing agent permissions so the system gains leverage without inheriting uncontrolled side effects.
+keyQuestions:
+  - What is the safest default permission model for an AI agent?
+  - Which actions should always require approval?
+  - How should teams stage permission growth as confidence improves?
+notFor:
+  - Teams building isolated sandbox demos with no real system access
+  - Readers looking for generic IAM explanations unrelated to agent workflows
+  - Organizations with no intent to connect AI systems to tools or business systems
+updateTriggers:
+  - New enterprise guidance on AI agent permissions and approvals
+  - Changes in hosted tool controls, scoped auth, or audit capabilities
+  - Clear shifts in how teams stage read, draft, and write permissions over time
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What should an AI agent be allowed to do in production?
+
+## Quick answer
+
+The safest default is:
+
+- **read narrowly,**
+- **draft freely within scope,**
+- **ask before writing,**
+- and **never execute broad side effects by default**.
+
+Production AI agents should earn permission in stages. They should not start with wide authority just because the workflow sounds useful.
+
+## The permission ladder
+
+Most healthy production systems grow through four levels:
+
+1. **Read**: inspect documents, records, or pages within a narrow scope.
+2. **Draft**: produce a recommendation, summary, response, or action plan.
+3. **Propose**: prepare a structured action that a human can approve.
+4. **Execute**: carry out a side effect after explicit policy and approval rules are satisfied.
+
+Many teams skip directly from read to execute. That is where hidden risk usually enters.
+
+## Why broad permission is a trap
+
+Wide tool access creates several problems at once:
+
+- harder evaluation,
+- harder incident review,
+- larger blast radius,
+- weaker user trust,
+- and more expensive approvals because reviewers no longer understand what the agent can actually touch.
+
+The agent may look flexible, but the operating system around it becomes brittle.
+
+## What should usually be allowed early
+
+Early production agents are strongest when they can:
+
+- search or read from narrow sources,
+- classify or summarize content,
+- draft suggested actions,
+- prepare tool arguments,
+- and surface confidence or uncertainty for review.
+
+These permissions create leverage without making the agent the final authority.
+
+## What should usually require approval
+
+Approval should exist whenever the action can:
+
+- write or mutate a record,
+- contact a customer,
+- spend money,
+- change permissions,
+- trigger external systems,
+- or alter production content.
+
+That does not mean the agent is weak. It means the workflow has a visible control boundary.
+
+## Read scope matters as much as write scope
+
+Many teams focus only on write danger. But broad read access is also risky when the agent can see:
+
+- sensitive personal data,
+- contracts or financial information,
+- internal strategy material,
+- or credentials and secrets through adjacent systems.
+
+A good permission design narrows both read and write scope instead of assuming read-only is automatically safe.
+
+## Whose authority should the agent use?
+
+The system should be explicit about identity:
+
+- **user-scoped authority** when the agent is acting as the user inside their normal boundary,
+- **service authority** when a workflow-owned system identity is safer and more auditable,
+- and **mixed models** only when the team can explain the boundary clearly.
+
+Permission mistakes often begin when identity is implied rather than designed.
+
+## Approval is not enough without narrow scopes
+
+Approval does not fix a bad permission model.
+
+If the agent can access too many systems, one approval step still leaves the team with:
+
+- large traces,
+- confused reviewer burden,
+- unclear incident analysis,
+- and too many things that could go wrong before the approval point.
+
+Approval works best after the scope is already narrow.
+
+## The best rollout rule
+
+Expand permissions only when the team can show:
+
+1. stable performance at the current permission level,
+2. good trace visibility,
+3. acceptable approval behavior,
+4. and clear business value for the next step up the ladder.
+
+Permission growth should follow evidence, not enthusiasm.
+
+## A practical default policy
+
+For many teams, the best first production policy is:
+
+- narrow read access to one task-specific source set,
+- draft-only outputs,
+- structured proposals for any side effect,
+- explicit approval before execution,
+- and full audit traces for every run.
+
+This is much easier to operate than a broad "assistant" model with unclear authority.
+
+## Implementation checklist
+
+Your permission design is probably healthy when:
+
+- the agent's read scope is specific and documented;
+- draft, propose, and execute are treated as separate capability levels;
+- approval is attached to side effects, not only to vague "high risk" labels;
+- the agent's identity model is explicit;
+- and scope expansion happens only after observed success.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Least-privilege tool scopes for agent systems"
+		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
+		description="Use this page when broad integration access needs to be split into narrower capabilities."
+	/>
+	<LinkCard
+		title="User-scoped auth vs service accounts"
+		href="/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/"
+		description="Use this page when the remaining question is whose authority the agent should actually use."
+	/>
+	<LinkCard
+		title="MCP security and approval boundaries"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Use this page when shared tool infrastructure raises stronger permission and approval questions."
+	/>
+	<LinkCard
+		title="Sandboxing, network permissions, and secrets"
+		href="/agent-systems/sandboxing-network-permissions-and-secrets-for-coding-agents/"
+		description="Use this page when filesystem, network, and credential boundaries become part of the agent design."
+	/>
+</div>
