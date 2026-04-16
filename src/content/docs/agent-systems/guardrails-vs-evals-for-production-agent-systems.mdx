@@ -1,0 +1,160 @@
+---
+title: Guardrails vs evals for production agent systems
+description: What guardrails actually control, what evals actually measure, and why teams get into trouble when they expect one layer to do the job of the other.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams separate runtime control from post-run quality measurement so agent systems can be both safer and easier to improve.
+readerTakeaway: You should leave with a clear operational boundary between guardrails and evals, plus a better sense of where each belongs in production agent design.
+primaryKeyword: ai guardrails vs evals
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Applied AI engineers
+  - Security owners
+  - Evaluation owners
+keyQuestions:
+  - What should guardrails stop before or during execution?
+  - What should evals measure after the run?
+  - Why does confusing guardrails with evals create weak agent controls?
+notFor:
+  - Simple single-prompt apps with no tools or workflow risk
+  - Pure model benchmark discussions unrelated to production systems
+updateTriggers:
+  - Changes in official guardrails guidance
+  - Changes in official eval tooling or patterns
+  - New production patterns for multi-step tool-using agent systems
+---
+
+## Quick answer
+
+Guardrails and evals solve different problems.
+
+**Guardrails** are runtime controls. They help stop, constrain, or redirect unsafe or unwanted behavior while the workflow is happening.
+
+**Evals** are measurement systems. They help the team understand how well the system performed and whether changes improved or degraded it.
+
+If guardrails are missing, the system may act unsafely before anyone can review the result. If evals are missing, the team may never learn whether the system is actually getting better.
+
+## Why teams confuse them
+
+The confusion happens because both seem related to "quality."
+
+But in production, they live on different parts of the timeline:
+
+- guardrails matter **before or during** execution,
+- evals matter **after** execution and across many runs.
+
+A team that asks evals to behave like guardrails will not prevent bad actions. A team that asks guardrails to replace evals will have no reliable improvement loop.
+
+## Official signals checked April 17, 2026
+
+| Source | Current signal | What it means |
+| --- | --- | --- |
+| [OpenAI Agents SDK guardrails docs](https://openai.github.io/openai-agents-python/guardrails/) | Input, output, and tool guardrails can run in blocking or parallel modes | Guardrails are part of runtime control and can stop or constrain execution |
+| [OpenAI Graders guide](https://platform.openai.com/docs/guides/graders/) | Graders are built to score outputs and compare behavior against references | Graders are measurement tools, not real-time execution control |
+| [OpenAI agent builder safety guide](https://platform.openai.com/docs/guides/agent-builder-safety) | Tool and MCP safety are tied to control boundaries and context sharing risk | Production safety requires explicit runtime control, not only after-the-fact scoring |
+
+## What guardrails are for
+
+Guardrails are for questions like:
+
+- should this input be rejected,
+- should this tool call proceed,
+- should the agent be allowed to continue,
+- should this output be blocked,
+- or should the system switch into a safer mode?
+
+That is runtime governance.
+
+## What evals are for
+
+Evals are for questions like:
+
+- did the workflow complete successfully,
+- did it choose the right tool,
+- did source quality hold up,
+- did cost or latency drift,
+- or did the release improve the product enough to deserve a wider rollout?
+
+That is measurement and learning.
+
+## Where guardrails belong in the stack
+
+Guardrails usually belong at:
+
+- user-input boundaries,
+- tool-call boundaries,
+- approval boundaries,
+- output-policy boundaries,
+- and high-risk action boundaries.
+
+They protect the system while it is live.
+
+## Where evals belong in the stack
+
+Evals belong at:
+
+- release review,
+- regression detection,
+- canary analysis,
+- dataset-driven improvement,
+- and long-term score ownership.
+
+They help the team decide what to ship, fix, or roll back.
+
+## The common failure pattern
+
+The common failure pattern looks like this:
+
+1. the team writes evals,
+2. sees they catch a certain failure,
+3. assumes the system is "covered,"
+4. and forgets that the failure still happens in live execution until the next eval run catches it.
+
+That is not runtime control. That is delayed observation.
+
+The reverse mistake also happens:
+
+1. the team adds guardrails,
+2. sees fewer obvious failures,
+3. and assumes the product is improving,
+4. even though no eval loop exists to prove quality, efficiency, or long-term drift.
+
+That is runtime containment without learning.
+
+## A stronger operating model
+
+The healthier model is:
+
+- guardrails contain bad behavior,
+- evals measure system quality,
+- and both feed release decisions.
+
+For example:
+
+- a tool guardrail blocks unsafe arguments,
+- an eval later measures whether tool selection remains accurate,
+- and the release process decides whether the latest changes deserve wider traffic.
+
+That is a production system, not just a pile of safety features.
+
+## The best question to ask first
+
+For any new failure mode, ask:
+
+**Should this be prevented, measured, or both?**
+
+If it must be prevented before user impact, it needs a guardrail.
+If it must be tracked across changes and releases, it needs an eval.
+If it is important enough, it probably needs both.
+
+## Compare next
+
+- [Prompt injection defenses for tool-using agents](/agent-systems/prompt-injection-defenses-for-tool-using-agents/)
+- [Eval-driven development for agentic products](/evaluation/eval-driven-development-for-agentic-products/)
+- [Shadow evals canary rollouts and gradual release for agent systems](/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/)
+- [MCP security and approval boundaries for enterprise AI teams](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/)

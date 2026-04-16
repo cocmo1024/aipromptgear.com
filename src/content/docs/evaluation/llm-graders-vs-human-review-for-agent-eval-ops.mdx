@@ -1,0 +1,166 @@
+---
+title: LLM graders vs human review for agent eval ops
+description: How to divide work between model-based graders and human review in agent evaluation operations without creating either unsafe automation or expensive reviewer overload.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams decide which agent-evaluation checks can be graded automatically, which still need humans, and how to combine both into a maintainable EvalOps system.
+readerTakeaway: You should leave with a practical operating model for using LLM graders where they are strong, reserving human review for the judgment calls they still handle better.
+primaryKeyword: llm grader vs human review
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - Evaluation owners
+  - Applied AI engineers
+  - AI platform teams
+  - Product operations teams
+keyQuestions:
+  - When should agent-evaluation work be automated with graders?
+  - Which quality checks still need human review?
+  - How should teams combine graders and human review without duplicating effort?
+notFor:
+  - Teams doing only one-off prompt tests
+  - Benchmark-only evaluation with no production workflow
+updateTriggers:
+  - Changes in official OpenAI grader guidance
+  - Material changes in LLM-as-judge practice for agent systems
+  - New production patterns for human-in-the-loop evaluation operations
+---
+
+## Quick answer
+
+LLM graders and human review should not be treated as rivals. They solve different parts of the same EvalOps problem.
+
+Use graders for:
+
+- high-volume repeatable checks,
+- structured comparisons,
+- trace or output patterns that can be scored consistently,
+- and release gating where the same rules must be applied every cycle.
+
+Use humans for:
+
+- ambiguous judgment,
+- business-value interpretation,
+- policy nuance,
+- and disagreement cases where the team is still learning what "good" looks like.
+
+If a team tries to automate everything, grading becomes brittle. If it sends everything to humans, the eval system becomes too slow and expensive to shape releases.
+
+## Why this matters now
+
+Production agent systems create more evaluation surface than classic prompt systems.
+
+A run may involve:
+
+- tool selection,
+- tool arguments,
+- evidence quality,
+- approval behavior,
+- final artifact quality,
+- and recovery from partial failure.
+
+That makes pure human review expensive at scale, but it also makes naive grader-only evaluation risky because many failures are subtle and contextual.
+
+## Official signals checked April 17, 2026
+
+| Source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Graders guide](https://platform.openai.com/docs/guides/graders/) | OpenAI supports string checks, text similarity, model graders, and Python graders | Eval teams now have multiple automation patterns, not only one opaque LLM judge |
+| [OpenAI evaluation getting started guide](https://platform.openai.com/docs/guides/evaluation-getting-started) | Evals are designed around datasets, graders, and repeatable runs | Release discipline depends on reusable evaluation inputs, not ad hoc spot checks |
+| [OpenAI Agents SDK guardrails docs](https://openai.github.io/openai-agents-python/guardrails/) | Guardrails and runtime controls are separate from downstream grading | Teams should not confuse execution controls with post-run quality evaluation |
+
+## Where graders are strongest
+
+Graders are strongest when the team can define a stable rule and wants to apply it repeatedly.
+
+Typical strong fits:
+
+- schema correctness,
+- presence of required fields,
+- tool-choice comparisons against known-good traces,
+- citation or source formatting checks,
+- approval-boundary compliance,
+- and regression detection across a fixed scenario set.
+
+In these cases, graders reduce repetitive human inspection and make release decisions faster.
+
+## Where humans are still strongest
+
+Humans still dominate when:
+
+- the rubric is evolving,
+- business usefulness matters more than surface correctness,
+- multiple responses are "technically valid" but one is strategically better,
+- policy nuance or domain interpretation is required,
+- or the system is failing in ways the team does not yet know how to label.
+
+That is why a mature eval stack still keeps human review, even when graders are good.
+
+## The best division of labor
+
+A healthy split is:
+
+### Graders handle the broad surface
+
+They watch the majority of routine runs, score known dimensions, and flag likely regressions.
+
+### Humans handle the expensive edge
+
+They review:
+
+- disagreements,
+- high-risk slices,
+- newly shipped capabilities,
+- and cases where graders are not yet trusted.
+
+This model turns human review into targeted judgment instead of brute-force inspection.
+
+## The common mistake
+
+The common mistake is using graders only as a cost-saving layer.
+
+That usually produces one of two bad outcomes:
+
+1. weak graders that teams do not trust, or
+2. strong graders that are asked to replace business judgment they were never designed to encode.
+
+The point of graders is not to eliminate human thought. It is to focus human thought where it matters most.
+
+## A practical operating model
+
+For most teams, a strong sequence is:
+
+1. define a small set of human-reviewed examples,
+2. build graders for the repeatable parts,
+3. measure where grader and human judgment disagree,
+4. improve the rubric and labeling,
+5. use graders for routine gating,
+6. reserve humans for new or ambiguous slices.
+
+That creates a system that becomes cheaper and more reliable over time.
+
+## What should block release
+
+Use graders for hard blocking when:
+
+- the failure class is well understood,
+- the team trusts the grading logic,
+- and the cost of missing a failure is high.
+
+Use human review for blocking when:
+
+- the category is new,
+- grader quality is not yet proven,
+- or the release introduces meaningful business or policy novelty.
+
+This is the difference between EvalOps discipline and evaluation theater.
+
+## Compare next
+
+- [EvalOps release gates and scorecard ownership for AI teams](/evaluation/eval-ops-release-gates-and-scorecard-ownership/)
+- [Ground truth collection and labeling for agent eval ops](/evaluation/ground-truth-collection-and-labeling-for-agent-eval-ops/)
+- [Tool selection evals and failure taxonomy for AI agents](/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/)
+- [Shadow evals canary rollouts and gradual release for agent systems](/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/)
