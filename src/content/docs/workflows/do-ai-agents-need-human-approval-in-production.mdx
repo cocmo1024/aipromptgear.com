@@ -1,0 +1,167 @@
+---
+title: Do AI agents need human approval in production?
+description: A practical rule for when production AI agents need human approval, when lighter review is enough, and where mandatory approval destroys the economics of automation.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: do ai agents need human approval
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Support managers
+  - Platform teams
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether AI agents need human approval by default or only for specific risk classes, permissions, and workflow moments.
+readerTakeaway: You should leave with a practical distinction between approval, review, audit, and escalation so approval stays expensive only where it creates real protection.
+keyQuestions:
+  - Do all production AI agents need human approval?
+  - Which actions should require explicit approval before execution?
+  - When does approval reduce risk and when does it only slow the workflow down?
+notFor:
+  - Teams looking for one blanket rule that ignores workflow risk and authority
+  - Readers treating polished model output as proof that no approval boundary is needed
+  - Organizations with no human owner for the workflow
+updateTriggers:
+  - Major changes in approval tooling or runtime controls
+  - New evidence around approval fatigue and operator cost
+  - Material shifts in enterprise deployment patterns for agentic workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Do AI agents need human approval in production?
+
+## Quick answer
+
+No. Production AI agents do **not** need human approval on every run.
+
+They need approval when the action:
+
+- changes state,
+- spends money,
+- creates policy or legal exposure,
+- affects a customer irreversibly,
+- or crosses an authority boundary the agent does not own.
+
+Low-risk drafting, summarization, routing, and read-only analysis often become weaker if every step waits for a person.
+
+## The wrong default
+
+The weak default is:
+
+**"All AI output should be approved by a human."**
+
+That sounds safe, but it usually creates two bad outcomes:
+
+- the queue becomes slower without becoming meaningfully safer,
+- and teams stop learning which parts of the workflow are actually risky.
+
+Approval should be applied to **risk classes**, not to the mere presence of a model.
+
+## Approval, review, audit, and escalation are not the same
+
+Teams confuse these controls constantly.
+
+- **Approval** means a human must explicitly allow the next action.
+- **Review** means a human checks quality or usefulness, often after draft creation.
+- **Audit** means sampled inspection after the fact.
+- **Escalation** means the agent stops because the case should move to a human owner.
+
+Most workflows need some mix of all four. Very few need synchronous approval everywhere.
+
+## Where approval is usually worth it
+
+Approval usually earns its keep when the agent is about to:
+
+- send a binding message,
+- change a customer record,
+- trigger a refund, cancellation, or account action,
+- touch production systems directly,
+- or make a decision the business would not let a junior human make alone.
+
+These are not "AI problems." They are **authority and side-effect problems**.
+
+## Where approval usually destroys value
+
+Mandatory approval is usually waste when the agent is doing:
+
+- draft generation,
+- summarization,
+- routing,
+- retrieval and evidence gathering,
+- or low-risk preparation work that a human can still reject cheaply.
+
+If a reviewer rarely changes the result, the workflow probably needs better source quality, narrower permissions, or better evaluation instead of blanket approval.
+
+## The cleanest approval rule
+
+Require human approval when **two or more** of these are true:
+
+1. the action is irreversible or expensive to undo,
+2. the case involves policy or legal interpretation,
+3. the agent is acting outside a narrow read-only or draft-only lane,
+4. the workflow lacks strong ground truth or stable evaluation,
+5. the business would expect named human accountability for the decision.
+
+That rule is much healthier than "approval for everything" or "approval only when confidence is low."
+
+## Start narrow, then relax with evidence
+
+The practical pattern is:
+
+1. start with approval on the genuinely expensive actions,
+2. keep low-risk lanes reviewable but not approval-gated,
+3. measure how often approval changes outcomes,
+4. remove approval from lanes where it adds delay without reducing cost or harm.
+
+Approval should become more precise over time, not broader.
+
+## What to log if approval exists
+
+If your workflow includes approval, log:
+
+- what action was proposed,
+- why approval was required,
+- who approved or rejected it,
+- whether the human changed the action,
+- and what happened after release.
+
+Without that, approval turns into theater instead of learning.
+
+## Implementation checklist
+
+Your approval design is probably healthy when:
+
+- approval is tied to action class, not to model existence;
+- low-risk lanes can move without synchronous review;
+- high-cost or irreversible actions have named human decision rights;
+- approval data is logged and reviewed over time;
+- and the team can explain why each approval step still exists.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Human review and approval workflows"
+		href="/workflows/human-review-and-approval-workflows-for-agentic-support/"
+		description="Use this page when you need the fuller lane-by-lane design behind review, approval, and operator economics."
+	/>
+	<LinkCard
+		title="When should an AI agent escalate to a human?"
+		href="/workflows/when-should-an-ai-agent-escalate-to-a-human/"
+		description="Use this page when the boundary is less about permission and more about uncertainty, consequence, or missing evidence."
+	/>
+	<LinkCard
+		title="What should an AI agent be allowed to do in production?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Use this page when approval depends on a cleaner permission model for reads, drafts, writes, and execution."
+	/>
+	<LinkCard
+		title="What is a good success rate for an AI agent in production?"
+		href="/evaluation/what-is-a-good-success-rate-for-an-ai-agent-in-production/"
+		description="Use this page when the approval debate is really about what level of autonomous success is acceptable for the workflow."
+	/>
+</div>

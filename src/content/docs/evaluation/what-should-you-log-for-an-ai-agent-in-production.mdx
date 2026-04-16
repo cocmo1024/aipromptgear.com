@@ -1,0 +1,180 @@
+---
+title: What should you log for an AI agent in production?
+description: A practical production logging model for AI agents covering trace IDs, tools, approvals, outcomes, costs, failures, and the minimum evidence needed to debug real runs.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: what should you log for an ai agent
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Evaluation owners
+  - Engineering leaders
+  - Operations teams
+contentStatus: cornerstone
+problemSolved: Helps teams log production AI agent activity in a way that supports debugging, evaluation, approval review, incident response, and cost control without collapsing into raw transcript hoarding.
+readerTakeaway: You should leave with a practical logging schema that captures enough evidence to explain what happened, what it cost, and whether the system crossed a safety or workflow boundary.
+keyQuestions:
+  - What fields matter most in production agent logs?
+  - How much raw prompt and output data should teams really retain?
+  - What logging makes evaluation, approval review, and incident analysis possible later?
+notFor:
+  - Teams running one-off demos with no production workflows
+  - Readers looking for a vendor-specific logging setup only
+  - Organizations that cannot distinguish debugging data from regulated or sensitive content
+updateTriggers:
+  - New tracing or observability tooling for agent systems
+  - Changes in privacy, retention, or audit requirements
+  - Clear shifts in production logging practice for tool-using agents
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What should you log for an AI agent in production?
+
+## Quick answer
+
+Log enough to answer five questions later:
+
+1. what task the agent was trying to complete,
+2. what path it took,
+3. what tools or approvals it used,
+4. what happened in the end,
+5. and what it cost to get there.
+
+If the team cannot reconstruct those five things, the logging layer is still too thin for production.
+
+## The minimum useful event model
+
+At a minimum, production logs should capture:
+
+- a stable run ID,
+- workflow or task type,
+- actor or tenant scope,
+- model lane,
+- tool calls and outcomes,
+- approval requests and decisions,
+- final status,
+- latency,
+- cost,
+- and a compact failure reason when the run did not succeed.
+
+That is the minimum base for debugging and evaluation.
+
+## What the log should explain
+
+Healthy agent logging should tell you:
+
+- why a run started,
+- which branch or route it took,
+- whether retrieval or search happened,
+- whether a human touched the workflow,
+- whether any side effect was attempted,
+- and whether the result was useful, blocked, escalated, or rescued manually.
+
+Logs are not only for engineers. They are for operators, reviewers, and incident owners too.
+
+## The fields most teams regret not having
+
+Teams often discover too late that they failed to log:
+
+- approval reason,
+- tool arguments after normalization,
+- retry counts,
+- fallback path taken,
+- source or evidence set,
+- reviewer outcome,
+- and whether the run ended in silent abandonment instead of explicit failure.
+
+Those missing fields make postmortems slow and eval design weak.
+
+## What not to log blindly
+
+Do not turn logging into uncontrolled transcript hoarding.
+
+Be careful with:
+
+- raw secrets,
+- tokens and credentials,
+- full customer payloads with no retention rule,
+- unnecessary personal data,
+- or entire tool outputs that are expensive, sensitive, or irrelevant to debugging.
+
+The right approach is structured logging plus selective secure retention, not infinite storage of everything the model ever saw.
+
+## The best logging split
+
+The healthiest production pattern usually separates logs into:
+
+- **run metadata** for routing, cost, and outcome,
+- **trace events** for debugging path and tool use,
+- **approval events** for human-control boundaries,
+- **evaluation labels** for pass, fail, or rescue,
+- and **incident notes** when something unusual happened.
+
+That keeps one log stream from trying to do every job badly.
+
+## What good logging unlocks
+
+When logging is strong, the team can:
+
+- audit approval behavior,
+- measure cost per successful task,
+- diagnose failures by class,
+- build regression datasets from real runs,
+- and decide where autonomy should expand or shrink.
+
+Without structured logs, production quality decisions drift back into anecdote.
+
+## A simple retention rule
+
+Keep high-value structured fields longer than bulky raw payloads.
+
+If retention pressure appears, preserve:
+
+- identifiers,
+- workflow class,
+- tool traces,
+- approval decisions,
+- status codes,
+- evaluation labels,
+- and cost fields
+
+before preserving every token of conversation history.
+
+## Implementation checklist
+
+Your logging layer is probably healthy when:
+
+- every run has a stable ID and final status;
+- tool calls, approvals, and retries are explicit events;
+- outcome and rescue states are distinguishable;
+- cost and latency can be attached to workflow class;
+- and sensitive data is governed deliberately instead of logged by default.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="How do you evaluate AI agents in production?"
+		href="/evaluation/how-do-you-evaluate-ai-agents-in-production/"
+		description="Use this page when the logging question is part of a larger production-evaluation design."
+	/>
+	<LinkCard
+		title="Tool-call success rates and ground truth"
+		href="/evaluation/tool-call-success-rates-and-ground-truth-for-agent-evals/"
+		description="Use this page when the team needs to separate tool success, workflow success, and final-answer quality."
+	/>
+	<LinkCard
+		title="What is a good success rate for an AI agent in production?"
+		href="/evaluation/what-is-a-good-success-rate-for-an-ai-agent-in-production/"
+		description="Use this page when logging now needs to support a real success-rate definition rather than a vague pass metric."
+	/>
+	<LinkCard
+		title="Do AI agents need human approval in production?"
+		href="/workflows/do-ai-agents-need-human-approval-in-production/"
+		description="Use this page when your logging model needs to prove whether approval gates are actually changing outcomes."
+	/>
+</div>

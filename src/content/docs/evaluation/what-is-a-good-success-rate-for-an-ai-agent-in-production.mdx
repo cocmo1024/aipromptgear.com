@@ -1,0 +1,175 @@
+---
+title: What is a good success rate for an AI agent in production?
+description: How to judge AI agent success rates in production by workflow risk, review burden, and outcome quality instead of chasing one generic percentage.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: good success rate for ai agent
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Operations leaders
+  - Product managers
+  - Executive sponsors
+contentStatus: cornerstone
+problemSolved: Helps teams define what a good AI agent success rate actually means for low-risk assistive work versus high-consequence autonomous actions.
+readerTakeaway: You should leave with a more useful question than "What percentage is good?" and a practical way to judge success by workflow class, side effects, and review cost.
+keyQuestions:
+  - Is there a universal good success rate for AI agents?
+  - How should success targets change for drafts, routing, and direct actions?
+  - What metric matters more than a single pass percentage?
+notFor:
+  - Teams looking for a benchmark number detached from workflow risk
+  - Readers treating reviewer cleanup as free
+  - Organizations with no clear definition of task completion
+updateTriggers:
+  - Material shifts in production agent deployment norms
+  - New evaluation practices around autonomous task success
+  - Changes in runtime economics that alter acceptable review cost
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What is a good success rate for an AI agent in production?
+
+## Quick answer
+
+There is no universal good success rate.
+
+A good rate depends on:
+
+- what the workflow does,
+- how expensive failure is,
+- how much human review still exists,
+- and whether the agent is drafting, recommending, or acting directly.
+
+A draft assistant can create value with a lower autonomous success rate than a system that changes records, sends customer messages, or triggers payments.
+
+## The wrong question
+
+The weak question is:
+
+**"What percentage should our AI agent hit?"**
+
+That hides the real issue, because a single percentage mixes together:
+
+- harmless mistakes,
+- recoverable mistakes,
+- expensive failures,
+- and runs that technically completed but still required heavy human rescue.
+
+The better question is:
+
+**"At what success rate does this workflow still create net value without unacceptable risk?"**
+
+## Why workflow class changes everything
+
+Different workflows can tolerate very different failure levels.
+
+- **Drafting and summarization** can often be useful with lower autonomous success if review is cheap.
+- **Routing and prioritization** usually need strong consistency, but failure is often recoverable.
+- **Research synthesis** needs trustworthy evidence more than one headline percentage.
+- **Direct write actions** need much tighter thresholds because side effects are harder to reverse.
+
+That is why one benchmark number is mostly noise.
+
+## The three success rates that matter
+
+Most teams should track at least three rates:
+
+1. **Task success rate**  
+   Did the workflow end in an acceptable result?
+
+2. **Safe autonomy rate**  
+   How often did the agent complete the task without crossing a policy or approval boundary incorrectly?
+
+3. **No-rescue rate**  
+   How often did the workflow finish without significant human cleanup or manual recovery?
+
+Those three numbers are far more useful than one generic pass score.
+
+## A practical rule by workflow type
+
+These are directional, not universal:
+
+- low-risk draft assistance can still be valuable when the raw success rate is moderate but review is cheap;
+- routing and triage should usually be held to a higher consistency bar because they shape downstream work;
+- customer-facing or system-changing actions need a much stricter safe-autonomy threshold;
+- and any workflow with expensive false positives should optimize for **unsafe-failure minimization**, not only average success.
+
+In other words, some workflows care most about usefulness. Others care most about the rarity of dangerous misses.
+
+## The hidden cost behind a "good" score
+
+A success rate is not truly good if it depends on:
+
+- constant manual cleanup,
+- reviewer fatigue,
+- quiet rollback work,
+- repeated retries,
+- or operator distrust that makes people bypass the system.
+
+The best success metric is one the business can actually afford to operate.
+
+## What to measure beside success rate
+
+Never judge production quality by success rate alone.
+
+Pair it with:
+
+- review rate,
+- rescue rate,
+- approval rate,
+- time to trusted completion,
+- cost per successful outcome,
+- and high-severity failure rate.
+
+These metrics keep the team from celebrating noisy success while the operating burden quietly grows.
+
+## The strongest target-setting method
+
+Set targets in this order:
+
+1. define unacceptable failure classes,
+2. define the human-review cost the workflow can tolerate,
+3. define the minimum useful outcome threshold,
+4. then set success targets that respect those constraints.
+
+This is more honest than pulling a benchmark percentage out of the air.
+
+## Implementation checklist
+
+Your success-rate model is probably healthy when:
+
+- success is defined by workflow outcome, not just polished output;
+- dangerous failures are tracked separately from harmless misses;
+- reviewer cleanup is treated as a real cost;
+- targets differ by workflow type and side-effect level;
+- and success rate is read alongside cost, latency, and approval behavior.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="How do you evaluate AI agents in production?"
+		href="/evaluation/how-do-you-evaluate-ai-agents-in-production/"
+		description="Use this page when success-rate targets need a broader production evaluation system around them."
+	/>
+	<LinkCard
+		title="What should you log for an AI agent in production?"
+		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
+		description="Use this page when the team cannot support a real success metric because the logs are still too thin."
+	/>
+	<LinkCard
+		title="Do AI agents need human approval in production?"
+		href="/workflows/do-ai-agents-need-human-approval-in-production/"
+		description="Use this page when the acceptable success rate depends on where human approval still enters the workflow."
+	/>
+	<LinkCard
+		title="How do you calculate AI agent ROI?"
+		href="/models-and-apis/how-do-you-calculate-ai-agent-roi/"
+		description="Use this page when the success-rate discussion now needs to connect to workflow economics and business return."
+	/>
+</div>
