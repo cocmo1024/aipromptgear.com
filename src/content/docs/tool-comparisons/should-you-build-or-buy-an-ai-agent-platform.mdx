@@ -1,0 +1,165 @@
+---
+title: Should you build or buy an AI agent platform?
+description: A practical build-vs-buy framework for AI agent platforms covering control, speed, workflow fit, governance, and the real operating cost after launch.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: build vs buy ai agent platform
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - AI product leads
+  - Platform teams
+  - Technical buyers
+  - Operations leaders
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether to build or buy an AI agent platform based on workflow shape, governance needs, and total operating burden instead of feature-list comparisons alone.
+readerTakeaway: You should leave with a clear rule for when buying accelerates the program, when building is justified, and when a hybrid path is the least costly mistake.
+keyQuestions:
+  - When is buying an AI agent platform the better decision?
+  - When is building in-house actually justified?
+  - What hidden costs appear after the initial build-vs-buy decision?
+notFor:
+  - Teams without a defined workflow or owner for the proposed agent system
+  - Readers looking for vendor rankings with no operating context
+  - Organizations still treating "agent platform" as a generic trend label
+updateTriggers:
+  - Major changes in hosted agent-platform capabilities or pricing
+  - Clear shifts in enterprise build-vs-buy behavior
+  - New governance or audit requirements that change platform fit
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Should you build or buy an AI agent platform?
+
+## Quick answer
+
+Buy when the team needs to move quickly, the workflow shape is common, and the real advantage is not in owning the whole orchestration stack.
+
+Build when the workflow is strategically unique, the control boundary is unusually strict, or the business already has the engineering maturity to own the runtime, tooling, and governance over time.
+
+Most teams should not ask only "build or buy." They should ask **which layer is worth owning**.
+
+## The wrong build-vs-buy frame
+
+Many teams compare:
+
+- vendor features,
+- model support,
+- and demo quality.
+
+That is not enough.
+
+The real decision also includes:
+
+- workflow fit,
+- permission design,
+- approval and review logic,
+- observability,
+- compliance boundaries,
+- and the cost of operating the system six months after launch.
+
+The buying decision is not only about product capability. It is about operating responsibility.
+
+## When buying is usually stronger
+
+Buying is usually the right move when:
+
+- the workflow is common enough that several vendors already support it well,
+- the team needs production speed more than architectural purity,
+- internal AI platform maturity is still low,
+- or the organization mainly needs governance, UI, and integrations to appear quickly.
+
+In these cases, buying avoids months of rebuilding software that the market already provides.
+
+## When building is justified
+
+Building becomes more rational when:
+
+- the workflow is tightly tied to internal systems or proprietary logic,
+- the control boundary is too specific for a vendor workflow,
+- the business needs unusual audit, approval, or permission behavior,
+- or the system itself is becoming a core product advantage.
+
+Build is not justified just because engineering prefers ownership. It is justified when ownership creates real strategic leverage.
+
+## The hidden cost on the buy side
+
+Buying looks easier until teams hit:
+
+- workflow constraints,
+- shallow customization,
+- data-boundary discomfort,
+- limited evaluation visibility,
+- and commercial terms that look fine at pilot scale but hurt at production volume.
+
+Vendor speed is real, but so is vendor dependence.
+
+## The hidden cost on the build side
+
+Building looks empowering until teams realize they now own:
+
+- orchestration,
+- traces and observability,
+- eval loops,
+- permissions,
+- rollout discipline,
+- failure handling,
+- and long-term maintenance.
+
+Many build decisions are really decisions to fund a permanent internal platform team.
+
+## The best hybrid pattern
+
+The healthiest answer is often hybrid:
+
+- buy the commodity layer,
+- build the workflow truth that is unique,
+- and keep approval, data, and business logic close to the application owner.
+
+This lets teams avoid rebuilding basic infrastructure while still owning the parts that create real differentiation.
+
+## The practical decision rule
+
+Buy when the workflow is standard and the team mainly needs speed, adoption, and a governed starting point.
+
+Build when the workflow is strategically unique and the team is willing to own the operational burden.
+
+Go hybrid when the workflow has a reusable commodity shell but the control logic or system integration is business-specific.
+
+## Implementation checklist
+
+Your build-vs-buy decision is probably healthy when:
+
+- the target workflow is written down clearly;
+- the team knows which layer creates real competitive or operational value;
+- governance and evaluation ownership are part of the decision;
+- the operating cost after launch is included in the model;
+- and the choice is not being driven only by demo appeal.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="How do you calculate AI agent ROI?"
+		href="/models-and-apis/how-do-you-calculate-ai-agent-roi/"
+		description="Use this page when build-vs-buy is now really a business-case question."
+	/>
+	<LinkCard
+		title="Prompt workspaces vs general docs"
+		href="/tool-comparisons/prompt-workspaces-vs-general-docs/"
+		description="Use this page when the broader question is how much collaboration and governance software the team truly needs."
+	/>
+	<LinkCard
+		title="Agents SDK vs app-owned orchestration"
+		href="/agent-systems/agents-sdk-vs-app-owned-orchestration-for-production-agents/"
+		description="Use this page when the remaining decision is which orchestration layer should stay app-owned."
+	/>
+	<LinkCard
+		title="Hosted tools vs self-managed tooling"
+		href="/models-and-apis/hosted-tools-vs-self-managed-tooling-for-ai-products/"
+		description="Use this page when the ownership debate is really about tooling and runtime control."
+	/>
+</div>

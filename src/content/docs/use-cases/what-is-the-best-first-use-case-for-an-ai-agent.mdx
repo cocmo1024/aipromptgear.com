@@ -1,0 +1,175 @@
+---
+title: What is the best first use case for an AI agent?
+description: How to choose the best first AI agent use case by looking for repeatable workflows with visible value, bounded risk, and clear review ownership.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: best first use case for ai agent
+searchIntent: select
+decisionStage: solution-aware
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Internal tools teams
+  - Executive sponsors
+contentStatus: cornerstone
+problemSolved: Helps teams choose a first AI agent use case that is valuable enough to matter but bounded enough to operate safely and measure honestly.
+readerTakeaway: You should leave with a practical filter for selecting a first AI agent use case that can demonstrate value without demanding full organizational readiness on day one.
+keyQuestions:
+  - What makes a first AI agent use case strong?
+  - Which kinds of workflows are usually too risky or too vague to start with?
+  - How should teams prove value before broadening agent scope?
+notFor:
+  - Teams looking for a generic list of AI ideas without workflow ownership
+  - Organizations trying to start with their most politically sensitive process
+  - Readers who have not yet identified a recurring operational task
+updateTriggers:
+  - Changes in common early-stage enterprise AI deployment patterns
+  - New evidence around successful first-wave agent rollouts
+  - Pricing shifts that change what counts as a viable first use case
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What is the best first use case for an AI agent?
+
+## Quick answer
+
+The best first use case is usually a workflow that is:
+
+- repeatable,
+- high enough volume to matter,
+- expensive enough that improvement is visible,
+- bounded enough that failure is recoverable,
+- and attached to a clear human owner.
+
+That is why strong first use cases often look like:
+
+- support summarization,
+- ticket triage,
+- internal research synthesis,
+- routing,
+- or draft generation with review.
+
+They create measurable value without demanding full autonomy on day one.
+
+## The wrong place to start
+
+Teams often start with the most impressive-looking use case:
+
+- fully autonomous support,
+- freeform outbound communication,
+- high-risk approvals,
+- or broad write access into production systems.
+
+Those may become useful later, but they are weak first use cases because the review, permission, and failure burden is too high relative to what the team has learned so far.
+
+## What makes a first use case strong
+
+### 1. The workflow already exists
+
+The workflow should already be real, recurring, and painful enough that improvement matters.
+
+If the task is not yet stable in human operations, the agent will inherit that ambiguity.
+
+### 2. Output quality can be judged clearly
+
+The team should be able to tell whether the output was useful, safe, and complete.
+
+Good first use cases have a visible quality bar.
+
+### 3. Review is possible without killing value
+
+The system should still create leverage even if a human reviews the result.
+
+That is why draft-first and routing-first workflows are often stronger than direct execution.
+
+### 4. Failure is recoverable
+
+Bad outputs should be correctable without major customer or system harm.
+
+If one wrong run creates serious trust or compliance damage, the use case is usually too risky for the first launch.
+
+## The most common good starting shapes
+
+Healthy first AI agent use cases often include:
+
+- support case summarization before escalation,
+- ticket triage and priority routing,
+- knowledge-grounded internal drafting,
+- research synthesis with source review,
+- and preparation work that helps humans act faster.
+
+These use cases create measurable savings while keeping human ownership visible.
+
+## Why "fully automated" is often the wrong goal
+
+A first use case does not need to be fully autonomous to be successful.
+
+The goal is to prove:
+
+- the workflow can be improved,
+- the team can observe and evaluate it,
+- and the operating model can survive contact with real users and owners.
+
+That proof is worth more than a flashy autonomy claim.
+
+## A simple selection filter
+
+Choose the first use case where all of these are true:
+
+1. the workflow is repeatable and already costly,
+2. the result can be reviewed clearly,
+3. the downside of failure is limited,
+4. a named team owns the workflow,
+5. the value can be measured in time, quality, or throughput.
+
+If one of those is missing, the use case is probably not the best starting point.
+
+## What to avoid early
+
+Avoid starting with workflows that require:
+
+- broad write permissions,
+- policy exceptions,
+- strong emotional judgment,
+- legal sensitivity,
+- or cross-system action with unclear rollback.
+
+Those workflows may still matter later, but they are poor training grounds for the team's first production agent discipline.
+
+## Implementation checklist
+
+Your first use case is probably healthy when:
+
+- the workflow has a real baseline;
+- the human owner is explicit;
+- the output can be reviewed without wiping out the value;
+- failure is bounded;
+- and the system can be measured before broadening scope.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Use this page when support is emerging as the strongest first operational lane."
+	/>
+	<LinkCard
+		title="Research and analysis teams"
+		href="/use-cases/research-and-analysis-teams/"
+		description="Use this page when the first use case is research synthesis, comparison work, or structured analysis."
+	/>
+	<LinkCard
+		title="How do you calculate AI agent ROI?"
+		href="/models-and-apis/how-do-you-calculate-ai-agent-roi/"
+		description="Use this page when the use-case choice now needs a financial model."
+	/>
+	<LinkCard
+		title="When should an AI agent escalate to a human?"
+		href="/workflows/when-should-an-ai-agent-escalate-to-a-human/"
+		description="Use this page when the right first use case depends on a clear escalation boundary."
+	/>
+</div>
