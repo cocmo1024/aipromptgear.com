@@ -1,0 +1,161 @@
+---
+title: How do you roll back an AI agent in production?
+description: A practical rollback model for AI agents covering version control, safe fallback paths, named owners, rollback triggers, and what teams need ready before a production incident starts.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: how do you roll back an ai agent in production
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Engineering managers
+  - Operations leaders
+  - Incident owners
+contentStatus: cornerstone
+problemSolved: Helps teams design rollback for AI agents so bad prompt, model, workflow, or tool changes can be reversed quickly without making incident response depend on memory and improvisation.
+readerTakeaway: You should leave with a practical rollback design for AI agents that covers versions, trigger rules, fallback modes, and ownership before the system hits a live incident.
+keyQuestions:
+  - What exactly should be versioned so an AI agent can be rolled back?
+  - Which production signals should trigger rollback?
+  - How should fallback behavior work when the latest agent version is no longer safe?
+notFor:
+  - Teams shipping one-off demos with no live incident path
+  - Readers looking for a vendor-only rollback button comparison
+  - Organizations with no release ownership or version history for prompts and workflows
+updateTriggers:
+  - Changes in common agent release tooling and deployment patterns
+  - New production rollback practices for tool-using agents
+  - Clear shifts in how teams version prompts, models, and workflow logic together
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How do you roll back an AI agent in production?
+
+## Quick answer
+
+You roll back an AI agent by versioning the whole operating unit, not just the prompt.
+
+That usually includes:
+
+- prompt or instruction set,
+- model lane,
+- tool configuration,
+- workflow logic,
+- approval policy,
+- and any retrieval or routing rules tied to the release.
+
+If only one layer is versioned, rollback will be partial and incidents will stay confusing.
+
+## The wrong rollback model
+
+The weak model is:
+
+**"We can just switch the prompt back."**
+
+That fails when the incident was really caused by:
+
+- a new model route,
+- a tool permission change,
+- updated workflow branching,
+- a retrieval change,
+- or a looser approval boundary.
+
+Prompt rollback is necessary sometimes, but production rollback is usually broader than prompt text.
+
+## What should be ready before launch
+
+Before a high-value agent release goes live, the team should know:
+
+1. what exact version is running,
+2. what stable version is the fallback,
+3. who can trigger rollback,
+4. which metrics or failure classes justify rollback,
+5. what user-facing fallback path exists if rollback is not enough.
+
+If those answers are missing, the team does not really have rollback.
+
+## The best fallback pattern
+
+Healthy rollback often means moving to a safer lane, not only moving to an older lane.
+
+Examples:
+
+- downgrade from autonomous action to draft-only mode,
+- narrow tool scope,
+- force approval on risky classes,
+- disable one failing tool,
+- or route work temporarily to a simpler workflow.
+
+This is often safer than pretending the only choices are "latest version" or "full shutdown."
+
+## What should trigger rollback
+
+Rollback becomes rational when:
+
+- high-severity failure classes increase,
+- approval or permission boundaries drift,
+- operator rescue load spikes,
+- user trust damage appears,
+- or a new release clearly introduced instability.
+
+The trigger should be tied to business risk and workflow quality, not only to vague discomfort.
+
+## The evidence you need before deciding
+
+A rollback decision is much faster when the team can see:
+
+- which version changed,
+- what failure class increased,
+- which workflow lane is affected,
+- whether the issue is isolated or systemic,
+- and whether a narrower fallback can contain it.
+
+That is why logging and release metadata matter so much.
+
+## The practical rule
+
+Rollback should be:
+
+- fast enough to happen in the same operational window as the incident,
+- narrow enough to avoid unnecessary disruption,
+- and owned clearly enough that no one debates authority during failure.
+
+Rollback is not just a technical move. It is a control and ownership move.
+
+## Implementation checklist
+
+Your rollback design is probably healthy when:
+
+- prompts, models, tools, and workflow logic are versioned together;
+- named people can trigger rollback without bureaucracy during incidents;
+- rollback signals are written before launch;
+- fallback modes are safer, not only older;
+- and the team can reconstruct what changed between the good and bad states.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Change management and release policies"
+		href="/tooling/change-management-and-release-policies-for-production-prompts/"
+		description="Use this page when rollback needs a broader release policy with risk lanes, approvals, and named owners."
+	/>
+	<LinkCard
+		title="What should happen when an AI agent fails in production?"
+		href="/workflows/what-should-happen-when-an-ai-agent-fails-in-production/"
+		description="Use this page when rollback is only one part of the full production failure response."
+	/>
+	<LinkCard
+		title="What should you log for an AI agent in production?"
+		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
+		description="Use this page when rollback is slow because the evidence trail is still too thin."
+	/>
+	<LinkCard
+		title="EvalOps release gates and scorecard ownership"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Use this page when the team needs rollback triggers tied to real release gates instead of intuition."
+	/>
+</div>

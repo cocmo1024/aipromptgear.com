@@ -1,0 +1,168 @@
+---
+title: Should AI agents run in a sandbox?
+description: A practical rule for when AI agents should run inside a sandbox, what sandboxing actually protects, and why permission design still matters even when isolation exists.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: should ai agents run in a sandbox
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security teams
+  - Engineering leaders
+  - Product owners
+contentStatus: cornerstone
+problemSolved: Helps teams decide when sandboxing is required for AI agents, what kinds of execution should be isolated, and where sandboxing does not replace permission design or human approval.
+readerTakeaway: You should leave with a practical rule for when sandboxing is mandatory, when lighter isolation is enough, and why sandboxing is only one layer in a safe agent runtime.
+keyQuestions:
+  - Do all AI agents need a sandbox?
+  - What does sandboxing actually protect against?
+  - When is sandboxing not enough on its own?
+notFor:
+  - Teams running text-only demos with no tool use or side effects
+  - Readers looking for one vendor-specific sandbox product recommendation
+  - Organizations treating sandboxing as a substitute for policy, approval, or observability
+updateTriggers:
+  - Major changes in agent runtime and execution products
+  - New security expectations around agent tool use and system access
+  - Clear shifts in enterprise isolation patterns for production agents
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Should AI agents run in a sandbox?
+
+## Quick answer
+
+Often yes, but not always for the same reason.
+
+AI agents should run in a sandbox when they can:
+
+- execute code,
+- browse untrusted pages,
+- read or write files,
+- call tools with side effects,
+- or touch secrets, networks, and system resources.
+
+The sandbox is there to contain execution risk. It does **not** decide what the agent should be allowed to do in the first place.
+
+## The wrong sandbox question
+
+The weak question is:
+
+**"Do we trust the model?"**
+
+That is not the right control question.
+
+The better question is:
+
+**"If this run goes wrong, what boundary stops it from becoming a larger systems incident?"**
+
+That is where sandboxing becomes useful.
+
+## When sandboxing is clearly required
+
+Sandboxing is usually mandatory when the agent can:
+
+- run generated code,
+- inspect or transform local files,
+- browse arbitrary websites,
+- use developer tools,
+- or operate inside engineering environments where accidental writes, secret exposure, or network access create real damage.
+
+Without isolation, one weak run can become a much larger control failure.
+
+## When lighter containment may be enough
+
+Not every agent needs heavy execution isolation.
+
+If the agent only:
+
+- drafts text,
+- summarizes evidence,
+- routes requests,
+- or proposes actions that still require separate human approval,
+
+then narrower permission design and application-owned controls may matter more than a full sandbox runtime.
+
+The right level of isolation depends on **what the agent can actually touch**.
+
+## What sandboxing protects well
+
+Sandboxing is strong when it limits:
+
+- filesystem scope,
+- network reach,
+- process execution,
+- credential exposure,
+- and the blast radius of bad tool behavior.
+
+It is especially valuable when the model can encounter untrusted input and then choose actions.
+
+## What sandboxing does not solve
+
+Sandboxing does **not** solve:
+
+- bad approval policy,
+- broad business permissions,
+- weak audit logs,
+- unsafe user-scoped authority,
+- or a workflow that should never have been autonomous.
+
+Teams often overestimate sandboxing because it feels concrete. But a sandbox around an overpowered workflow is still an overpowered workflow.
+
+## The healthy operating pattern
+
+The healthy production pattern is usually:
+
+1. narrow permissions first,
+2. sandbox execution second,
+3. approval and escalation for irreversible actions,
+4. logging and evaluation after every important run.
+
+This is why sandboxing belongs inside a broader control plane, not as a standalone safety story.
+
+## The practical rule
+
+Use strong sandboxing when the agent can execute, browse, or mutate technical systems directly.
+
+Use lighter isolation when the agent remains in read-only or draft-only lanes and business controls already contain the output.
+
+If the team cannot explain the blast radius of a failed run, the system probably needs stronger isolation than it has.
+
+## Implementation checklist
+
+Your sandboxing decision is probably healthy when:
+
+- the team can describe exactly which resources the agent can touch;
+- execution, filesystem, network, and secret boundaries are explicit;
+- sandboxing is paired with approval and permission design;
+- the logs can show what happened inside the boundary;
+- and the team knows which actions should still be impossible even inside the sandbox.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Sandboxing, network permissions, and secrets"
+		href="/agent-systems/sandboxing-network-permissions-and-secrets-for-coding-agents/"
+		description="Use this page for the deeper execution-boundary design once sandboxing becomes a real implementation project."
+	/>
+	<LinkCard
+		title="What should an AI agent be allowed to do in production?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Use this page when the bigger question is permission scope rather than runtime isolation."
+	/>
+	<LinkCard
+		title="Should AI agents have access to customer data?"
+		href="/agent-systems/should-ai-agents-have-access-to-customer-data/"
+		description="Use this page when the most sensitive boundary is data scope rather than compute or network scope."
+	/>
+	<LinkCard
+		title="What should happen when an AI agent fails in production?"
+		href="/workflows/what-should-happen-when-an-ai-agent-fails-in-production/"
+		description="Use this page when the runtime boundary is only one part of a broader production failure plan."
+	/>
+</div>

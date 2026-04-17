@@ -1,0 +1,170 @@
+---
+title: What should happen when an AI agent fails in production?
+description: A practical production failure plan for AI agents covering failure classes, safe stops, retries, escalation, rollback signals, and the evidence teams need after a bad run.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: what should happen when an ai agent fails in production
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Platform teams
+  - Incident owners
+contentStatus: cornerstone
+problemSolved: Helps teams define what an AI agent should do after a failed production run so incidents stop becoming improvisation, silent retries, or hidden operator cleanup.
+readerTakeaway: You should leave with a practical production-failure playbook covering stop conditions, retries, handoff, logging, and rollback signals for real AI agent incidents.
+keyQuestions:
+  - What should an agent do immediately after a failed run?
+  - Which failures should retry and which should stop?
+  - How should teams connect production failures to human review, rollback, and evaluation updates?
+notFor:
+  - Teams running no live workflow or production path
+  - Readers looking for one generic retry rule across every agent system
+  - Organizations with no owner for incidents or post-run review
+updateTriggers:
+  - New production failure patterns in agent deployments
+  - Changes in rollout and rollback practices for agent systems
+  - New observability or incident-response conventions for tool-using agents
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What should happen when an AI agent fails in production?
+
+## Quick answer
+
+When an AI agent fails in production, the system should:
+
+1. stop unsafe or unclear actions,
+2. classify the failure,
+3. preserve the evidence,
+4. route the case to the right human or fallback path,
+5. and decide whether the issue is local, systemic, or rollout-related.
+
+The worst production pattern is silent failure followed by hidden manual rescue.
+
+## The wrong failure plan
+
+The weak plan is:
+
+**"Retry until it works."**
+
+That only helps when the failure was:
+
+- transient,
+- low-risk,
+- and tied to an idempotent action.
+
+If the run failed because of missing evidence, wrong authority, weak approval logic, or a dangerous side effect, blind retries make the incident worse.
+
+## The first decision: is this a safe-stop failure?
+
+Some failures should stop immediately:
+
+- policy or permission violations,
+- missing required evidence,
+- high-consequence ambiguity,
+- tool actions that are not safely repeatable,
+- or any run that may have crossed the wrong authority boundary.
+
+These are not retry cases. They are containment cases.
+
+## The second decision: is this retryable?
+
+Retries are justified only when:
+
+- the failure is transient,
+- the step is idempotent,
+- the system knows what changed,
+- and retrying does not widen the blast radius.
+
+Examples include flaky upstream services or temporary tool timeouts. Even then, retries should be bounded and logged.
+
+## The third decision: who owns the handoff?
+
+A failed run should not disappear into generic "manual review."
+
+The system should hand off:
+
+- what the task was,
+- what evidence it used,
+- which tools were called,
+- what failed,
+- and what the likely next action is.
+
+This prevents the human rescue path from turning into full rediscovery.
+
+## What the system should record every time
+
+Every meaningful failure should capture:
+
+- a stable run ID,
+- workflow class,
+- failure class,
+- retry count,
+- approval state,
+- tool and model context,
+- final handoff target,
+- and whether the issue implies rollback or narrower permissions.
+
+Without this, teams remember dramatic failures and forget the expensive repeated ones.
+
+## When failure should trigger rollback
+
+Rollback should be considered when:
+
+- a new version created a clear regression,
+- high-severity failures increased,
+- approval boundaries drifted,
+- or operator rescue work spiked after a release.
+
+Not every bad run is a rollback event. But every rollback event starts as a set of badly understood failures.
+
+## The practical production rule
+
+For each failure class, decide in advance:
+
+1. stop or retry,
+2. who gets the handoff,
+3. what evidence must be preserved,
+4. what metric would trigger rollback or tighter scope.
+
+That turns failure handling from improvisation into operations.
+
+## Implementation checklist
+
+Your production failure plan is probably healthy when:
+
+- unsafe cases fail closed instead of retrying blindly;
+- retryable cases are narrow and idempotent;
+- handoff packets preserve context instead of discarding it;
+- logs can distinguish one-off failure from rollout regression;
+- and owners know which failure patterns trigger rollback, approval tightening, or evaluation updates.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What should you log for an AI agent in production?"
+		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
+		description="Use this page when the failure plan is weak because the logs still cannot explain what happened."
+	/>
+	<LinkCard
+		title="When should an AI agent escalate to a human?"
+		href="/workflows/when-should-an-ai-agent-escalate-to-a-human/"
+		description="Use this page when the failure boundary is really an escalation rule problem."
+	/>
+	<LinkCard
+		title="How do you roll back an AI agent in production?"
+		href="/tooling/how-do-you-roll-back-an-ai-agent-in-production/"
+		description="Use this page when failures now raise release, rollback, and version-ownership questions."
+	/>
+	<LinkCard
+		title="Tool timeouts, retries, and idempotency"
+		href="/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/"
+		description="Use this page when the real failure question is which runs deserve retries at all."
+	/>
+</div>
