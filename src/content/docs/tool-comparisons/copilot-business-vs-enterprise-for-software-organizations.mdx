@@ -1,0 +1,142 @@
+---
+title: Copilot Business vs Enterprise for Software Organizations
+description: A practical buying guide for engineering leaders choosing between GitHub Copilot Business and Enterprise based on rollout fit, review workflow, and premium request economics.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: copilot business vs enterprise
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - Engineering leaders
+  - Developer platform teams
+  - Technical buyers
+  - Security and compliance reviewers
+contentStatus: cornerstone
+problemSolved: Helps software organizations decide when Copilot Business is enough and when Copilot Enterprise earns its higher seat price through GitHub-native chat, indexing, and premium request economics.
+readerTakeaway: You should leave with a clear boundary between Business and Enterprise tied to GitHub workflow depth, premium request demand, and governance needs.
+keyQuestions:
+  - When is Copilot Enterprise worth the seat uplift over Business?
+  - Which engineering organizations will not get enough value from GitHub.com chat and codebase indexing?
+  - When do premium requests make Enterprise cheaper than staying on Business?
+notFor:
+  - Individual developers choosing a personal coding tool
+  - Teams not standardized on GitHub workflows
+  - Organizations evaluating IDE-first products before deciding whether GitHub is the workflow center
+updateTriggers:
+  - Changes in GitHub Copilot Business or Enterprise pricing
+  - Material changes in premium request allowances or overage economics
+  - New GitHub-native chat, indexing, or governance features
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Copilot Business vs Enterprise for Software Organizations
+
+This is not really a feature checklist question. It is a question about where the organization expects coding AI to sit inside software delivery.
+
+If GitHub is already the operating center for review, pull requests, and repository truth, Copilot Enterprise can become more than an IDE helper. If GitHub is mostly the remote host and the real work still lives in the IDE plus local tooling, Copilot Business is often the healthier default.
+
+## Quick shortlist rule
+
+Choose **Copilot Business** when the organization mainly wants coding help in the IDE, CLI, and mobile surfaces with policy control and lower seat cost. Choose **Copilot Enterprise** when teams are deep enough into GitHub-native review, chat, and repository context that GitHub.com itself needs to become part of the AI workflow.
+
+If your engineering system does not actually use GitHub as a daily coordination surface, the Enterprise uplift is usually early.
+
+## Public pricing snapshot checked April 18, 2026
+
+| Source | Published price snapshot | What it signals |
+| --- | --- | --- |
+| [GitHub billing docs](https://docs.github.com/en/copilot/concepts/copilot-billing/about-billing-for-github-copilot-in-your-enterprise) | Copilot Business at $19 per user per month; Copilot Enterprise at $39 per user per month; additional premium requests at $0.04 each | GitHub makes Enterprise a material seat uplift, not a trivial add-on |
+| [GitHub plans page](https://github.com/features/copilot/plans) | Pro at $10, Pro+ at $39, with premium requests and GitHub-native features separated by plan | GitHub is increasingly pricing around usage intensity and platform depth |
+| [Choosing your enterprise plan](https://docs.github.com/en/copilot/rolling-out-github-copilot-at-scale/choosing-your-enterprises-plan-for-github-copilot) | GitHub positions Enterprise around higher premium request allocation, GitHub.com chat, and broader business outcomes | The uplift is justified only if the organization will use GitHub-native surfaces heavily |
+
+The main pricing lesson is straightforward: Enterprise is expensive if it only replaces IDE suggestions. It gets more rational if it changes review throughput, GitHub chat behavior, and premium-model usage at scale.
+
+## When Business is the better fit
+
+Copilot Business usually wins when:
+
+- developers mostly use AI inside their editor or CLI;
+- the company wants broad adoption with a lower seat floor;
+- GitHub.com chat and repository indexing are nice-to-have rather than core workflow;
+- security and policy teams care about license management and control, but not yet about deeper GitHub-native AI behavior.
+
+Business is also healthier when the company is still early in coding-AI rollout and wants to prove adoption before doubling seat cost.
+
+## When Enterprise is the better fit
+
+Copilot Enterprise becomes more credible when:
+
+- pull request review, issue context, and GitHub-native chat are daily workflow surfaces;
+- the organization wants repository context to matter beyond the local IDE session;
+- premium request usage is already high enough that Business plus overages starts looking clumsy;
+- leadership wants one vendor and one workflow center rather than a separate IDE-centric coding product.
+
+Enterprise is strongest when GitHub is not just where code is stored, but where engineering decisions already happen.
+
+## The real boundary is workflow depth
+
+The cleanest way to decide is to ask what problem the team is actually paying to remove.
+
+If the pain is:
+
+- "developers need faster suggestions and chat in the IDE,"
+
+then Business is usually enough.
+
+If the pain is:
+
+- "developers need GitHub-native context, review acceleration, shared repository knowledge, and more premium request headroom,"
+
+then Enterprise becomes more defensible.
+
+That is the real boundary. The wrong move is paying Enterprise rates before GitHub.com itself becomes an AI surface that engineers use every day.
+
+## Where teams overspend
+
+Teams overspend on Enterprise when:
+
+- GitHub review discipline is weak, so GitHub-native AI has nowhere to land;
+- engineers live in local workflows and rarely use GitHub chat or repository-aware interaction;
+- the organization has not measured premium request consumption on real teams;
+- leadership buys for aspiration rather than current workflow reality.
+
+That pattern creates a seat bill without a corresponding change in engineering behavior.
+
+## A practical rollout method
+
+Use this sequence:
+
+1. Pilot Business with teams that already use GitHub review correctly.
+2. Measure premium request pressure, code review adoption, and GitHub surface usage.
+3. Upgrade only the teams that actually use GitHub as a daily AI workspace.
+4. Compare Business plus overages against Enterprise on those teams, not on averages.
+
+That approach usually produces a cleaner mixed-plan result than trying to standardize Enterprise everywhere.
+
+## Compare next
+
+<div class="portal-links">
+  <LinkCard
+    title="Cursor vs GitHub Copilot vs Claude Code"
+    href="/tool-comparisons/cursor-vs-github-copilot-vs-claude-code-for-engineering-teams/"
+    description="Use this broader coding-seat comparison before narrowing GitHub plan choice."
+  />
+  <LinkCard
+    title="AI coding agents for engineering teams"
+    href="/use-cases/ai-coding-agents-for-engineering-teams/"
+    description="Ground the plan choice in the engineering workflow you are actually trying to change."
+  />
+  <LinkCard
+    title="PR checks and merge gates for coding agents"
+    href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+    description="Pressure-test whether your repository controls can actually absorb a heavier coding AI rollout."
+  />
+  <LinkCard
+    title="Approval systems for coding agents"
+    href="/workflows/approval-systems-for-coding-agents/"
+    description="Use the approval boundary to decide whether broader GitHub-native agent behavior is now justified."
+  />
+</div>

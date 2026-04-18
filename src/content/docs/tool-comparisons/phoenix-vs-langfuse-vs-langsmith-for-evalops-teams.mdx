@@ -1,0 +1,128 @@
+---
+title: Phoenix vs Langfuse vs LangSmith for EvalOps Teams
+description: A practical comparison for teams choosing between open-source-first Phoenix, flexible Langfuse, and platform-heavy LangSmith for EvalOps ownership.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: phoenix vs langfuse vs langsmith
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - Applied AI engineers
+  - AI platform teams
+  - EvalOps owners
+  - Technical buyers
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether EvalOps should start from open-source Phoenix, flexible Langfuse, or LangSmith's fuller agent platform posture.
+readerTakeaway: You should leave with a clearer shortlist based on deployment ownership, retention economics, and whether open-source flexibility is genuinely an advantage for your team.
+keyQuestions:
+  - When is Phoenix the right starting point instead of buying deeper into Langfuse or LangSmith?
+  - When does open-source control stop being a savings story and become an ownership burden?
+  - Which teams need LangSmith's deployment posture instead of Phoenix or Langfuse?
+notFor:
+  - Teams that are not yet tracing real production traffic
+  - Buyers looking only for a free dashboard
+  - Organizations without an owner for evals, annotation, and release decisions
+updateTriggers:
+  - Pricing changes across Phoenix, Langfuse, or LangSmith
+  - Major product changes in deployment, retention, or self-hosting posture
+  - New enterprise controls that shift shortlist fit
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Phoenix vs Langfuse vs LangSmith for EvalOps Teams
+
+This category becomes valuable the moment a team moves from "we should observe our prompts" into "we need evidence before release."
+
+Phoenix, Langfuse, and LangSmith all touch that problem, but they start from different operating assumptions:
+
+- **Phoenix** starts from open-source control and an easy path into self-hosted observability and online evals.
+- **Langfuse** starts from flexible production tracing, scoring, and usage economics.
+- **LangSmith** starts from a fuller agent engineering and deployment posture.
+
+## Quick shortlist rule
+
+Choose **Phoenix** when open-source control, self-hosting, or low-cost early EvalOps are real advantages and the team can own more of the stack. Choose **Langfuse** when you want flexible hosted production tracing and evals without buying into a heavier deployment platform. Choose **LangSmith** when deployment, agent lifecycle, and EvalOps are converging into one platform decision.
+
+## Public pricing snapshot checked April 18, 2026
+
+| Source | Published price snapshot | What it signals |
+| --- | --- | --- |
+| [Phoenix pricing](https://phoenix.arize.com/pricing/) | Self-hosted open source free; AX Pro at $50/month | Phoenix is the strongest open-source-led entry into EvalOps and product observability |
+| [Langfuse pricing](https://langfuse.com/pricing) | Core at $29/month, Pro at $199/month, Enterprise at $2499/month | Langfuse is priced for flexible hosted growth, not just experiments |
+| [LangSmith pricing](https://www.langchain.com/pricing) | Plus at $39/seat/month, pay as you go for traces and deployments; Enterprise custom | LangSmith assumes teams are buying a broader agent engineering surface |
+| [LangSmith pricing FAQ](https://www.langchain.com/pricing) | Plus includes one free dev-sized deployment, then deployment runs and uptime are charged | LangSmith pricing gets more interesting once deployment ownership enters the picture |
+
+The pricing boundary here is not only monthly software cost. It is whether open-source ownership, hosted flexibility, or deployment-centric platforming will be cheaper for your actual operating model.
+
+## When Phoenix is the better fit
+
+Phoenix is strongest when:
+
+- the team wants an open-source-first path;
+- self-hosting is acceptable or preferred;
+- the budget is early but the engineering discipline is already real;
+- the organization wants to grow into EvalOps without immediately buying a commercial platform posture.
+
+Phoenix becomes weaker when the organization wants a polished hosted product with stronger built-in commercial controls and less internal tooling burden.
+
+## When Langfuse is the better fit
+
+Langfuse is strongest when:
+
+- the team wants hosted production tracing and evals now;
+- retention and usage economics matter to procurement;
+- multiple teams need one shared observability and eval layer;
+- the organization is serious about AI production but not yet ready to couple deployment to the same platform.
+
+Langfuse often wins in organizations that need discipline but still value flexibility.
+
+## When LangSmith is the better fit
+
+LangSmith is strongest when:
+
+- observability, evaluation, and deployment are already converging;
+- the agent platform itself is becoming a product decision;
+- the team wants managed deployment tied closely to traces and evals;
+- platform ownership matters more than open-source flexibility.
+
+LangSmith becomes easier to justify when EvalOps is not a sidecar function anymore.
+
+## The real question: what do you want to own?
+
+That is the cleanest shortlist question.
+
+If you want to own more infra and keep costs low early, Phoenix is attractive.
+
+If you want a flexible hosted layer that does not immediately drag deployment into scope, Langfuse is usually cleaner.
+
+If you want a platform that can grow toward deployment ownership, LangSmith is the most direct path.
+
+The mistake is pretending those are the same purchase.
+
+## Compare next
+
+<div class="portal-links">
+  <LinkCard
+    title="LangSmith vs Langfuse vs Helicone"
+    href="/tool-comparisons/langsmith-vs-langfuse-vs-helicone-for-agent-eval-ops/"
+    description="Return to the broader EvalOps comparison if the gateway layer is still in the shortlist."
+  />
+  <LinkCard
+    title="EvalOps release gates and scorecard ownership"
+    href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+    description="Use ownership and release discipline to decide whether the platform match is real."
+  />
+  <LinkCard
+    title="Ground truth collection and labeling"
+    href="/evaluation/ground-truth-collection-and-labeling-for-agent-eval-ops/"
+    description="Pressure-test whether your chosen stack supports the evidence loop you actually need."
+  />
+  <LinkCard
+    title="Traces vs logs"
+    href="/evaluation/traces-vs-logs-for-agent-debugging-and-eval-ops/"
+    description="Clarify the observability boundary before buying a larger EvalOps platform."
+  />
+</div>

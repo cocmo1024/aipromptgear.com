@@ -1,0 +1,119 @@
+---
+title: A100 vs H100 Economics for Inference Products
+description: A practical guide to when A100 economics are still healthy, when H100 earns its premium, and how inference teams should model utilization honestly.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: a100 vs h100 cost
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - AI founders
+  - Infrastructure buyers
+  - Applied AI engineers
+  - Platform teams
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether A100 or H100 class GPUs make more economic sense for inference workloads given current public cloud pricing and workload shape.
+readerTakeaway: You should leave with a clearer model for when H100 speed justifies its premium and when A100 is still the healthier inference buy.
+keyQuestions:
+  - When does H100 earn its higher hourly cost?
+  - Which inference workloads still fit A100 economics?
+  - How should teams model utilization before choosing a GPU class?
+notFor:
+  - Teams that have not yet proven stable inference demand
+  - Buyers choosing hardware for benchmark bragging rights
+  - Organizations still better served by hosted APIs
+updateTriggers:
+  - Material changes in GPU cloud pricing
+  - New inference deployment patterns that shift utilization assumptions
+  - New hosted API tiers that change the ownership boundary
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# A100 vs H100 Economics for Inference Products
+
+This is not a hardware prestige question. It is an inference economics question.
+
+H100 is only a better buy when its speed, throughput, or model fit produces enough real product value to overcome a materially higher hourly cost. If that value does not show up in latency, concurrency, or margin, the team is buying an expensive answer to the wrong problem.
+
+## Quick shortlist rule
+
+Choose **A100** when inference workloads are stable, moderate, and do not require the highest-end throughput to meet product or margin goals. Choose **H100** when the workload is heavy enough, latency-sensitive enough, or model-demanding enough that the speed uplift meaningfully changes the economics of the product.
+
+If utilization is low or bursty, neither is usually the first problem to solve.
+
+## Public pricing snapshot checked April 18, 2026
+
+| Source | Published price snapshot | What it signals |
+| --- | --- | --- |
+| [Modal pricing](https://modal.com/pricing) | H100 at $0.001097/sec; A100 80GB at $0.000694/sec; A100 40GB at $0.000583/sec | H100 carries a large premium that must be justified by throughput or latency gains |
+| [Replicate pricing](https://replicate.com/pricing) | Multi-GPU H100 capacity at $10.98/hr for 2x H100 and $21.96/hr for 4x H100 | H100 economics become very real very quickly at larger scale |
+| [GPU cloud vs hosted APIs](https://aipromptgear.com/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/) | Hosted APIs remain a live alternative for unstable or frontier-dependent workloads | GPU class choice only matters after infra ownership is already justified |
+
+The pricing story is simple: H100 is not a minor upgrade. It is a budget decision that must be defended by real utilization and output value.
+
+## When A100 is still the healthier buy
+
+A100 remains a strong fit when:
+
+- the workload is stable but not extreme;
+- latency targets are realistic without bleeding-edge hardware;
+- model serving is cost-sensitive;
+- engineering still benefits more from lower hourly burn than from highest-end throughput.
+
+Many teams do not need H100. They need steadier inference utilization and better traffic shaping.
+
+## When H100 earns its premium
+
+H100 becomes more rational when:
+
+- the workload is consistently heavy;
+- latency directly affects revenue or product quality;
+- the model mix or throughput profile really benefits from newer hardware;
+- utilization is high enough that wasted premium capacity is unlikely.
+
+The keyword is consistently. Occasional peak demand is not a solid case for paying H100 rates all day.
+
+## The utilization trap
+
+Teams often compare A100 and H100 on theoretical throughput and forget to compare them on actual utilization.
+
+That is the trap.
+
+An underutilized H100 is just a faster way to waste money. An efficiently used A100 often beats a poorly scheduled H100 in real product economics.
+
+## A healthier GPU decision sequence
+
+1. Prove stable workload demand.
+2. Measure current latency and concurrency pain honestly.
+3. Model utilization before assuming faster hardware solves the problem.
+4. Upgrade to H100 only where the speed premium changes business results.
+
+If the model only looks good with near-perfect utilization, the team is still too early.
+
+## Compare next
+
+<div class="portal-links">
+  <LinkCard
+    title="GPU cloud vs hosted model APIs"
+    href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
+    description="Return to the broader infrastructure ownership question if GPU rental itself is still uncertain."
+  />
+  <LinkCard
+    title="When batch and flex are cheaper than rented GPUs"
+    href="/models-and-apis/when-batch-and-flex-are-cheaper-than-rented-gpus/"
+    description="Pressure-test lower-cost hosted service tiers before locking into rented compute."
+  />
+  <LinkCard
+    title="Cost per success and tool economics"
+    href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+    description="Keep GPU choice grounded in workflow outcomes, not only compute benchmarks."
+  />
+  <LinkCard
+    title="Tool-use latency and cost budgets"
+    href="/models-and-apis/tool-use-latency-and-cost-budgets/"
+    description="Use budget discipline to decide whether compute is really the largest bottleneck."
+  />
+</div>

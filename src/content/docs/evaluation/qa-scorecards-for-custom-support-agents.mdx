@@ -1,0 +1,127 @@
+---
+title: QA Scorecards for Custom Support Agents
+description: A practical guide to designing QA scorecards and human review loops for custom support agents so quality, trust, and costs stay visible after launch.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: custom support agent qa
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Support operations managers
+  - AI operations managers
+  - CX platform owners
+  - QA leads
+contentStatus: cornerstone
+problemSolved: Helps teams design QA scorecards for custom support agents so support quality, escalation discipline, and reviewer workload can be measured after launch.
+readerTakeaway: You should leave with a clear QA model for custom support agents that captures answer quality, escalation quality, and review cost in one system.
+keyQuestions:
+  - What should a support-agent QA scorecard actually measure?
+  - How much human review is enough after launch?
+  - Which failures matter most for support AI quality and trust?
+notFor:
+  - Teams that have not yet defined support sources or escalation rules
+  - Organizations looking only for model benchmark scores
+  - Support groups that still need a helpdesk decision before an AI decision
+updateTriggers:
+  - New QA product packaging from major support vendors
+  - Material changes in support automation economics
+  - New failure patterns in live support agent deployments
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# QA Scorecards for Custom Support Agents
+
+Custom support agents do not fail the same way ordinary chatbots fail. They can sound fluent while still violating policy, misrouting edge cases, or quietly increasing human review burden.
+
+That is why support QA needs its own page. Teams often build custom support agents because raw model cost looks cheaper than a support platform. Then they discover the real cost moved into human review, exception handling, and policy drift.
+
+## Quick scorecard rule
+
+A useful support-agent QA scorecard must measure more than answer correctness. It must also measure escalation quality, source use, policy adherence, and the amount of human cleanup left behind after the answer.
+
+If the scorecard only measures whether the answer "looked helpful," the team is not measuring the real operating cost.
+
+## What a support QA scorecard should include
+
+At minimum:
+
+1. **Answer correctness**
+2. **Source quality and citation quality**
+3. **Policy adherence**
+4. **Escalation correctness**
+5. **Customer-harm risk**
+6. **Reviewer effort**
+
+Those last two are what keep the scorecard commercially useful. They turn quality into a cost and trust model, not just an annotation exercise.
+
+## The categories that usually matter most
+
+Most support teams should score:
+
+- did the answer use approved knowledge;
+- did it avoid unsupported promises;
+- did it escalate when policy or confidence required escalation;
+- did it create recontact or downstream cleanup;
+- how long did the reviewer need to verify it.
+
+That gives leadership a more honest view than pure resolution rate.
+
+## How much human review is enough
+
+The answer depends on queue risk.
+
+- Low-risk repetitive queues can move toward sample-based review.
+- Medium-risk policy queues usually need heavier targeted review.
+- High-risk billing, account, or regulated queues often need persistent review until failure patterns are well understood.
+
+The goal is not zero review. The goal is review proportional to consequence.
+
+## Why this matters commercially
+
+This is where build-versus-buy economics usually flips.
+
+A custom support agent can look inexpensive on model cost and still be expensive if:
+
+- reviewers are overloaded,
+- escalations are poor,
+- customers recontact frequently,
+- or QA cannot spot drift early.
+
+That is why QA scorecards are not just a quality tool. They are an economics control.
+
+## A practical launch sequence
+
+1. Define score categories before launch.
+2. Review heavily on one queue for two to four weeks.
+3. Track reviewer minutes and recontact alongside pass rates.
+4. Reduce review only where failure modes are stable and low-consequence.
+
+If reviewer burden stays high, the custom stack may still be less efficient than a commercial support platform.
+
+## Compare next
+
+<div class="portal-links">
+  <LinkCard
+    title="Fin outcomes economics for customer support teams"
+    href="/use-cases/fin-outcomes-economics-for-customer-support-teams/"
+    description="Compare platform-priced support AI with the QA burden of custom support stacks."
+  />
+  <LinkCard
+    title="Intercom Fin vs Zendesk AI vs custom support agents"
+    href="/tool-comparisons/intercom-fin-vs-zendesk-ai-vs-custom-support-agents/"
+    description="Return to the platform comparison if the commercial decision is still open."
+  />
+  <LinkCard
+    title="Support quality scorecards"
+    href="/evaluation/support-quality-scorecards/"
+    description="Use the broader support QA framework for human-plus-AI support operations."
+  />
+  <LinkCard
+    title="Customer support operations"
+    href="/use-cases/customer-support-operations/"
+    description="Tie QA design back to the support workflow that owns the outcomes."
+  />
+</div>

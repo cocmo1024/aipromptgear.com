@@ -1,0 +1,127 @@
+---
+title: Fin Outcomes Economics for Customer Support Teams
+description: A practical guide to when Intercom Fin's outcome pricing is financially healthy and when it becomes an expensive substitute for better support workflow design.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: intercom fin pricing outcomes
+searchIntent: select
+decisionStage: shortlist
+targetRoles:
+  - Support leaders
+  - CX platform owners
+  - Finance-conscious operators
+  - Technical buyers
+contentStatus: cornerstone
+problemSolved: Helps support teams decide when outcome-based pricing for Intercom Fin is healthy and when it hides workflow, knowledge, or escalation problems.
+readerTakeaway: You should leave with a clearer way to judge Fin by resolved-outcome economics, queue mix, and QA burden instead of by conversation count alone.
+keyQuestions:
+  - When is Fin's per-outcome pricing actually attractive?
+  - Which queues make outcome pricing dangerous?
+  - What should support teams measure before expanding Fin coverage?
+notFor:
+  - Teams without a maintained help center
+  - Organizations still deciding on a helpdesk platform
+  - Support groups that require manual approval for every answer
+updateTriggers:
+  - Changes in Fin pricing
+  - New Intercom AI packaging or control layers
+  - Material shifts in support QA or resolution definitions
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Fin Outcomes Economics for Customer Support Teams
+
+Outcome-based pricing sounds elegant because it aligns spend with successful automation. In practice, it only works well when support leaders are honest about which conversations should count as outcomes and which conversations still need humans.
+
+That is why this page matters. Teams often compare Fin against raw model cost and miss the real question: is the support workflow clean enough that paying per resolved outcome is actually a good deal?
+
+## Quick budgeting rule
+
+Fin economics look healthiest on high-volume, repetitive queues with strong source quality and low downstream risk. They look worst on ambiguous, policy-heavy, or escalation-heavy queues where "resolved" is easy to count but expensive to trust.
+
+## Public pricing snapshot checked April 18, 2026
+
+| Source | Published price snapshot | What it signals |
+| --- | --- | --- |
+| [Intercom pricing](https://www.intercom.com/pricing) | Fin at $0.99 per outcome, with seat plans starting at $29 per seat/month | Intercom wants support AI judged by resolved outcomes, not only seats |
+| [Intercom pricing FAQ](https://www.intercom.com/pricing) | You are charged once per conversation when Fin resolves the issue or completes a workflow | Queue design and definition of resolution matter directly to spend |
+| [Intercom Pro add-on](https://www.intercom.com/help/en/articles/13868265-pro-add-on) | $99/month for up to 1,000 conversations, then tiered per-conversation charges | Visibility and QA layers add budget on top of answer generation |
+
+The financial lesson is simple: Fin is not just an answer engine. It is a support operating model with outcome-priced automation and optional QA overhead.
+
+## Where Fin economics are strongest
+
+Fin tends to work well when:
+
+- the help center is current and trusted;
+- the queue is repetitive and well-bounded;
+- resolution can happen without custom backend action;
+- manual review is only needed on a minority of conversations.
+
+That often includes:
+
+- shipping or return policy questions,
+- account-access guidance,
+- repetitive billing explanation,
+- and first-contact triage where the goal is better routing.
+
+## Where outcome pricing turns against you
+
+Fin becomes expensive when:
+
+- the queue has high ambiguity;
+- answers need judgment rather than policy lookup;
+- the team still has weak source quality;
+- human QA remains heavy after launch.
+
+In those cases, the platform can still log an "outcome" while the support organization quietly carries follow-up burden, reputation risk, or coaching cost.
+
+## The metric that matters more than raw outcomes
+
+The right question is not "how many outcomes did Fin produce?"
+
+It is:
+
+- what percent of those outcomes remained resolved,
+- what percent triggered recontact,
+- how much human QA still had to sit behind them,
+- and what queues saw real workload relief instead of shifted review burden.
+
+If a team cannot answer those questions, the spend model is still too optimistic.
+
+## A practical rollout sequence
+
+1. Start with low-risk repetitive queues.
+2. Measure outcome quality, recontact rate, and QA time together.
+3. Expand only where per-outcome spend clearly beats human handling or legacy automation.
+4. Avoid broad rollout into complex queues until escalation and QA are stable.
+
+That is how outcome pricing stays healthy instead of becoming an expensive vanity metric.
+
+## Compare next
+
+<div class="portal-links">
+  <LinkCard
+    title="Intercom Fin vs Zendesk AI vs custom support agents"
+    href="/tool-comparisons/intercom-fin-vs-zendesk-ai-vs-custom-support-agents/"
+    description="Return to the broader support AI platform comparison if the stack decision is still open."
+  />
+  <LinkCard
+    title="Knowledge base search vs agent answering"
+    href="/tool-comparisons/knowledge-base-search-vs-agent-answering-for-support/"
+    description="Use the retrieval boundary to decide whether outcome-priced AI is even the right next move."
+  />
+  <LinkCard
+    title="Customer support operations"
+    href="/use-cases/customer-support-operations/"
+    description="Ground the economics in the actual support workflow you want to automate."
+  />
+  <LinkCard
+    title="QA scorecards for custom support agents"
+    href="/evaluation/qa-scorecards-for-custom-support-agents/"
+    description="Use QA cost and reviewer burden to decide whether the economics are still healthy."
+  />
+</div>
