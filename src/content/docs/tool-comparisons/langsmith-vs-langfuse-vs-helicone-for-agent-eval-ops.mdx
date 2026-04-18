@@ -1,0 +1,155 @@
+---
+title: LangSmith vs Langfuse vs Helicone for Agent Eval Ops
+description: A practical comparison for teams choosing an evaluation and observability layer for agent systems, tool use, release gates, and cost tracking.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: langsmith vs langfuse vs helicone
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - Applied AI engineers
+  - AI platform teams
+  - EvalOps owners
+  - Technical buyers
+contentStatus: cornerstone
+problemSolved: Helps teams choose whether they need a heavier agent engineering platform, a flexible production eval and observability layer, or a lighter gateway-style cost and tracing layer.
+readerTakeaway: You should leave with a cleaner shortlist based on eval maturity, deployment ownership, trace retention needs, and current public pricing rather than product category confusion.
+keyQuestions:
+  - When is LangSmith worth its heavier platform shape?
+  - When does Langfuse fit better than LangSmith or Helicone?
+  - When is Helicone enough for real EvalOps and when does it stay a lighter gateway layer?
+notFor:
+  - Teams that are not yet tracing production AI traffic at all
+  - Buyers looking only for a dashboard screenshot instead of a release-control system
+  - Organizations that still need to define who owns evaluation and observability
+updateTriggers:
+  - Pricing changes across LangSmith, Langfuse, Helicone, or Phoenix
+  - New deployment or enterprise controls that materially change shortlist fit
+  - Product releases that shift the boundary between tracing, evals, and deployment ownership
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# LangSmith vs Langfuse vs Helicone for Agent Eval Ops
+
+This is one of the clearest high-value buying categories in AI infrastructure because the budget is rarely about “logging.” It is about whether the team can **ship agents with enough visibility, evaluation discipline, and rollback evidence to keep going in production**.
+
+The products overlap, but they do not start from the same center:
+
+- **LangSmith** starts from agent engineering, traces, evals, and increasingly deployment-linked workflows.
+- **Langfuse** starts from flexible tracing, evaluation, prompt and score instrumentation, and broad production fit across teams.
+- **Helicone** starts from usage visibility, gateway-style tracking, and a lighter path into monitoring, analytics, and cost control.
+
+## Quick shortlist rule
+
+Choose **LangSmith** when agent engineering and evaluation are central enough that tracing, evals, and deployment concerns should live together. Choose **Langfuse** when the team wants a strong production observability and eval layer with flexible usage economics and broad integration fit. Choose **Helicone** when the near-term problem is provider visibility, cost controls, request-level analytics, and a lighter-weight adoption path.
+
+If the team still cannot name who owns release gates, no product choice will solve the real problem.
+
+## Public pricing snapshot checked April 18, 2026
+
+| Product | Published price snapshot | What it signals |
+| --- | --- | --- |
+| [LangSmith pricing](https://www.langchain.com/pricing) | Plus at $39/seat/month, then pay as you go for traces and deployments | LangSmith assumes teams are buying into a fuller agent engineering platform |
+| [Langfuse pricing](https://langfuse.com/pricing) | Core at $29/month, Pro at $199/month, with usage pricing by units | Langfuse is priced like a flexible production observability/eval layer |
+| [Helicone pricing](https://www.helicone.ai/pricing) | Pro at $79/month, Team at $799/month, plus usage-based pricing | Helicone is priced for teams that want analytics and governance without immediately buying a larger platform |
+| [Phoenix pricing](https://phoenix.arize.com/pricing/) | AX Pro at $50/month, Enterprise custom, plus open-source self-hosted path | Phoenix matters because open-source options change the buy-versus-adopt threshold |
+
+The highest-value intent in this category usually sits with teams moving from “we should log our agent” into “we need eval ownership, retention policy, rollout gates, and platform accountability.”
+
+## When LangSmith is the better fit
+
+LangSmith is stronger when:
+
+- the team is already serious about agent traces, online or offline evals, and workflow release discipline;
+- the product roadmap includes agent deployment concerns, not just debugging;
+- teams want one product narrative that covers tracing, evaluation, and more explicit agent lifecycle management;
+- platform buyers are comfortable with a more opinionated ecosystem.
+
+LangSmith is not the best answer when the team mostly needs cheap visibility and lighter analytics without adopting a fuller agent-platform posture.
+
+## When Langfuse is the better fit
+
+Langfuse is stronger when:
+
+- the team wants production tracing and evaluation without tying itself as tightly to one broader platform narrative;
+- retention, units, and user scaling matter to the budget conversation;
+- prompt, eval, and observability needs span multiple products or teams;
+- engineering wants a cleaner middle path between open-source flexibility and full commercial platform shape.
+
+Langfuse often wins when the question is not “what is the most ambitious platform?” but “what gives us enough observability and eval maturity without overshooting our actual operating model?”
+
+## When Helicone is the better fit
+
+Helicone is stronger when:
+
+- the team needs a fast path into request visibility, cost analytics, and provider-agnostic monitoring;
+- budget owners want proof before buying a heavier eval platform;
+- gateway-style insertion into the stack matters more than a broad product suite;
+- the team is still early in formal EvalOps but late enough to need real traffic visibility.
+
+Helicone becomes weaker when the organization needs richer evaluation workflows, annotation discipline, or deeper agent lifecycle tooling.
+
+## The biggest buying mistake in this category
+
+The biggest mistake is treating all three products as interchangeable “LLM observability.”
+
+That phrase is too vague.
+
+The real questions are:
+
+- Do you need only traces and analytics, or do you need a release-control system?
+- Do you need evals as first-class operational work, or only as occasional experiments?
+- Do you need platform-level agent deployment ownership, or just visibility into an existing stack?
+
+Those answers usually collapse the shortlist quickly.
+
+## A healthier shortlist method
+
+Use this sequence:
+
+1. Define what the team must prove before a release can go live.
+2. Define how long traces and evidence must remain useful.
+3. Decide whether deployment ownership belongs inside the same product.
+4. Compare price using your real retention and usage shape, not just entry plan labels.
+5. Pilot on one agent workflow with real review and rollback pressure.
+
+If the pilot still cannot show who owns scorecards, annotations, and release decisions, the product did not solve the actual problem.
+
+## Who usually pays the highest effective price here
+
+The highest-value traffic in this category comes from teams that already have:
+
+- real AI usage,
+- real traces,
+- real failure modes,
+- and real release risk.
+
+That is why EvalOps queries often monetize better than broader “observability” curiosity. The buyer is closer to tool ownership and often closer to enterprise controls, SSO, retention, or audit requirements.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Agent evals for tool-using AI systems"
+		href="/evaluation/agent-evals-for-tool-using-ai-systems/"
+		description="Define what the evaluation layer must actually measure before buying the stack."
+	/>
+	<LinkCard
+		title="Traces vs logs for agent debugging and eval ops"
+		href="/evaluation/traces-vs-logs-for-agent-debugging-and-eval-ops/"
+		description="Pressure-test whether the team really needs traces, and what they are expected to support."
+	/>
+	<LinkCard
+		title="EvalOps release gates and scorecard ownership"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Use release ownership to decide whether the observability layer is mature enough for your operating model."
+	/>
+	<LinkCard
+		title="Ground truth collection and labeling for agent eval ops"
+		href="/evaluation/ground-truth-collection-and-labeling-for-agent-eval-ops/"
+		description="A better shortlist emerges once you know how labels, reviewers, and evidence will actually be managed."
+	/>
+</div>

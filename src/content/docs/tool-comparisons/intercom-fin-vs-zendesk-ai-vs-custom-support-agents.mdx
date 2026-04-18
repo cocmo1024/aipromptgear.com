@@ -1,0 +1,160 @@
+---
+title: Intercom Fin vs Zendesk AI vs Custom Support Agents
+description: A practical buying comparison for support leaders deciding whether to adopt platform-native AI support, add-on AI layers, or a custom agent stack.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: intercom fin vs zendesk ai vs custom support agents
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - Support leaders
+  - CX platform owners
+  - Technical buyers
+  - AI operations managers
+contentStatus: cornerstone
+problemSolved: Helps teams decide whether support AI should live inside Intercom, inside Zendesk, or in a custom stack with its own retrieval, orchestration, and evaluation responsibilities.
+readerTakeaway: You should leave with a clearer view of when outcome-based platform AI wins, when suite-based pricing is acceptable, and when a custom support agent stack is actually worth owning.
+keyQuestions:
+  - When is Intercom Fin the healthier buy than building a custom support agent?
+  - When does Zendesk AI fit better than moving platforms or building your own?
+  - What does a custom support agent stack really cost after software, evaluation, and review labor are counted?
+notFor:
+  - Teams without a maintained help center or approved source material
+  - Organizations still choosing a helpdesk before choosing an AI layer
+  - Support teams that need every answer manually approved
+updateTriggers:
+  - Material changes in Intercom or Zendesk AI pricing
+  - New support-platform AI packaging that changes the buy-versus-build threshold
+  - Changes in built-in search, QA, or automated resolution economics
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Intercom Fin vs Zendesk AI vs Custom Support Agents
+
+Support AI often looks like a model question. It is usually a **support-platform economics and operating-model question**.
+
+The real shortlist is:
+
+- **Intercom Fin** when the organization is comfortable buying into an AI-first support platform and outcome-based pricing;
+- **Zendesk AI** when the team already lives in Zendesk or wants a broader service suite with layered AI add-ons and platform options;
+- **Custom support agents** when the workflow, data systems, or economics are unusual enough that the company is willing to own orchestration, retrieval, evaluation, and rollout discipline directly.
+
+## Quick shortlist rule
+
+Buy **Intercom Fin** if the team wants to move fast on support automation inside a platform already built around AI outcomes. Keep **Zendesk AI** if Zendesk is already the operational center or if the service suite breadth matters more than switching for a cleaner AI story. Build a **custom support agent** only when support AI is strategic enough that the company wants to own the workflow itself, not just consume a feature.
+
+If the team still has a knowledge-quality problem, none of the three paths will look good in production.
+
+## Public pricing snapshot checked April 18, 2026
+
+| Product | Published price snapshot | What the price actually signals |
+| --- | --- | --- |
+| [Intercom pricing](https://www.intercom.com/pricing) | Fin at $0.99 per outcome, plus seats from $29, $85, and $132 per seat/mo | Intercom prices support AI on resolved outcomes plus platform seats |
+| [Zendesk pricing](https://www.zendesk.com/pricing/) | Suite + Copilot Professional at $155 per agent/month; AI add-ons and advanced agents sold separately or via sales | Zendesk frames AI inside a broader service suite and add-on structure |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | GPT-5.4 mini at $0.75/M input and $4.50/M output; web search at $10 per 1k calls | Custom support stacks can have low raw model cost but still high system cost |
+| [Intercom Pro add-on pricing](https://www.intercom.com/help/en/articles/13868265-pro-add-on-pricing-and-features) | $99/mo base for AI visibility and control across conversations | Support AI budgets increasingly include QA and insight layers, not only answer generation |
+
+The important lesson is that support AI buyers are not usually buying model tokens. They are buying **resolution economics, routing behavior, governance, and quality visibility**.
+
+## When Intercom Fin is the better fit
+
+Intercom Fin is stronger when:
+
+- the team wants AI support tightly bound to helpdesk workflow;
+- outcome-based pricing is easier to defend than API cost plus internal engineering time;
+- the organization wants one vendor accountable for more of the support experience;
+- switching costs are acceptable or Intercom is already in place.
+
+Intercom is weakest when the organization needs unusually custom backend actions, strict internal governance layers, or wants support AI decoupled from the support platform itself.
+
+## When Zendesk AI is the better fit
+
+Zendesk is stronger when:
+
+- Zendesk already anchors ticketing, routing, knowledge, and service operations;
+- the organization wants to keep platform continuity rather than migrate to an AI-first support stack;
+- the service program is broader than one AI agent feature and may require QA, workforce management, contact-center integration, or enterprise service controls;
+- the buyer expects multi-layer pricing and add-ons as part of the operating model.
+
+Zendesk usually wins on installed-base logic, not on the cleanest AI story.
+
+## When a custom support agent stack is justified
+
+A custom stack becomes justified when:
+
+- the helpdesk is only one piece of a larger product workflow;
+- support answers need internal business logic or system actions that commercial suites do not handle cleanly;
+- the company cares enough about margin, control, or product differentiation to own the orchestration layer;
+- AI support is strategic enough that the company wants direct control over retrieval, prompts, model routing, evals, and rollout gates.
+
+The mistake is believing custom stacks are cheaper just because the model bill looks small. The hidden costs are usually:
+
+- review and QA,
+- knowledge synchronization,
+- observability,
+- escalation logic,
+- rollout control,
+- and engineering time that could have shipped product elsewhere.
+
+## The boundary most teams should use
+
+Stay inside a support suite when the team wants **resolved support outcomes** more than it wants **support-AI infrastructure ownership**.
+
+Move toward a custom stack when the suite becomes the bottleneck for:
+
+- backend actions,
+- custom workflow logic,
+- pricing flexibility,
+- or governance that spans more than the helpdesk.
+
+That is the real buy-versus-build boundary.
+
+## Why this category is commercially valuable
+
+Support AI traffic often has stronger ad and buyer value than generic “AI agents” traffic because the searcher is frequently:
+
+- already attached to a budget,
+- already responsible for a helpdesk or CX platform,
+- and often evaluating vendors in the near term.
+
+That makes these pages better commercial-intent pages than broad AI theory pages, provided the content stays grounded in workflow and procurement reality.
+
+## A practical shortlist method
+
+Use this sequence:
+
+1. Define the current helpdesk and whether switching platforms is even realistic.
+2. Estimate AI cost on **resolved outcomes**, not only conversations or model tokens.
+3. List the custom actions and business rules the support system must perform.
+4. Decide who will own QA, source quality, and rollback after launch.
+5. Pilot on one queue where quality can be reviewed weekly.
+
+If the pilot cannot prove better resolved outcomes or lower human load, the team is not ready for a broader rollout.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Knowledge base search vs agent answering for support"
+		href="/tool-comparisons/knowledge-base-search-vs-agent-answering-for-support/"
+		description="Use the retrieval-versus-answer boundary to decide whether support AI is really the right next step."
+	/>
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Ground the vendor comparison in the actual support workflow you are trying to improve."
+	/>
+	<LinkCard
+		title="Billing and refund automation guardrails"
+		href="/use-cases/billing-and-refund-automation-guardrails/"
+		description="Pressure-test support AI on a queue where wrong answers are expensive."
+	/>
+	<LinkCard
+		title="Support quality scorecards"
+		href="/evaluation/support-quality-scorecards/"
+		description="If the team cannot score support quality after launch, the product choice is still premature."
+	/>
+</div>

@@ -1,0 +1,165 @@
+---
+title: Cursor vs GitHub Copilot vs Claude Code for Engineering Teams
+description: A practical buying comparison for engineering organizations deciding which AI coding product belongs in the IDE, terminal, and review workflow.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: cursor vs github copilot vs claude code
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - Engineering leaders
+  - Developer platform teams
+  - Technical buyers
+  - Security and compliance reviewers
+contentStatus: cornerstone
+problemSolved: Helps engineering teams decide whether they need an IDE-first coding assistant, a GitHub-native coding layer, or a terminal-heavy coding workflow with different governance and spend implications.
+readerTakeaway: You should leave with a cleaner boundary between seat-based coding assistants and usage-shaped coding workflows, plus a shortlist rule tied to review flow, governance, and current public pricing.
+keyQuestions:
+  - When is Cursor actually better than GitHub Copilot for a team, not an individual developer?
+  - Where does Claude Code fit if your team already has IDE assistants and pull-request review?
+  - Which coding product adds the least operational friction after rollout instead of only during the trial?
+notFor:
+  - Solo developers choosing a hobby tool for side projects
+  - Teams that have not yet defined whether coding AI belongs in the IDE, the terminal, or the pull request process
+  - Organizations looking for a fully autonomous software factory
+updateTriggers:
+  - Major seat-price changes for Cursor, GitHub Copilot, or Claude plans
+  - New enterprise features that materially change governance, audit, or rollout fit
+  - Changes in model access or coding-agent boundaries inside major coding products
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Cursor vs GitHub Copilot vs Claude Code for Engineering Teams
+
+This comparison only gets useful when the team stops asking which product feels smartest in a demo and starts asking **where coding AI should live in the operating system of software delivery**.
+
+The real split is not brand preference. It is workflow shape:
+
+- **Cursor** is strongest when teams want a coding environment that assumes AI is present inside the editor and increasingly inside cloud or agent-style execution.
+- **GitHub Copilot** is strongest when the organization wants AI woven into GitHub, pull requests, CLI use, and existing developer tooling without adopting a separate coding environment as the center of gravity.
+- **Claude Code** is strongest when the team wants a terminal-native coding workflow, is comfortable with more explicit session control, and cares more about deep repository work than about editor-first convenience.
+
+## Quick shortlist rule
+
+Use **Cursor** when the team is willing to make the AI-enabled editor part of the workflow standard. Use **GitHub Copilot** when the organization wants the least disruptive path from existing GitHub-centric engineering practices into coding AI. Use **Claude Code** when the real leverage is in terminal-driven repository work, scoped coding sessions, and deliberate operator control rather than broad IDE rollout.
+
+If the team cannot yet say where coding AI should live, it is too early to buy broadly.
+
+## The workflow boundary that matters
+
+Most engineering teams mix up three separate needs:
+
+1. **Inline assistance and fast drafting**
+2. **Repository-aware help and review acceleration**
+3. **Longer-horizon coding sessions that act more like an operator than an autocomplete tool**
+
+Those are not the same buying problem.
+
+GitHub Copilot usually wins the least-friction path for organizations already standardized on GitHub workflows. Cursor usually wins when engineers want the editor to become a more opinionated AI workspace. Claude Code usually wins when the work is not “complete this function” but “inspect this repo, reason across files, and make controlled changes from the terminal.”
+
+## Public pricing snapshot checked April 18, 2026
+
+| Product | Published price snapshot | What the price actually signals |
+| --- | --- | --- |
+| [Cursor pricing](https://cursor.com/pricing) | Pro at $20/mo, Pro+ at $60/mo, Teams at $40/user/mo, Enterprise custom | Cursor is priced like a serious seat-based coding product, not a lightweight extension |
+| [GitHub Copilot plans](https://github.com/features/copilot/plans) | Pro at $10/user/mo, Pro+ at $39/user/mo; organization tiers differ by Business vs Enterprise | GitHub can be the lowest-friction path when GitHub itself is already the operating center |
+| [Anthropic pricing](https://www.anthropic.com/pricing) | Claude Pro from $17-$20/mo, Team standard $25/user/mo annually, Team premium $150/user/mo with Claude Code | Claude pricing reflects a split between chat seats and heavier coding usage paths |
+| [Claude Code cost guide](https://docs.anthropic.com/en/docs/claude-code/costs) | Anthropic documents Claude Code as usage-shaped for teams and notes many teams land around roughly $100-$200/developer/month with Sonnet 4 | Terminal-heavy coding workflows can stop behaving like ordinary fixed-seat software |
+
+The most important lesson from current public pricing is that **coding AI cost is no longer just a seat decision**. It increasingly becomes a workflow-intensity decision.
+
+## When Cursor is the better fit
+
+Cursor is often the strongest fit when:
+
+- the team wants AI deeply integrated into the editor rather than bolted onto it;
+- engineers prefer one workspace for code, chat, agent-style execution, and rules;
+- the company is comfortable standardizing on one coding environment;
+- leadership wants seat pricing with recognizable admin controls instead of purely token-metered experimentation.
+
+Cursor is a poor fit when the organization cannot or will not standardize tooling and when GitHub remains the undisputed center of engineering workflow truth.
+
+## When GitHub Copilot is the better fit
+
+GitHub Copilot is often the better organizational fit when:
+
+- GitHub already anchors code review, policy, and repository governance;
+- the team wants AI in IDEs, CLI use, code review, and GitHub-native surfaces without changing editor identity first;
+- procurement and security teams prefer a vendor already present in the engineering stack;
+- leadership cares more about broad adoption and policy control than about maximizing one editor’s AI experience.
+
+Copilot is frequently the safer default buy. It is not always the most loved product by power users, but it often creates the smallest rollout argument across a company.
+
+## When Claude Code is the better fit
+
+Claude Code is stronger when:
+
+- the team is already terminal-comfortable;
+- long sessions of repository reasoning matter more than autocomplete;
+- engineers want explicit control over model behavior, coding loops, and session boundaries;
+- leadership is willing to treat coding AI as a heavier operational capability, not just an editor add-on.
+
+Claude Code is a weak fit if the organization expects it to behave like a simple IDE seat. It is better understood as a deeper coding runtime that may need tighter budget and approval discipline.
+
+## The buying mistake most teams make
+
+The common mistake is comparing all three products as if they solve the same layer of work.
+
+They do not.
+
+- Cursor is closer to **AI-native editor standardization**.
+- GitHub Copilot is closer to **GitHub-centered AI enablement**.
+- Claude Code is closer to **high-agency terminal coding**.
+
+If the team buys without choosing the layer, adoption becomes messy and spend becomes hard to defend.
+
+## Governance questions that should remove a candidate quickly
+
+Remove a product from the shortlist quickly if:
+
+- security or compliance teams cannot support its data, audit, or control model;
+- the product assumes a workflow center the company will not adopt;
+- the team cannot explain whether approval lives in the editor, the terminal, or the pull request boundary;
+- pricing becomes materially nonlinear as usage intensity rises.
+
+That last point matters more than most teams admit. A product can look inexpensive at seat level and still become expensive if heavy users force higher tiers, premium seats, or more usage-shaped consumption.
+
+## A practical shortlist method
+
+Use this sequence:
+
+1. Define where coding AI should live: editor, GitHub workflow, or terminal runtime.
+2. Define the control boundary: draft help, write help, or multi-file repo work.
+3. Decide what the review system must remain responsible for.
+4. Compare price on the team’s real usage shape, not only the entry-tier seat.
+5. Pilot with one engineering subgroup whose workflow actually matches the product.
+
+That is a healthier shortlist than comparing which tool “feels smartest.”
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI coding agents for engineering teams"
+		href="/use-cases/ai-coding-agents-for-engineering-teams/"
+		description="Start with where coding agents create real leverage before narrowing the product choice."
+	/>
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="Pressure-test the shortlist against the approval model the team can actually sustain."
+	/>
+	<LinkCard
+		title="PR checks and merge gates for coding agents"
+		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+		description="Use the repository-control boundary to decide whether a coding product still fits the engineering system."
+	/>
+	<LinkCard
+		title="Policy as code for coding-agent permissions"
+		href="/workflows/policy-as-code-for-coding-agent-permissions/"
+		description="Translate product preference into explicit repository and execution boundaries."
+	/>
+</div>
