@@ -1,0 +1,181 @@
+---
+title: How do you monitor AI agents in production?
+description: A practical monitoring model for AI agents covering outcome quality, failure classes, approvals, latency, cost, and the live signals that actually matter after launch.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: how do you monitor ai agents in production
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Operations leaders
+  - Engineering managers
+  - Incident owners
+contentStatus: cornerstone
+problemSolved: Helps teams monitor production AI agents with the right mix of quality, safety, cost, and workflow signals instead of treating monitoring like basic app uptime plus token counts.
+readerTakeaway: You should leave with a practical monitoring model for AI agents that connects live signals to workflow quality, human review load, rollback triggers, and long-term operating trust.
+keyQuestions:
+  - What should teams monitor for AI agents after launch?
+  - Which live signals matter more than generic uptime or request counts?
+  - How should monitoring connect to approvals, failures, and rollback decisions?
+notFor:
+  - Teams running one-off demos with no production workflow
+  - Readers looking only for vendor dashboards rather than operating signals
+  - Organizations with no owner for live quality or incident response
+updateTriggers:
+  - New production monitoring patterns for tool-using agents
+  - Changes in tracing and observability tooling
+  - Clear shifts in how teams define live quality and rollback triggers
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How do you monitor AI agents in production?
+
+## Quick answer
+
+Monitor AI agents as **workflow systems**, not just model calls.
+
+That means watching:
+
+- task success,
+- high-severity failure classes,
+- approval and escalation behavior,
+- retry patterns,
+- operator rescue load,
+- latency,
+- and cost per useful outcome.
+
+If monitoring only shows uptime, token spend, and request volume, it is still too thin for production.
+
+## The wrong monitoring model
+
+The weak model is:
+
+**"If the API is up and average latency is fine, the agent is healthy."**
+
+That misses the failures that actually damage the workflow:
+
+- wrong decisions with polished output,
+- retries that hide instability,
+- rising manual rescue work,
+- approval drift,
+- and expensive side effects that only appear after the run.
+
+AI monitoring needs application signals, workflow signals, and control-boundary signals together.
+
+## The live signals that matter most
+
+Healthy agent monitoring usually starts with:
+
+- **successful outcome rate**
+- **unsafe or high-cost failure rate**
+- **approval rate**
+- **escalation rate**
+- **manual rescue rate**
+- **retry rate**
+- **time to trusted completion**
+- **cost per successful outcome**
+
+These show whether the system is actually helping the workflow.
+
+## Why manual rescue is one of the best signals
+
+Many teams under-monitor manual rescue.
+
+That is a mistake because a system can look healthy in:
+
+- latency,
+- model quality,
+- and even raw completion rate
+
+while humans are quietly redoing the work downstream.
+
+If rescue work rises, the agent may still be "working" technically while failing economically.
+
+## What to segment by
+
+Do not monitor one giant blended average.
+
+Segment by:
+
+- workflow type,
+- risk class,
+- model lane,
+- tool path,
+- approval path,
+- and customer or team tier when relevant.
+
+Blended averages hide the expensive failures.
+
+## The most useful alert pattern
+
+The most useful production alerts usually focus on:
+
+- sudden changes in failure-class mix,
+- rising retries,
+- unusual approval spikes,
+- rescue-rate jumps,
+- cost spikes without quality gain,
+- and regressions after release.
+
+A good monitoring system helps you see **behavioral drift**, not just technical outages.
+
+## Monitoring should feed real operating decisions
+
+Monitoring is only valuable if it can trigger:
+
+- rollback,
+- tighter permissions,
+- stronger approval requirements,
+- more sampling,
+- or updates to the eval set.
+
+Otherwise it becomes dashboard theater.
+
+## The practical rule
+
+Monitor the agent at the exact places where the business would say:
+
+- "that result was not trustworthy,"
+- "that action should have stopped,"
+- or "this cost too much human cleanup."
+
+Those are the signals that deserve operational attention.
+
+## Implementation checklist
+
+Your monitoring model is probably healthy when:
+
+- live metrics reflect workflow outcome rather than only technical throughput;
+- high-cost failure classes are visible separately from harmless misses;
+- approval, escalation, and rescue are monitored explicitly;
+- releases can be tied to behavior changes quickly;
+- and monitoring can trigger real operating responses instead of only reports.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What should you log for an AI agent in production?"
+		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
+		description="Use this page when monitoring is weak because the logs still cannot explain what the system actually did."
+	/>
+	<LinkCard
+		title="What is a good success rate for an AI agent in production?"
+		href="/evaluation/what-is-a-good-success-rate-for-an-ai-agent-in-production/"
+		description="Use this page when monitoring needs a clearer definition of what a useful or acceptable outcome actually is."
+	/>
+	<LinkCard
+		title="What should happen when an AI agent fails in production?"
+		href="/workflows/what-should-happen-when-an-ai-agent-fails-in-production/"
+		description="Use this page when monitoring now needs to connect to failure response and handoff design."
+	/>
+	<LinkCard
+		title="How do you roll back an AI agent in production?"
+		href="/tooling/how-do-you-roll-back-an-ai-agent-in-production/"
+		description="Use this page when monitoring should trigger rollback instead of passive observation."
+	/>
+</div>

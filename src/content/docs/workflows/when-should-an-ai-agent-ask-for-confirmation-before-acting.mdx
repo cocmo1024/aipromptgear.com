@@ -1,0 +1,147 @@
+---
+title: When should an AI agent ask for confirmation before acting?
+description: A practical confirmation rule for AI agents covering irreversible actions, ambiguous intent, policy-sensitive cases, and when asking for confirmation protects trust instead of creating friction.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: when should ai agent ask for confirmation
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Application engineers
+  - UX owners
+contentStatus: cornerstone
+problemSolved: Helps teams decide when AI agents should ask users or operators for confirmation before acting, rather than either interrupting every step or moving too aggressively.
+readerTakeaway: You should leave with a practical rule for where confirmation belongs, where it is noise, and how to separate confirmation from approval and escalation.
+keyQuestions:
+  - When should an AI agent ask for confirmation?
+  - Which actions are too risky to execute without explicit confirmation?
+  - How is confirmation different from approval or escalation?
+notFor:
+  - Teams with no side-effecting actions or user-facing workflow
+  - Readers looking for generic UX advice unrelated to agent control
+  - Organizations that treat every click as full legal approval
+updateTriggers:
+  - New product patterns around agent action design
+  - Changes in user expectations around confirmations and AI actions
+  - Clear shifts in enterprise control patterns for side-effecting agents
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# When should an AI agent ask for confirmation before acting?
+
+## Quick answer
+
+An AI agent should ask for confirmation before acting when:
+
+- the action is irreversible,
+- the user intent is still ambiguous,
+- the action has financial, legal, or customer-facing consequence,
+- or the system is about to cross a trust boundary the user would reasonably expect to control directly.
+
+It should **not** ask for confirmation on every low-risk step, or the workflow turns into friction without protection.
+
+## Confirmation is not the same as approval
+
+These controls are easy to confuse:
+
+- **Confirmation** asks the user or operator, "Do you want me to do this now?"
+- **Approval** authorizes a higher-risk action under a formal control boundary.
+- **Escalation** stops and hands the case to a human owner.
+
+Confirmation is about **intent certainty and user trust**. Approval is about **authority and risk**.
+
+## When confirmation clearly belongs
+
+Confirmation usually belongs before:
+
+- sending a final external message,
+- editing or deleting important records,
+- executing payments, refunds, or cancellations,
+- triggering high-visibility workflow steps,
+- or taking an action where the user may have meant something slightly different.
+
+These are the moments where a short pause can protect trust cheaply.
+
+## When confirmation is usually noise
+
+Confirmation is often waste when the agent is:
+
+- gathering evidence,
+- drafting content,
+- summarizing,
+- routing internally,
+- or doing low-risk preparation that creates no side effect by itself.
+
+If the step can be undone cheaply or never leaves the system, mandatory confirmation often slows the workflow without improving safety.
+
+## The strongest confirmation trigger
+
+The strongest trigger is not model uncertainty alone.
+
+It is the combination of:
+
+- meaningful side effect,
+- incomplete user intent,
+- and a cost of being wrong that the user would notice immediately.
+
+That is the moment where confirmation earns its place.
+
+## The bad confirmation pattern
+
+The weak pattern is asking the user to confirm actions they do not fully understand because:
+
+- the system is vague,
+- the action summary is poor,
+- or the agent is using confirmation as a substitute for better workflow design.
+
+Good confirmation should make the next action legible, not merely shift liability onto the user.
+
+## The practical rule
+
+Ask for confirmation when:
+
+1. the action changes something real,
+2. the action could surprise a reasonable user,
+3. the downside of acting incorrectly is materially larger than the cost of one extra click or review.
+
+If those are false, the system probably does not need confirmation at that step.
+
+## Implementation checklist
+
+Your confirmation model is probably healthy when:
+
+- confirmation is reserved for meaningful side effects or ambiguous intent;
+- low-risk prep work can proceed without interruption;
+- confirmation prompts explain the next action clearly;
+- confirmation is not being used as a substitute for approval policy;
+- and the team can show which confirmations actually reduce errors or user distrust.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Do AI agents need human approval in production?"
+		href="/workflows/do-ai-agents-need-human-approval-in-production/"
+		description="Use this page when the question is really about formal authority and risk control rather than user confirmation."
+	/>
+	<LinkCard
+		title="When should an AI agent escalate to a human?"
+		href="/workflows/when-should-an-ai-agent-escalate-to-a-human/"
+		description="Use this page when the correct move is to stop and hand off, not to ask for a lightweight confirmation."
+	/>
+	<LinkCard
+		title="What should an AI agent be allowed to do in production?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Use this page when confirmation depends on the underlying permission model."
+	/>
+	<LinkCard
+		title="What is a good SLA for an AI agent?"
+		href="/workflows/what-is-a-good-sla-for-an-ai-agent/"
+		description="Use this page when confirmation timing now affects responsiveness, queue design, and expected turnaround."
+	/>
+</div>

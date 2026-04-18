@@ -1,0 +1,156 @@
+---
+title: What is a good SLA for an AI agent?
+description: How to set a healthy SLA for an AI agent by workflow class, risk, review burden, and user expectations instead of copying human-team or software-uptime numbers blindly.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: good SLA for ai agent
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Operations leaders
+  - Support managers
+  - AI product leads
+  - Service owners
+contentStatus: cornerstone
+problemSolved: Helps teams set realistic SLAs for AI agents by connecting response expectations to workflow shape, risk, confirmation steps, and human-review requirements.
+readerTakeaway: You should leave with a practical way to define AI-agent SLA targets that reflect actual workflow value and trust requirements rather than vanity speed.
+keyQuestions:
+  - What counts as a good SLA for an AI agent?
+  - How should SLA targets differ across draft, routing, and action-taking workflows?
+  - When do human review, confirmation, and escalation change the SLA?
+notFor:
+  - Teams with no user-facing or operator-facing time expectations
+  - Readers looking for one universal response-time benchmark
+  - Organizations copying uptime SLAs into workflow-quality problems
+updateTriggers:
+  - Changes in enterprise deployment norms for agent response expectations
+  - New patterns in human-in-the-loop latency and service design
+  - Clear shifts in what users expect from AI-assisted workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What is a good SLA for an AI agent?
+
+## Quick answer
+
+A good SLA for an AI agent depends on:
+
+- the workflow type,
+- the cost of delay,
+- the cost of being wrong,
+- and how much human review or confirmation still sits in the loop.
+
+There is no single good number.
+
+A low-risk routing workflow can justify a very fast SLA. A policy-sensitive or approval-heavy workflow may need a slower but more trustworthy SLA.
+
+## The wrong SLA model
+
+The weak model is:
+
+**"The AI should answer instantly."**
+
+That confuses speed with service quality.
+
+If the workflow:
+
+- still requires approval,
+- needs evidence gathering,
+- or involves costly side effects,
+
+then a slightly slower but more reliable SLA may be far healthier than fast wrong action.
+
+## SLA should match workflow class
+
+Different workflow types deserve different expectations:
+
+- **routing and triage** need low latency because delay compounds downstream;
+- **draft generation** can tolerate modest delay if quality is strong;
+- **research or synthesis** often needs longer windows because evidence quality matters;
+- **actions with approvals or confirmations** must account for human time, not only model time.
+
+A blended SLA across all of these usually hides the truth.
+
+## The two SLA questions that matter
+
+Ask:
+
+1. how fast must the workflow feel useful,
+2. how fast must the workflow become trustworthy enough to act on.
+
+Those are not always the same moment.
+
+An agent may generate a draft quickly, but the final trusted completion may still depend on approval, confirmation, or evidence review.
+
+## Why review and confirmation change the SLA
+
+Once humans enter the loop, the SLA is no longer only an AI latency problem.
+
+It becomes a system problem involving:
+
+- queue design,
+- approval load,
+- operator handoff quality,
+- and how often the agent asks for confirmation.
+
+That is why many "slow AI" complaints are really workflow-design complaints.
+
+## The best way to set targets
+
+Set targets by lane:
+
+- first-response SLA,
+- trusted-completion SLA,
+- escalation or handoff SLA,
+- and high-risk-action SLA when relevant.
+
+This is much healthier than trying to compress everything into one top-line response number.
+
+## The practical rule
+
+A good SLA is one that:
+
+- matches the cost of delay,
+- preserves trust,
+- reflects review and confirmation reality,
+- and still creates visible leverage over the old workflow.
+
+If the SLA looks good only because hidden manual rescue is doing the real work, it is not a good SLA.
+
+## Implementation checklist
+
+Your SLA design is probably healthy when:
+
+- targets differ by workflow class and risk lane;
+- trusted completion is measured separately from first response;
+- review, approval, and confirmation time are included honestly;
+- the business can explain why slower but safer lanes exist;
+- and SLA misses feed workflow redesign rather than only blame.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="When should an AI agent ask for confirmation before acting?"
+		href="/workflows/when-should-an-ai-agent-ask-for-confirmation-before-acting/"
+		description="Use this page when SLA targets are being distorted by excessive or poorly placed confirmation prompts."
+	/>
+	<LinkCard
+		title="When should an AI agent escalate to a human?"
+		href="/workflows/when-should-an-ai-agent-escalate-to-a-human/"
+		description="Use this page when the real timing question is how quickly risky cases should leave the agent lane."
+	/>
+	<LinkCard
+		title="How do you monitor AI agents in production?"
+		href="/evaluation/how-do-you-monitor-ai-agents-in-production/"
+		description="Use this page when SLA design now needs live monitoring and service signals to stay honest."
+	/>
+	<LinkCard
+		title="How do you calculate AI agent ROI?"
+		href="/models-and-apis/how-do-you-calculate-ai-agent-roi/"
+		description="Use this page when SLA tradeoffs now need to connect to queue economics, review cost, and business value."
+	/>
+</div>
