@@ -1,0 +1,120 @@
+---
+title: "Single-Agent vs Multi-Agent Systems: When Handoffs Help"
+description: A practical guide to deciding when multi-agent handoffs create real value and when one well-governed agent or workflow is the stronger product choice.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: single agent vs multi agent systems
+searchIntent: compare
+decisionStage: solution-aware
+targetRoles:
+  - AI product engineers
+  - Platform architects
+  - Applied AI leads
+  - Founders
+contentStatus: growing
+problemSolved: Helps teams decide whether a product should remain single-agent, workflow-first, or split into multiple specialist agents with explicit handoffs.
+readerTakeaway: You should leave with a practical rule for when handoffs create quality and control advantages and when they only spread complexity across more moving parts.
+keyQuestions:
+  - When do multi-agent systems actually help?
+  - What signs show that one agent is still the better design?
+  - What should a team prove before introducing handoffs between agents?
+notFor:
+  - One-shot apps with no workflow state
+  - Teams using "multi-agent" only as a marketing label
+updateTriggers:
+  - Changes in orchestration frameworks and handoff patterns
+  - New field lessons around multi-agent runtime cost and control
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Single-Agent vs Multi-Agent Systems: When Handoffs Help
+
+Most products should not start multi-agent. They should start with one agent or one workflow that is clear enough to operate, debug, and govern. Multi-agent systems become valuable only when handoffs create cleaner responsibility boundaries than one larger agent can maintain by itself.
+
+This matters because "multi-agent" still gets used as a synonym for "more advanced." In production, it usually means more state surfaces, more observability work, more failure boundaries, and more questions about who is allowed to do what. If the handoff does not buy something specific, it is usually just architecture inflation.
+
+## When one agent is still the right answer
+
+One agent or one workflow is usually stronger when:
+
+- the task is still mostly linear;
+- one policy boundary governs the whole job;
+- the same context is needed across the full run;
+- the team does not yet have evidence that specialization improves quality.
+
+That is the normal starting point. The burden of proof belongs with the extra handoff.
+
+## When multi-agent design starts making sense
+
+Handoffs start paying off when:
+
+- different specialists need different tools, models, or permissions;
+- one planner should not share the same authority boundary as one executor;
+- research, coding, review, and approval have clearly different success criteria;
+- the product can name where one agent should stop and another should take over.
+
+That last point matters most. Multi-agent systems help when the boundary is clearer than the monolith.
+
+## The hidden cost of handoffs
+
+Every handoff introduces:
+
+- a new state boundary;
+- a new observability problem;
+- a new evaluation surface;
+- another place for authority, context, or intent to get distorted.
+
+That does not mean handoffs are bad. It means they need to earn their keep.
+
+## A practical test to use
+
+Ask four questions:
+
+1. Does the specialist need a meaningfully different permission or tool scope?
+2. Does the specialist need a meaningfully different quality rubric?
+3. Would keeping this work in one agent make traces, evals, or approvals materially harder to reason about?
+4. Can the handoff be made explicit enough that operators will understand it during failure and review?
+
+If the answer is mostly no, stay simpler.
+
+## Where current platform trends fit
+
+This topic is more relevant now because orchestration stacks are getting richer. OpenAI's current SDK guidance explicitly points teams toward orchestration, handoffs, state, guardrails, and observability as workflows grow more complex【turn3view2†L640-L658】. That creates more room for well-designed multi-agent systems, but it also lowers the barrier to building them before they are needed.
+
+The point is not to avoid multi-agent systems. It is to introduce them only where the handoff creates a cleaner operating model.
+
+## Good examples of useful handoffs
+
+- A research agent gathers and structures evidence, then a writing agent drafts inside tighter formatting and style constraints.
+- A coding agent proposes changes, then a review or approval agent checks against narrower policy and merge boundaries.
+- A concierge agent routes work, but specialist agents own different systems of record and different authority scopes.
+
+Those handoffs are useful because each specialist changes the control model, not just the prompt text.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="A2A vs MCP for enterprise agent systems"
+		href="/agent-systems/a2a-vs-mcp-for-enterprise-agent-systems/"
+		description="Connect handoff design to the deeper question of whether the product needs remote agent interoperability or only tool access."
+	/>
+	<LinkCard
+		title="Agents SDK vs app-owned orchestration"
+		href="/agent-systems/agents-sdk-vs-app-owned-orchestration-for-production-agents/"
+		description="Use the orchestration page when the bigger question is who should own the workflow truth."
+	/>
+	<LinkCard
+		title="Guardrails vs evals"
+		href="/agent-systems/guardrails-vs-evals-for-production-agent-systems/"
+		description="Pressure-test whether more agents are solving runtime control or only moving it around."
+	/>
+	<LinkCard
+		title="Eval-driven development for agentic products"
+		href="/evaluation/eval-driven-development-for-agentic-products/"
+		description="See how extra handoffs change what has to be evaluated before release."
+	/>
+</div>

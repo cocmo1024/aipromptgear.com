@@ -1,0 +1,138 @@
+---
+title: Traces vs Logs for Agent Debugging and Eval Ops
+description: A practical guide to deciding when logs are enough, when traces become necessary, and how both should support debugging, evaluation, and release control.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: traces vs logs for ai agents
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product engineers
+  - EvalOps owners
+  - Platform engineers
+  - Applied AI leads
+contentStatus: growing
+problemSolved: Helps teams distinguish run-level tracing from production logging so agent systems remain debuggable and evaluable as tool use and handoffs get more complex.
+readerTakeaway: You should leave with a cleaner rule for what belongs in logs, what belongs in traces, and why confusing them weakens both debugging and evaluation.
+keyQuestions:
+  - When are plain logs enough for an AI agent?
+  - When do traces become necessary?
+  - How should trace data support evaluation and release gates?
+notFor:
+  - One-shot prototypes with no live ops burden
+  - Teams that have not yet instrumented even basic run events
+updateTriggers:
+  - Changes in agent observability tooling
+  - New guidance around agent traces and evaluation workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Traces vs Logs for Agent Debugging and Eval Ops
+
+Teams often say they have "logging" when what they really need is tracing. Or they say they have "tracing" when what they really have is verbose logs with request IDs. The difference matters more as agents get tool use, retries, approvals, and handoffs. Once the system can take multiple steps, the unit of truth is no longer just the final output. It is the run.
+
+OpenAI's current SDK guidance is explicit about this sequence: use traces for debugging first, then move into evaluation loops【turn3view2†L640-L643】. That is the right operational mindset. Logs describe events. Traces describe the run.
+
+## The short version
+
+Use this rule:
+
+| Signal type | Best used for |
+| --- | --- |
+| Logs | Durable production events, alerts, audits, and system-level records |
+| Traces | Reconstructing the path of one run across steps, tools, approvals, and handoffs |
+
+If the team needs to answer "what happened in this exact run," traces usually matter more.
+
+## When logs are enough
+
+Logs are usually enough when the product mostly needs:
+
+- error counting and alerting;
+- durable audit events;
+- service-level monitoring;
+- coarse-grained outcome reporting.
+
+For simple prompt systems, that may be enough. For agent systems, it usually stops being enough once one user action can create a multi-step execution path.
+
+## When traces become necessary
+
+Traces become necessary when the team needs to see:
+
+- which tool was selected and why;
+- which step consumed most latency;
+- whether retries changed the outcome;
+- where an approval or handoff changed the run path;
+- whether failure happened in planning, execution, or recovery.
+
+That is the level where debugging and evals start to share the same raw material.
+
+## Why this matters for evaluation
+
+If evaluation relies only on final answers, the team misses most of the ways an agent can be wrong:
+
+- right answer, unsafe path;
+- right answer, wasteful tool use;
+- right answer, unnecessary approval burden;
+- wrong answer caused by one narrow step that the final output does not reveal.
+
+Traces make those distinctions visible. That is why trace-aware evals are stronger than output-only scorecards for agent systems.
+
+## The bad pattern to avoid
+
+The bad pattern is treating every piece of trace detail as if it belongs in logs forever. That creates two failures at once:
+
+- logs become noisy and expensive;
+- traces become harder to reason about because no one owns the run structure.
+
+Better teams separate the two on purpose.
+
+## A cleaner split
+
+One workable split is:
+
+- logs for audit, alerts, and production summaries;
+- traces for step-by-step execution analysis;
+- eval datasets and scorecards for release decisions built from selected trace evidence.
+
+That keeps each layer legible.
+
+## What to instrument first
+
+If the current system is thin, start with:
+
+1. one durable run identifier;
+2. start and end state for every run;
+3. tool call records with arguments and outcomes;
+4. approval and escalation events;
+5. enough trace shape to replay where the run deviated.
+
+That foundation usually does more for quality than another month of prompt tweaking.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What should you log for an AI agent in production?"
+		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
+		description="Use the logging page when the product still needs a clear baseline for production event capture."
+	/>
+	<LinkCard
+		title="Trace grading for tool-using agents"
+		href="/evaluation/trace-grading-for-tool-using-ai-agents/"
+		description="Go deeper on how trace structure supports evaluation instead of only debugging."
+	/>
+	<LinkCard
+		title="EvalOps release gates and scorecard ownership"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Connect trace evidence to release control and named ownership."
+	/>
+	<LinkCard
+		title="Shadow evals and canary rollouts"
+		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
+		description="Use staged release discipline once traces are good enough to reveal behavior before full rollout."
+	/>
+</div>
