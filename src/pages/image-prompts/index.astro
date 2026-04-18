@@ -1,0 +1,58 @@
+---
+import ReferenceShell from '../../layouts/ReferenceShell.astro';
+import { imagePromptCategories, imagePromptEntries } from '../../data/image-prompt-patterns';
+
+const featured = imagePromptEntries.slice(0, 12);
+---
+
+<ReferenceShell
+	title="GPT-Image-2 Prompt Patterns"
+	description="A full-site archive of adapted GPT-Image-2 prompt patterns based on public community cases, rewritten into reusable templates with controls, failure modes, and attribution."
+	eyebrow="Image prompt archive"
+	breadcrumbs={[
+		{ label: 'Home', href: '/' },
+		{ label: 'Image prompts' },
+	]}
+	canonicalPath="/image-prompts/"
+>
+	<section class="signal-strip">
+		<div>
+			<strong>Coverage</strong>
+			<p>{imagePromptEntries.length} adapted prompt patterns across portraits, posters, character sheets, UI mockups, and community benchmark cases.</p>
+		</div>
+		<div>
+			<strong>Method</strong>
+			<p>Every page keeps source attribution but replaces verbatim prompt reuse with a stronger derivative template and editorial guidance.</p>
+		</div>
+		<div>
+			<strong>Search intent</strong>
+			<p>Built to capture long-tail prompt searches, renderer questions, and creator queries around GPT-Image-2 workflows.</p>
+		</div>
+	</section>
+
+	<section>
+		<h2>Browse by prompt family</h2>
+		<div class="portal-links">
+			{imagePromptCategories.map((category) => (
+				<a class="sl-link-card" href={`/image-prompts/category/${category.slug}/`}>
+					<span class="title">{category.label}</span>
+					<span>{category.description}</span>
+					<span>{category.count} adapted patterns</span>
+				</a>
+			))}
+		</div>
+	</section>
+
+	<section>
+		<h2>Featured long-tail prompt pages</h2>
+		<div class="portal-links">
+			{featured.map((entry) => (
+				<a class="sl-link-card" href={`/image-prompts/case/${entry.slug}/`}>
+					<span class="title">{entry.title}</span>
+					<span>{entry.description}</span>
+					<span>{entry.searchKeyword}</span>
+				</a>
+			))}
+		</div>
+	</section>
+</ReferenceShell>

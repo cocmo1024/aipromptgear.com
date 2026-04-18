@@ -1,0 +1,97 @@
+---
+title: GPT-Image-2 Prompt Patterns
+description: Editorial archive of adapted GPT-Image-2 prompt patterns built from public community cases, with attribution, reusable templates, controls, and failure-mode analysis.
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { imagePromptCategories, imagePromptEntries } from '../../data/image-prompt-patterns';
+
+## Why this section exists
+
+Most image-prompt collections stop at prompt dumping. That leaves three problems:
+
+1. The prompt is not reusable once the subject or style changes.
+2. The source creator is rarely attributed cleanly.
+3. The page does not help with the real search intent, which is usually _how to get a specific result without breaking composition, text, lighting, or layout_.
+
+This archive fixes that by converting public prompt examples into attributed derivative patterns. Each page expands the original case into a reusable prompt frame, exposes the main controls, and documents the failure modes that usually waste iterations.
+
+<div class="signal-strip">
+	<div>
+		<strong>Coverage</strong>
+		<p>{imagePromptEntries.length} adapted prompt pages built from public community source cases.</p>
+	</div>
+	<div>
+		<strong>Method</strong>
+		<p>Every page keeps attribution, avoids verbatim prompt reuse, and rewrites the case into an editorial pattern.</p>
+	</div>
+	<div>
+		<strong>Search intent</strong>
+		<p>Built for long-tail creator searches around GPT-Image-2 prompts, image generation styles, and prompt debugging.</p>
+	</div>
+</div>
+
+## Browse by prompt family
+
+<CardGrid stagger>
+	{imagePromptCategories.map((category) => (
+		<Card title={category.label} icon="document">
+			<p>{category.description}</p>
+			<p>
+				<a href={`/image-prompts/category/${category.slug}/`}>{category.count} adapted patterns</a>
+			</p>
+		</Card>
+	))}
+</CardGrid>
+
+## Jump into the archive
+
+<div class="portal-links">
+	<LinkCard
+		title="Open the full image-prompt archive"
+		href="/image-prompts/"
+		description="Browse the editorial landing page with prompt families, featured long-tail entries, and attribution standards."
+	/>
+	<LinkCard
+		title="Portrait and photography prompts"
+		href="/image-prompts/category/portraits/"
+		description="Cinematic portrait patterns with lighting controls, composition choices, and realism constraints."
+	/>
+	<LinkCard
+		title="Poster and illustration prompts"
+		href="/image-prompts/category/posters-illustration/"
+		description="Prompt patterns for maps, posters, travel art, lettering systems, and illustrated layout work."
+	/>
+	<LinkCard
+		title="Character design prompts"
+		href="/image-prompts/category/character-design/"
+		description="Reference-sheet and character-card patterns for keeping identity stable across views and poses."
+	/>
+	<LinkCard
+		title="UI and social mockups"
+		href="/image-prompts/category/ui-social-mockups/"
+		description="Patterns for screenshots, fake feeds, handwritten notes, and mobile-camera realism."
+	/>
+	<LinkCard
+		title="Benchmark and comparison cases"
+		href="/image-prompts/category/comparison-community/"
+		description="Model-comparison, text-rendering, and reference-edit patterns built for evaluation instead of one-off images."
+	/>
+</div>
+
+## What makes these pages higher value
+
+<CardGrid>
+	<Card title="Prompt controls" icon="setting">
+		Each page breaks out the variables that matter first, so readers can adapt the pattern instead of pasting it blindly.
+	</Card>
+	<Card title="Failure modes" icon="warning">
+		Common failure paths are explicit, which is usually what searchers need after the first prompt version breaks.
+	</Card>
+	<Card title="Attribution" icon="open-book">
+		Every case keeps a visible path back to the public source repo and the linked creator post.
+	</Card>
+	<Card title="Derivative reuse" icon="approve-check-circle">
+		The prompt text is rewritten into an original editorial template, which keeps the archive useful without becoming a raw mirror.
+	</Card>
+</CardGrid>

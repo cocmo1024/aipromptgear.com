@@ -1,0 +1,125 @@
+---
+import '../styles/global.css';
+import { siteMeta } from '../utils/site-meta.mjs';
+
+interface Breadcrumb {
+	label: string;
+	href?: string;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	breadcrumbs?: Breadcrumb[];
+	eyebrow?: string;
+	canonicalPath?: string;
+}
+
+const {
+	title,
+	description,
+	breadcrumbs = [],
+	eyebrow = 'AI Prompt Gear',
+	canonicalPath = Astro.url.pathname,
+} = Astro.props;
+
+const canonicalUrl = new URL(canonicalPath, `${siteMeta.siteUrl}/`).toString();
+const pageTitle = `${title} | ${siteMeta.name}`;
+const imageUrl = new URL(siteMeta.ogImagePath, `${siteMeta.siteUrl}/`).toString();
+const structuredData = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Article',
+		headline: title,
+		description,
+		url: canonicalUrl,
+		inLanguage: siteMeta.languageTag,
+		isAccessibleForFree: true,
+		publisher: {
+			'@type': 'Organization',
+			name: siteMeta.name,
+			url: `${siteMeta.siteUrl}/`,
+		},
+		author: {
+			'@type': 'Organization',
+			name: siteMeta.name,
+			url: `${siteMeta.siteUrl}/`,
+		},
+		image: imageUrl,
+	},
+	...(breadcrumbs.length
+		? [
+				{
+					'@context': 'https://schema.org',
+					'@type': 'BreadcrumbList',
+					itemListElement: breadcrumbs.map((crumb, index) => ({
+						'@type': 'ListItem',
+						position: index + 1,
+						name: crumb.label,
+						item: crumb.href
+							? new URL(crumb.href, `${siteMeta.siteUrl}/`).toString()
+							: canonicalUrl,
+					})),
+				},
+			]
+		: []),
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{pageTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="icon" type="image/svg+xml" href={siteMeta.faviconPath} />
+		<link rel="apple-touch-icon" sizes="180x180" href={siteMeta.appleTouchIconPath} />
+		<meta name="theme-color" content={siteMeta.themeColor} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta property="og:type" content="article" />
+		<meta property="og:site_name" content={siteMeta.name} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:alt" content={siteMeta.ogImageAlt} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={imageUrl} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+	</head>
+	<body>
+		<header class="reference-shell__topbar">
+			<div class="reference-shell__topbar-inner">
+				<a class="reference-shell__brand" href="/">{siteMeta.name}</a>
+				<nav class="reference-shell__nav" aria-label="Reference navigation">
+					<a href="/image-prompts/">Image prompts</a>
+					<a href="/prompt-library/">Prompt library</a>
+					<a href="/tool-comparisons/">Comparisons</a>
+				</nav>
+			</div>
+		</header>
+		<main class="reference-shell">
+			<div class="reference-shell__inner">
+				{breadcrumbs.length > 0 && (
+					<nav class="reference-shell__breadcrumbs" aria-label="Breadcrumb">
+						{breadcrumbs.map((crumb, index) => (
+							<>
+								{crumb.href ? <a href={crumb.href}>{crumb.label}</a> : <span>{crumb.label}</span>}
+								{index < breadcrumbs.length - 1 && <span aria-hidden="true">/</span>}
+							</>
+						))}
+					</nav>
+				)}
+				<p class="reference-shell__eyebrow">{eyebrow}</p>
+				<h1>{title}</h1>
+				<p class="reference-shell__description">{description}</p>
+				<slot />
+			</div>
+		</main>
+	</body>
+</html>

@@ -1,0 +1,64 @@
+---
+import type { ImagePromptEntry } from '../data/image-prompt-patterns';
+
+interface Props {
+	entry: ImagePromptEntry;
+}
+
+const { entry } = Astro.props;
+---
+
+<section class="image-prompt-pattern">
+	<div class="image-prompt-pattern__head">
+		<div>
+			<p class="image-prompt-pattern__eyebrow">Adapted prompt template</p>
+			<h2>Copyable derivative prompt</h2>
+		</div>
+		<button class="image-prompt-pattern__copy" type="button" data-copy-button>
+			Copy prompt
+		</button>
+	</div>
+	<p class="image-prompt-pattern__summary">{entry.summary}</p>
+	<div class="image-prompt-pattern__signal-grid">
+		<div>
+			<strong>Best for</strong>
+			<p>{entry.bestFor}</p>
+		</div>
+		<div>
+			<strong>Why it works</strong>
+			<p>{entry.whyItWorks}</p>
+		</div>
+		<div>
+			<strong>Source lineage</strong>
+			<p>
+				<a href={entry.sourceUrl} target="_blank" rel="noreferrer">
+					{entry.sourceLabel}
+				</a>
+			</p>
+		</div>
+	</div>
+	<div class="image-prompt-pattern__body">
+		<pre data-prompt-body>{entry.adaptedPrompt}</pre>
+	</div>
+</section>
+
+<script is:inline>
+	document.querySelectorAll('[data-copy-button]').forEach((button) => {
+		button.addEventListener('click', async () => {
+			const root = button.closest('.image-prompt-pattern');
+			const body = root?.querySelector('[data-prompt-body]');
+			const text = body?.textContent?.trim();
+			if (!text) return;
+			const originalLabel = button.textContent;
+			try {
+				await navigator.clipboard.writeText(text);
+				button.textContent = 'Copied';
+			} catch {
+				button.textContent = 'Copy failed';
+			}
+			setTimeout(() => {
+				button.textContent = originalLabel;
+			}, 1800);
+		});
+	});
+</script>

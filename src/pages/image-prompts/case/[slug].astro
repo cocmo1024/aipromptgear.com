@@ -1,0 +1,111 @@
+---
+import ReferenceShell from '../../../layouts/ReferenceShell.astro';
+import ImagePromptPattern from '../../../components/ImagePromptPattern.astro';
+import {
+	imagePromptEntries,
+	imagePromptEntryMap,
+	type ImagePromptEntry,
+} from '../../../data/image-prompt-patterns';
+
+export function getStaticPaths() {
+	return imagePromptEntries.map((entry) => ({
+		params: { slug: entry.slug },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const related = entry.relatedSlugs
+	.map((slug) => imagePromptEntryMap.get(slug))
+	.filter((candidate): candidate is ImagePromptEntry => Boolean(candidate));
+---
+
+<ReferenceShell
+	title={entry.title}
+	description={entry.description}
+	eyebrow={entry.categoryLabel}
+	breadcrumbs={[
+		{ label: 'Home', href: '/' },
+		{ label: 'Image prompts', href: '/image-prompts/' },
+		{ label: entry.categoryLabel, href: `/image-prompts/category/${entry.category}/` },
+		{ label: entry.title },
+	]}
+	canonicalPath={`/image-prompts/case/${entry.slug}/`}
+>
+	<section class="signal-strip">
+		<div>
+			<strong>Primary query</strong>
+			<p>{entry.searchKeyword}</p>
+		</div>
+		<div>
+			<strong>Best for</strong>
+			<p>{entry.bestFor}</p>
+		</div>
+		<div>
+			<strong>Attribution</strong>
+			<p>
+				<a href={entry.sourceUrl} target="_blank" rel="noreferrer">
+					{entry.sourceLabel}
+				</a>
+			</p>
+		</div>
+	</section>
+
+	<ImagePromptPattern entry={entry} />
+
+	<section class="reference-section">
+		<h2>What to change first</h2>
+		<ul>
+			{entry.controls.map((control) => (
+				<li>{control}</li>
+			))}
+		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Common failure modes</h2>
+		<ul>
+			{entry.failureModes.map((failure) => (
+				<li>{failure}</li>
+			))}
+		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Attribution and reuse boundary</h2>
+		<p>
+			This page is an original derivative pattern built from a public community case collected by{' '}
+			<a href={entry.sourceRepoUrl} target="_blank" rel="noreferrer">
+				EvoLinkAI&apos;s awesome-gpt-image-2-prompts repository
+			</a>{' '}
+			and the linked creator post. It keeps attribution intact while avoiding verbatim prompt reuse.
+		</p>
+		<p>
+			Source lineage:
+			{' '}
+			<a href={entry.sourceRepoReadmeUrl} target="_blank" rel="noreferrer">
+				repository README
+			</a>
+			{' / '}
+			<a href={entry.sourceUrl} target="_blank" rel="noreferrer">
+				original case
+			</a>
+			{' / '}
+			{entry.license}
+		</p>
+	</section>
+
+	{related.length > 0 && (
+		<section class="reference-section">
+			<h2>Related prompt patterns</h2>
+			<div class="portal-links">
+				{related.map((candidate) => (
+					<a class="sl-link-card" href={`/image-prompts/case/${candidate.slug}/`}>
+						<span class="title">{candidate.title}</span>
+						<span>{candidate.summary}</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+</ReferenceShell>

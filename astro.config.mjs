@@ -41,6 +41,7 @@ export default defineConfig({
 							label: 'Prompt Library',
 							autogenerate: { directory: 'prompt-library' },
 						},
+						'image-prompt-patterns',
 						{
 							label: 'Models and APIs',
 							autogenerate: { directory: 'models-and-apis' },

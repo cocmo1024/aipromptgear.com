@@ -1,0 +1,71 @@
+---
+import ReferenceShell from '../../../layouts/ReferenceShell.astro';
+import {
+	imagePromptCategories,
+	getImagePromptsByCategory,
+} from '../../../data/image-prompt-patterns';
+
+export function getStaticPaths() {
+	return imagePromptCategories.map((category) => ({
+		params: { category: category.slug },
+		props: { category },
+	}));
+}
+
+const { category } = Astro.props;
+const entries = getImagePromptsByCategory(category.slug);
+---
+
+<ReferenceShell
+	title={`${category.label} Prompt Patterns`}
+	description={category.description}
+	eyebrow="Category archive"
+	breadcrumbs={[
+		{ label: 'Home', href: '/' },
+		{ label: 'Image prompts', href: '/image-prompts/' },
+		{ label: category.label },
+	]}
+	canonicalPath={`/image-prompts/category/${category.slug}/`}
+>
+	<section class="signal-strip">
+		<div>
+			<strong>Category</strong>
+			<p>{category.label}</p>
+		</div>
+		<div>
+			<strong>Patterns</strong>
+			<p>{entries.length} adapted pages</p>
+		</div>
+		<div>
+			<strong>Use case</strong>
+			<p>{category.description}</p>
+		</div>
+	</section>
+
+	<section>
+		<h2>{category.label} pages</h2>
+		<div class="portal-links">
+			{entries.map((entry) => (
+				<a class="sl-link-card" href={`/image-prompts/case/${entry.slug}/`}>
+					<span class="title">{entry.title}</span>
+					<span>{entry.summary}</span>
+					<span>{entry.searchKeyword}</span>
+				</a>
+			))}
+		</div>
+	</section>
+
+	<section>
+		<h2>Related prompt families</h2>
+		<div class="portal-links">
+			{imagePromptCategories
+				.filter((candidate) => candidate.slug !== category.slug)
+				.map((candidate) => (
+					<a class="sl-link-card" href={`/image-prompts/category/${candidate.slug}/`}>
+						<span class="title">{candidate.label}</span>
+						<span>{candidate.description}</span>
+					</a>
+				))}
+		</div>
+	</section>
+</ReferenceShell>
