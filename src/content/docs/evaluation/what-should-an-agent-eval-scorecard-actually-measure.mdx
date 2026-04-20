@@ -1,0 +1,125 @@
+---
+title: What Should an Agent Eval Scorecard Actually Measure?
+description: A practical guide to building agent eval scorecards that reflect workflow reality, tool behavior, and review cost instead of vanity metrics.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Quarterly review
+contentStatus: cornerstone
+problemSolved: Explains what an agent evaluation scorecard should measure if the goal is trustworthy release decisions instead of noisy metrics.
+readerTakeaway: You should leave with a scorecard design that balances task success, tool behavior, risk, and human review burden rather than overfitting to one synthetic metric.
+primaryKeyword: agent eval scorecard
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - EvalOps teams
+  - AI product managers
+  - Engineering leads
+  - Operations owners
+keyQuestions:
+  - Which metrics belong on a scorecard that informs release decisions?
+  - What gets missed when teams only track answer quality or tool success?
+  - How should review burden and escalation rates shape the scorecard?
+notFor:
+  - Teams that have not yet defined the workflow they are evaluating
+  - One-off prompt experiments with no release process
+updateTriggers:
+  - New evaluation tooling patterns
+  - Changes in how teams operationalize agent release gates
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What Should an Agent Eval Scorecard Actually Measure?
+
+Most bad scorecards fail in one of two ways. They either measure only text quality and ignore workflow reality, or they collect every possible metric and drown the team in numbers nobody uses during release decisions.
+
+A good scorecard should make one thing easier: deciding whether the system is healthy enough to ship, expand, or keep behind review.
+
+## Start with the workflow outcome
+
+The first score on the page should answer the obvious question: did the system actually complete the task it was supposed to complete?
+
+That sounds simple, but many teams substitute easier proxies:
+
+- the answer sounded plausible,
+- the tool call succeeded,
+- the trace was short,
+- or a grader gave the final text a decent score.
+
+Those are useful signals. None of them is the outcome.
+
+## Four metric families matter most
+
+### 1. Task success
+
+Did the workflow end in a usable result? Not "did the model respond?" but "did the user or operator get the right outcome with acceptable effort?"
+
+### 2. Tool behavior
+
+Did the agent choose the right tool, call it correctly, avoid unnecessary calls, and recover when the tool failed? Tool success is not the same as workflow success, but it often explains where workflow quality is leaking.
+
+### 3. Review and escalation burden
+
+How much human work did the system create? Many agents look good on outcome rate while quietly driving up approval load, rescue work, and reviewer fatigue.
+
+### 4. Risk and policy behavior
+
+Did the system respect approval boundaries, data restrictions, and escalation rules? A workflow with high completion and bad policy behavior should still fail the release gate.
+
+## What teams often miss
+
+### Review cost
+
+If one version raises reviewer load by 40 percent to gain a small outcome improvement, that is not always a win. Review burden belongs on the scorecard.
+
+### Recovery quality
+
+Systems should be judged on how they behave when tools fail, inputs are missing, or ambiguity rises. Graceful escalation can be more valuable than brittle autonomy.
+
+### Consistency across slices
+
+Average performance hides ugly clusters. The scorecard should break results by task type, customer segment, workflow path, or failure class.
+
+## A practical scorecard structure
+
+For most teams, one page is enough:
+
+- primary outcome rate
+- severe-failure rate
+- tool-selection accuracy
+- approval or escalation rate
+- reviewer override rate
+- time-to-resolution or time-to-completion
+- slice notes for the most important failure clusters
+
+That gives leaders enough signal to judge release risk without pretending the workflow is fully captured by one blended number.
+
+## When the scorecard is bad
+
+You probably have the wrong scorecard if:
+
+- nobody can explain why a high score should permit release,
+- the team argues about the rubric every week,
+- policy failures are hidden inside general quality scores,
+- or reviewers keep overruling "passing" runs.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="EvalOps release gates and scorecard ownership"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Use this page when the scorecard now needs owners and release consequences."
+	/>
+	<LinkCard
+		title="LLM graders vs human review"
+		href="/evaluation/llm-graders-vs-human-review-for-agent-eval-ops/"
+		description="Use this page when the team needs to decide which scorecard inputs can be automated safely."
+	/>
+	<LinkCard
+		title="Evaluation stacks vs manual review"
+		href="/tool-comparisons/evaluation-stacks-vs-manual-review/"
+		description="Use this page when the question is whether the team needs tooling around the scorecard yet."
+	/>
+</div>

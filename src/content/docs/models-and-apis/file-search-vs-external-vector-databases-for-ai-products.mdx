@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Retrieval architecture gets overbuilt early because teams confuse "we need knowledge access" with "we need a full retrieval platform." In practice, many AI products only need a managed way to upload files, index content, and answer grounded questions. Others eventually need stronger control over chunking, ranking, metadata, tenancy, or cost. The mistake is building a vector stack before the product has earned it, or staying on a managed file-search layer after the product has outgrown its boundaries.
 
-## Quick answer
+## What matters first
 
 Use **built-in file search** when the product needs grounded answers quickly, the knowledge corpus is manageable, and the team benefits more from shipping than from owning retrieval infrastructure. Move to an **external vector database** when retrieval has become a core product system with requirements around ranking control, multi-system indexing, tenancy isolation, custom metadata logic, or cross-model portability that the managed layer no longer handles cleanly.
 

@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 The API choice matters because product teams often inherit years of workflow shape from the first endpoint they adopt. If the product will stay a narrow single-turn text generation layer, the older chat pattern can still be fine. If the roadmap already includes built-in tools, multi-step orchestration, MCP, richer state handling, or more agentic product behavior, the healthier default is now usually the Responses API.
 
-## Quick answer
+## What matters first
 
 Use **Responses API** for most new tool-using AI products. Keep **Chat Completions** for narrow, stable, text-in/text-out workloads that do not need richer tool orchestration or state management yet. The decision is less about novelty and more about whether the product roadmap is clearly moving toward tools, structured outputs, retrieval, or multi-step execution.
 

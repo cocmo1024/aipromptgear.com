@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 The easiest way to make an AI product feel unreliable is to force every task through an interactive request-response loop, even when the work obviously does not belong there. Long-running retrieval, document transforms, multi-step research, and tool-heavy workflows usually need an async operating model. That is where background mode becomes useful: it lets the product stop pretending the user should wait on work that is inherently slower, more failure-prone, or more review-sensitive.
 
-## Quick answer
+## What matters first
 
 Use **background mode** when the task can safely finish after the live session, when it depends on longer tool chains, or when the result should be reviewed before delivery. Keep work **interactive** only when the user truly benefits from immediate completion. If the task can create side effects, add a human or explicit approval boundary whether it runs synchronously or not.
 

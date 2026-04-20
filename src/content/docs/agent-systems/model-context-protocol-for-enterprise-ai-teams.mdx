@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Model Context Protocol is getting attention because teams no longer want every AI application to reinvent the same connector layer. Once several models, agents, IDEs, and internal tools all need access to the same systems, the cost of bespoke integrations rises fast. MCP matters because it promises a cleaner way to expose tools and context to many clients. But it is still only useful when the team actually has a repeated integration problem worth standardizing.
 
-## Quick answer
+## What matters first
 
 MCP starts to make sense when the organization has **multiple AI clients** that need access to a **shared set of tools or context sources**, and the team wants to avoid rebuilding adapters for each product. If the organization still has one application, one model lane, and a narrow tool surface, ordinary function calling or direct API integration is often simpler and healthier.
 

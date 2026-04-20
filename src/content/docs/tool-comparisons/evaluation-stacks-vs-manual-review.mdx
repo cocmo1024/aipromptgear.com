@@ -1,29 +1,88 @@
 ---
 title: Evaluation Stacks vs Manual Review
-description: A practical comparison of structured evaluation tooling and disciplined manual review for prompt operations teams.
+description: A practical comparison of formal evaluation stacks and disciplined manual review for teams deciding when EvalOps infrastructure is worth the cost.
 referenceType: tool-comparison
 adProfile: tool-comparison
 commercialIntent: high
 reviewCadence: Quarterly review
+contentStatus: cornerstone
+problemSolved: Helps teams decide when structured evaluation tooling is justified and when manual review is still the safer and more economical operating model.
+readerTakeaway: You should leave with a clearer threshold for when review volume, release risk, and cross-team complexity justify an evaluation stack instead of lightweight human review.
+primaryKeyword: evaluation stacks vs manual review
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - AI product leads
+  - PromptOps owners
+  - EvalOps teams
+  - Engineering managers
+keyQuestions:
+  - When is manual review still the right answer?
+  - What pain actually justifies buying or building an evaluation stack?
+  - What hidden overhead comes with scorecards, traces, and release gates?
+notFor:
+  - Teams without live users or recurring releases
+  - Organizations still testing one-off prompts rather than operating workflows
+updateTriggers:
+  - Changes in EvalOps platform maturity
+  - New buying patterns around trace stores, release gates, and scorecard ownership
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
 # Evaluation Stacks vs Manual Review
 
-Evaluation tooling is valuable when it makes decisions safer and review faster. It is less valuable when it produces scores nobody trusts or workflows nobody follows.
+The wrong way to approach evaluation is to assume that more tooling automatically means more rigor. Many teams buy evaluation infrastructure before they can define what a good run looks like, what failure deserves escalation, or who owns override decisions. In that state, the stack creates dashboards without operational trust.
 
-## Manual review remains strong when
+Manual review remains the better answer longer than many vendors imply. Formal evaluation stacks become worthwhile only when release frequency, workflow risk, and organizational coordination make "just review more carefully" too expensive or too inconsistent.
 
-- The team is still small and the workflow surface is limited.
-- Quality expectations are nuanced enough that human judgment is the main bottleneck.
-- The cost of added tooling would exceed the operational benefit.
+## Manual review is still strong when
 
-## Structured evaluation stacks become stronger when
+- The workflow count is small and the change rate is still moderate.
+- The most expensive failures are nuanced enough that reviewers still need to reason about context, not just mark labels.
+- One team owns the workflow end to end and can maintain quality discipline without cross-functional release gates.
+- The review corpus is small enough that the human work is annoying, not operationally dangerous.
 
-- Prompt or model changes happen frequently.
-- Multiple teams need shared evidence and regression discipline.
-- The workflow has expensive failure modes that require repeatable checks.
+In this stage, a clean spreadsheet, a trace sample, annotated examples, and a weekly review loop often beat an expensive evaluation stack. That is especially true when the bottleneck is unclear requirements rather than insufficient tooling.
+
+## Evaluation stacks become justified when
+
+### 1. Releases are frequent enough to create regression risk
+
+If prompts, models, retrieval settings, tool routing, or approval policies are changing weekly, manual review alone starts to fail as memory and reviewer consistency break down.
+
+### 2. More than one team needs the evidence
+
+The moment product, engineering, operations, compliance, or support leaders all need to trust the same quality signal, "we looked at a sample" stops scaling. Teams start needing versioned scorecards, repeatable datasets, and a visible release decision.
+
+### 3. Failure modes are expensive
+
+If the workflow can trigger refunds, legal exposure, bad tool actions, broken production tasks, or support escalations, then repeatable evaluation becomes part of release governance, not just quality assurance.
+
+## Hidden costs teams underestimate
+
+### Scorecards need owners
+
+Buying a platform does not answer who writes the rubric, who updates it, who reviews edge cases, and who decides when a model change is acceptable. The tool surfaces discipline. It does not replace it.
+
+### Data curation becomes a product
+
+The best evaluation stacks depend on representative examples, failure taxonomies, and reliable ground truth. Teams often budget for software but not for the ongoing human work required to keep evaluation data relevant.
+
+### Dashboards can create false confidence
+
+A team with weak labels and fuzzy pass/fail logic can produce beautiful trend charts that are less trustworthy than a careful manual review session.
+
+## A practical threshold test
+
+Ask four questions:
+
+1. Are we shipping often enough that humans cannot remember what changed?
+2. Are mistakes expensive enough that review inconsistency is dangerous?
+3. Do multiple teams need the same release evidence?
+4. Do we already know what a good run should be scored against?
+
+If the answer to the first three is yes and the fourth is mostly yes, the team is probably ready for an evaluation stack. If the first three are mixed and the fourth is no, manual review is still the healthier answer.
 
 ## Related paths
 
@@ -37,5 +96,10 @@ Evaluation tooling is valuable when it makes decisions safer and review faster. 
 		title="Prompt workspaces vs general docs"
 		href="/tool-comparisons/prompt-workspaces-vs-general-docs/"
 		description="Evaluation needs often determine whether lightweight tooling is still enough."
+	/>
+	<LinkCard
+		title="What should an eval scorecard actually measure?"
+		href="/evaluation/what-should-an-agent-eval-scorecard-actually-measure/"
+		description="Use this page when the real issue is not tooling yet, but whether the team can define a scorecard that deserves trust."
 	/>
 </div>

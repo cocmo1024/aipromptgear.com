@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Teams get this decision wrong when they optimize for the first parsing success instead of the long-term failure rate. JSON mode can look sufficient in a demo because the model often returns parseable JSON. Production systems fail on the edge cases: missing required fields, extra keys, invalid enums, empty arrays where a tool expects one item, or subtly malformed values that still pass loose parsing. Structured outputs matter when those failures create real operational cost.
 
-## Quick answer
+## What matters first
 
 Use **structured outputs** when a model response becomes an input to code, tools, routing rules, or audited workflow state. Use **JSON mode** when the workflow mainly needs "valid JSON-like formatting" and the downstream layer can tolerate missing or flexible fields without operational damage. The real boundary is not formatting preference. It is whether the workflow needs a contract.
 

@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Browser work is one of the fastest ways agent systems become confused. Some teams need a model that can interpret messy UI state, recover from variation, and act across a surface that was not designed for an API. Other teams already have a repeatable browser workflow and should not replace deterministic automation with model uncertainty. The right answer depends on whether the product needs **UI interpretation** or **repeatable control**.
 
-## Quick answer
+## What matters first
 
 Use **computer-use models** when the workflow depends on interpreting changing interfaces, messy UI state, or semi-structured browser tasks that cannot be modeled cleanly as fixed selectors and steps. Use **explicit browser automation** when the workflow is repeatable, high-frequency, and operationally valuable precisely because it is deterministic. For many serious products, the healthiest design is hybrid: deterministic automation where the path is stable, model-driven UI handling where the surface is too variable to encode cleanly.
 

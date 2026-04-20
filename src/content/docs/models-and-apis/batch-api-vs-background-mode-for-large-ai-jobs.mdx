@@ -41,7 +41,7 @@ Teams often say they need "async AI," but that phrase hides two very different p
 
 Those are not the same operating pattern. Treating them as interchangeable leads to the wrong queue design, the wrong user expectations, and the wrong cost model.
 
-## Quick answer
+## What matters first
 
 Use **Batch API** when you have large numbers of independent, non-urgent requests that can be processed asynchronously on a deferred SLA. Use **background mode** when one job may take longer than a normal response cycle but still belongs to a live product workflow that should be created, tracked, and later retrieved.
 

@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Many AI teams now feel pressure to say they are building "agents." The problem is that the word hides two very different system shapes. One is a **workflow-first agent system**: the steps are explicit, the boundaries are constrained, and the model fills in parts of a controlled process. The other is a **more autonomous agent**: the system plans more of its own path, chooses tools more freely, and acts with less deterministic oversight. Both can be useful. Only one is usually the right starting point.
 
-## Quick answer
+## What matters first
 
 Start with **agent workflows** when the job can be decomposed into clear steps, the failure cost is nontrivial, and the team still needs strong observability and rollback. Move toward **more autonomous agents** only when the workflow has already proven valuable, the remaining bottleneck is adaptive planning, and the organization is ready to govern tool permissions, review boundaries, and unexpected behavior.
 
@@ -149,7 +149,7 @@ If the fifth answer is weak, stay workflow-first longer.
 Stay workflow-first when:
 
 - the task is policy-sensitive or customer-facing;
-- the team is still learning what “good” looks like;
+- the team is still learning what “good�?looks like;
 - the tool set is not yet permissioned and reviewable;
 - operators still need deterministic checkpoints;
 - leadership wants autonomy more than the workflow actually needs it.

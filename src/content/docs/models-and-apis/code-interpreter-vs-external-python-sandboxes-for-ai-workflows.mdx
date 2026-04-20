@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Execution is another place AI teams get carried away. It starts as a clean idea: let the model run code to analyze data, transform files, or verify intermediate work. Then the product grows, dependencies pile up, and suddenly the team is debating whether to own an execution service, a sandbox platform, or a job system. Most teams should not start there. But some teams do eventually outgrow built-in execution, and when that happens the difference is operational, not cosmetic.
 
-## Quick answer
+## What matters first
 
 Use **built-in code execution** when the workflow needs analysis, transformation, or light computation and the team benefits more from shipping the user workflow than from owning runtime infrastructure. Move to an **external Python sandbox** when the product needs tighter dependency control, custom runtime policy, stronger observability, or durable job ownership that a built-in interpreter no longer supports cleanly.
 

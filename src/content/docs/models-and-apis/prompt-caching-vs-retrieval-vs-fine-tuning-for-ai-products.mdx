@@ -36,7 +36,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 These three ideas get mixed together because they all sound like "ways to improve the model." They solve different problems. Prompt caching is mainly about **reusing repeated context efficiently**. Retrieval is about **injecting the right external knowledge at runtime**. Fine-tuning is about **changing the model's learned behavior or task specialization**. Teams lose time and money when they apply the wrong lever to the wrong problem.
 
-## Quick answer
+## What matters first
 
 Use **prompt caching** when large prompt sections repeat across many requests. Use **retrieval** when the information changes and must be fetched at runtime. Use **fine-tuning** when the model's behavior or task specialization needs to become more consistent than prompting alone can deliver. If the problem is "the same large instructions or context are repeated," caching is the first lever. If the problem is "the system needs current or user-specific knowledge," retrieval is the lever. If the problem is "the model still behaves wrong after the workflow and context are already well designed," fine-tuning becomes worth evaluating.
 
