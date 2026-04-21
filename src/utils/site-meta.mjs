@@ -20,6 +20,8 @@ export const siteMeta = {
 	icon512Path: '/icon-512.png',
 	appleTouchIconPath: '/apple-touch-icon.png',
 	repoUrl: 'https://github.com/cocmo1024/aipromptgear.com',
+	xUrl: 'https://x.com/oocxx_com',
+	sameAs: ['https://x.com/oocxx_com'],
 	indexNowKey: '393db214-c90a-4453-b07d-4af42a7e2c5f',
 	keywords: [
 		'ai prompting',

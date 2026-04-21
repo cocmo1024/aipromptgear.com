@@ -26,32 +26,85 @@ const {
 const canonicalUrl = new URL(canonicalPath, `${siteMeta.siteUrl}/`).toString();
 const pageTitle = `${title} | ${siteMeta.name}`;
 const imageUrl = new URL(siteMeta.ogImagePath, `${siteMeta.siteUrl}/`).toString();
+const twitterSite = siteMeta.xUrl ? `@${new URL(siteMeta.xUrl).pathname.replace(/^\/+/, '').split('/')[0]}` : undefined;
+const logoUrl = new URL(siteMeta.icon512Path, `${siteMeta.siteUrl}/`).toString();
+const webpageId = `${canonicalUrl}#webpage`;
+const articleId = `${canonicalUrl}#article`;
+const imageId = `${canonicalUrl}#primaryimage`;
+const breadcrumbId = `${canonicalUrl}#breadcrumb`;
 const structuredData = [
 	{
 		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		'@id': `${siteMeta.siteUrl}/#organization`,
+		name: siteMeta.name,
+		alternateName: Array.from(new Set([siteMeta.shortName, siteMeta.domain].filter(Boolean))),
+		url: `${siteMeta.siteUrl}/`,
+		description: siteMeta.description,
+		email: siteMeta.email,
+		sameAs: Array.from(
+			new Set([...(siteMeta.sameAs ?? []), ...(siteMeta.repoUrl ? [siteMeta.repoUrl] : [])])
+		),
+		logo: {
+			'@type': 'ImageObject',
+			'@id': `${siteMeta.siteUrl}/#logo`,
+			url: logoUrl,
+			contentUrl: logoUrl,
+			width: 512,
+			height: 512,
+		},
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		'@id': `${siteMeta.siteUrl}/#website`,
+		url: `${siteMeta.siteUrl}/`,
+		name: siteMeta.name,
+		alternateName: [siteMeta.domain],
+		description: siteMeta.description,
+		inLanguage: siteMeta.languageTag,
+		publisher: { '@id': `${siteMeta.siteUrl}/#organization` },
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': webpageId,
+		name: title,
+		description,
+		url: canonicalUrl,
+		inLanguage: siteMeta.languageTag,
+		isPartOf: { '@id': `${siteMeta.siteUrl}/#website` },
+		primaryImageOfPage: { '@id': imageId },
+		...(breadcrumbs.length ? { breadcrumb: { '@id': breadcrumbId } } : {}),
+	},
+	{
+		'@context': 'https://schema.org',
 		'@type': 'Article',
+		'@id': articleId,
 		headline: title,
 		description,
 		url: canonicalUrl,
 		inLanguage: siteMeta.languageTag,
+		mainEntityOfPage: { '@id': webpageId },
 		isAccessibleForFree: true,
-		publisher: {
-			'@type': 'Organization',
-			name: siteMeta.name,
-			url: `${siteMeta.siteUrl}/`,
+		publisher: { '@id': `${siteMeta.siteUrl}/#organization` },
+		author: { '@id': `${siteMeta.siteUrl}/#organization` },
+		image: {
+			'@type': 'ImageObject',
+			'@id': imageId,
+			url: imageUrl,
+			contentUrl: imageUrl,
+			width: 1200,
+			height: 630,
+			caption: siteMeta.ogImageAlt,
 		},
-		author: {
-			'@type': 'Organization',
-			name: siteMeta.name,
-			url: `${siteMeta.siteUrl}/`,
-		},
-		image: imageUrl,
 	},
 	...(breadcrumbs.length
 		? [
 				{
 					'@context': 'https://schema.org',
 					'@type': 'BreadcrumbList',
+					'@id': breadcrumbId,
 					itemListElement: breadcrumbs.map((crumb, index) => ({
 						'@type': 'ListItem',
 						position: index + 1,
@@ -85,11 +138,16 @@ const structuredData = [
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:secure_url" content={imageUrl} />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
 		<meta property="og:image:alt" content={siteMeta.ogImageAlt} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={pageTitle} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={imageUrl} />
+		{twitterSite && <meta name="twitter:site" content={twitterSite} />}
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
 	</head>
 	<body>
