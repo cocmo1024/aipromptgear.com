@@ -25,39 +25,15 @@ export default defineConfig({
 				{
 					label: 'Reference Areas',
 					items: [
-						{
-							label: 'Team Scenarios',
-							autogenerate: { directory: 'use-cases' },
-						},
-						{
-							label: 'Workflows',
-							autogenerate: { directory: 'workflows' },
-						},
-						{
-							label: 'Agent Systems',
-							autogenerate: { directory: 'agent-systems' },
-						},
-						{
-							label: 'Prompt Library',
-							autogenerate: { directory: 'prompt-library' },
-						},
+						'use-cases',
+						'workflows',
+						'agent-systems',
+						'prompt-library',
 						'image-prompt-patterns',
-						{
-							label: 'Models and APIs',
-							autogenerate: { directory: 'models-and-apis' },
-						},
-						{
-							label: 'Tooling',
-							autogenerate: { directory: 'tooling' },
-						},
-						{
-							label: 'Tool Comparisons',
-							autogenerate: { directory: 'tool-comparisons' },
-						},
-						{
-							label: 'Evaluation',
-							autogenerate: { directory: 'evaluation' },
-						},
+						'models-and-apis',
+						'tooling',
+						'tool-comparisons',
+						'evaluation',
 					],
 				},
 				{
