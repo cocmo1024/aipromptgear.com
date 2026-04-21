@@ -66,6 +66,8 @@ export default defineConfig({
 					items: [
 						'about',
 						'contact',
+						'editorial-desk',
+						'review-desk',
 						'privacy',
 						'terms-of-use',
 						'disclaimer',

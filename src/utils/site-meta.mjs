@@ -1,6 +1,8 @@
 export const siteMeta = {
 	name: 'AI Prompt Gear',
 	shortName: 'AI Prompt Gear',
+	editorialTeamName: 'AI Prompt Gear Editorial Desk',
+	reviewDeskName: 'AI Prompt Gear Review Desk',
 	domain: 'aipromptgear.com',
 	siteUrl: 'https://aipromptgear.com',
 	description:
@@ -22,7 +24,56 @@ export const siteMeta = {
 	repoUrl: 'https://github.com/cocmo1024/aipromptgear.com',
 	xUrl: 'https://x.com/oocxx_com',
 	sameAs: ['https://x.com/oocxx_com'],
+	editorialMethodSummary:
+		'Pages are built from official platform documentation, pricing pages, product release notes, and editorial analysis focused on production AI system decisions.',
 	indexNowKey: '393db214-c90a-4453-b07d-4af42a7e2c5f',
+	publishingPrinciplesPath: '/editorial-policy/',
+	richResultImages: [
+		{
+			path: '/social-card.png',
+			width: 1200,
+			height: 630,
+			alt: 'AI Prompt Gear social share card for production prompting, agent workflows, and model decisions.',
+		},
+		{
+			path: '/search-preview-4x3.svg',
+			width: 1200,
+			height: 900,
+			alt: 'AI Prompt Gear reference map for prompting systems, agent workflows, and evaluation.',
+		},
+		{
+			path: '/search-preview-1x1.svg',
+			width: 1200,
+			height: 1200,
+			alt: 'AI Prompt Gear square preview for production prompting and agent operations.',
+		},
+	],
+	editorialEntities: {
+		'editorial-desk': {
+			name: 'AI Prompt Gear Editorial Desk',
+			path: '/editorial-desk/',
+			description:
+				'Maintains reference pages on agent workflows, model decisions, prompt operations, and AI product economics.',
+			expertise: [
+				'production prompting',
+				'agent systems',
+				'eval operations',
+				'AI platform economics',
+			],
+		},
+		'review-desk': {
+			name: 'AI Prompt Gear Review Desk',
+			path: '/review-desk/',
+			description:
+				'Reviews major pages for technical coherence, pricing accuracy, governance claims, and production applicability.',
+			expertise: [
+				'technical review',
+				'pricing checks',
+				'governance controls',
+				'agent rollout risk',
+			],
+		},
+	},
 	keywords: [
 		'ai prompting',
 		'AI prompt library',

@@ -25,12 +25,36 @@ const {
 
 const canonicalUrl = new URL(canonicalPath, `${siteMeta.siteUrl}/`).toString();
 const pageTitle = `${title} | ${siteMeta.name}`;
-const imageUrl = new URL(siteMeta.ogImagePath, `${siteMeta.siteUrl}/`).toString();
+const imageVariants =
+	Array.isArray(siteMeta.richResultImages) && siteMeta.richResultImages.length
+		? siteMeta.richResultImages
+		: [
+				{
+					path: siteMeta.ogImagePath,
+					width: 1200,
+					height: 630,
+					alt: siteMeta.ogImageAlt,
+				},
+			];
+const primaryImage = imageVariants[0];
+const imageUrl = new URL(primaryImage.path, `${siteMeta.siteUrl}/`).toString();
+const imageType = imageUrl.endsWith('.svg') ? 'image/svg+xml' : 'image/png';
 const twitterSite = siteMeta.xUrl ? `@${new URL(siteMeta.xUrl).pathname.replace(/^\/+/, '').split('/')[0]}` : undefined;
 const logoUrl = new URL(siteMeta.icon512Path, `${siteMeta.siteUrl}/`).toString();
 const webpageId = `${canonicalUrl}#webpage`;
 const articleId = `${canonicalUrl}#article`;
-const imageId = `${canonicalUrl}#primaryimage`;
+const author = siteMeta.editorialEntities?.['editorial-desk'];
+const editor = siteMeta.editorialEntities?.['review-desk'];
+const imageObjects = imageVariants.map((image, index) => ({
+	'@context': 'https://schema.org',
+	'@type': 'ImageObject',
+	'@id': `${canonicalUrl}#primaryimage-${index + 1}`,
+	url: new URL(image.path, `${siteMeta.siteUrl}/`).toString(),
+	contentUrl: new URL(image.path, `${siteMeta.siteUrl}/`).toString(),
+	width: image.width,
+	height: image.height,
+	caption: image.alt ?? siteMeta.ogImageAlt,
+}));
 const breadcrumbId = `${canonicalUrl}#breadcrumb`;
 const structuredData = [
 	{
@@ -45,6 +69,10 @@ const structuredData = [
 		sameAs: Array.from(
 			new Set([...(siteMeta.sameAs ?? []), ...(siteMeta.repoUrl ? [siteMeta.repoUrl] : [])])
 		),
+		publishingPrinciples: new URL(
+			siteMeta.publishingPrinciplesPath ?? '/editorial-policy/',
+			`${siteMeta.siteUrl}/`
+		).toString(),
 		logo: {
 			'@type': 'ImageObject',
 			'@id': `${siteMeta.siteUrl}/#logo`,
@@ -64,7 +92,40 @@ const structuredData = [
 		description: siteMeta.description,
 		inLanguage: siteMeta.languageTag,
 		publisher: { '@id': `${siteMeta.siteUrl}/#organization` },
+		publishingPrinciples: new URL(
+			siteMeta.publishingPrinciplesPath ?? '/editorial-policy/',
+			`${siteMeta.siteUrl}/`
+		).toString(),
 	},
+	...(author
+		? [
+				{
+					'@context': 'https://schema.org',
+					'@type': 'Organization',
+					'@id': `${new URL(author.path, `${siteMeta.siteUrl}/`).toString()}#profile`,
+					name: author.name,
+					description: author.description,
+					url: new URL(author.path, `${siteMeta.siteUrl}/`).toString(),
+					memberOf: { '@id': `${siteMeta.siteUrl}/#organization` },
+					knowsAbout: author.expertise,
+				},
+			]
+		: []),
+	...(editor
+		? [
+				{
+					'@context': 'https://schema.org',
+					'@type': 'Organization',
+					'@id': `${new URL(editor.path, `${siteMeta.siteUrl}/`).toString()}#profile`,
+					name: editor.name,
+					description: editor.description,
+					url: new URL(editor.path, `${siteMeta.siteUrl}/`).toString(),
+					memberOf: { '@id': `${siteMeta.siteUrl}/#organization` },
+					knowsAbout: editor.expertise,
+				},
+			]
+		: []),
+	...imageObjects,
 	{
 		'@context': 'https://schema.org',
 		'@type': 'WebPage',
@@ -74,7 +135,9 @@ const structuredData = [
 		url: canonicalUrl,
 		inLanguage: siteMeta.languageTag,
 		isPartOf: { '@id': `${siteMeta.siteUrl}/#website` },
-		primaryImageOfPage: { '@id': imageId },
+		primaryImageOfPage: { '@id': imageObjects[0]['@id'] },
+		...(author ? { author: { '@id': `${new URL(author.path, `${siteMeta.siteUrl}/`).toString()}#profile` } } : {}),
+		...(editor ? { editor: { '@id': `${new URL(editor.path, `${siteMeta.siteUrl}/`).toString()}#profile` } } : {}),
 		...(breadcrumbs.length ? { breadcrumb: { '@id': breadcrumbId } } : {}),
 	},
 	{
@@ -88,16 +151,11 @@ const structuredData = [
 		mainEntityOfPage: { '@id': webpageId },
 		isAccessibleForFree: true,
 		publisher: { '@id': `${siteMeta.siteUrl}/#organization` },
-		author: { '@id': `${siteMeta.siteUrl}/#organization` },
-		image: {
-			'@type': 'ImageObject',
-			'@id': imageId,
-			url: imageUrl,
-			contentUrl: imageUrl,
-			width: 1200,
-			height: 630,
-			caption: siteMeta.ogImageAlt,
-		},
+		author: author
+			? { '@id': `${new URL(author.path, `${siteMeta.siteUrl}/`).toString()}#profile` }
+			: { '@id': `${siteMeta.siteUrl}/#organization` },
+		...(editor ? { editor: { '@id': `${new URL(editor.path, `${siteMeta.siteUrl}/`).toString()}#profile` } } : {}),
+		image: imageObjects.map((image) => ({ '@id': image['@id'] })),
 	},
 	...(breadcrumbs.length
 		? [
@@ -132,6 +190,10 @@ const structuredData = [
 		<link rel="apple-touch-icon" sizes="180x180" href={siteMeta.appleTouchIconPath} />
 		<meta name="theme-color" content={siteMeta.themeColor} />
 		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="author" content={author?.name ?? siteMeta.editorialTeamName ?? siteMeta.name} />
+		<meta name="creator" content={author?.name ?? siteMeta.editorialTeamName ?? siteMeta.name} />
+		{editor && <meta name="editor" content={editor.name} />}
+		{author && <link rel="author" href={author.path} />}
 		<meta property="og:type" content="article" />
 		<meta property="og:site_name" content={siteMeta.name} />
 		<meta property="og:title" content={pageTitle} />
@@ -139,10 +201,10 @@ const structuredData = [
 		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:image" content={imageUrl} />
 		<meta property="og:image:secure_url" content={imageUrl} />
-		<meta property="og:image:type" content="image/png" />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta property="og:image:alt" content={siteMeta.ogImageAlt} />
+		<meta property="og:image:type" content={imageType} />
+		<meta property="og:image:width" content={String(primaryImage.width)} />
+		<meta property="og:image:height" content={String(primaryImage.height)} />
+		<meta property="og:image:alt" content={primaryImage.alt ?? siteMeta.ogImageAlt} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={pageTitle} />
 		<meta name="twitter:description" content={description} />
