@@ -1,0 +1,156 @@
+---
+title: How should AI teams sample live traffic for agent evals?
+description: How to design live-traffic sampling for agent evals without drowning reviewers, missing risky slices, or trusting only easy traffic.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps AI teams design live-traffic sampling for agent evals so staged release and ongoing monitoring use representative, reviewable slices instead of random comfort metrics.
+readerTakeaway: You should leave with a practical model for choosing what live traffic to sample, what to review continuously, and when random sampling is not enough.
+primaryKeyword: agent eval sampling
+searchIntent: design
+decisionStage: operations
+targetRoles:
+  - Evaluation owners
+  - AI platform teams
+  - Product operations teams
+  - Applied AI engineers
+keyQuestions:
+  - How should teams sample live traffic for agent evals?
+  - What slices should always be reviewed instead of sampled randomly?
+  - When is full regression necessary and when is targeted sampling enough?
+notFor:
+  - Teams with no live traffic yet
+  - Readers looking only for offline benchmark guidance
+  - Workflows that do not have any meaningful review or release loop
+updateTriggers:
+  - New release patterns for staged rollout or shadow evaluation
+  - Major changes in tracing or eval tooling guidance
+  - Repeated failure patterns showing under-sampled traffic slices
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-22
+lastReviewed: 2026-04-22
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How should AI teams sample live traffic for agent evals?
+
+The usual failure pattern is simple: teams say they are evaluating live traffic, but what they are really evaluating is a thin random slice of easy requests. That produces good-looking dashboards and weak operational truth. A healthy sampling strategy does not start with percentages. It starts with risk classes, expensive failure modes, and the slices of traffic that most reliably break the system.
+
+## What matters first
+
+Random sampling is useful, but it should never be the only sampling model. A live eval program normally needs three layers:
+
+- **baseline random sampling** to catch general drift,
+- **risk-weighted sampling** for workflows where failure is expensive,
+- **always-review slices** for policy-heavy, approval-heavy, or customer-sensitive cases.
+
+If the team only samples at random, it will almost always under-sample the traffic that matters most.
+
+## Why live sampling exists at all
+
+Offline regression is essential, but it cannot show everything that changes once a system meets real users, real documents, and real tool behavior. Live sampling is where teams catch:
+
+- changed user prompts,
+- ambiguous real-world inputs,
+- new failure patterns in retrieval or tools,
+- and the support burden created by systems that still look healthy offline.
+
+That is why live sampling belongs to EvalOps, not only analytics.
+
+## What should always be in the sample pool
+
+At minimum, live sampling should deliberately cover:
+
+- the highest-value workflow types,
+- cases that cross approval or escalation boundaries,
+- tasks with tool side effects,
+- slices known to be historically brittle,
+- and a random slice of ordinary traffic for general drift detection.
+
+If the sample is built only from convenience or low-cost review, it becomes a comfort exercise.
+
+## What should be always-review traffic
+
+Some traffic should not depend on sampling at all. Teams should review every case, or near every case, when:
+
+- the task can trigger a consequential action,
+- the user is high-value or high-risk,
+- the system is newly rolled out,
+- the slice has known instability,
+- or policy/compliance exposure is meaningful.
+
+Sampling is useful. It is not a replacement for judgment about where review is structurally necessary.
+
+## The real tradeoff is reviewer capacity
+
+Most sampling mistakes are not statistical mistakes. They are capacity mistakes.
+
+Teams often choose the sample they can afford to review instead of the sample they need to understand. The fix is not only to add reviewers. It is to stratify the work:
+
+- lightweight automated checks on all traffic,
+- sampled human review on medium-risk slices,
+- mandatory review on high-risk slices.
+
+That is how review scales without becoming blind.
+
+## When full regression still matters
+
+Live sampling does not replace full regression. Full regression still matters when:
+
+- a major model, tool, or routing change is shipping,
+- the product is widening rollout,
+- a high-risk workflow changed,
+- or the team needs to prove the system is still safe on known critical examples.
+
+Use full regression to protect the known edge set. Use live sampling to catch the unknown edge set.
+
+## A practical sampling model
+
+For many teams, a healthy weekly operating model looks like this:
+
+- random sample from ordinary traffic,
+- targeted sample from each high-value workflow,
+- full review of high-risk actions or approvals,
+- trigger-based review when alerts, cost drift, or escalation anomalies appear.
+
+The exact percentages matter less than whether the slices represent real operational risk.
+
+## What weak live sampling looks like
+
+The common signs are:
+
+- sampling only low-risk traffic because it is faster,
+- not separating by workflow type,
+- mixing reviewer burden with quality signals,
+- or waiting for complaints before increasing review depth.
+
+Those teams usually believe the product is healthier than it is.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Shadow evals and canary rollouts"
+		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
+		description="Use this page when live sampling is part of a staged rollout rather than steady-state monitoring."
+	/>
+	<LinkCard
+		title="What is EvalOps for AI teams?"
+		href="/evaluation/what-is-evalops-for-ai-teams/"
+		description="Use this page when the broader operating model for datasets, traces, scorecards, and release gates still needs to be clarified."
+	/>
+	<LinkCard
+		title="What should an agent eval scorecard actually measure?"
+		href="/evaluation/what-should-an-agent-eval-scorecard-actually-measure/"
+		description="Use this page when sampling is clear but the team still has not defined what the live review should score."
+	/>
+	<LinkCard
+		title="Traces vs logs for agent eval ops"
+		href="/evaluation/traces-vs-logs-for-agent-debugging-and-eval-ops/"
+		description="Use this page when sampled live traffic needs better run-level evidence rather than only aggregate logs."
+	/>
+</div>

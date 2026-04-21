@@ -1,0 +1,163 @@
+---
+title: How should coding-agent reviewer queues and approval capacity be designed?
+description: How to design reviewer queues, approval capacity, and risk-based routing for coding agents so review does not become the new bottleneck.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps engineering teams design reviewer queues and approval capacity for coding agents so automation gains are not erased by chaotic review demand.
+readerTakeaway: You should leave with a practical model for reviewer routing, approval load, and escalation capacity that keeps coding agents useful without overwhelming maintainers.
+primaryKeyword: coding agent approval workflow
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering leaders
+  - Developer productivity teams
+  - Platform teams
+  - Security reviewers
+keyQuestions:
+  - How should coding-agent reviewer queues be designed?
+  - How much approval capacity is enough before coding agents become operational drag?
+  - Which changes should route to which reviewers instead of one general approval queue?
+notFor:
+  - Teams with no coding-agent rollout in progress
+  - Read-only code exploration use cases with no write or merge path
+  - Organizations looking for generic pull-request process advice without agent-specific concerns
+updateTriggers:
+  - Changes in coding-agent capabilities or approval patterns
+  - New enterprise governance expectations for repository agents
+  - Repeated evidence that approval latency is collapsing coding-agent value
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-22
+lastReviewed: 2026-04-22
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How should coding-agent reviewer queues and approval capacity be designed?
+
+Many coding-agent rollouts fail for a boring reason: the team automated code generation but did not design the review system that now has to absorb the extra output. Review becomes the new bottleneck, reviewers burn out on low-value diffs, and leadership concludes that coding agents create noise. The real failure was not the model. It was queue design.
+
+## What matters first
+
+Coding-agent review should be routed by **risk class**, not by whichever engineer happens to be online. The queue normally needs at least three lanes:
+
+- low-risk bounded changes,
+- medium-risk code or config changes,
+- high-risk workflow, security, or deployment changes.
+
+If everything lands in one general reviewer pool, the queue loses all signal.
+
+## Review capacity is a systems question
+
+The important question is not "how many reviewers do we have?" It is:
+
+- how many changes enter the queue,
+- what fraction require specialist review,
+- what the expected turnaround is by risk class,
+- and what happens when the queue backs up.
+
+Without those answers, approval becomes a soft promise instead of an operating system.
+
+## Why one queue usually fails
+
+One queue fails because low-risk agent diffs and high-risk infrastructure diffs do not deserve the same reviewer, the same turnaround target, or the same context package. When they share a lane:
+
+- urgent work gets buried,
+- reviewers context-switch too much,
+- and teams start bypassing controls to keep work moving.
+
+That is the moment the rollout starts to rot.
+
+## What low-risk lanes should look like
+
+Low-risk lanes are for:
+
+- small scoped code changes,
+- tests,
+- documentation,
+- or narrow refactors with clear boundaries.
+
+These should move quickly and often rely on a smaller reviewer packet:
+
+- diff summary,
+- files touched,
+- test results,
+- and declared scope.
+
+If these changes wait like security reviews, the queue is already misdesigned.
+
+## What high-risk lanes should look like
+
+High-risk lanes are for:
+
+- secrets or auth boundaries,
+- CI/CD changes,
+- infra mutations,
+- dependency shifts with material blast radius,
+- and security-sensitive repository areas.
+
+These should route to named reviewers with narrower throughput expectations and stronger evidence requirements.
+
+That is not bureaucracy. It is blast-radius control.
+
+## Reviewer packets should reduce rediscovery
+
+Every approval request should package enough context that the reviewer does not need to rediscover the work from scratch. At minimum:
+
+- declared intent,
+- files changed,
+- tests run or not run,
+- known uncertainty,
+- and why the agent believed the change stayed in its allowed lane.
+
+If the reviewer still has to reconstruct the task manually, the system is not really saving time.
+
+## Capacity should be planned, not hoped for
+
+Teams usually need explicit approval capacity rules:
+
+- expected review volume per day,
+- named owners for specialist lanes,
+- fallback rules when queues exceed target latency,
+- and criteria for pausing new agent-generated change volume when review debt gets too high.
+
+That last rule matters. If approval backlog grows without a throttle, coding agents stop being leverage and start behaving like an unpriced upstream load generator.
+
+## A practical operating rule
+
+Do not expand coding-agent scope until:
+
+- low-risk review lanes stay healthy,
+- specialist queues have named owners,
+- approval latency is measured,
+- and the team can explain what happens when reviewers are overloaded.
+
+That rule protects the rollout from collapsing under its own internal demand.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="Use this page when the main design problem is what should require sign-off at all."
+	/>
+	<LinkCard
+		title="Approval latency and risk budgets"
+		href="/workflows/approval-latency-and-risk-budgets-for-coding-agents/"
+		description="Use this page when queue design is clear but the team needs a rule for how much delay different risk classes can tolerate."
+	/>
+	<LinkCard
+		title="PR checks and merge gates for coding agents"
+		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+		description="Use this page when reviewer routing now needs to connect to automated checks and merge policy."
+	/>
+	<LinkCard
+		title="Approval boundary tests for coding agents"
+		href="/evaluation/approval-boundary-tests-for-coding-agents/"
+		description="Use this page when the queue design exists on paper and now needs to be validated under realistic repository tasks."
+	/>
+</div>

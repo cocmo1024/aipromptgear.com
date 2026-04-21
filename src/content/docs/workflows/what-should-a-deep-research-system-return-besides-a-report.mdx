@@ -1,0 +1,156 @@
+---
+title: What should a deep research system return besides a report?
+description: What a deep research system should return besides final prose, including source packets, evidence tables, open questions, and reviewer-ready uncertainty signals.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams design deep research outputs that support review, reuse, and decision-making instead of returning one polished report that hides evidence quality.
+readerTakeaway: You should leave with a practical output model for deep research systems that includes evidence packets, citation structure, unresolved questions, and reviewer-ready context.
+primaryKeyword: deep research workflow
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Research operations teams
+  - AI product leads
+  - Knowledge teams
+  - Applied AI engineers
+keyQuestions:
+  - What should a deep research system return besides a narrative report?
+  - How should evidence, citations, and open questions be packaged for review?
+  - Why do polished reports alone create weak trust and weak reuse?
+notFor:
+  - Simple one-shot summarization workflows
+  - Teams that do not need source-grounded outputs
+  - Readers looking only for prompt-writing tips without workflow design
+updateTriggers:
+  - New OpenAI deep research or citation guidance
+  - Changes in how product teams package evidence for review or reuse
+  - New failure patterns in source quality, reviewer load, or hallucinated synthesis
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-22
+lastReviewed: 2026-04-22
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What should a deep research system return besides a report?
+
+The polished report is the most visible output of a deep research system, but it is rarely the only output that matters. Teams lose trust when the system returns one smooth document and nothing else. That format looks complete while hiding exactly the things reviewers, operators, and downstream users most need to inspect: source quality, evidence gaps, unresolved questions, and how much of the conclusion depends on weak support.
+
+## What matters first
+
+A serious deep research system should return at least two layers:
+
+- a **reader-facing synthesis**,
+- and a **reviewer-facing evidence packet**.
+
+The report is for communication. The evidence packet is for trust, reuse, and escalation.
+
+If the workflow stops at one polished report, the team usually ends up rerunning the same research because the evidence trail was never packaged for reuse.
+
+## Why the report alone is not enough
+
+A final report can be fluent and still be weak in the places that matter operationally:
+
+- shallow or duplicated sourcing,
+- overconfident synthesis across conflicting evidence,
+- open questions smoothed away,
+- missing context about why a claim made it into the final draft.
+
+That is why deep research systems should not be judged by writing quality alone.
+
+## What the evidence packet should include
+
+The strongest evidence packets usually include:
+
+- a source list with direct citations,
+- short notes on why each source was used,
+- an evidence table mapping claims to sources,
+- unresolved questions or weakly supported sections,
+- and the next actions a human reviewer should consider.
+
+This does not need to be beautiful. It needs to be inspectable.
+
+## Source tables are more valuable than teams admit
+
+A source table sounds boring until the first time a reviewer needs to answer:
+
+- where did this claim come from,
+- why was this source trusted,
+- what stronger source was missing,
+- or which part of the report should be reviewed again first.
+
+That is why the most useful deep research systems treat source packaging as part of the product, not as internal scaffolding.
+
+## Open questions should be first-class output
+
+One of the clearest signals of system maturity is whether it can say:
+
+- what remains uncertain,
+- what evidence was too weak to rely on,
+- what would change the conclusion,
+- and which follow-up work belongs to a human.
+
+If the system always ends with a clean answer, the workflow is probably suppressing uncertainty instead of managing it.
+
+## Reviewer notes should survive the workflow
+
+Human review creates the most value when its reasoning survives the task. Good research systems should preserve:
+
+- what the reviewer rejected,
+- what they accepted with caution,
+- which sources were upgraded or downgraded,
+- and what should be watched on the next update cycle.
+
+Without that layer, every review cycle starts from zero.
+
+## Reuse depends on output structure
+
+Deep research becomes more valuable when the same run can support:
+
+- a report for leadership,
+- a source packet for auditors,
+- a shorter summary for operators,
+- and a set of claims or citations that can be reused later.
+
+That requires outputs designed for reuse, not only presentation.
+
+## A practical output model
+
+For many teams, the best default package is:
+
+1. executive summary or narrative report,
+2. evidence table,
+3. citation list with source notes,
+4. unresolved questions,
+5. reviewer handoff notes.
+
+That model keeps the polished answer while preserving the operational truth underneath it.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Deep research workflows for AI teams"
+		href="/use-cases/deep-research-workflows-for-ai-teams/"
+		description="Use this page when the larger workflow boundary for deep research still needs to be defined."
+	/>
+	<LinkCard
+		title="Deep research source quality and citation policy"
+		href="/workflows/deep-research-source-quality-and-citation-policy/"
+		description="Use this page when the next design problem is how sources should be selected, cited, and downgraded."
+	/>
+	<LinkCard
+		title="Human escalation thresholds for deep research"
+		href="/workflows/human-escalation-thresholds-for-deep-research-systems/"
+		description="Use this page when the system needs a clearer rule for when unresolved questions or weak support should stop the workflow."
+	/>
+	<LinkCard
+		title="Search evals and citation audits"
+		href="/evaluation/search-evals-and-citation-audits-for-deep-research-systems/"
+		description="Use this page when the team now needs to evaluate whether the evidence packet is actually good enough."
+	/>
+</div>
