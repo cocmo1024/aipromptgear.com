@@ -1,0 +1,159 @@
+---
+title: What is EvalOps for AI teams?
+description: What EvalOps means in practice, when AI teams need it, and how traces, datasets, graders, release gates, and score ownership fit together.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Explains what EvalOps actually is and how AI teams should operationalize evaluation instead of treating it as occasional benchmark work.
+readerTakeaway: You should leave with a practical model for EvalOps as an operating discipline covering datasets, traces, scorecards, release gates, and rollback rules.
+primaryKeyword: evalops
+searchIntent: learn
+decisionStage: solution-aware
+targetRoles:
+  - Applied AI engineers
+  - AI platform teams
+  - Product operations leads
+  - Evaluation owners
+keyQuestions:
+  - What does EvalOps mean beyond running evals occasionally?
+  - When does an AI team actually need EvalOps?
+  - How do traces, datasets, graders, scorecards, and release gates fit together?
+notFor:
+  - Teams looking only for benchmark leaderboards
+  - Prototype projects with no release process
+  - Readers who only want a vendor pitch for observability tooling
+updateTriggers:
+  - Major changes in OpenAI eval tooling or workflow guidance
+  - New operating patterns for staged releases, canary evals, or rollback controls
+  - Material changes in how production AI teams structure review and score ownership
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-22
+lastReviewed: 2026-04-22
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What is EvalOps for AI teams?
+
+EvalOps is the operating discipline that keeps AI quality from collapsing into anecdote, heroic reviewers, and stale benchmark theater. It is not a synonym for "we ran some evals." EvalOps starts when evaluation becomes part of release control: named owners, explicit scorecards, known datasets, repeatable graders, live monitoring, and rollback rules that people will actually use.
+
+## What matters first
+
+If your team is still treating evaluation as something that happens only before a launch review, you do not have EvalOps. You have testing. EvalOps begins when the team can answer five practical questions:
+
+1. which scores matter enough to block a release,
+2. who owns those scores,
+3. what traces and examples feed them,
+4. how often they are rerun,
+5. what happens when the scores get worse in production.
+
+That is the boundary between evaluation as evidence and evaluation as an operating system.
+
+## Why this term matters now
+
+The reason `evalops` is starting to show up in search behavior is simple: teams moved past simple prompt demos. Once a system has tools, approvals, routing, or customer impact, "did it sound good in a staging demo?" is not enough. Teams need an operating layer that can answer:
+
+- did the tool call succeed,
+- did the agent choose the right tool,
+- did the workflow stay inside policy,
+- did costs drift,
+- did the rollout quietly degrade a previously healthy path.
+
+That is the work EvalOps is supposed to hold together.
+
+## The smallest useful EvalOps model
+
+The minimum viable EvalOps layer usually has these parts:
+
+- a stable scorecard,
+- a known dataset or trace slice,
+- a grader model or reviewer rubric,
+- a named owner,
+- a release gate,
+- a rollback or override rule.
+
+If one of those is missing, the team is probably still depending on memory, persuasion, or whoever shouts loudest during release week.
+
+## How the pieces fit together
+
+### Datasets
+
+Datasets are the static or curated examples that let a team detect regressions consistently. These are useful for repeated tasks, known policy edges, and version-to-version comparisons.
+
+### Traces
+
+Traces capture real execution behavior. They show where a run failed, not just whether the last answer looked acceptable. Once tools, approvals, or multi-step logic are involved, traces matter more than polished final output.
+
+### Graders and review
+
+Some things can be graded automatically. Some need reviewer judgment. The strongest teams decide explicitly where automation is trustworthy and where human review stays mandatory.
+
+### Release gates
+
+Release gates turn scorecards into operational controls. Without gates, evaluation remains advisory.
+
+### Ownership
+
+Ownership answers the most important question: who is allowed to say "this ships" or "this does not ship"?
+
+## When a team actually needs EvalOps
+
+You probably need EvalOps when any of these are true:
+
+- multiple people are changing prompts, routes, tools, or models;
+- the system touches customer-facing work;
+- the workflow includes approvals or consequential actions;
+- live behavior can drift without a code deployment;
+- cost, latency, or failure rates now matter to the business.
+
+If the answer to all of those is still no, simple evaluation may still be enough.
+
+## Common ways teams fake EvalOps
+
+The most common failure patterns are:
+
+- calling an observability dashboard "EvalOps" without real release gates,
+- relying on benchmark prompts that no longer resemble production work,
+- keeping scorecards with no owner,
+- or reviewing failures without changing rollout policy.
+
+That is why many teams think they have evaluation discipline when they really have reporting.
+
+## A practical rule
+
+EvalOps is healthy when a failed score changes behavior. That behavior can be:
+
+- blocking release,
+- narrowing rollout scope,
+- requiring human approval,
+- or forcing a rollback.
+
+If nothing changes when a score fails, the team has metrics, not EvalOps.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="EvalOps release gates and scorecard ownership"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Use this page when the next question is who owns scores, what blocks release, and how overrides should work."
+	/>
+	<LinkCard
+		title="Shadow evals and canary rollouts"
+		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
+		description="Use this page when the operating problem is staged rollout discipline, not only offline testing."
+	/>
+	<LinkCard
+		title="Traces vs logs for agent eval ops"
+		href="/evaluation/traces-vs-logs-for-agent-debugging-and-eval-ops/"
+		description="Use this page when the team needs to separate run-level debugging truth from general production logging."
+	/>
+	<LinkCard
+		title="Phoenix vs Langfuse vs LangSmith"
+		href="/tool-comparisons/phoenix-vs-langfuse-vs-langsmith-for-evalops-teams/"
+		description="Use this page when the next question is whether the EvalOps layer should be open-source-first, flexibly hosted, or more fully managed."
+	/>
+</div>

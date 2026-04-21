@@ -1,0 +1,175 @@
+---
+title: OpenAI background mode polling, webhooks, and job status for long-running tasks
+description: How to run long OpenAI jobs safely with background mode, including polling, webhooks, status transitions, retries, and approval-aware result handling.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Explains how to structure OpenAI background-mode jobs so long-running tasks have visible status, sane retries, and approval-aware completion handling.
+readerTakeaway: You should leave with a practical job-lifecycle model for OpenAI background mode, including when to poll, when to use webhooks, and how to separate completion from action.
+primaryKeyword: openai background mode
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI application engineers
+  - Platform teams
+  - Product engineers
+  - Workflow owners
+keyQuestions:
+  - How should teams track OpenAI background-mode jobs?
+  - When is polling enough and when do webhooks matter?
+  - What status, retry, and approval logic belongs around long-running jobs?
+notFor:
+  - Synchronous chat workflows with no deferred work
+  - Readers looking for a generic queueing tutorial
+  - Teams with no plan to surface job status to users or operators
+updateTriggers:
+  - OpenAI changes to background-mode status or webhook guidance
+  - New runtime or webhook behavior in the Responses API
+  - Major shifts in long-running job pricing or lifecycle semantics
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-22
+lastReviewed: 2026-04-22
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI background mode polling, webhooks, and job status for long-running tasks
+
+Most teams understand why a long-running task should not sit inside a live request. Fewer teams design what happens after the task is handed off. That is where background mode usually breaks down in practice. The hard part is not creating the job. The hard part is deciding how the product will track it, surface it, retry it, and stop it from doing something consequential without review.
+
+## What matters first
+
+Treat OpenAI background mode as a tracked job system, not as fire-and-forget async execution. A healthy design needs:
+
+- a visible job identifier,
+- a stable status model,
+- a clear result retrieval path,
+- retry logic tied to failure class,
+- and an approval boundary if completion is not the same thing as permission to act.
+
+Without those, background mode just hides failure behind delay.
+
+## Polling versus webhooks
+
+### Polling is usually enough when:
+
+- job volume is low to moderate,
+- the product already has a task view or operator dashboard,
+- the cost of a slightly stale status is low,
+- and you want a simpler first implementation.
+
+Polling is not primitive. It is often the cleanest answer for early production systems where operators already expect to refresh or revisit the task state.
+
+### Webhooks matter more when:
+
+- job volume is high,
+- task completion must trigger follow-up work quickly,
+- you need immediate downstream orchestration,
+- or status freshness is part of the product promise.
+
+Webhooks reduce delay, but they also increase event-handling complexity. Use them because the workflow requires that complexity, not because they sound more advanced.
+
+## The job states that actually matter
+
+The exact labels may evolve, but the product-level states should be something close to:
+
+- queued,
+- running,
+- completed,
+- failed,
+- awaiting review,
+- expired or abandoned.
+
+The important design point is that **completed** should not always mean **safe to deliver or execute**. A long-running task can complete technically and still require human review before publication, send, or state mutation.
+
+## Why "completed" is not the end of the workflow
+
+This is the mistake teams make most often. They equate background completion with workflow completion. In real systems, the background job may only produce:
+
+- a draft,
+- a report,
+- a recommendation,
+- a bundle of extracted fields,
+- or a proposed action.
+
+The real workflow may still need:
+
+- citation review,
+- approval,
+- customer-facing quality checks,
+- or policy validation.
+
+That is why the status model should distinguish job completion from business completion.
+
+## Result handling should be durable
+
+Once the job finishes, the result should not live only inside a transient event path. The product should preserve:
+
+- the final payload,
+- relevant tool traces or evidence,
+- the completion timestamp,
+- failure or retry history,
+- and the next required action.
+
+That lets operators reopen the work later without having to reconstruct what happened.
+
+## Retry logic by failure class
+
+Do not use one retry rule for every failure. At minimum, separate:
+
+- transient infrastructure or network failures,
+- model or tool timeouts,
+- malformed downstream inputs,
+- policy failures,
+- and review-required outcomes.
+
+Only the first two normally deserve automatic retry. The rest usually need inspection or a different workflow path.
+
+## User-visible progress matters
+
+Background systems feel reliable when users can tell:
+
+- the job exists,
+- it is still progressing,
+- it finished,
+- or it stopped and needs intervention.
+
+That sounds obvious, but many products still hide long-running work behind "processing" states that mean nothing operationally.
+
+## A practical design rule
+
+Use polling first unless the workflow is genuinely event-sensitive. Add webhooks when:
+
+- the task needs immediate follow-on orchestration,
+- scale makes polling wasteful,
+- or completion freshness changes user or operator outcomes materially.
+
+Either way, keep the product state model consistent. The transport mechanism is not the operating model.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="OpenAI background mode for long-running AI tasks"
+		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
+		description="Use this page for the higher-level runtime boundary: which work belongs in a long-running async lane at all."
+	/>
+	<LinkCard
+		title="OpenAI Batch API vs background mode"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="Use this page when the real question is backlog throughput versus one tracked long-running product task."
+	/>
+	<LinkCard
+		title="Human escalation thresholds for deep research"
+		href="/workflows/human-escalation-thresholds-for-deep-research-systems/"
+		description="Use this page when background jobs may finish technically but still need a review gate before delivery."
+	/>
+	<LinkCard
+		title="Tool timeouts, retries, and idempotency"
+		href="/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/"
+		description="Use this page when background-mode work expands into tool orchestration and retry behavior becomes a control problem."
+	/>
+</div>
