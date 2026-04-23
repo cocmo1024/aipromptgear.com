@@ -1,0 +1,159 @@
+---
+title: Human in the loop vs human on the loop for AI agents
+description: A practical comparison of human-in-the-loop and human-on-the-loop design for AI agents, including approval gates, exception handling, throughput tradeoffs, and when each oversight model fits.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: human in the loop vs human on the loop ai agents
+searchIntent: design
+decisionStage: solution-aware
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Governance owners
+  - Platform teams
+contentStatus: growing
+problemSolved: Helps teams choose between pre-action approval and exception-based oversight instead of treating every agent workflow as if one control model fits all.
+readerTakeaway: You should leave with a clear distinction between human-in-the-loop and human-on-the-loop oversight and a practical rule for where each belongs.
+keyQuestions:
+  - What is the difference between human in the loop and human on the loop?
+  - When should AI agents require pre-action approval?
+  - When is exception-based oversight enough?
+notFor:
+  - Readers looking for legal interpretation only
+  - Teams with no workflow consequences or approval boundaries
+  - Organizations that want a generic AI slogan instead of an operating model
+updateTriggers:
+  - Clear shifts in agent governance patterns
+  - New oversight expectations for production agents
+  - Stronger evidence on where pre-approval or exception review performs better
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Human in the loop vs human on the loop for AI agents
+
+## What matters first
+
+The difference is simple:
+
+- **Human in the loop** means the workflow pauses for human review before certain actions proceed.
+- **Human on the loop** means the agent can act within defined boundaries while humans supervise, monitor, and intervene when something crosses a threshold.
+
+One is **pre-action control**. The other is **supervisory control**.
+
+## Human in the loop
+
+Human in the loop is the better fit when:
+
+- the action is high risk,
+- the side effect is hard to reverse,
+- the authority boundary is strict,
+- or the team still needs humans to judge intent, evidence quality, or policy fit before execution.
+
+This model trades speed for stronger direct control.
+
+## Human on the loop
+
+Human on the loop is the better fit when:
+
+- the workflow is repetitive and bounded,
+- the error cost is manageable,
+- the system has strong monitoring and rollback paths,
+- and humans should step in on exceptions rather than approve every routine action.
+
+This model trades some direct control for throughput and scalability.
+
+## The wrong way to choose
+
+Teams often choose badly when they ask:
+
+- "Which model sounds safer?"
+
+The better question is:
+
+- "Where does pre-action judgment actually change the outcome enough to justify the delay?"
+
+If the answer is "rarely," then full human-in-the-loop review may be too heavy.
+
+## Where human in the loop wins
+
+Human in the loop usually wins on:
+
+- contract changes,
+- pricing or refund exceptions,
+- security-sensitive operations,
+- regulated actions,
+- and customer-facing moves where a wrong action damages trust immediately.
+
+These are hard-gate moments.
+
+## Where human on the loop wins
+
+Human on the loop usually wins on:
+
+- internal routing,
+- evidence gathering,
+- low-risk drafting,
+- repeated operational tasks,
+- and bounded workflows where exceptions can be caught through monitoring.
+
+These are high-volume moments where full approval would become queue debt.
+
+## The hidden requirement for human on the loop
+
+Human-on-the-loop only works when the system can:
+
+- detect exceptions,
+- surface useful monitoring signals,
+- stop or roll back bad behavior,
+- and route unusual cases to the right human quickly.
+
+Without that infrastructure, "human on the loop" becomes another phrase for under-supervised autonomy.
+
+## The practical rule
+
+Use **human in the loop** when the action should not happen without explicit human judgment.
+
+Use **human on the loop** when the action can proceed within strong boundaries and humans should supervise the system rather than each routine step.
+
+Many healthy systems use both:
+
+- human in the loop for hard-gate actions,
+- human on the loop for the broader workflow.
+
+## Implementation checklist
+
+Your oversight model is probably healthy when:
+
+- hard-gate actions are named explicitly;
+- routine work is not trapped behind universal approval;
+- exception signals are measurable;
+- human review capacity matches actual risk;
+- and the team knows which workflows run under which control mode.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What is human in the loop for AI agents?"
+		href="/workflows/what-is-human-in-the-loop-for-ai-agents/"
+		description="Use this page when the team first needs a practical definition of human-in-the-loop design."
+	/>
+	<LinkCard
+		title="How should AI teams set approval thresholds for agents?"
+		href="/workflows/how-should-ai-teams-set-approval-thresholds-for-agents/"
+		description="Use this page when the next step is deciding which actions fall into each oversight lane."
+	/>
+	<LinkCard
+		title="How do you monitor AI agents in production?"
+		href="/evaluation/how-do-you-monitor-ai-agents-in-production/"
+		description="Use this page when human-on-the-loop design now depends on real monitoring rather than aspiration."
+	/>
+	<LinkCard
+		title="What should happen when an AI agent fails in production?"
+		href="/workflows/what-should-happen-when-an-ai-agent-fails-in-production/"
+		description="Use this page when the oversight question now turns into exception handling, safe stops, and recovery."
+	/>
+</div>

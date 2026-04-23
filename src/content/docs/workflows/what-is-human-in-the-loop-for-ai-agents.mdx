@@ -1,0 +1,150 @@
+---
+title: What is human in the loop for AI agents?
+description: A practical explanation of human-in-the-loop design for AI agents, including approvals, review gates, exception handling, and where human control should sit in production workflows.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: medium
+reviewCadence: Monthly review
+primaryKeyword: human in the loop ai agents
+searchIntent: learn
+decisionStage: problem-aware
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Platform teams
+  - Workflow owners
+contentStatus: growing
+problemSolved: Helps teams understand what human-in-the-loop actually means for AI agents so they can avoid both fake oversight and unnecessary manual bottlenecks.
+readerTakeaway: You should leave with a clear definition of human-in-the-loop for AI agents, when it belongs, and how it differs from broader monitoring or full manual control.
+keyQuestions:
+  - What is human in the loop for AI agents?
+  - Where should humans intervene in agent workflows?
+  - How is human in the loop different from reviewing everything manually?
+notFor:
+  - Readers looking for legal advice
+  - Teams with no side-effecting actions or approval boundaries
+  - Organizations treating every agent step as a required manual task
+updateTriggers:
+  - Clear shifts in agent approval patterns
+  - New production control models for human review and exception handling
+  - Meaningful changes in how AI teams structure human oversight
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What is human in the loop for AI agents?
+
+## What matters first
+
+Human in the loop means an AI agent does not operate with unlimited autonomy.
+
+A human is intentionally placed inside the workflow at specific control points such as:
+
+- approving a risky action,
+- reviewing ambiguous output,
+- resolving an exception,
+- or taking over when the agent should stop.
+
+It does **not** mean a human has to read every token the system produces.
+
+## The simplest definition
+
+In practical agent systems, human in the loop means:
+
+1. the agent can do some work on its own,
+2. the workflow defines moments where human judgment is required,
+3. the system pauses, routes, or escalates at those moments instead of pretending the model can decide everything safely.
+
+That is the useful operational meaning.
+
+## Where human in the loop usually belongs
+
+Human-in-the-loop design usually belongs where the agent:
+
+- sends an external message,
+- changes a real record,
+- executes money movement,
+- performs a security-sensitive action,
+- faces unclear evidence,
+- or is about to cross an authority boundary.
+
+Those are the places where review is cheaper than cleaning up a bad autonomous action.
+
+## What human in the loop is not
+
+It is not:
+
+- reading every draft,
+- approving every low-risk step,
+- or adding a human click only to make the workflow look safe.
+
+That pattern creates queue drag without real control.
+
+If humans are reviewing everything, the system is closer to assisted software than to a well-governed agent workflow.
+
+## The strong version of human in the loop
+
+The strongest version places humans at:
+
+- irreversible actions,
+- high-cost errors,
+- policy exceptions,
+- and evidence conflicts the system cannot resolve confidently.
+
+That is where human judgment adds real value.
+
+## The weak version
+
+The weak version is when teams say "human in the loop" but the human:
+
+- receives a vague prompt,
+- cannot see the relevant evidence,
+- has no authority to change the outcome,
+- or approves actions so often that approval becomes theater.
+
+That is not control. It is delay with better branding.
+
+## The practical design rule
+
+Use human in the loop when:
+
+1. the cost of a wrong action is material,
+2. the human can make a better judgment than the current system,
+3. and the review step can be structured clearly enough to be fast and accountable.
+
+If those are not true, the loop is probably misplaced.
+
+## Implementation checklist
+
+Your human-in-the-loop design is probably healthy when:
+
+- the workflow names which actions require review;
+- reviewers receive a clear action summary and evidence set;
+- low-risk prep work is not trapped behind unnecessary approval;
+- exception paths are explicit;
+- and the team can measure whether human review actually reduces bad outcomes.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Human in the loop vs human on the loop for AI agents"
+		href="/workflows/human-in-the-loop-vs-human-on-the-loop-for-ai-agents/"
+		description="Use this page when the team needs to choose between pre-action approval and exception-based oversight."
+	/>
+	<LinkCard
+		title="Do AI agents need human approval in production?"
+		href="/workflows/do-ai-agents-need-human-approval-in-production/"
+		description="Use this page when the next question is which actions should require formal approval."
+	/>
+	<LinkCard
+		title="When should an AI agent ask for confirmation before acting?"
+		href="/workflows/when-should-an-ai-agent-ask-for-confirmation-before-acting/"
+		description="Use this page when the control point is lightweight user confirmation rather than full reviewer approval."
+	/>
+	<LinkCard
+		title="How should AI teams set approval thresholds for agents?"
+		href="/workflows/how-should-ai-teams-set-approval-thresholds-for-agents/"
+		description="Use this page when the team needs a concrete method for deciding which actions should trigger review."
+	/>
+</div>

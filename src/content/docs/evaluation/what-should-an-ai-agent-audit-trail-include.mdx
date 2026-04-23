@@ -1,0 +1,163 @@
+---
+title: What should an AI agent audit trail include?
+description: A practical audit-trail model for AI agents covering run identity, approvals, evidence, tool actions, side effects, reviewer decisions, and the minimum record needed for governance and investigation.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent audit trail
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Governance owners
+  - AI platform teams
+  - Security and compliance teams
+  - Operations leaders
+contentStatus: growing
+problemSolved: Helps teams define an AI agent audit trail that supports investigation, governance, and reviewer accountability instead of relying on vague transcripts or incomplete logs.
+readerTakeaway: You should leave with a clear view of what an AI agent audit trail should contain, how it differs from ordinary debug logging, and which fields matter most when a team needs to explain what happened.
+keyQuestions:
+  - What should an AI agent audit trail include?
+  - How is an audit trail different from ordinary logs?
+  - Which records matter most after an incident or review?
+notFor:
+  - Teams running one-off demos with no approval or side effects
+  - Readers looking for a vendor-specific schema only
+  - Organizations that think raw transcripts alone create accountability
+updateTriggers:
+  - New governance expectations for production agents
+  - Stronger audit and review patterns for tool-using systems
+  - Clear shifts in what production teams retain for investigations
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What should an AI agent audit trail include?
+
+## What matters first
+
+An audit trail is not the same thing as a debug log.
+
+Debug logs help engineers understand what happened technically.
+
+An audit trail helps the organization answer:
+
+- what the agent was authorized to do,
+- what it actually did,
+- who approved or reviewed it,
+- what evidence it used,
+- and what changed in the real world because of the run.
+
+That is the core difference.
+
+## The minimum useful audit trail
+
+At a minimum, an AI agent audit trail should include:
+
+- a stable run or case ID,
+- workflow class,
+- actor, tenant, or scope,
+- permissions and policy context,
+- evidence or source set used,
+- tool actions attempted,
+- approvals requested and decisions made,
+- final outcome,
+- and any side effect that was created or blocked.
+
+Without those fields, later review becomes guesswork.
+
+## What matters more than raw transcripts
+
+Teams often overvalue raw model text and undervalue structured decision fields.
+
+In many investigations, the most useful records are:
+
+- what action was attempted,
+- which policy gate applied,
+- which reviewer approved or rejected it,
+- which evidence supported the action,
+- and what happened after execution.
+
+That is usually more important than every token of conversation history.
+
+## The fields most teams forget
+
+Audit trails are often weak because they miss:
+
+- policy version,
+- permission scope at execution time,
+- reviewer identity,
+- reviewer reason,
+- normalized tool arguments,
+- final side-effect status,
+- and whether the run was rescued manually after nominal "success."
+
+Those gaps make accountability fragile.
+
+## Audit trail vs logging
+
+The healthiest production systems separate:
+
+- **logs** for debugging, latency, retries, and runtime behavior,
+- **audit trails** for authority, approvals, evidence, and side effects.
+
+They can be connected, but they should not be treated as the same record.
+
+## What a good audit trail makes possible
+
+A strong audit trail lets a team:
+
+- reconstruct a risky run,
+- prove who approved what,
+- see which evidence or sources were relied on,
+- compare intended action to actual side effect,
+- and investigate whether the workflow stayed inside policy.
+
+That is why audit trails matter most once agents touch real systems.
+
+## The practical rule
+
+If the organization would need the fact later to explain a consequential run to:
+
+- an operator,
+- a manager,
+- a customer,
+- a security owner,
+- or an internal reviewer,
+
+it probably belongs in the audit trail.
+
+## Implementation checklist
+
+Your audit trail is probably healthy when:
+
+- every consequential run has a durable ID;
+- policy context and permission scope are captured;
+- approvals and reviewer actions are explicit;
+- evidence, tool actions, and side effects can be reconstructed;
+- and the audit trail can be read without depending on memory or Slack archaeology.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What should you log for an AI agent in production?"
+		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
+		description="Use this page when the question is broader production logging rather than governance-grade audit records."
+	/>
+	<LinkCard
+		title="How do you monitor AI agents in production?"
+		href="/evaluation/how-do-you-monitor-ai-agents-in-production/"
+		description="Use this page when the next concern is live monitoring and exception detection, not only record retention."
+	/>
+	<LinkCard
+		title="Do AI agents need human approval in production?"
+		href="/workflows/do-ai-agents-need-human-approval-in-production/"
+		description="Use this page when the audit question now turns into who must approve which actions."
+	/>
+	<LinkCard
+		title="Traces vs logs for agent eval ops"
+		href="/evaluation/traces-vs-logs-for-agent-debugging-and-eval-ops/"
+		description="Use this page when the team needs a cleaner split between debug traces, durable logs, and audit-grade records."
+	/>
+</div>

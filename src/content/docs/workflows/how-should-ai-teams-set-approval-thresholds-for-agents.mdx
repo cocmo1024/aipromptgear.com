@@ -1,0 +1,167 @@
+---
+title: How should AI teams set approval thresholds for agents?
+description: A practical method for setting AI agent approval thresholds based on consequence, reversibility, authority, evidence quality, and review capacity instead of vague confidence scores.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent approval thresholds
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Operations leaders
+  - Governance owners
+  - Platform teams
+contentStatus: growing
+problemSolved: Helps teams decide which agent actions should trigger review or approval instead of using arbitrary thresholds that either block too much work or allow too much autonomy.
+readerTakeaway: You should leave with a practical approval-threshold model based on workflow consequence, not just agent confidence or generic caution.
+keyQuestions:
+  - How should AI teams set approval thresholds for agents?
+  - What should trigger human review?
+  - Why are confidence scores alone not enough?
+notFor:
+  - Teams with no side effects or authority boundaries
+  - Readers looking for a single universal percentage threshold
+  - Organizations that have not named their workflow classes yet
+updateTriggers:
+  - Clear shifts in production approval design
+  - New evidence about confidence calibration in agent systems
+  - More mature patterns for blending autonomy and review
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How should AI teams set approval thresholds for agents?
+
+## What matters first
+
+Approval thresholds should be based on **consequence**, not only model confidence.
+
+The strongest approval trigger is usually some combination of:
+
+- action consequence,
+- reversibility,
+- authority boundary,
+- evidence quality,
+- and trust impact if the action is wrong.
+
+Confidence can help, but it is not a complete control model.
+
+## The weak threshold pattern
+
+The weak pattern is saying:
+
+- "Anything below 90% confidence needs approval."
+
+That sounds precise, but it often fails because:
+
+- agent confidence may not be calibrated,
+- different workflows carry different risk,
+- and a high-confidence wrong action can still be more dangerous than a low-confidence draft.
+
+## The five factors that matter most
+
+The healthiest approval thresholds usually score actions on:
+
+1. **Consequence**: What happens if the action is wrong?
+2. **Reversibility**: Can the action be undone cheaply?
+3. **Authority**: Is the agent crossing a permission or policy boundary?
+4. **Evidence quality**: Is the system acting on strong, consistent evidence?
+5. **Trust impact**: Would a wrong action surprise or damage the user immediately?
+
+Those five factors are more useful than one generic confidence gate.
+
+## Where approval should trigger early
+
+Approval should usually trigger early for:
+
+- money movement,
+- policy exceptions,
+- security-sensitive changes,
+- external communications with consequence,
+- and actions that alter important records.
+
+These are the places where false autonomy becomes expensive quickly.
+
+## Where approval should not dominate
+
+Approval is often overused for:
+
+- evidence gathering,
+- summarization,
+- internal routing,
+- low-risk drafts,
+- or preparation steps that create no real side effect yet.
+
+If approval covers too much low-risk work, the queue grows faster than reviewer value.
+
+## The better threshold model
+
+A stronger model separates thresholds by workflow class:
+
+- **hard gate**: cannot proceed without approval,
+- **soft gate**: can proceed only when evidence and policy checks pass,
+- **monitor lane**: can proceed but is sampled, logged, and reviewed through monitoring,
+- **handoff lane**: must escalate rather than seek ordinary approval.
+
+That gives teams more control than one blanket threshold.
+
+## Review capacity matters too
+
+An approval policy is broken if reviewers cannot keep up.
+
+Thresholds should reflect:
+
+- reviewer availability,
+- expected volume,
+- SLA expectations,
+- and the real cost of delay.
+
+A theoretically safe approval model that creates endless backlog is still a bad production design.
+
+## The practical rule
+
+Set approval thresholds by asking:
+
+1. what bad outcome are we trying to prevent,
+2. which action classes create that outcome,
+3. which of those classes truly require human judgment before execution,
+4. and whether the review lane can operate fast enough to stay credible.
+
+That produces a usable threshold system.
+
+## Implementation checklist
+
+Your approval thresholds are probably healthy when:
+
+- action classes are grouped by consequence;
+- high-risk actions are gated explicitly;
+- low-risk steps are not trapped behind universal review;
+- reviewer capacity and SLA are considered;
+- and threshold changes can be justified with outcome data instead of instinct alone.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Do AI agents need human approval in production?"
+		href="/workflows/do-ai-agents-need-human-approval-in-production/"
+		description="Use this page when the next question is whether approval should exist at all for a given workflow."
+	/>
+	<LinkCard
+		title="Human in the loop vs human on the loop for AI agents"
+		href="/workflows/human-in-the-loop-vs-human-on-the-loop-for-ai-agents/"
+		description="Use this page when the team is deciding between pre-action approval and exception-based oversight."
+	/>
+	<LinkCard
+		title="When should an AI agent ask for confirmation before acting?"
+		href="/workflows/when-should-an-ai-agent-ask-for-confirmation-before-acting/"
+		description="Use this page when the control question is lighter user confirmation rather than formal approval."
+	/>
+	<LinkCard
+		title="What is a good SLA for an AI agent?"
+		href="/workflows/what-is-a-good-sla-for-an-ai-agent/"
+		description="Use this page when approval thresholds are now affecting queue design and response expectations."
+	/>
+</div>
