@@ -1,0 +1,223 @@
+---
+title: AI agent incident response runbook
+description: A practical incident response runbook for production AI agents covering triage, containment, evidence capture, rollback, communication, and post-incident learning.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent incident response runbook
+searchIntent: deploy
+decisionStage: operations
+targetRoles:
+  - AI platform teams
+  - Incident commanders
+  - Engineering leaders
+  - Operations teams
+contentStatus: cornerstone
+problemSolved: Gives teams a reusable runbook for handling production AI agent incidents without improvising around prompts, models, tools, approvals, and customer-facing impact during the incident.
+readerTakeaway: You should leave with a practical AI agent incident workflow from detection through containment, evidence capture, rollback, communication, and post-incident eval updates.
+keyQuestions:
+  - How should teams respond when an AI agent fails in production?
+  - What evidence should be captured during an AI agent incident?
+  - When should an AI agent incident trigger rollback or approval tightening?
+notFor:
+  - Teams running prototypes with no production owners
+  - Readers looking for generic SRE incident templates only
+  - Organizations without authority to pause, roll back, or restrict agent behavior
+updateTriggers:
+  - New incident-response practices for tool-using AI systems
+  - Changes in common production agent deployment and rollback patterns
+  - New governance expectations around AI system incident reporting
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# AI agent incident response runbook
+
+## What matters first
+
+An AI agent incident response runbook should answer one question fast:
+
+**What can we safely stop, narrow, or roll back before more damage happens?**
+
+The runbook should not begin with prompt debate. It should begin with containment.
+
+Production incidents often involve more than model output:
+
+- tool calls,
+- approvals,
+- retrieval,
+- external systems,
+- workflow branches,
+- release versions,
+- and human handoffs.
+
+The response has to cover the whole operating unit.
+
+## The first ten minutes
+
+In the first ten minutes, the incident owner should establish:
+
+1. affected workflow,
+2. severity class,
+3. active user or customer impact,
+4. recent release or configuration changes,
+5. whether tool side effects are still possible,
+6. whether approval boundaries are intact,
+7. and whether a safer fallback lane exists.
+
+The goal is not perfect diagnosis. The goal is safe containment.
+
+## Step 1: classify severity
+
+Use a simple severity split:
+
+- **S1:** harmful, unsafe, unauthorized, destructive, regulated, or high-value customer impact.
+- **S2:** repeated wrong outcomes, major workflow blockage, costly manual rescue, or trust damage.
+- **S3:** localized quality regression, non-critical citation issue, formatting issue, or low-risk workflow failure.
+
+Severity should drive speed and authority.
+
+## Step 2: contain the agent
+
+Containment options should be ready before launch.
+
+Common moves:
+
+- disable one risky tool,
+- force human approval for a workflow class,
+- switch to draft-only mode,
+- pause a canary,
+- route affected traffic to fallback,
+- roll back the agent release,
+- or temporarily stop the workflow.
+
+Containment should be as narrow as possible but as fast as necessary.
+
+## Step 3: preserve evidence
+
+Capture the evidence while it still exists.
+
+Minimum useful evidence:
+
+- incident ID,
+- run IDs,
+- affected workflow,
+- agent version,
+- model lane,
+- tool configuration,
+- approval policy,
+- user-visible output,
+- tool calls and side effects,
+- reviewer labels,
+- cost and latency,
+- and current containment action.
+
+Do not rely on screenshots and memory if structured run evidence exists.
+
+## Step 4: decide rollback versus restriction
+
+Rollback is not always the right first move.
+
+Use rollback when:
+
+- a release clearly introduced the failure,
+- a prompt, model, workflow, or tool config changed recently,
+- failures are broad across the workflow,
+- or the previous version is known to be safer.
+
+Use restriction when:
+
+- one tool is failing,
+- one action class is risky,
+- approval needs tightening,
+- or the agent can still safely draft without executing.
+
+Many incidents need restriction first and rollback second.
+
+## Step 5: communicate operationally
+
+The incident update should be short and factual:
+
+- what workflow is affected,
+- what user impact is known,
+- what has been contained,
+- what is still being investigated,
+- who owns the next decision,
+- and when the next update will happen.
+
+Avoid vague claims that the model is "acting strangely." State the observable failure class.
+
+## Step 6: review after containment
+
+After containment, the team should determine:
+
+- root trigger,
+- failed control,
+- missed alert,
+- missing log field,
+- missing eval case,
+- owner of corrective action,
+- and whether the release process needs a new gate.
+
+The best post-incident output is not a long narrative. It is a stronger operating loop.
+
+## The post-incident eval update
+
+Every serious AI agent incident should ask whether one or more examples should enter:
+
+- regression dataset,
+- approval boundary test,
+- tool selection eval,
+- citation audit,
+- support QA scorecard,
+- or canary release gate.
+
+If the incident does not improve eval coverage, the system can repeat the same failure with better wording.
+
+## Runbook template
+
+<Steps>
+	1. Identify affected workflow, severity, and owner.
+	2. Freeze or narrow risky capabilities.
+	3. Preserve run evidence and release metadata.
+	4. Choose rollback, restriction, fallback, or continued monitoring.
+	5. Communicate facts, impact, containment, owner, and next update time.
+	6. Convert the incident into eval, alert, logging, or release-gate changes.
+</Steps>
+
+## Implementation checklist
+
+Your incident runbook is probably healthy when:
+
+- containment authority is clear before incidents start;
+- rollback and restriction options are documented;
+- run evidence can be captured by ID;
+- approval failures have urgent handling;
+- communication names observable failure classes;
+- and post-incident work updates evals, alerts, or release gates.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What alerts should AI agent monitoring trigger?"
+		href="/tooling/what-alerts-should-ai-agent-monitoring-trigger/"
+		description="Use this page when the team needs to decide which production signals should actually open an incident."
+	/>
+	<LinkCard
+		title="Production AI agent observability stack"
+		href="/tooling/production-ai-agent-observability-stack/"
+		description="Use this page when incidents are hard to resolve because traces, logs, metrics, and eval labels are disconnected."
+	/>
+	<LinkCard
+		title="How do you roll back an AI agent in production?"
+		href="/tooling/how-do-you-roll-back-an-ai-agent-in-production/"
+		description="Use this page when the incident runbook needs a concrete rollback model across prompts, models, tools, and workflow logic."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Use this page when incident response needs governance-grade records rather than ordinary debugging notes."
+	/>
+</div>

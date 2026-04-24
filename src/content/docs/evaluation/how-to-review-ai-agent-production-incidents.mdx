@@ -1,0 +1,225 @@
+---
+title: How to review AI agent production incidents
+description: A practical post-incident review model for AI agents covering failure taxonomy, evidence, controls, eval updates, rollout fixes, and operational ownership.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent production incident review
+searchIntent: deploy
+decisionStage: operations
+targetRoles:
+  - AI platform teams
+  - Evaluation owners
+  - Incident commanders
+  - Engineering leaders
+contentStatus: growing
+problemSolved: Helps teams turn AI agent incidents into better evals, alerts, logs, release gates, and workflow controls instead of treating each incident as an isolated model failure.
+readerTakeaway: You should leave with a post-incident review process that converts production agent failures into durable operating improvements.
+keyQuestions:
+  - How should teams review an AI agent incident after containment?
+  - What should an AI agent postmortem include?
+  - How do incidents become eval cases, alerts, or release gates?
+notFor:
+  - Teams without production AI agent traffic
+  - Readers looking for a blame-oriented postmortem format
+  - Organizations that cannot change evals, alerts, or rollout rules after incidents
+updateTriggers:
+  - New post-incident review practices for AI systems
+  - Changes in common EvalOps and agent release workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How to review AI agent production incidents
+
+## What matters first
+
+An AI agent incident review should produce operating changes, not just a story.
+
+The review should answer:
+
+- what failed,
+- why existing controls did not stop it,
+- what evidence was missing,
+- which eval should have caught it,
+- which alert should have surfaced it,
+- and what release or approval rule changes before the next rollout.
+
+If the review ends with "the model made a bad choice" and nothing changes, the team has not learned enough.
+
+## The wrong review model
+
+The weak model is:
+
+**"The agent hallucinated. We improved the prompt."**
+
+Sometimes that is true. Often it is incomplete.
+
+Incidents may come from:
+
+- wrong tool selection,
+- weak retrieval,
+- missing approval boundary,
+- unclear workflow ownership,
+- prompt drift,
+- model-route change,
+- untested edge case,
+- or downstream system behavior.
+
+The review should classify the system failure, not only the output failure.
+
+## The minimum review record
+
+Capture:
+
+- incident ID,
+- date and detection source,
+- affected workflow,
+- severity,
+- run IDs,
+- agent version,
+- model lane,
+- tool configuration,
+- approval policy,
+- release or configuration changes,
+- customer or operator impact,
+- containment action,
+- and final corrective actions.
+
+This is the evidence base for improving the operating system.
+
+## Build a failure taxonomy
+
+Every incident should receive one primary failure class and optional secondary classes.
+
+Useful classes include:
+
+- instruction failure,
+- tool selection failure,
+- tool argument failure,
+- retrieval or evidence failure,
+- approval boundary failure,
+- workflow routing failure,
+- escalation failure,
+- cost-control failure,
+- latency or timeout failure,
+- and release-process failure.
+
+The taxonomy matters because each class has a different fix.
+
+## Separate trigger from failed control
+
+The trigger is what started the incident.
+
+Examples:
+
+- new prompt version,
+- changed tool schema,
+- model lane switch,
+- updated retrieval corpus,
+- larger customer workload,
+- or unusual user input.
+
+The failed control is what should have contained it.
+
+Examples:
+
+- eval gap,
+- missing canary,
+- weak approval policy,
+- absent alert,
+- incomplete logging,
+- no fallback lane,
+- or unclear incident owner.
+
+Good reviews separate these two. Otherwise the team fixes the trigger and misses the control gap.
+
+## Convert incidents into eval assets
+
+For every serious incident, decide whether to add:
+
+- the exact run to a regression set,
+- a simplified synthetic version to a release gate,
+- a tool-selection test,
+- an approval-boundary test,
+- a retrieval evidence case,
+- or a reviewer-training example.
+
+The point is not to overfit to one incident. The point is to protect the class of failure.
+
+## Convert incidents into alert changes
+
+Ask:
+
+- Was the incident detected by a user, operator, dashboard, alert, or review queue?
+- Should it have been urgent?
+- Which metric or event changed first?
+- Did the alert include enough examples to act?
+- Was the owner obvious?
+
+If the answer is no, update alert design or review sampling.
+
+## Convert incidents into release changes
+
+Incidents often reveal weak rollout discipline.
+
+Possible release changes:
+
+- new canary threshold,
+- stricter approval for one action class,
+- mandatory eval pass before release,
+- release notes for model-route changes,
+- stronger rollback metadata,
+- or a freeze rule after repeated failures.
+
+The review should specify which release gate changes and who owns it.
+
+## The review meeting structure
+
+Keep the meeting tight:
+
+1. Facts and timeline.
+2. Impact and severity.
+3. Failure taxonomy.
+4. Missed controls.
+5. Evidence gaps.
+6. Eval, alert, release, and ownership changes.
+
+Avoid long speculation about model personality. Focus on observable system behavior.
+
+## Implementation checklist
+
+Your review process is probably healthy when:
+
+- every serious incident gets a failure class;
+- trigger and failed control are separated;
+- missing evidence becomes a logging or tracing task;
+- representative examples enter eval or reviewer workflows;
+- alert thresholds or review sampling improve;
+- and release gates change when rollout discipline failed.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI agent incident response runbook"
+		href="/tooling/ai-agent-incident-response-runbook/"
+		description="Use this page when the team needs the live response process before post-incident review starts."
+	/>
+	<LinkCard
+		title="What should an agent eval scorecard actually measure?"
+		href="/evaluation/what-should-an-agent-eval-scorecard-actually-measure/"
+		description="Use this page when incidents reveal that the scorecard does not measure the failures that matter."
+	/>
+	<LinkCard
+		title="Shadow evals and canary rollouts"
+		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
+		description="Use this page when post-incident review points to weak rollout discipline."
+	/>
+	<LinkCard
+		title="EvalOps release gates and scorecard ownership"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Use this page when incident learning needs to become a standing release-control system."
+	/>
+</div>

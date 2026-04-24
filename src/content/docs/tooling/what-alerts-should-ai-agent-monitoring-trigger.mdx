@@ -1,0 +1,236 @@
+---
+title: What alerts should AI agent monitoring trigger?
+description: A practical alert design guide for production AI agents covering quality drift, approval failures, cost spikes, retry storms, tool failures, and rollback thresholds.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent monitoring alerts
+searchIntent: deploy
+decisionStage: operations
+targetRoles:
+  - AI platform teams
+  - SRE teams
+  - Engineering managers
+  - Operations leaders
+contentStatus: growing
+problemSolved: Helps teams design production alerts for AI agents around real workflow risk instead of noisy token, latency, or uptime thresholds alone.
+readerTakeaway: You should leave with a useful alert taxonomy for AI agents and a clear distinction between alerts, review queues, and dashboard-only signals.
+keyQuestions:
+  - What should trigger an alert for a production AI agent?
+  - Which AI agent metrics should not page a human?
+  - How should alerts connect to rollback, approval tightening, or incident review?
+notFor:
+  - Teams without production traffic or incident ownership
+  - Readers looking for generic uptime alert rules only
+  - Organizations that cannot distinguish business risk from dashboard noise
+updateTriggers:
+  - New production alerting patterns for agent systems
+  - Changes in common AI observability and incident-response practices
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# What alerts should AI agent monitoring trigger?
+
+## What matters first
+
+AI agent alerts should fire when the system may be causing **unacceptable workflow risk**, not whenever a metric looks interesting.
+
+Good alerts usually connect to:
+
+- user harm,
+- expensive failure,
+- broken approval boundaries,
+- manual rescue overload,
+- runaway cost,
+- tool-side effects,
+- or release regression.
+
+If an alert does not lead to a decision, it is probably a dashboard metric or a review-queue signal instead.
+
+## The wrong alert model
+
+The weak model is:
+
+**"Alert on every drop in model quality or every spike in token cost."**
+
+That creates alert fatigue because many changes are not urgent.
+
+Production teams need three lanes:
+
+- **page now** for active risk,
+- **review soon** for suspicious drift,
+- **watch only** for low-risk trend changes.
+
+Most AI quality signals belong in review queues before they belong in pager alerts.
+
+## Alerts that usually deserve urgency
+
+### Approval boundary failures
+
+Alert when the agent appears to:
+
+- act without required approval,
+- request approval after a side effect,
+- misclassify a high-risk action as low risk,
+- or route around a configured human gate.
+
+Approval failures are control failures. They should not wait for a weekly review.
+
+### High-severity failure spikes
+
+Alert when severe failure classes rise suddenly.
+
+Examples:
+
+- wrong account,
+- wrong file,
+- wrong customer,
+- unsafe recommendation,
+- fabricated citation in a critical workflow,
+- destructive action attempt,
+- or policy violation.
+
+The alert should include recent examples and release versions, not only a percentage.
+
+### Manual rescue jumps
+
+Manual rescue is a strong economic signal.
+
+Alert or open an urgent review when humans suddenly need to redo work that the agent claims to have completed.
+
+This catches failures that ordinary success metrics miss.
+
+### Retry storms
+
+Retries can hide instability.
+
+Alert when retry count rises sharply, especially if retries involve:
+
+- tool calls,
+- search,
+- file operations,
+- external API calls,
+- or approval loops.
+
+Retry storms can create cost, latency, duplicate side effects, and confusing operator states.
+
+### Cost spikes without success gain
+
+Do not alert on cost alone.
+
+Alert when cost rises and useful outcomes do not improve.
+
+The strongest signal is usually:
+
+- cost per successful outcome,
+- cost per resolved case,
+- cost per reviewed task,
+- or cost per accepted change.
+
+Raw token spend is an accounting number. Cost per useful result is an operating signal.
+
+### Tool failure concentration
+
+Alert when failures concentrate around one tool, integration, permission class, or workflow branch.
+
+This matters because the containment action may be narrow:
+
+- disable one tool,
+- force approval for one action type,
+- route one workflow to fallback,
+- or roll back one release path.
+
+## Signals that usually belong in review queues
+
+Not every signal should page someone.
+
+These often belong in review queues:
+
+- small quality drift,
+- rising uncertainty,
+- low-severity hallucination examples,
+- evidence-quality concerns,
+- citation formatting problems,
+- reviewer disagreement,
+- and prompt-style regressions.
+
+They matter, but they often need sampled review rather than urgent interruption.
+
+## Signals that are usually dashboard-only
+
+These are useful but rarely enough by themselves:
+
+- total request volume,
+- total token volume,
+- average latency,
+- average cost,
+- model mix,
+- raw completion count,
+- and prompt length.
+
+They become alert-worthy only when connected to outcome, risk, release, or capacity.
+
+## How to write a good alert
+
+A good AI agent alert should include:
+
+1. what changed,
+2. which workflow is affected,
+3. which risk class is involved,
+4. which release or model lane is implicated,
+5. recent example run IDs,
+6. expected owner,
+7. and the likely first response.
+
+An alert that says "quality down 7%" is not enough.
+
+## Response actions
+
+Each alert should map to a real action:
+
+- pause canary,
+- roll back release,
+- tighten approval threshold,
+- disable a tool,
+- route to fallback lane,
+- sample live traffic,
+- or open an incident review.
+
+If no action exists, the threshold is premature.
+
+## Implementation checklist
+
+Your alert design is probably healthy when:
+
+- urgent alerts reflect user, business, safety, or control risk;
+- review queues absorb non-urgent quality drift;
+- dashboard-only metrics are not treated as incidents;
+- every alert includes example run IDs;
+- and every alert maps to an owner plus a first response.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Production AI agent observability stack"
+		href="/tooling/production-ai-agent-observability-stack/"
+		description="Use this page when alert design needs the supporting traces, logs, metrics, and labels underneath it."
+	/>
+	<LinkCard
+		title="AI agent incident response runbook"
+		href="/tooling/ai-agent-incident-response-runbook/"
+		description="Use this page when alerts need to trigger a real containment and review process."
+	/>
+	<LinkCard
+		title="How do you monitor AI agents in production?"
+		href="/evaluation/how-do-you-monitor-ai-agents-in-production/"
+		description="Use this page when the team still needs to define the production metrics that alerts should watch."
+	/>
+	<LinkCard
+		title="How do you roll back an AI agent in production?"
+		href="/tooling/how-do-you-roll-back-an-ai-agent-in-production/"
+		description="Use this page when alert thresholds need to become rollback triggers."
+	/>
+</div>

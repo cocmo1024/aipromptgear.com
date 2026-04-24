@@ -1,0 +1,232 @@
+---
+title: Production AI agent observability stack
+description: A practical observability stack for production AI agents covering traces, logs, metrics, eval labels, approvals, alerts, and incident evidence.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: ai agent observability stack
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Engineering leaders
+  - SRE teams
+  - Operations owners
+contentStatus: cornerstone
+problemSolved: Helps production teams decide what an AI agent observability stack should capture so quality, cost, approval behavior, and incidents can be explained without relying on raw transcripts or scattered dashboards.
+readerTakeaway: You should leave with a practical observability architecture for agent systems that connects traces, logs, metrics, eval labels, and incident review into one operating loop.
+keyQuestions:
+  - What should an AI agent observability stack include?
+  - How are traces, logs, metrics, evals, and alerts different?
+  - Which observability signals actually support production decisions?
+notFor:
+  - Teams running demos with no live workflow ownership
+  - Readers looking only for a vendor dashboard checklist
+  - Organizations that cannot store operational evidence safely
+updateTriggers:
+  - New agent observability tooling patterns
+  - Changes in common tracing and evaluation workflows
+  - Changes in privacy or retention expectations for production AI systems
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Production AI agent observability stack
+
+## What matters first
+
+An AI agent observability stack should explain **what the agent did, why it mattered, and whether the outcome was acceptable**.
+
+That requires more than API latency, token usage, and error rates.
+
+A useful stack usually connects:
+
+- traces,
+- structured logs,
+- workflow metrics,
+- approval and escalation records,
+- evaluation labels,
+- cost attribution,
+- and incident notes.
+
+If those signals live in unrelated tools with no shared run ID, production review becomes guesswork.
+
+## The common mistake
+
+The weak stack is:
+
+**"We have logs from the app and traces from the LLM provider."**
+
+That is not enough when the incident question is:
+
+- Did the agent choose the wrong tool?
+- Did it act without enough evidence?
+- Did a human approval gate fail?
+- Did retries hide a bad workflow path?
+- Did the result cost more than the task was worth?
+
+General observability tools can show that something happened. Agent observability has to show whether the behavior was acceptable.
+
+## The five layers
+
+### 1. Run identity
+
+Every run needs a stable ID that ties together:
+
+- user or tenant scope,
+- workflow type,
+- release version,
+- model lane,
+- tool configuration,
+- approval policy,
+- and final status.
+
+Without a stable run identity, traces, logs, evals, and support tickets cannot be joined later.
+
+### 2. Trace layer
+
+The trace layer explains the path.
+
+It should show:
+
+- model calls,
+- tool calls,
+- retrieval or search steps,
+- intermediate decisions,
+- retries,
+- fallback path,
+- and approval requests.
+
+Traces are best for debugging a specific run. They are weaker as long-term reporting if they are the only evidence layer.
+
+### 3. Structured log layer
+
+Logs preserve durable facts.
+
+The strongest fields are usually:
+
+- run ID,
+- workflow class,
+- tool name and outcome,
+- approval decision,
+- final status,
+- failure class,
+- latency,
+- cost,
+- version,
+- and reviewer label.
+
+The log layer should be compact enough to retain, query, and sample over time.
+
+### 4. Metric layer
+
+Metrics translate events into operating signals.
+
+Useful production metrics include:
+
+- successful outcome rate,
+- high-severity failure rate,
+- escalation rate,
+- approval rate,
+- manual rescue rate,
+- retry rate,
+- time to trusted completion,
+- and cost per successful outcome.
+
+These metrics should be segmented by workflow type, risk class, model lane, and release version.
+
+### 5. Evaluation and review layer
+
+The eval layer turns observed behavior into judgment.
+
+It should capture:
+
+- pass or fail labels,
+- severity,
+- failure taxonomy,
+- reviewer notes,
+- ground truth when available,
+- and whether the example should enter a regression set.
+
+Observability without review becomes dashboards. Review without observability becomes anecdote.
+
+## What should not be stored blindly
+
+Do not use observability as an excuse to retain everything.
+
+Be deliberate with:
+
+- raw prompts,
+- customer payloads,
+- tool outputs,
+- files,
+- credentials,
+- private messages,
+- and regulated data.
+
+The practical pattern is structured operational evidence plus selective secure retention, not infinite transcript hoarding.
+
+## How alerts should connect
+
+Alerts should be built from business-sensitive behavior, not only infrastructure symptoms.
+
+Strong alert candidates include:
+
+- high-severity failure spikes,
+- approval bypass patterns,
+- manual rescue jumps,
+- retry storms,
+- cost spikes without success-rate improvement,
+- sudden tool failure concentration,
+- and regressions tied to a release version.
+
+The alert should point to the run IDs, traces, and recent examples that explain the change.
+
+## The buying decision
+
+When evaluating observability tooling, ask:
+
+1. Can it connect model calls, tool calls, approvals, costs, and outcomes under one run ID?
+2. Can non-engineering reviewers label examples safely?
+3. Can it produce regression datasets from real incidents?
+4. Can it support retention rules instead of storing everything forever?
+5. Can it trigger operating decisions such as rollback, canary pause, or approval tightening?
+
+If the answer is no, the tool may be useful for debugging but weak for operating production agents.
+
+## Implementation checklist
+
+Your stack is probably healthy when:
+
+- every run has one durable identity;
+- traces explain path-level behavior;
+- structured logs preserve long-term evidence;
+- metrics reflect outcome, risk, cost, and review burden;
+- eval labels can be attached to real runs;
+- and alerts route directly into owners, examples, and response actions.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What should you log for an AI agent in production?"
+		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
+		description="Use this page when the observability stack needs a concrete logging schema before metrics and alerts can work."
+	/>
+	<LinkCard
+		title="How do you monitor AI agents in production?"
+		href="/evaluation/how-do-you-monitor-ai-agents-in-production/"
+		description="Use this page when the team needs the live signals that should sit on top of traces and logs."
+	/>
+	<LinkCard
+		title="AI agent incident response runbook"
+		href="/tooling/ai-agent-incident-response-runbook/"
+		description="Use this page when observability has to feed a real response process instead of passive dashboards."
+	/>
+	<LinkCard
+		title="How do you roll back an AI agent in production?"
+		href="/tooling/how-do-you-roll-back-an-ai-agent-in-production/"
+		description="Use this page when observability should produce rollback evidence and version-specific containment decisions."
+	/>
+</div>
