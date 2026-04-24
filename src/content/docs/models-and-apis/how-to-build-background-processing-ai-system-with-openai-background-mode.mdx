@@ -1,0 +1,182 @@
+---
+title: How to build a background processing AI system with OpenAI background mode
+description: A production architecture for OpenAI background mode covering job records, status polling, streaming recovery, review gates, cancellation, and failure handling.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps product and platform teams turn OpenAI background mode into a real background processing system rather than a single async API call.
+readerTakeaway: You should leave with a concrete system shape for job creation, status tracking, output review, cancellation, retries, and user-facing completion behavior.
+primaryKeyword: build background processing ai system openai background mode
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI product engineers
+  - Platform teams
+  - Application architects
+  - Technical founders
+keyQuestions:
+  - What does the application need to own around OpenAI background mode?
+  - How should background AI jobs expose status, cancellation, and review?
+  - When is background mode enough, and when does the product still need its own job system?
+notFor:
+  - Single-turn chatbots with no long-running work
+  - Teams looking only for generic queue architecture
+  - Batch-only workloads with no user-facing job state
+updateTriggers:
+  - OpenAI changes to background mode lifecycle, polling, streaming, or retention behavior
+  - New production patterns for approval-aware long-running agent jobs
+  - Material changes in async model pricing or service-tier behavior
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# How to build a background processing AI system with OpenAI background mode
+
+OpenAI background mode solves only one part of a background processing system: it lets a long-running response continue outside the normal synchronous request path. The product still needs a durable job model around it. Without that model, the API call may be asynchronous, but the user experience, review process, support workflow, and failure recovery are still improvised.
+
+The mistake is to treat background mode as a replacement for job architecture. It is better to treat it as one execution lane inside a product-owned background processing system.
+
+## The smallest useful architecture
+
+A healthy background AI system has five layers:
+
+1. **Job record**: the product creates a durable internal job before it calls the model.
+2. **Execution lane**: the system starts the OpenAI response with background execution when the work fits that lane.
+3. **Status model**: the product tracks queued, running, waiting for review, completed, failed, canceled, and expired states in its own language.
+4. **Output handling**: the system stores the result, evidence, partial artifacts, and reviewer notes instead of only showing final text.
+5. **Control layer**: users or operators can cancel, approve, retry, escalate, or archive the job.
+
+If one of those layers is missing, the system usually feels unfinished. Users ask where their work went. Support teams cannot explain failures. Engineers cannot tell whether a problem is model latency, tool failure, approval delay, or product orchestration.
+
+## What the product should store
+
+Do not rely on the provider response object as your only job database. Keep your own record with at least:
+
+| Field | Why it matters |
+| --- | --- |
+| Internal job ID | Lets your product own the workflow even if provider IDs change |
+| User, workspace, or account scope | Controls visibility, billing, support, and permission checks |
+| Provider response ID | Links your job to the background response |
+| Job type | Separates research, extraction, enrichment, coding, and review flows |
+| Status | Gives users and operators a consistent progress model |
+| Submitted inputs summary | Helps support understand what work was requested without exposing unnecessary content |
+| Completion artifact pointers | Stores report, JSON output, files, citations, or generated records |
+| Review state | Separates model completion from trusted completion |
+| Cost and timing metadata | Supports cost-per-success and latency budget decisions |
+| Failure reason | Turns retry and escalation into a controlled process |
+
+The job table does not need to be complex at first. It needs to be explicit.
+
+## The status model should not mirror the API blindly
+
+Provider statuses are useful, but product statuses should reflect the user's workflow.
+
+A practical product-level status model is:
+
+- **queued**: the product accepted the work and is waiting to start or waiting on provider scheduling;
+- **running**: the model or tool chain is active;
+- **needs review**: the model completed but the result is not yet safe to deliver or act on;
+- **completed**: the result is available to the user or downstream workflow;
+- **failed**: the system cannot complete without intervention;
+- **canceled**: the user or system intentionally stopped the job;
+- **expired**: the job missed the useful window and should be re-created or converted into a support case.
+
+This matters because a model response can be technically complete while the product job is still not done. For example, a generated customer reply may need approval, a research report may need citation review, and a coding-agent patch may need tests.
+
+## Polling, streaming, and recovery
+
+OpenAI background mode supports polling the response object, and background streaming can be useful when the client may disconnect but the task should continue. The product decision is not "poll or stream?" It is "what user and operator state do we need to recover after interruption?"
+
+Use polling when:
+
+- the user does not need live progress;
+- the job can be refreshed from a dashboard;
+- completion is more important than visible token flow;
+- the workflow has review or post-processing steps anyway.
+
+Use background streaming when:
+
+- partial progress improves trust;
+- the user may leave and return;
+- the interface can reconnect from an event cursor;
+- or the product wants to show a long-running task progressing without blocking completion.
+
+Either way, the product should handle lost connections as normal behavior. A closed browser tab should not mean the work is lost.
+
+## Where approvals belong
+
+Do not wait until after launch to decide whether background jobs can take action. Put each job type into an authority class:
+
+| Job class | Example | Default control |
+| --- | --- | --- |
+| Read-only analysis | summarize files, inspect tickets, search sources | no approval unless sensitive data is involved |
+| Draft generation | support reply, report, proposed patch | human review before publish or merge |
+| Low-risk write | tagging, internal note, non-customer-facing update | policy gate or sampled review |
+| External side effect | send message, refund, deploy, delete, purchase | explicit approval |
+
+Background execution makes the approval problem easier to hide. It does not make the approval problem disappear. If the job can create external consequences, completion should mean "ready for decision," not automatically "safe to execute."
+
+## Failure handling that users can understand
+
+Every background job needs a user-facing failure rule. A good failure message should say:
+
+- whether the job can be retried;
+- whether partial output exists;
+- whether a human is needed;
+- whether the failure was due to input, provider availability, tool failure, policy, or timeout.
+
+Avoid treating all failures as "try again." Some failures should be retried automatically. Some should be escalated. Some indicate the task design is wrong.
+
+## When background mode is not enough
+
+Background mode is not a substitute for:
+
+- bulk offline processing,
+- full workflow orchestration,
+- data pipelines,
+- durable audit trails,
+- approval systems,
+- or queue priority management.
+
+If the workload is thousands of independent deferred requests, compare it with Batch. If the job spans multiple systems and approval states, treat background mode as one execution step inside a broader workflow.
+
+## Implementation checklist
+
+Before shipping, the team should be able to answer:
+
+1. What internal job record is created before calling OpenAI?
+2. Which statuses can users see?
+3. How does the product recover after a browser refresh or dropped connection?
+4. Who can cancel a job?
+5. Which job types require review before output is used?
+6. What happens to partial output?
+7. What counts as a retryable failure?
+8. How is cost measured per completed job, not just per API call?
+9. Which jobs belong in Batch instead?
+10. Which jobs should stay interactive because users are actively steering them?
+
+## What to read next
+
+<div class="portal-links">
+	<LinkCard
+		title="OpenAI background mode for long-running AI tasks"
+		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
+		description="Use this page for the broader decision boundary between interactive, background, and approval-aware work."
+	/>
+	<LinkCard
+		title="OpenAI background job lifecycle"
+		href="/models-and-apis/openai-background-mode-polling-webhooks-and-job-status-for-long-running-tasks/"
+		description="Go deeper on polling, status transitions, retries, and completion behavior."
+	/>
+	<LinkCard
+		title="OpenAI Batch API vs background mode"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="Use this page when the async question may actually be bulk deferred processing."
+	/>
+</div>

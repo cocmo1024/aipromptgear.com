@@ -1,0 +1,202 @@
+---
+title: OpenAI Computer Use API safety checklist for production agents
+description: A production safety checklist for OpenAI Computer Use API covering sandboxing, allowlists, approvals, secrets, screenshots, and browser action review.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps teams decide whether a computer-use agent is safe enough for a production workflow and which controls must exist before wider rollout.
+readerTakeaway: You should leave with a practical checklist for sandboxing, allowed websites, credential boundaries, approval gates, trace review, and fallback behavior.
+primaryKeyword: openai computer use api safety
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI product engineers
+  - Security engineers
+  - Agent platform teams
+  - Automation leads
+keyQuestions:
+  - What controls should exist before a computer-use agent touches a real browser workflow?
+  - Which browser actions require approval or deterministic automation instead?
+  - How should teams limit prompt injection, credential exposure, and repeated side effects?
+notFor:
+  - Teams with no browser or desktop automation surface
+  - Fully deterministic browser automation projects that do not need UI interpretation
+  - High-stakes workflows where unsupervised computer control is unacceptable
+updateTriggers:
+  - OpenAI changes to Computer Use API capabilities, safety guidance, or model availability
+  - New attack patterns around browser-facing agents and prompt injection
+  - New production deployment patterns for sandboxed computer-use environments
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Computer Use API safety checklist for production agents
+
+Computer-use agents are powerful because they can operate interfaces that were not built as APIs. That is also why they are risky. A model that can click, type, scroll, and interpret screenshots is interacting with a live environment, not only producing text. Production readiness depends less on the demo and more on the control surface around the browser.
+
+The right question is not "can the agent complete the task?" It is "can the system limit damage when the page changes, the model misreads the UI, or untrusted content tries to steer the agent?"
+
+## The minimum safety baseline
+
+Before using computer use in a production workflow, a team should have:
+
+- a sandboxed browser or desktop environment;
+- a domain allowlist or task-specific navigation boundary;
+- separate credentials with limited scope;
+- approval gates for external side effects;
+- screenshot and action trace capture;
+- timeout, retry, and stop rules;
+- a fallback path to deterministic automation or human handling.
+
+If those controls do not exist, the agent may be capable, but the system is not production-ready.
+
+## 1. Run the agent in a constrained environment
+
+Do not let a computer-use agent operate inside an ordinary employee browser profile. The environment should be isolated from personal sessions, broad internal access, and unrelated credentials.
+
+Good defaults:
+
+- dedicated browser profile;
+- no ambient access to password managers;
+- no shared employee session cookies;
+- narrow network access;
+- clean reset between runs where practical;
+- separate environment for testing and production.
+
+The goal is not only to stop malicious behavior. It is also to make ordinary mistakes less expensive.
+
+## 2. Limit where the agent can go
+
+Browser agents should not roam freely unless the product is explicitly built for open-ended browsing and has the review burden to support it.
+
+Use:
+
+| Boundary | Safer default |
+| --- | --- |
+| Websites | allowlisted domains for the workflow |
+| Navigation | expected paths or task-specific entry points |
+| Downloads | blocked or quarantined unless required |
+| Uploads | explicit approval for customer, internal, or regulated files |
+| External links | review or stop unless the workflow expects them |
+
+This is especially important because web pages can contain untrusted instructions.
+
+## 3. Separate read actions from write actions
+
+Not every browser action has the same risk.
+
+Lower-risk actions:
+
+- search within a known site;
+- read a page;
+- inspect a record;
+- collect visible field values;
+- draft a form without submitting.
+
+Higher-risk actions:
+
+- submit a form;
+- send a message;
+- change an account;
+- purchase, refund, cancel, delete, or publish;
+- upload internal or customer data;
+- authenticate into a new system.
+
+The production rule should be clear: reading may be automated earlier; writing usually needs approval, narrow tools, or deterministic automation.
+
+## 4. Treat screenshots and page content as sensitive data
+
+Computer-use systems often store screenshots, traces, or observations for debugging and evaluation. Those artifacts can include customer data, internal records, personally identifiable information, and credentials accidentally visible on screen.
+
+Before rollout, decide:
+
+- where screenshots are stored;
+- who can view them;
+- how long they are retained;
+- which fields should be masked;
+- how traces are linked to users or accounts;
+- whether traces can be used for model evaluation.
+
+Trace capture is valuable. Uncontrolled trace capture is a data-governance problem.
+
+## 5. Add approval gates where the consequence changes
+
+A computer-use agent can appear harmless during a search task and become consequential at the final click.
+
+Approval should trigger when the agent is about to:
+
+- submit anything externally;
+- modify a record;
+- expose sensitive data;
+- accept terms;
+- spend money;
+- close, delete, or cancel something;
+- create a durable commitment on behalf of a user or company.
+
+The strongest pattern is to let the agent prepare the action, then ask the user or operator to approve the final step.
+
+## 6. Prefer deterministic automation for stable high-volume paths
+
+Computer use is useful when the UI is variable or hard to express as stable selectors. It is not automatically better than browser automation.
+
+If the path is stable, high-volume, and operationally important, deterministic browser automation may be safer and cheaper. Use computer use for ambiguous interpretation; use automation for repeatable execution.
+
+Many production systems should be hybrid:
+
+- computer use to inspect, interpret, or recover from variation;
+- deterministic automation for known steps;
+- human approval for consequential final actions.
+
+## 7. Review action traces, not only final outcomes
+
+Final success can hide unsafe behavior. The agent may complete the task after unnecessary navigation, repeated retries, accidental field edits, or near-miss actions.
+
+Review traces for:
+
+- unexpected websites;
+- repeated clicking or typing;
+- sensitive fields viewed unnecessarily;
+- failed actions followed by retries;
+- missing approval triggers;
+- attempts to act outside task scope.
+
+This is where computer-use evals differ from ordinary text-output evals. The path matters.
+
+## Practical rollout rule
+
+Start with:
+
+1. read-only tasks on allowlisted sites;
+2. drafted actions that require human submission;
+3. sampled trace review;
+4. narrow credentials;
+5. deterministic automation for stable steps;
+6. explicit stop rules for unexpected pages.
+
+Only expand after the trace data shows that failures are understood and bounded.
+
+## What to read next
+
+<div class="portal-links">
+	<LinkCard
+		title="Computer Use API vs browser automation"
+		href="/agent-systems/computer-use-api-vs-browser-automation-for-ai-agents/"
+		description="Use this page to decide whether computer use, deterministic automation, or a hybrid control plane fits the workflow."
+	/>
+	<LinkCard
+		title="Prompt injection defenses for tool-using agents"
+		href="/agent-systems/prompt-injection-defenses-for-tool-using-agents/"
+		description="Use this page when untrusted pages, files, or tool outputs may influence the agent's plan."
+	/>
+	<LinkCard
+		title="Should AI agents run in a sandbox?"
+		href="/agent-systems/should-ai-agents-run-in-a-sandbox/"
+		description="Use this page to decide how strict runtime isolation should be before agents touch real systems."
+	/>
+</div>

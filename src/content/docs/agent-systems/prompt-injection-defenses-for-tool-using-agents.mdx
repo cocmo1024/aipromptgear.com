@@ -1,6 +1,6 @@
 ---
 title: Prompt injection defenses for tool-using agents
-description: How to design prompt injection defenses for tool-using agents so untrusted instructions in web pages, files, or tool outputs do not quietly become system behavior.
+description: Design prompt injection defenses for tool-using agents by treating web pages, files, retrieved chunks, and tool outputs as untrusted input.
 referenceType: workflow
 adProfile: workflow
 commercialIntent: high
@@ -26,7 +26,13 @@ notFor:
 updateTriggers:
   - Changes in official OpenAI safety guidance for computer use and tool-connected systems
   - New production patterns for defending tool-using agents against prompt injection
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-15
+lastReviewed: 2026-04-24
 ---
+
+# Prompt injection defenses for tool-using agents
 
 ## What matters first
 
@@ -40,6 +46,19 @@ The minimum viable defense is:
 - and use explicit allowlists for browsing, execution, or system actions.
 
 If the system relies mainly on "the model should ignore malicious instructions," the defense is weak.
+
+## Tool outputs are untrusted
+
+The most important rule is simple: **tool outputs are data, not instructions**. A browsed web page, retrieved chunk, support ticket, PDF, repository file, or third-party API response can contain text that looks like an instruction. The agent runtime has to preserve the authority boundary anyway.
+
+That means the system should not let content returned by a tool decide:
+
+- which higher-privilege tool becomes available;
+- whether an approval gate is skipped;
+- whether secrets, customer data, or internal files are disclosed;
+- whether the agent can write, delete, purchase, publish, or message externally.
+
+This is the practical meaning behind the common warning that tool outputs are untrusted. The warning is only useful when it becomes runtime design: narrow tools, explicit scopes, side-effect gates, and reviewable traces.
 
 ## Why this matters now
 
@@ -111,4 +130,3 @@ They may help, but they do not meaningfully change the control boundary.
 - [MCP security and approval boundaries for enterprise AI teams](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/)
 - [Computer Use API vs browser automation for AI agents](/agent-systems/computer-use-api-vs-browser-automation-for-ai-agents/)
 - [User-scoped auth vs service accounts for AI agents](/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/)
-

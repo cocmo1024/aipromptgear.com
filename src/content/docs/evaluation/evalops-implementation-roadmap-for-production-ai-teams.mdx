@@ -1,0 +1,196 @@
+---
+title: EvalOps implementation roadmap for production AI teams
+description: A practical EvalOps roadmap for teams moving from ad hoc prompt tests into traces, datasets, graders, release gates, and production score ownership.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps AI teams turn EvalOps from a vague observability idea into a staged implementation plan with owners, scorecards, release gates, and live feedback.
+readerTakeaway: You should leave with a phased roadmap for building EvalOps without buying a dashboard before the team knows what decisions evaluation must support.
+primaryKeyword: evalops implementation
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Applied AI engineers
+  - EvalOps owners
+  - Product engineering leads
+keyQuestions:
+  - What should AI teams implement first when starting EvalOps?
+  - When do traces, datasets, graders, and release gates become necessary?
+  - How do teams avoid turning EvalOps into a dashboard with no release authority?
+notFor:
+  - Prototype projects with no release process
+  - Teams only looking for academic benchmarks
+  - Buyers who want a vendor shortlist before defining evaluation ownership
+updateTriggers:
+  - New production EvalOps patterns around traces, release gates, and live sampling
+  - Major product changes across AI observability and evaluation platforms
+  - Changes in how model providers expose tracing, graders, or managed eval tools
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# EvalOps implementation roadmap for production AI teams
+
+EvalOps fails when teams start with tooling before they know which release decisions evaluation must support. A dashboard can show traces. It cannot decide which failures block a launch, who owns the scorecard, or what happens when live traffic gets worse after deployment. The implementation roadmap should start with decisions, then evidence, then automation.
+
+The goal is not to evaluate everything. The goal is to make the important AI behavior hard to change accidentally.
+
+## Phase 1: name the release decisions
+
+Before building datasets or buying observability tooling, write down the decisions evaluation must support:
+
+- Can this prompt change ship?
+- Can this model route replace the old route?
+- Can this tool-using agent move from draft-only to write-enabled?
+- Can this support agent answer without review for a specific class of tickets?
+- Can this deep research workflow be trusted for a higher-value customer segment?
+
+If the team cannot name the decisions, EvalOps becomes reporting theater. Reports are useful only when they change what ships.
+
+## Phase 2: define failure classes
+
+The next step is to stop treating all errors as the same quality problem.
+
+Useful failure classes include:
+
+| Failure class | Example | Why it matters |
+| --- | --- | --- |
+| Answer quality | wrong answer, vague answer, missing caveat | affects user trust and usefulness |
+| Tool selection | wrong tool, no tool, unnecessary tool | affects cost, latency, and correctness |
+| Tool arguments | malformed input, wrong account, unsafe parameters | affects execution risk |
+| Policy boundary | skipped approval, exceeded authority, exposed data | affects governance and compliance |
+| Evidence quality | weak source, missing citation, stale source | affects research and customer-facing claims |
+| Recovery behavior | failed retry, no fallback, silent failure | affects production reliability |
+
+This taxonomy matters because one overall score is rarely enough. A release can improve answer fluency while making tool behavior more dangerous.
+
+## Phase 3: collect traces before curating datasets
+
+Teams often try to build a perfect eval dataset too early. For production systems, traces usually come first. Real traces show:
+
+- which inputs actually arrive;
+- which tools are called;
+- where the run stalls;
+- what reviewers override;
+- which failures users or operators notice.
+
+After two or three weeks of traces, the team can build a dataset grounded in real use instead of imagined examples.
+
+## Phase 4: build the first scorecard
+
+A useful scorecard should be small enough to own and strong enough to block risky releases.
+
+A first scorecard might include:
+
+| Score | Owner | Release use |
+| --- | --- | --- |
+| Task success | product owner | blocks release if primary outcome degrades |
+| Tool correctness | platform engineer | blocks changes to routing, tools, or orchestration |
+| Approval behavior | risk owner | blocks expansion of autonomy |
+| Evidence quality | domain reviewer | blocks research or customer-facing output changes |
+| Cost per successful run | engineering or FinOps owner | forces model/tool routing review |
+| Reviewer burden | operations owner | catches systems that "work" only by shifting cost to humans |
+
+Do not add a metric unless someone owns it.
+
+## Phase 5: separate offline evals from live sampling
+
+Offline evals protect known cases. Live sampling catches drift.
+
+Use offline evals for:
+
+- regression suites;
+- known policy boundaries;
+- benchmark-like task slices;
+- repeatable comparison between model or prompt versions.
+
+Use live sampling for:
+
+- new user behavior;
+- long-tail tool failures;
+- prompt injection attempts;
+- changed customer data;
+- reviewer burden that static datasets do not reveal.
+
+The healthiest EvalOps systems use both. Offline evals make releases less reckless. Live sampling makes production less blind.
+
+## Phase 6: add release gates
+
+An evaluation system without release gates is advisory. That can be fine early, but it is not EvalOps yet.
+
+Release gates should define:
+
+- which score must stay above a threshold;
+- which failures are automatic blockers;
+- who can override the gate;
+- what evidence must be attached to an override;
+- how rollback happens if live metrics degrade.
+
+The gate does not need to be fully automated on day one. It does need to be real.
+
+## Phase 7: connect cost to quality
+
+AI teams often optimize quality and cost in separate conversations. That breaks down once agents use search, retrieval, execution, and multiple model lanes.
+
+Track:
+
+- cost per successful run;
+- cost per reviewed run;
+- cost per approved action;
+- cost per avoided escalation;
+- cost per high-risk failure caught before release.
+
+This turns EvalOps into a business system, not just an engineering hygiene system.
+
+## What to avoid
+
+Avoid these common implementation mistakes:
+
+- buying an observability tool before defining release decisions;
+- keeping traces but never reviewing them;
+- using LLM graders without human calibration;
+- treating reviewer notes as anecdotes instead of data;
+- measuring only final answers when tool behavior is the real risk;
+- creating scorecards that no one owns;
+- adding gates so strict that teams route around them.
+
+## A 30-day starter plan
+
+For the first month, a practical rollout is:
+
+1. Pick one production workflow.
+2. Define the three most expensive failure classes.
+3. Capture traces for live runs.
+4. Sample a small number of real runs each week.
+5. Create one scorecard with named owners.
+6. Add a release review step for prompt, model, or tool changes.
+7. Write down the first rollback rule.
+
+That is enough to start. The point is to create a system that improves with evidence.
+
+## What to read next
+
+<div class="portal-links">
+	<LinkCard
+		title="What is EvalOps for AI teams?"
+		href="/evaluation/what-is-evalops-for-ai-teams/"
+		description="Start here if the team still needs the operating model behind EvalOps."
+	/>
+	<LinkCard
+		title="Shadow evals and canary rollouts"
+		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
+		description="Use this page when release discipline needs to include staged rollout and live comparison."
+	/>
+	<LinkCard
+		title="How should AI teams sample live traffic for agent evals?"
+		href="/evaluation/how-should-ai-teams-sample-live-traffic-for-agent-evals/"
+		description="Go deeper on sampling strategy once traces are flowing."
+	/>
+</div>

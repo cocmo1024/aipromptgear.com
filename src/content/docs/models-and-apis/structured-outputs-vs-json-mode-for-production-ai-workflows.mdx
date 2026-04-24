@@ -1,6 +1,6 @@
 ---
-title: Structured Outputs vs JSON Mode for Production AI Workflows
-description: When schema-constrained structured outputs are worth the extra design work, and when JSON mode is still enough for a production AI workflow.
+title: "Structured Outputs vs JSON mode: production AI output contracts"
+description: Compare Structured Outputs and JSON mode for production AI workflows where parsing failures, tool inputs, schemas, and downstream contracts matter.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -36,7 +36,7 @@ lastReviewed: 2026-04-22
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# Structured Outputs vs JSON Mode for Production AI Workflows
+# Structured Outputs vs JSON mode: production AI output contracts
 
 Teams get this decision wrong when they optimize for the first parsing success instead of the long-term failure rate. JSON mode can look sufficient in a demo because the model often returns parseable JSON. Production systems fail on the edge cases: missing required fields, extra keys, invalid enums, empty arrays where a tool expects one item, or subtly malformed values that still pass loose parsing. Structured outputs matter when those failures create real operational cost.
 
