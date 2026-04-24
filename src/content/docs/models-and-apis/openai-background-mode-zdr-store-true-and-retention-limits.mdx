@@ -1,0 +1,148 @@
+---
+title: OpenAI background mode, ZDR, store=true, and retention limits
+description: What OpenAI background mode means for Zero Data Retention, store=true, polling, response retention, and enterprise data-control decisions.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps enterprise AI teams understand the data-control boundary around background mode before they move long-running work into asynchronous execution.
+readerTakeaway: You should leave with a practical rule for when background mode conflicts with Zero Data Retention expectations and how that should affect architecture.
+primaryKeyword: openai background mode zero data retention
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security engineers
+  - Enterprise architects
+  - Compliance owners
+keyQuestions:
+  - Is OpenAI background mode compatible with Zero Data Retention?
+  - Why does background mode require stored response state for polling?
+  - How should enterprise teams decide which workloads can use background mode?
+notFor:
+  - Teams with no retention or data-control constraints
+  - Readers looking for a legal interpretation instead of an architecture boundary
+  - Batch-only workloads with no long-running product task
+updateTriggers:
+  - OpenAI changes background mode retention or ZDR guidance
+  - Changes in Responses API data-control behavior
+  - New enterprise data-control patterns for long-running AI tasks
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI background mode, ZDR, store=true, and retention limits
+
+Background mode is attractive because it lets long-running work continue after the initial request. For enterprise teams, the harder question is data control. A background response needs retrievable state. That makes it different from a stateless synchronous call, and it changes which workloads should be allowed onto that lane.
+
+This is not only a compliance footnote. It is an architecture boundary.
+
+## Current official signals checked April 24, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode stores response data for roughly 10 minutes to enable polling and is not Zero Data Retention compatible | Teams with strict ZDR expectations should not treat background mode as a drop-in replacement for stateless requests |
+| [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background sampling requires `store=true`; stateless requests are rejected | The long-running job model depends on stored response state |
+| [OpenAI data controls documentation](https://platform.openai.com/docs/models/how-we-use-your-data) | Background mode data storage for polling is called out separately from normal response behavior | Data-control review should happen before moving sensitive jobs into background mode |
+
+## The practical rule
+
+Use background mode only for workloads where stored response state is acceptable under your data-control policy.
+
+If a workload requires strict Zero Data Retention behavior, background mode may be the wrong runtime lane even if the task is technically long-running.
+
+That creates a three-part decision:
+
+1. Does the job need long-running execution?
+2. Does the product need polling or later retrieval?
+3. Is stored response state acceptable for this data class?
+
+All three need to be true.
+
+## Why background mode needs stored state
+
+A background job must be retrievable after the initial request. The product may need to poll status, reconnect a UI, recover from a dropped stream, cancel a response, or fetch the final output. Those behaviors require provider-side state for the duration of the background workflow.
+
+That is the tradeoff:
+
+- background mode improves reliability for long-running tasks;
+- stored state enables polling and recovery;
+- strict statelessness becomes harder or unavailable for that lane.
+
+The architecture should make that tradeoff visible.
+
+## Workloads that usually fit
+
+Background mode can be a good fit for:
+
+- long research jobs using non-sensitive sources;
+- document transformation where retention is allowed;
+- internal report drafting;
+- coding-agent analysis where repository data is approved for this lane;
+- review-gated generation where the output is not immediately published.
+
+The common pattern is that the organization accepts temporary stored state in exchange for a healthier long-running workflow.
+
+## Workloads that need more caution
+
+Be careful with:
+
+- regulated customer data;
+- sensitive internal investigations;
+- confidential legal or financial material;
+- highly restricted support tickets;
+- workloads contractually requiring ZDR or equivalent handling;
+- data that should not be retrievable outside a live request.
+
+For these workloads, teams may need a different architecture: synchronous constrained calls, internal processing, a separate provider configuration, or a product-owned workflow that avoids background storage assumptions.
+
+## Policy should be attached to job type
+
+Do not make data-control decisions one request at a time. Attach them to job types.
+
+| Job type | Background mode default |
+| --- | --- |
+| Public-source research | usually allowed |
+| Internal low-sensitivity drafting | often allowed |
+| Customer-support analysis | depends on data class |
+| Legal or regulated document review | usually needs security review |
+| High-sensitivity customer data | avoid unless policy explicitly permits |
+
+This keeps engineers from discovering the data-control problem during incident review.
+
+## Implementation checklist
+
+Before enabling background mode for a workflow, answer:
+
+1. What data class does the job process?
+2. Is temporary stored response state acceptable?
+3. Does the workflow require polling, cancellation, or later retrieval?
+4. Is the job compatible with the organization's ZDR expectations?
+5. Should this job type be blocked from background mode by policy?
+6. Does the audit trail record why background execution was allowed?
+7. Is there a fallback lane for sensitive work?
+
+## What to read next
+
+<div class="portal-links">
+	<LinkCard
+		title="How to use OpenAI background mode"
+		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
+		description="Use this page for the broader product and runtime boundary around long-running AI tasks."
+	/>
+	<LinkCard
+		title="Build a background processing AI system"
+		href="/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/"
+		description="Use this page when you need durable job records, status, cancellation, and review behavior."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Use this page when data-control decisions must be visible after the fact."
+	/>
+</div>

@@ -1,0 +1,168 @@
+---
+title: OpenAI Batch API limits, expiration, and output files
+description: How OpenAI Batch API limits, 24-hour completion windows, expired requests, output files, and error files affect production AI batch jobs.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps AI platform teams design Batch API jobs around the limits and failure states that matter after the discount looks attractive.
+readerTakeaway: You should leave with a concrete operating model for batch size, input files, custom IDs, expired requests, output files, error files, and retry planning.
+primaryKeyword: openai batch api limits
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Applied AI engineers
+  - FinOps owners
+  - Data pipeline owners
+keyQuestions:
+  - What OpenAI Batch API limits matter for production jobs?
+  - What happens when a batch expires?
+  - How should teams design output files, error files, and retries around custom IDs?
+notFor:
+  - Interactive AI products with no deferred jobs
+  - Teams only comparing model quality
+  - Readers looking for a generic queueing tutorial
+updateTriggers:
+  - OpenAI changes Batch API request limits, endpoint support, or completion windows
+  - Changes in batch output or error-file handling
+  - Material changes in rate-limit or queued-token behavior
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Batch API limits, expiration, and output files
+
+The Batch API looks simple from a pricing angle: send deferred work, get lower cost, wait for completion. Production use is more demanding. The team has to design around input files, per-batch limits, queued-token limits, `custom_id` mapping, output files, error files, partial completion, and expired requests.
+
+The discount is useful only when the batch can be operated cleanly.
+
+## Current official signals checked April 24, 2026
+
+| Official source | Current signal | Why it matters |
+| --- | --- | --- |
+| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is designed for asynchronous groups of requests with a 24-hour completion window and lower cost than synchronous APIs | The product should treat Batch as deferred throughput, not live job execution |
+| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | A single batch may include up to 50,000 requests and the input file can be up to 200 MB | Large jobs still need sizing, sharding, and retry planning |
+| [OpenAI Batch API reference](https://platform.openai.com/docs/api-reference/batch/retrieve) | The batch request uses a JSONL file uploaded for the `batch` purpose and currently supports a `24h` completion window | Teams should design around file-based submission and delayed retrieval |
+| [OpenAI rate limits guide](https://platform.openai.com/docs/guides/rate-limits) | Batch queue limits are based on enqueued input tokens for each model | Batch capacity planning is not only request count; queued tokens matter |
+
+## The production boundary
+
+Use Batch when the work is:
+
+- independent by row or record;
+- not user-waiting;
+- valuable even if it finishes hours later;
+- retryable by request or shard;
+- easy to map back to source records through a stable identifier.
+
+Do not use Batch when a single user or workflow is waiting on one tracked result. That is usually a background-mode or product-job problem.
+
+## The limits that should change your design
+
+### Request and file limits
+
+Batch work is submitted as a file. That means the product has to prepare a request file, upload it, start the batch, and later reconcile results.
+
+Practical design implications:
+
+- use one input line per independent unit of work;
+- give every line a stable `custom_id`;
+- shard large jobs by customer, dataset, job type, or run date;
+- keep source records immutable enough that results can be reconciled later;
+- avoid creating one huge batch that is impossible to reason about after partial failure.
+
+### Queued-token limits
+
+Batch capacity is not just "how many rows can I send?" Queued input tokens for a model matter. A small number of very large prompts can exhaust queue capacity faster than many small jobs.
+
+Before scaling Batch, estimate:
+
+- average input tokens per request;
+- high-percentile input size;
+- expected output size;
+- batches in flight per model;
+- whether embeddings or responses are the limiting lane.
+
+This matters for teams using Batch for evals, enrichment, or document processing, where the long tail of prompt size can dominate planning.
+
+## What expired batches mean
+
+An expired batch is not the same as a total loss. OpenAI's Batch documentation states that unfinished requests are cancelled when a batch expires, while completed responses remain available through the output file and expired requests are represented in the error file.
+
+That creates an important operating rule:
+
+**Batch retry should happen at the request level, not blindly at the whole batch level.**
+
+If the team replays the whole file after an expiration, completed requests may be duplicated, costs may rise, and downstream records may be overwritten incorrectly.
+
+## Output-file reconciliation
+
+Every batch job should have a reconciliation step:
+
+1. download the output file;
+2. parse successful responses by `custom_id`;
+3. parse the error file by `custom_id`;
+4. mark each source record as completed, failed, expired, or retryable;
+5. create a retry batch only for retryable failed or expired records;
+6. preserve the original batch ID and retry batch ID for audit.
+
+The `custom_id` is the bridge between the provider output and your internal source record. Treat it as a real production identifier, not a throwaway label.
+
+## Good batch candidates
+
+Strong candidates:
+
+- evaluation sweeps;
+- large-scale support-ticket classification;
+- document tagging;
+- transcript cleanup;
+- content enrichment;
+- embedding or metadata refresh jobs;
+- offline moderation review over historical data.
+
+Weak candidates:
+
+- one customer-facing task;
+- one long research report;
+- anything that needs live approval;
+- anything where the user expects visible progress;
+- work that changes records directly before review.
+
+## Retry and idempotency rules
+
+Batch retries should be boring. A healthy design has:
+
+- stable `custom_id` values;
+- idempotent output writes;
+- a source-record status field;
+- a maximum retry count;
+- a retry reason;
+- separate handling for expired, malformed, rate-limited, and policy-blocked items.
+
+If output writes are not idempotent, Batch will create operational risk once jobs are retried or partially replayed.
+
+## What to read next
+
+<div class="portal-links">
+	<LinkCard
+		title="OpenAI Batch API pricing and when Batch is worth it"
+		href="/models-and-apis/openai-batch-api-pricing-and-when-batch-is-worth-it/"
+		description="Use this page to decide whether the discount actually fits the workload shape."
+	/>
+	<LinkCard
+		title="OpenAI Batch API vs background mode"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="Use this page when the async decision may be bulk throughput versus one tracked product job."
+	/>
+	<LinkCard
+		title="OpenAI Batch vs Flex vs Priority"
+		href="/models-and-apis/flex-processing-vs-priority-and-batch-for-ai-cost-control/"
+		description="Use this page when cost control also depends on service-tier behavior."
+	/>
+</div>
