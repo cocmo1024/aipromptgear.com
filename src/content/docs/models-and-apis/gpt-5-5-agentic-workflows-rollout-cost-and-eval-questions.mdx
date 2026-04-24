@@ -1,0 +1,151 @@
+---
+title: GPT-5.5 Agentic Workflows, Rollout Cost, and Eval Questions
+description: A practical rollout guide for teams evaluating GPT-5.5 in agentic workflows, coding systems, research tasks, and tool-connected AI products.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: GPT-5.5 agentic workflows
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI product managers
+  - Engineering leaders
+  - Platform teams
+  - AI operations teams
+contentStatus: growing
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+problemSolved: How to evaluate a new frontier model release for real agentic workflows without routing every task to the most expensive or newest model by default.
+readerTakeaway: You should leave with a rollout checklist for GPT-5.5 covering task fit, routing, cost per success, eval traces, safety gates, and fallback design.
+keyQuestions:
+  - Which workflows should test GPT-5.5 first?
+  - How should teams compare GPT-5.5 against cheaper or faster models?
+  - What evals and cost controls should exist before a GPT-5.5 rollout?
+notFor:
+  - Consumer-only model reviews
+  - Teams that have not defined production workflows or success metrics
+updateTriggers:
+  - GPT-5.5 API availability or pricing changes
+  - New benchmark or safety disclosures that materially affect rollout decisions
+  - New model-routing, Batch, Flex, or background-processing options
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# GPT-5.5 Agentic Workflows, Rollout Cost, and Eval Questions
+
+OpenAI introduced GPT-5.5 on April 23, 2026. The release creates obvious short-term search demand, but the long-term question is operational: which production workflows should actually use a more capable frontier model, and how should teams prove the value before expanding cost?
+
+For serious teams, "try the newest model" is not a strategy. GPT-5.5 should enter a rollout plan with task classes, routing rules, eval traces, fallback behavior, and cost-per-success measurement.
+
+## Quick answer
+
+Test GPT-5.5 first where extra reasoning, tool use, long-horizon planning, coding accuracy, or deep research quality can change the outcome. Do not route every request to the frontier lane. Define a premium-model budget around successful completions, not raw calls. Keep cheaper, faster, or specialized models in the system for low-risk steps, drafting, classification, extraction, and background work that does not benefit from frontier reasoning.
+
+## The best first workloads
+
+GPT-5.5 is most likely to earn its cost in workflows where failure is expensive and quality improvement is measurable:
+
+| Workload | Why it may fit GPT-5.5 | What to measure |
+| --- | --- | --- |
+| Coding-agent tasks | Repository reasoning, change planning, tool use, debugging, and review awareness | PR acceptance rate, reviewer time, test pass rate, rollback rate |
+| Deep research | Search planning, source synthesis, contradiction handling, and evidence quality | Citation quality, missing-source rate, reviewer correction time |
+| Complex support resolution | Multi-step account, billing, policy, and evidence checks | Correct resolution rate, escalation quality, refund or action errors |
+| Agent orchestration | Long-running tool sequences and recovery from partial failure | Tool success rate, retries, idempotency issues, human intervention |
+| Compliance-sensitive drafting | Need for stronger reasoning before human review | Reviewer edit distance, policy violation rate, approval time |
+
+If the task is simple classification, short drafting, basic summarization, or deterministic extraction, a frontier model may improve polish without improving business outcome.
+
+## Use a routing ladder, not a binary switch
+
+A practical GPT-5.5 rollout should have a ladder:
+
+- baseline fast model for simple or low-risk steps;
+- reasoning-capable model for ambiguous decisions;
+- GPT-5.5 for high-impact tasks that need deeper planning, coding, analysis, or tool recovery;
+- human review for high-consequence actions or uncertain evidence;
+- fallback model or safe-stop path when the premium lane degrades.
+
+The routing rule should be written in workflow language. "Use GPT-5.5 when the user asks a hard question" is too vague. "Use GPT-5.5 when the task requires repository-wide code edits across more than one subsystem and test-failure recovery" is closer to a usable rule.
+
+## Cost per success is the right budget
+
+The most common mistake is comparing token price without measuring completed outcomes. For GPT-5.5, measure:
+
+- total model spend per accepted task;
+- tool-call spend and latency;
+- human review minutes saved or added;
+- retries and failed attempts;
+- incident, rollback, or correction cost;
+- user or team time saved after the output is accepted.
+
+A more expensive model can be cheaper if it reduces retries, reviewer load, failed tool actions, or rework. It can also be wasteful if it is used for tasks that cheaper lanes already solve.
+
+## Eval design before expansion
+
+Before wide rollout, create an eval set around real workflow traces:
+
+- successful baseline traces;
+- known hard cases;
+- near-miss cases that previously required human correction;
+- adversarial or policy-sensitive cases;
+- tool-failure and partial-data cases;
+- examples where cheaper models were already good enough.
+
+Grade the full workflow, not only the final answer. For agents, a "correct" final answer can still hide unsafe tool calls, wasteful retries, broken citation behavior, or weak approval boundaries.
+
+## Operational risks to check
+
+New model capability can expose old system weaknesses:
+
+- Does the agent have too much tool authority?
+- Can the model spend too much time or money on one task?
+- Are tool outputs treated as untrusted?
+- Can the workflow pause for approval before side effects?
+- Can logs explain why GPT-5.5 was selected?
+- Can the team roll back to a previous model or route?
+
+If the answer is no, the model release should trigger governance work before scale-up.
+
+## Rollout checklist
+
+Use this checklist before making GPT-5.5 a production default:
+
+1. Define the first task classes that justify frontier reasoning.
+2. Create baseline metrics from the current model lane.
+3. Run an offline eval with real traces and hard cases.
+4. Measure cost per successful completion, not only token spend.
+5. Add routing rules and logs that explain model selection.
+6. Start with a canary release or reviewed traffic lane.
+7. Monitor failures, cost spikes, retry loops, and reviewer corrections.
+8. Keep fallback routes and rollback rules ready.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Reasoning models vs fast models"
+		href="/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/"
+		description="Use a general routing framework before premium-model usage becomes the default."
+	/>
+	<LinkCard
+		title="Cost per success and tool economics"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Budget GPT-5.5 around workflow success instead of raw API calls."
+	/>
+	<LinkCard
+		title="Agent evals for tool-using systems"
+		href="/evaluation/agent-evals-for-tool-using-ai-systems/"
+		description="Evaluate the full agent trace, not only the final model answer."
+	/>
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Design fallback and tiered routes before the frontier model becomes a single point of cost or reliability risk."
+	/>
+</div>
+
+## Source note
+
+This page was created after OpenAI's [GPT-5.5 announcement](https://openai.com/index/introducing-gpt-5-5/) on April 23, 2026. It focuses on durable rollout questions rather than launch-week model commentary.

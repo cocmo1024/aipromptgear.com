@@ -1,0 +1,177 @@
+---
+title: Enterprise Agent Governance Control Plane
+description: A practical operating model for governing AI agents across identity, permissions, tools, approvals, audit trails, budgets, evals, and incident response.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: enterprise AI agent governance control plane
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - CIO teams
+  - AI platform teams
+  - Security teams
+  - Governance leads
+contentStatus: growing
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+problemSolved: How to govern AI agents as they spread across departments, tools, identities, data stores, workflows, and vendor platforms.
+readerTakeaway: You should leave with a practical control-plane checklist for agent identity, permission tiers, approval gates, audit evidence, budgets, evals, and rollback.
+keyQuestions:
+  - What should an enterprise AI agent governance control plane include?
+  - How should organizations manage AI agent permissions and approvals?
+  - What signals should be centralized before agents scale across the business?
+notFor:
+  - Small prototypes with no production data or tools
+  - Teams looking only for a generic AI policy document
+updateTriggers:
+  - New enterprise agent platform releases
+  - New agent marketplace, identity, or admin-control capabilities
+  - New compliance or security requirements around AI actions
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Enterprise Agent Governance Control Plane
+
+Enterprise AI is moving from assistant adoption to agent operations. Once agents can search files, draft messages, call tools, open tickets, modify records, review code, or recommend decisions, organizations need more than a policy document. They need a control plane.
+
+A governance control plane is the operating layer that answers: who can create agents, what agents can access, which actions need approval, how actions are logged, how costs are controlled, how failures are investigated, and how unsafe behavior is rolled back.
+
+## Quick answer
+
+An enterprise agent governance control plane should centralize agent inventory, identity, permission tiers, tool scopes, approval policies, audit trails, model routes, spend budgets, eval gates, incident response, and lifecycle ownership. The goal is not to slow every agent. The goal is to make agent behavior governable before thousands of small automations become invisible operational risk.
+
+## The control-plane stack
+
+| Layer | What it controls | Why it matters |
+| --- | --- | --- |
+| Inventory | Which agents exist, who owns them, where they run | Shadow agents become unreviewable risk |
+| Identity | User-scoped, service-account, delegated, or system authority | Authority determines blast radius |
+| Tool scopes | Read, draft, write, execute, approve, or irreversible actions | Broad tools create hidden side effects |
+| Data boundaries | Customer, employee, financial, code, healthcare, legal, or regulated context | Data risk changes approval and logging requirements |
+| Approval policy | Which actions pause, notify, route, or auto-execute | Human review should protect high-risk steps, not block everything |
+| Audit trail | Instructions, evidence, tool calls, approvals, outputs, and side effects | Incidents and compliance reviews need durable evidence |
+| Evals and release gates | Quality, safety, regression, and task-success checks | Agents should not change behavior silently |
+| Budget controls | Model, tool, search, compute, and review spend | Cost spikes often signal workflow failures |
+| Incident response | Containment, rollback, communication, and post-incident eval updates | Production agents need operational recovery paths |
+
+## Agent identity is the first governance decision
+
+Every agent action should answer whose authority is being used:
+
+- the end user's delegated scope;
+- a team-owned service identity;
+- a workflow-specific service account;
+- a platform-owned system identity;
+- a temporary approved escalation.
+
+User-scoped authority is often safer for personal work, but it can make automation inconsistent. Service accounts can be stable, but they are dangerous if too broad. The control plane should make this explicit instead of burying authority inside integrations.
+
+## Permission tiers should be business-readable
+
+Governance works better when non-engineers can understand the tiers:
+
+- read: retrieve, search, summarize, inspect;
+- draft: prepare a response, ticket, PR, or record change without submitting;
+- recommend: produce a decision package for human action;
+- write with approval: modify systems after a human approves;
+- write without approval: execute low-risk, reversible actions;
+- irreversible or regulated: always require explicit control, logging, and ownership.
+
+Each tool should map to a tier. A generic "agent has access to CRM" statement is not enough.
+
+## Approval policy should be risk-based
+
+Approval should trigger on consequence, not model uncertainty alone. Common triggers include:
+
+- money movement, refunds, pricing, or contract changes;
+- customer-facing messages in sensitive contexts;
+- deletion, merge, deploy, or configuration changes;
+- access to regulated or highly sensitive data;
+- low evidence quality;
+- unusual tool sequence or repeated failures;
+- budget or runtime threshold exceeded.
+
+If every action requires approval, agents become expensive drafting tools. If no action requires approval, governance is fake.
+
+## Audit trails need to cover reasoning and side effects
+
+The audit record should include:
+
+- user request and task metadata;
+- model and route used;
+- retrieved sources, files, or tool outputs;
+- tool inputs and outputs;
+- approval requests and decisions;
+- final response or action;
+- external side effects;
+- failure, retry, and rollback events.
+
+This audit trail supports compliance, incident response, quality review, and future eval dataset construction.
+
+## Budgets are governance signals
+
+Cost control is not only finance. A sudden increase in spend can indicate:
+
+- retry storms;
+- tool failures;
+- overuse of frontier models;
+- search loops;
+- poor routing;
+- agents stuck on ambiguous tasks;
+- excessive human review load.
+
+The control plane should track cost per successful workflow, not just model spend.
+
+## What to centralize and what to leave local
+
+Centralize:
+
+- agent inventory;
+- identity policy;
+- tool scope definitions;
+- approval framework;
+- audit requirements;
+- incident response rules;
+- model and provider risk policy.
+
+Leave local:
+
+- team-specific prompts;
+- domain eval examples;
+- workflow-specific thresholds;
+- business-owner acceptance criteria;
+- local runbooks for specialist teams.
+
+Central control should set boundaries. Teams still need enough ownership to build useful workflows.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Define the durable evidence required to explain and govern agent behavior."
+	/>
+	<LinkCard
+		title="What should an AI agent be allowed to do?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Turn permissions into practical read, draft, approval, and execution boundaries."
+	/>
+	<LinkCard
+		title="How do you roll back an AI agent?"
+		href="/tooling/how-do-you-roll-back-an-ai-agent-in-production/"
+		description="Make rollback part of the governance model before agents scale."
+	/>
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="Apply governance control-plane logic to engineering-agent workflows."
+	/>
+</div>
+
+## Source note
+
+This page responds to the April 2026 enterprise AI push around agent governance and workforce transformation, including Microsoft's [Frontier Transformation](https://www.microsoft.com/en-us/microsoft-365/blog/2026/04/21/the-frontier-transformation/) framing. It is written as a durable governance checklist rather than a vendor-specific recap.

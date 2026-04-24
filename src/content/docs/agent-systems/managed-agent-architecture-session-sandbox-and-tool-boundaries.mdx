@@ -1,0 +1,169 @@
+---
+title: Managed Agent Architecture, Session Sandboxes, and Tool Boundaries
+description: A practical architecture guide for teams designing managed agents with isolated sessions, controlled tools, durable traces, and safe recovery paths.
+referenceType: comparison
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: managed agent architecture
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform engineers
+  - Security teams
+  - Engineering managers
+  - Agent product teams
+contentStatus: growing
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+problemSolved: How to design managed agents as production systems instead of treating agent capability as only a prompt or model problem.
+readerTakeaway: You should leave with a practical model for separating reasoning, execution, session state, tool permissions, sandboxing, retries, traces, and human approval.
+keyQuestions:
+  - What is managed agent architecture?
+  - What should run inside an agent sandbox?
+  - How should tool permissions and session isolation work for production agents?
+notFor:
+  - Single-turn chatbots with no tools or side effects
+  - Teams only experimenting in local demos
+updateTriggers:
+  - New managed-agent framework patterns
+  - New MCP, tool, sandbox, or remote-agent standards
+  - Major production incidents involving agent permissions or tool execution
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Managed Agent Architecture, Session Sandboxes, and Tool Boundaries
+
+Managed agents are becoming a serious architecture pattern because they force teams to answer questions that demos avoid. Where does the agent keep state? Which tools can it call? What credentials does it inherit? What happens after a timeout? Can a human inspect the trace? Can the same agent run safely across customer accounts, repositories, browsers, files, and internal systems?
+
+The important shift is that an agent is not just a model call. It is a runtime with authority, memory, tools, side effects, and failure modes.
+
+## Quick answer
+
+A managed agent architecture should separate the reasoning loop from the execution environment. The reasoning layer plans and chooses actions. The execution layer runs tools inside a constrained session with scoped credentials, network limits, filesystem boundaries, timeouts, retries, and trace capture. Human approvals should sit at side-effect boundaries, not as a vague final review after the agent has already acted.
+
+## The core components
+
+| Component | Job | Failure if ignored |
+| --- | --- | --- |
+| Agent session | Holds task state, files, temporary context, and tool results | Work leaks across users, customers, or tasks |
+| Sandbox | Isolates filesystem, network, process, browser, or code execution | Tools can touch systems outside the intended boundary |
+| Tool broker | Exposes allowed actions with typed inputs and outputs | Agents get broad, ambiguous, or unsafe capabilities |
+| Credential layer | Decides whose authority the action uses | Agents act with excessive service-account power |
+| Approval boundary | Pauses high-consequence actions | Humans review too late or too often |
+| Trace store | Records instructions, tool calls, evidence, approvals, outputs, and errors | Incidents cannot be explained or evaluated |
+| Recovery controller | Handles retries, timeouts, idempotency, and safe stops | Partial failures turn into repeated side effects |
+
+This architecture is not extra bureaucracy. It is what makes agent behavior inspectable and recoverable.
+
+## Separate brain from hands
+
+The model can decide what should happen next. That does not mean it should directly own the power to make the change. A stronger design splits:
+
+- planning and reasoning;
+- tool selection;
+- permission validation;
+- action execution;
+- post-action verification;
+- human approval where needed;
+- durable recording of the trace.
+
+This split lets the system use strong model capability without giving the model unrestricted operational authority.
+
+## What belongs in the sandbox
+
+A sandbox should contain only the resources required for the task:
+
+- temporary working files;
+- scoped repository checkout;
+- browser session with allowed domains;
+- limited network access;
+- approved tool binaries or APIs;
+- task-local environment variables;
+- non-production credentials unless production authority is explicitly approved.
+
+The sandbox should not become a generic remote desktop or a hidden privileged worker. If the agent needs broader access, that should be a conscious escalation.
+
+## Tool boundaries should be narrow and typed
+
+Good tools should describe:
+
+- what the tool can do;
+- what it cannot do;
+- required input structure;
+- expected output structure;
+- whether the tool is read-only, draft-only, write-enabled, or irreversible;
+- retry and idempotency behavior;
+- what approval is required before execution.
+
+Tool output should not be trusted as instruction. It is evidence, data, or result material. The agent can use it, but the runtime should not let tool output redefine policy, permissions, or system instructions.
+
+## Session isolation matters more as agents scale
+
+At low volume, session leakage may look unlikely. At production scale, it becomes a core risk:
+
+- customer A's retrieved context appears in customer B's run;
+- a coding agent carries build artifacts across tasks;
+- a browser session keeps cookies beyond intended scope;
+- a failed run leaves credentials or temporary files behind;
+- old tool results influence a new task incorrectly.
+
+Each agent session should have a lifecycle: create, run, pause, approve, resume, complete, archive, and expire.
+
+## Managed agents need operational budgets
+
+An agent can spend money through model calls, tool calls, search, code execution, browser automation, retries, and human review. Give each run budgets:
+
+- maximum runtime;
+- maximum tool calls;
+- maximum external searches;
+- maximum retry count;
+- maximum spend class;
+- approval threshold when budget is exceeded.
+
+Budget controls are not only finance controls. They prevent runaway loops from becoming reliability incidents.
+
+## Trace review is part of the product
+
+For managed agents, traces should answer:
+
+- what the user asked;
+- what policy and system instructions applied;
+- which model and route were used;
+- what tools were called;
+- what evidence was returned;
+- what the agent decided and why;
+- what approvals happened;
+- what final side effects occurred.
+
+Without trace review, evals, incident response, and governance all become guesswork.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="MCP security and approval boundaries"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Place shared tool access behind explicit read, write, and approval boundaries."
+	/>
+	<LinkCard
+		title="Should AI agents run in a sandbox?"
+		href="/agent-systems/should-ai-agents-run-in-a-sandbox/"
+		description="Decide when runtime isolation is mandatory and when lighter containment is enough."
+	/>
+	<LinkCard
+		title="Tool outputs are untrusted"
+		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
+		description="Preserve the authority boundary between retrieved content, tool results, and system policy."
+	/>
+	<LinkCard
+		title="Tool timeouts, retries, and idempotency"
+		href="/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/"
+		description="Prevent partial failures and retries from creating repeated side effects."
+	/>
+</div>
+
+## Source note
+
+This page builds on current managed-agent architecture discussions, including Anthropic's engineering writeup on [building effective agents with managed agents](https://www.anthropic.com/engineering/managed-agents). The page turns those ideas into a production architecture checklist.

@@ -1,0 +1,154 @@
+---
+title: Workspace AI Agents for Enterprise Knowledge Work
+description: A practical guide for evaluating AI agents inside email, documents, files, meetings, calendars, chat, and enterprise knowledge workflows.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: workspace AI agents for enterprise knowledge work
+searchIntent: select
+decisionStage: shortlist
+targetRoles:
+  - IT leaders
+  - AI adoption leads
+  - Operations leaders
+  - Knowledge workers
+contentStatus: growing
+datePublished: 2026-04-24
+lastReviewed: 2026-04-24
+problemSolved: How to evaluate workspace AI features and agents that operate across email, documents, files, meetings, and internal knowledge without creating uncontrolled data or action risk.
+readerTakeaway: You should leave with a practical framework for deciding where workspace AI agents help, where admin controls matter, and what to test before broad rollout.
+keyQuestions:
+  - What should enterprise workspace AI agents be allowed to do?
+  - How do Google Workspace or Microsoft 365 AI features change governance requirements?
+  - What risks appear when AI can search, summarize, draft, and act across office data?
+notFor:
+  - Personal productivity tips with no enterprise governance angle
+  - Teams that have not defined data access and admin-control requirements
+updateTriggers:
+  - New Google Workspace, Microsoft 365, or productivity-suite AI features
+  - New admin controls, data-access rules, or agent workflow capabilities
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Workspace AI Agents for Enterprise Knowledge Work
+
+Workspace AI is becoming a serious enterprise category because it sits where work already happens: email, documents, spreadsheets, meetings, chats, calendars, files, and internal knowledge. That creates real value and real governance pressure. The agent is no longer answering a question in isolation. It may summarize private threads, draft responses, search team files, generate meeting follow-ups, or automate workflows across systems.
+
+The strongest adoption strategy treats workspace AI as an operating layer, not a convenience feature.
+
+## Quick answer
+
+Evaluate workspace AI agents by workflow and authority. Let them search, summarize, draft, and organize low-risk knowledge work first. Add actions, automation, and cross-system workflows only after data boundaries, admin controls, audit trails, human approvals, and escalation rules are clear. The highest value usually comes from reducing knowledge friction, not from letting agents act freely on day one.
+
+## Common workspace AI jobs
+
+| Job | Good first use | Risk to check |
+| --- | --- | --- |
+| Email summarization | Prioritize long threads and surface decisions | Sensitive customer or employee context |
+| Document drafting | Create first drafts from approved source material | Hallucinated facts or missing policy context |
+| Meeting follow-up | Extract decisions, owners, and next steps | Misattribution or missing nuance |
+| File search | Find relevant internal materials faster | Permission leakage or stale content |
+| Inbox triage | Route, label, or recommend replies | Wrong priority or customer-facing error |
+| Workflow automation | Create tasks, approvals, or handoffs | Unclear authority and side effects |
+
+The most reliable path is search and draft first, action later.
+
+## Why workspace AI is different from a chatbot
+
+A chatbot usually waits for a user to supply context. Workspace AI can sit close to the source:
+
+- emails and attachments;
+- documents and spreadsheets;
+- files and shared drives;
+- meeting transcripts and notes;
+- calendar context;
+- chat history;
+- internal knowledge and admin-defined context.
+
+That proximity makes the output more useful, but it also makes permission design more important. The model should not see or act on data simply because it exists somewhere in the organization.
+
+## Admin controls decide the rollout shape
+
+Before broad rollout, IT and governance teams should understand:
+
+- which data sources the AI can use;
+- whether permission inheritance is respected;
+- whether users can connect external apps or tools;
+- what admins can disable, scope, or audit;
+- where generated outputs are stored;
+- whether actions can be reversed;
+- what logs are available for investigation.
+
+Without these controls, a workspace AI rollout can become a shadow data-access program.
+
+## What to pilot first
+
+Start with workflows where the benefit is clear and the downside is contained:
+
+- internal meeting summaries with human review;
+- search over approved knowledge bases;
+- draft-only customer responses;
+- inbox prioritization without automatic sending;
+- policy Q&A from controlled source documents;
+- weekly status synthesis for a team-owned workspace.
+
+Avoid early pilots that let agents send external messages, change records, approve transactions, or modify permissions without strong review.
+
+## Evaluation criteria
+
+Workspace AI should be evaluated on more than user satisfaction:
+
+- source grounding and citation quality;
+- permission-respecting retrieval;
+- sensitive-data handling;
+- action accuracy;
+- reviewer correction time;
+- escalation quality;
+- repeatability across teams;
+- audit trail completeness;
+- cost per useful workflow.
+
+If the AI saves time but creates unreviewable risk, the rollout is not mature.
+
+## A practical rollout model
+
+1. Inventory workspace data classes and sensitivity.
+2. Select one or two low-risk workflows with clear owners.
+3. Enable search and summarization before write actions.
+4. Require draft mode for customer-facing or policy-sensitive outputs.
+5. Add audit logging and reviewer feedback loops.
+6. Expand to automation only after error patterns are understood.
+7. Review admin controls monthly as vendors add features.
+
+This rollout model keeps adoption moving without treating workspace AI as uncontrolled automation.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Should AI agents have access to customer data?"
+		href="/agent-systems/should-ai-agents-have-access-to-customer-data/"
+		description="Define which customer context agents can see and how review should change when data is sensitive."
+	/>
+	<LinkCard
+		title="Human in the loop vs human on the loop"
+		href="/workflows/human-in-the-loop-vs-human-on-the-loop-for-ai-agents/"
+		description="Decide when workspace AI needs pre-action approval versus oversight after the fact."
+	/>
+	<LinkCard
+		title="Enterprise agent governance control plane"
+		href="/tooling/enterprise-agent-governance-control-plane/"
+		description="Use a broader governance model when workspace AI expands across departments."
+	/>
+	<LinkCard
+		title="Web search vs RAG"
+		href="/models-and-apis/web-search-vs-rag-for-ai-products/"
+		description="Separate live web discovery from owned internal knowledge retrieval."
+	/>
+</div>
+
+## Source note
+
+This page was updated after Google introduced [Workspace Intelligence](https://workspace.google.com/blog/product-announcements/introducing-workspace-intelligence) on April 22, 2026. It focuses on durable evaluation and governance questions for workspace AI rather than one vendor's feature list.
