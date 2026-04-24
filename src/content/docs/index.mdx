@@ -23,31 +23,31 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 
 <CardGrid stagger>
 	<Card title="Use cases" icon="open-book">
-		Buyer-intent coverage for support operations, research systems, team workflows, and AI-assisted execution.
+		Buyer-intent coverage for support operations, research systems, engineering teams, and AI-assisted execution.
 	</Card>
 	<Card title="Workflow design" icon="rocket">
-		Reusable prompt flows, orchestration patterns, escalation logic, and operator handoff patterns.
+		Orchestration patterns, escalation thresholds, approval logic, handoffs, and operator runbooks.
 	</Card>
 	<Card title="Agent systems" icon="launch">
-		MCP, tool-connected agents, autonomy boundaries, and the operating discipline required before agents touch real systems.
+		MCP, tool-connected agents, computer use, autonomy boundaries, and production safety design.
 	</Card>
 	<Card title="Prompt library" icon="document">
-		Curated, copy-ready prompts for support operations, research synthesis, release governance, and evaluation work.
+		Curated, copy-ready prompts for support, research, governance, evaluation, and team operations.
 	</Card>
 	<Card title="Image prompt patterns" icon="picture">
-		An editorial archive of GPT-Image-2 prompt patterns rebuilt from public source cases with attribution, controls, and failure analysis.
+		Prompt patterns rebuilt from public image-generation cases with attribution, controls, and failure notes.
 	</Card>
 	<Card title="Models and APIs" icon="document">
-		Model selection, routing, latency planning, capability fit, and API operating constraints.
+		Model selection, routing, latency planning, cost controls, API limits, and runtime constraints.
 	</Card>
 	<Card title="Tooling" icon="setting">
-		Prompt operations stacks, versioning habits, observability signals, and production change control.
+		Prompt operations stacks, versioning habits, observability signals, and release control.
 	</Card>
 	<Card title="Tool comparisons" icon="starlight">
-		Comparison pages for workspaces, evaluation layers, and software choices with real implementation consequences.
+		Commercial comparison pages for coding seats, EvalOps stacks, support AI, and platform decisions.
 	</Card>
 	<Card title="Evaluation" icon="approve-check-circle">
-		Regression design, human review loops, benchmark discipline, and reliability guardrails.
+		Regression design, scorecards, trace review, human review loops, and release gates.
 	</Card>
 </CardGrid>
 
@@ -67,22 +67,22 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 	<LinkCard
 		title="Design agent systems"
 		href="/agent-systems/"
-		description="Go deeper on MCP, tool use, autonomy boundaries, and when agentic patterns are genuinely worth the operating cost."
+		description="Go deeper on MCP, tool use, autonomy boundaries, and when agentic patterns are worth the operating cost."
 	/>
 	<LinkCard
 		title="Open the prompt library"
 		href="/prompt-library/"
-		description="Start from curated, one-click-copy prompt templates built for real support, research, governance, and evaluation work."
+		description="Start from curated, copy-ready templates built for real support, research, governance, and evaluation work."
 	/>
 	<LinkCard
 		title="Browse image prompt patterns"
 		href="/image-prompts/"
-		description="Open the GPT-Image-2 prompt archive for portraits, posters, character sheets, mockups, and benchmark-style image prompt cases."
+		description="Open the GPT-Image-2 prompt archive for portraits, posters, character sheets, mockups, and benchmark-style prompt cases."
 	/>
 	<LinkCard
 		title="Choose models and APIs"
 		href="/models-and-apis/"
-		description="Frame capability fit, latency budgets, cost controls, and routing logic before implementation."
+		description="Frame capability fit, latency budgets, cost controls, routing logic, and API operating boundaries before implementation."
 	/>
 	<LinkCard
 		title="Set up tooling"
@@ -92,7 +92,7 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 	<LinkCard
 		title="Compare tools"
 		href="/tool-comparisons/"
-		description="Compare collaboration, evaluation, and stack decisions on pages built for active tooling research."
+		description="Compare collaboration, evaluation, coding, support, and platform decisions on pages built for active buying research."
 	/>
 	<LinkCard
 		title="Design evaluation loops"
@@ -101,543 +101,115 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 	/>
 </div>
 
-## Featured strategic clusters
+## Current priority clusters
+
+The homepage is intentionally curated. New long-tail pages enter the relevant hub first; the homepage promotes only stable cluster entrances with strong commercial or implementation intent.
 
 <div class="portal-links">
 	<LinkCard
-		title="Support agent controls"
-		href="/use-cases/customer-support-operations/"
-		description="A durable, high-intent cluster around support automation, approvals, guardrails, and workflow economics."
-	/>
-	<LinkCard
-		title="Prompt release governance"
-		href="/tooling/change-management-and-release-policies-for-production-prompts/"
-		description="A stronger governance cluster for teams running production prompts, agent workflows, and shared release responsibility."
-	/>
-	<LinkCard
-		title="Agent systems and MCP"
-		href="/agent-systems/model-context-protocol-for-enterprise-ai-teams/"
-		description="A new cluster built around tool-connected AI systems, MCP, and the boundary between workflow orchestration and broader autonomy."
-	/>
-	<LinkCard
-		title="A2A vs MCP"
-		href="/agent-systems/a2a-vs-mcp-for-enterprise-agent-systems/"
-		description="A current interoperability cluster for teams deciding whether they need tool protocols, remote agent protocols, or a deliberate split between the two."
-	/>
-	<LinkCard
-		title="Single-agent vs multi-agent systems"
-		href="/agent-systems/single-agent-vs-multi-agent-systems-when-handoffs-help/"
-		description="A durable architecture cluster for teams deciding whether handoffs create control and quality gains or simply multiply runtime complexity."
-	/>
-	<LinkCard
-		title="High-value prompt library"
-		href="/prompt-library/"
-		description="A reusable prompt module with copy-ready templates drawn from durable prompting patterns instead of low-value prompt dumps."
-	/>
-	<LinkCard
-		title="GPT-Image-2 prompt archive"
-		href="/image-prompts/"
-		description="A large-scale image prompt cluster rebuilt from attributed community cases into reusable, long-tail pages with stronger search intent coverage."
-	/>
-	<LinkCard
-		title="Model routing economics"
-		href="/models-and-apis/model-routing/"
-		description="A commercial-intent cluster on model fit, latency, spend, and where premium reasoning is actually worth paying for."
-	/>
-	<LinkCard
-		title="API transition pressure point"
-		href="/models-and-apis/responses-api-vs-chat-completions-for-tool-using-ai-products/"
-		description="A current, high-intent cluster around the shift from basic chat integration toward tool-connected and agentic product design."
-	/>
-	<LinkCard
-		title="OpenAI background mode and async agents"
-		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
-		description="A high-growth cluster around long-running AI tasks, async runtime design, and when live UX should hand work off to background execution."
-	/>
-	<LinkCard
-		title="Build a background processing AI system"
-		href="/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/"
-		description="A direct implementation page for teams searching how to build background AI processing with OpenAI background mode, durable jobs, review gates, and recovery behavior."
-	/>
-	<LinkCard
-		title="Background mode data controls"
-		href="/models-and-apis/openai-background-mode-zdr-store-true-and-retention-limits/"
-		description="A high-intent enterprise page for teams checking background mode against Zero Data Retention, store=true, polling, and response-retention requirements."
-	/>
-	<LinkCard
-		title="OpenAI background job lifecycle"
-		href="/models-and-apis/openai-background-mode-polling-webhooks-and-job-status-for-long-running-tasks/"
-		description="A stronger implementation cluster for teams designing polling, webhook, retry, and approval-aware completion around background jobs."
-	/>
-	<LinkCard
-		title="Reasoning models vs fast models"
-		href="/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/"
-		description="A durable model-selection cluster for teams trying to stop paying reasoning-model economics on routine work."
-	/>
-	<LinkCard
-		title="OpenAI Batch API vs background mode"
-		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
-		description="A stronger async architecture cluster for teams separating bulk offline jobs from long-running product tasks."
-	/>
-	<LinkCard
-		title="OpenAI Batch pricing and fit"
-		href="/models-and-apis/openai-batch-api-pricing-and-when-batch-is-worth-it/"
-		description="A stronger cost-control cluster for teams deciding whether the Batch discount actually matches their workload."
-	/>
-	<LinkCard
-		title="OpenAI Batch limits and expiration"
-		href="/models-and-apis/openai-batch-api-limits-expiration-and-output-files/"
-		description="A practical implementation page for teams planning request limits, input files, expired requests, output files, and retry behavior."
-	/>
-	<LinkCard
-		title="When OpenAI file search is enough"
-		href="/models-and-apis/when-is-openai-file-search-enough-for-a-production-ai-product/"
-		description="A stronger retrieval-economics cluster for teams deciding whether managed file search still fits or whether owned retrieval is now justified."
-	/>
-	<LinkCard
-		title="Built-in search economics"
-		href="/models-and-apis/built-in-search-economics-for-ai-products/"
-		description="A high-value cluster for teams deciding when search creates real product advantage and when it is just expensive default behavior."
-	/>
-	<LinkCard
-		title="Hosted tools vs self-managed tooling"
-		href="/models-and-apis/hosted-tools-vs-self-managed-tooling-for-ai-products/"
-		description="A durable economics and control cluster for teams deciding when hosted tools still win and when internal ownership is now justified."
-	/>
-	<LinkCard
-		title="Tool-use latency and cost budgets"
-		href="/models-and-apis/tool-use-latency-and-cost-budgets/"
-		description="A workflow-economics cluster for teams trying to control search, retrieval, and execution costs before tool use silently stacks into product drag."
-	/>
-	<LinkCard
-		title="Cost per success for agentic products"
+		title="AI runtime economics"
 		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
-		description="A stronger economics cluster for teams that now need to judge tool-connected products by successful outcomes, not only API line items."
+		description="Model, tool, review, latency, and failure cost framed around successful outcomes instead of raw API line items."
 	/>
 	<LinkCard
-		title="GPU cloud vs hosted model APIs"
-		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
-		description="A high-value infrastructure cluster for teams deciding when renting GPUs is real margin discipline and when APIs still buy the better operating outcome."
+		title="OpenAI background processing"
+		href="/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/"
+		description="Durable job records, polling, webhooks, cancellation, review gates, failure handling, retention, and data-control boundaries."
 	/>
 	<LinkCard
-		title="A100 vs H100 economics"
-		href="/models-and-apis/a100-vs-h100-economics-for-inference-products/"
-		description="A high-intent infrastructure cluster for teams that have already crossed into rented compute and now need to choose the right GPU class."
+		title="Batch, Flex, and async lanes"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="A cluster for separating deferred backlog processing, long-running product tasks, service tiers, limits, expiration, and retry behavior."
 	/>
 	<LinkCard
-		title="Batch and flex before rented GPUs"
-		href="/models-and-apis/when-batch-and-flex-are-cheaper-than-rented-gpus/"
-		description="A current cost-control cluster for teams that may still have cheaper hosted service tiers available before taking on GPU ownership."
-	/>
-	<LinkCard
-		title="OpenAI Batch vs Flex vs Priority"
-		href="/models-and-apis/flex-processing-vs-priority-and-batch-for-ai-cost-control/"
-		description="A current high-intent service-tier cluster for teams under pressure to cut AI runtime cost without wrecking user-facing performance."
-	/>
-	<LinkCard
-		title="File search vs vector database"
-		href="/models-and-apis/file-search-vs-external-vector-databases-for-ai-products/"
-		description="A retrieval architecture cluster for teams deciding when managed search is enough and when they are now paying for a real indexing platform."
-	/>
-	<LinkCard
-		title="What drives vector database spend?"
-		href="/models-and-apis/what-drives-vector-database-spend-in-ai-products/"
-		description="A stronger retrieval-economics cluster for teams trying to understand why vector cost grows after launch and when external retrieval ownership is genuinely justified."
-	/>
-	<LinkCard
-		title="Web search vs RAG"
-		href="/models-and-apis/web-search-vs-rag-for-ai-products/"
-		description="A durable architecture cluster for one of the easiest ways AI products waste money and muddle trust boundaries."
-	/>
-	<LinkCard
-		title="Conversation state vs RAG vs long context"
-		href="/models-and-apis/conversation-state-vs-rag-vs-long-context-for-ai-agents/"
-		description="A current architecture cluster for teams trying to stop treating thread state, retrieval, and long context as the same memory problem."
-	/>
-	<LinkCard
-		title="Structured output reliability"
-		href="/models-and-apis/structured-outputs-vs-json-mode-for-production-ai-workflows/"
-		description="A durable implementation cluster around output contracts, tool inputs, typed workflows, and production parsing risk."
-	/>
-	<LinkCard
-		title="Caching vs retrieval vs fine-tuning"
-		href="/models-and-apis/prompt-caching-vs-retrieval-vs-fine-tuning-for-ai-products/"
-		description="A systems-design cluster built to capture high-intent traffic from teams trying to improve quality, latency, and cost without choosing the wrong optimization lever."
-	/>
-	<LinkCard
-		title="MCP security and approvals"
-		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
-		description="A more implementation-focused cluster for teams moving from MCP curiosity into real production security design."
-	/>
-	<LinkCard
-		title="Computer Use API vs browser automation"
-		href="/agent-systems/computer-use-api-vs-browser-automation-for-ai-agents/"
-		description="A browser-agent cluster for teams trying to separate UI interpretation problems from deterministic browser control."
-	/>
-	<LinkCard
-		title="Computer Use API safety checklist"
-		href="/agent-systems/openai-computer-use-api-safety-checklist-for-production-agents/"
-		description="A production-readiness page for teams that need sandboxing, allowlists, approval gates, trace review, and credential boundaries before browser agents go live."
-	/>
-	<LinkCard
-		title="Prompt injection defenses"
-		href="/agent-systems/prompt-injection-defenses-for-tool-using-agents/"
-		description="A security-control cluster for teams trying to stop untrusted pages, files, and search results from steering tool-using agents into unsafe behavior."
-	/>
-	<LinkCard
-		title="Tool outputs are untrusted"
+		title="Agent tool safety"
 		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
-		description="A direct authority-boundary page for teams protecting agents from instructions hidden in tool outputs, retrieved content, files, and screenshots."
+		description="Authority boundaries for tool outputs, retrieved chunks, files, screenshots, browser pages, and prompt-injection resistance."
 	/>
 	<LinkCard
-		title="Agents SDK vs app-owned orchestration"
-		href="/agent-systems/agents-sdk-vs-app-owned-orchestration-for-production-agents/"
-		description="A framework-choice cluster for teams deciding whether an agent SDK still accelerates the product or is starting to replace product-owned workflow truth."
-	/>
-	<LinkCard
-		title="User-scoped auth vs service accounts"
-		href="/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/"
-		description="A control-boundary cluster for teams deciding whose permissions an agent should actually use once tools reach real systems."
-	/>
-	<LinkCard
-		title="Least-privilege tool scopes"
-		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
-		description="A higher-intent control cluster for teams translating agent permissions into narrow tool scopes instead of broad integration access."
-	/>
-	<LinkCard
-		title="Guardrails vs evals"
-		href="/agent-systems/guardrails-vs-evals-for-production-agent-systems/"
-		description="A high-intent operations cluster for teams trying to stop mixing runtime safety with post-release quality measurement."
-	/>
-	<LinkCard
-		title="Tool retries and idempotency"
-		href="/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/"
-		description="A practical control cluster for teams trying to stop repeated agent retries from becoming repeated writes, submissions, or operational drift."
-	/>
-	<LinkCard
-		title="Voice agents for support and intake"
-		href="/use-cases/realtime-voice-agents-for-customer-support-and-intake/"
-		description="A current traffic cluster tied to one of the hottest AI deployment topics, but grounded in support workflow quality and escalation design."
-	/>
-	<LinkCard
-		title="Deep research workflows"
-		href="/use-cases/deep-research-workflows-for-ai-teams/"
-		description="A premium-intent cluster around source-grounded synthesis, research ops, and when long-running research systems are actually worth the cost."
-	/>
-	<LinkCard
-		title="Deep research briefs"
-		href="/workflows/deep-research-briefs-that-produce-better-reports/"
-		description="A workflow cluster for teams trying to improve deep research quality before they simply buy longer runtime."
-	/>
-	<LinkCard
-		title="Deep research source quality"
-		href="/workflows/deep-research-source-quality-and-citation-policy/"
-		description="A high-value deep research cluster for teams that need better source quality, stronger citations, and cleaner evidence discipline."
-	/>
-	<LinkCard
-		title="Deep research evidence packets"
-		href="/workflows/what-should-a-deep-research-system-return-besides-a-report/"
-		description="A workflow-design cluster for teams that need deep research outputs to stay reviewable and reusable instead of collapsing into one polished report."
-	/>
-	<LinkCard
-		title="Deep research runtime budgets"
-		href="/workflows/deep-research-runtime-budgets-and-cost-controls/"
-		description="A cost-control cluster for teams trying to keep deep research useful without letting runtime and spend drift out of proportion to task value."
-	/>
-	<LinkCard
-		title="Deep research escalation thresholds"
-		href="/workflows/human-escalation-thresholds-for-deep-research-systems/"
-		description="A governance cluster for deciding when deep research should continue autonomously and when it should stop and escalate."
-	/>
-	<LinkCard
-		title="AI coding agents for engineering teams"
+		title="Coding-agent governance"
 		href="/use-cases/ai-coding-agents-for-engineering-teams/"
-		description="A large current traffic lane, reframed as an engineering operating system question instead of a shallow demo trend."
+		description="Approval systems, repository permissions, sandboxing, PR checks, reviewer queues, and release gates for engineering teams."
 	/>
 	<LinkCard
-		title="Agent evals for tool use"
-		href="/evaluation/agent-evals-for-tool-using-ai-systems/"
-		description="A strong evaluation cluster for teams moving from simple output scoring into full tool-using agent reliability."
-	/>
-	<LinkCard
-		title="Trace grading for tool-using agents"
-		href="/evaluation/trace-grading-for-tool-using-ai-agents/"
-		description="A stronger evaluation cluster for teams that need to see why agent runs fail instead of only whether the last answer passed."
-	/>
-	<LinkCard
-		title="Tool selection evals and failure taxonomy"
-		href="/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/"
-		description="A practical eval cluster for teams that need to separate tool-choice failures from argument, approval, and synthesis failures."
-	/>
-	<LinkCard
-		title="Search evals and citation audits"
-		href="/evaluation/search-evals-and-citation-audits-for-deep-research-systems/"
-		description="A deep research evaluation cluster for teams that need stronger source quality, citation correctness, and escalation discipline."
-	/>
-	<LinkCard
-		title="EvalOps release gates"
+		title="EvalOps release discipline"
 		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
-		description="An operations-first evaluation cluster for turning scorecards into real release gates, named owners, and rollback discipline."
+		description="Scorecards, traces, datasets, owners, canaries, sampling, and rollback logic for production AI systems."
 	/>
 	<LinkCard
-		title="What is EvalOps?"
-		href="/evaluation/what-is-evalops-for-ai-teams/"
-		description="A stronger entry page for teams trying to understand EvalOps as a release discipline, not a new name for occasional benchmarking."
+		title="Deep research systems"
+		href="/use-cases/deep-research-workflows-for-ai-teams/"
+		description="Source quality, citation policy, evidence packets, runtime budgets, search evals, and escalation thresholds."
 	/>
 	<LinkCard
-		title="EvalOps implementation roadmap"
-		href="/evaluation/evalops-implementation-roadmap-for-production-ai-teams/"
-		description="A practical operations page for teams turning traces, datasets, scorecards, owners, and release gates into a real EvalOps process."
-	/>
-	<LinkCard
-		title="Shadow evals and canary rollouts"
-		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
-		description="A staged-release cluster for teams that need live rollout discipline after offline evals stop being enough."
-	/>
-	<LinkCard
-		title="Live traffic sampling for agent evals"
-		href="/evaluation/how-should-ai-teams-sample-live-traffic-for-agent-evals/"
-		description="A stronger EvalOps cluster for teams deciding what live traffic to review continuously and what to sample statistically."
-	/>
-	<LinkCard
-		title="LLM graders vs human review"
-		href="/evaluation/llm-graders-vs-human-review-for-agent-eval-ops/"
-		description="A high-intent eval-operations cluster for teams deciding where automation should stop and reviewer judgment should start."
-	/>
-	<LinkCard
-		title="Traces vs logs for agent eval ops"
-		href="/evaluation/traces-vs-logs-for-agent-debugging-and-eval-ops/"
-		description="A higher-intent observability cluster for teams that need run-level debugging and release evaluation to share the same execution truth."
-	/>
-	<LinkCard
-		title="Eval-driven development"
-		href="/evaluation/eval-driven-development-for-agentic-products/"
-		description="A product-development cluster for teams trying to make evals shape implementation before regressions reach users."
-	/>
-	<LinkCard
-		title="Ground truth collection for eval ops"
-		href="/evaluation/ground-truth-collection-and-labeling-for-agent-eval-ops/"
-		description="A stronger evaluation-operations cluster for teams trying to build datasets from real agent work instead of shallow benchmark prompts."
-	/>
-	<LinkCard
-		title="Custom support agent QA"
-		href="/evaluation/qa-scorecards-for-custom-support-agents/"
-		description="A support quality cluster for teams that need reviewer cost, escalation quality, and trust signals in the same scorecard."
-	/>
-	<LinkCard
-		title="Eval datasets for coding agents"
-		href="/evaluation/eval-datasets-for-coding-agents-and-repository-tasks/"
-		description="A stronger coding-agent evaluation cluster for teams replacing toy prompts with real repository task coverage."
-	/>
-	<LinkCard
-		title="Approval boundary tests"
-		href="/evaluation/approval-boundary-tests-for-coding-agents/"
-		description="A safety-critical evaluation cluster for proving that coding-agent approval rules hold under realistic repository tasks."
-	/>
-	<LinkCard
-		title="Tool-call success and ground truth"
-		href="/evaluation/tool-call-success-rates-and-ground-truth-for-agent-evals/"
-		description="A practical evaluation cluster for teams that need to see whether agents succeeded at tool use itself, not only whether the final answer sounded right."
-	/>
-	<LinkCard
-		title="Approval systems for coding agents"
-		href="/workflows/approval-systems-for-coding-agents/"
-		description="A governance cluster for engineering teams trying to scale coding-agent leverage without weakening repository or release controls."
-	/>
-	<LinkCard
-		title="Read-only vs write-enabled coding agents"
-		href="/workflows/read-only-vs-write-enabled-coding-agents/"
-		description="A practical governance cluster for teams trying to separate exploratory coding-agent leverage from real repository write risk."
-	/>
-	<LinkCard
-		title="Policy as code for coding-agent permissions"
-		href="/workflows/policy-as-code-for-coding-agent-permissions/"
-		description="A stronger governance cluster for teams encoding coding-agent boundaries in repository policy rather than reviewer instinct."
-	/>
-	<LinkCard
-		title="Sandboxing, network permissions, and secrets"
-		href="/agent-systems/sandboxing-network-permissions-and-secrets-for-coding-agents/"
-		description="A high-intent control-boundary cluster for engineering teams deciding what coding agents should be allowed to read, write, fetch, and use."
-	/>
-	<LinkCard
-		title="PR checks and merge gates for coding agents"
-		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
-		description="A repository-control cluster for teams trying to keep coding-agent speed compatible with merge discipline and release safety."
-	/>
-	<LinkCard
-		title="Approval latency and risk budgets"
-		href="/workflows/approval-latency-and-risk-budgets-for-coding-agents/"
-		description="A control-design cluster for engineering teams balancing risk reduction against approval delay and operator fatigue."
-	/>
-	<LinkCard
-		title="Coding-agent reviewer queues"
-		href="/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/"
-		description="A governance cluster for teams designing reviewer capacity, queue routing, and throttle rules before coding-agent output overwhelms maintainers."
-	/>
-	<LinkCard
-		title="Regression and review discipline"
-		href="/evaluation/regression-loops/"
-		description="An operations-first evaluation cluster built to catch drift before users, agents, or policy owners do."
-	/>
-	<LinkCard
-		title="Cursor vs GitHub Copilot vs Claude Code"
-		href="/tool-comparisons/cursor-vs-github-copilot-vs-claude-code-for-engineering-teams/"
-		description="A coding-seat buyer lane built around one of the strongest current software-intent search categories in AI."
-	/>
-	<LinkCard
-		title="Copilot Business vs Enterprise"
-		href="/tool-comparisons/copilot-business-vs-enterprise-for-software-organizations/"
-		description="A high-intent GitHub buyer lane for organizations deciding whether GitHub-native AI workflow depth now earns the enterprise seat uplift."
-	/>
-	<LinkCard
-		title="Cursor Teams rollout"
-		href="/tool-comparisons/cursor-teams-rollout-for-engineering-organizations/"
-		description="A rollout buyer lane for engineering groups trying to standardize an AI-native editor without overspending on premature seat expansion."
-	/>
-	<LinkCard
-		title="Claude Code premium seats"
-		href="/tool-comparisons/claude-code-premium-seats-and-usage-budgets/"
-		description="A budgeting lane for terminal-heavy coding usage where premium seats behave more like a controlled runtime than a simple subscription."
-	/>
-	<LinkCard
-		title="LangSmith vs Langfuse vs Helicone"
-		href="/tool-comparisons/langsmith-vs-langfuse-vs-helicone-for-agent-eval-ops/"
-		description="An EvalOps buyer lane built for teams moving from agent experiments into release ownership and platform spend."
-	/>
-	<LinkCard
-		title="Phoenix vs LangSmith vs Langfuse"
-		href="/tool-comparisons/phoenix-vs-langfuse-vs-langsmith-for-evalops-teams/"
-		description="A stronger EvalOps buyer lane for teams deciding whether open-source control, flexible hosting, or a fuller platform posture is the better match."
-	/>
-	<LinkCard
-		title="Intercom Fin vs Zendesk AI vs custom support agents"
+		title="Support AI economics"
 		href="/tool-comparisons/intercom-fin-vs-zendesk-ai-vs-custom-support-agents/"
-		description="A service-software buyer lane for one of the most commercially valuable AI adoption categories right now."
+		description="Outcome pricing, reviewer cost, escalation quality, custom agent QA, and support automation fit."
 	/>
 	<LinkCard
-		title="Fin outcomes economics"
-		href="/use-cases/fin-outcomes-economics-for-customer-support-teams/"
-		description="A support-economics lane for leaders who need to know when outcome-priced support AI is healthy and when it is hiding review cost."
+		title="Coding seats and AI IDE rollout"
+		href="/tool-comparisons/cursor-vs-github-copilot-vs-claude-code-for-engineering-teams/"
+		description="Cursor, GitHub Copilot, Claude Code, premium seats, usage budgets, rollout control, and engineering adoption risk."
+	/>
+	<LinkCard
+		title="Retrieval and search economics"
+		href="/models-and-apis/file-search-vs-external-vector-databases-for-ai-products/"
+		description="Managed file search, vector databases, web search, RAG, long context, caching, and retrieval ownership."
+	/>
+	<LinkCard
+		title="GPU cloud versus hosted APIs"
+		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
+		description="A100, H100, rented compute, hosted APIs, Batch, Flex, utilization, reliability, and infrastructure margin discipline."
+	/>
+	<LinkCard
+		title="Image prompt archive"
+		href="/image-prompts/"
+		description="A large-scale image prompt cluster for reusable prompt patterns, style controls, failure modes, and long-tail image-generation searches."
 	/>
 </div>
 
-## High-intent operator questions
+## High-intent question paths
 
 <div class="portal-links">
 	<LinkCard
 		title="How much does an AI agent cost in production?"
 		href="/models-and-apis/how-much-does-an-ai-agent-cost-in-production/"
-		description="A commercial-intent question page for teams trying to budget model, tool, review, and failure economics around successful outcomes."
+		description="Budget model, tool, review, failure, and maintenance economics around successful outcomes."
 	/>
 	<LinkCard
 		title="Do you need RAG for an AI agent or AI product?"
 		href="/models-and-apis/do-you-need-rag-for-an-ai-agent-or-ai-product/"
-		description="A question-first architecture page for teams trying to stop adding retrieval before they prove the product actually needs it."
+		description="Decide when retrieval is necessary and when it adds cost, latency, and governance burden too early."
 	/>
 	<LinkCard
 		title="How do you evaluate AI agents in production?"
 		href="/evaluation/how-do-you-evaluate-ai-agents-in-production/"
-		description="A stronger production-evaluation question page covering outcomes, traces, approvals, and live failure loops."
+		description="Move from answer scoring into outcomes, traces, approval behavior, live failures, and regression loops."
 	/>
 	<LinkCard
-		title="What should an AI agent be allowed to do in production?"
+		title="What should an AI agent be allowed to do?"
 		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
-		description="A high-value permissions question page for teams trying to define read, draft, approval, and execution boundaries before rollout."
-	/>
-	<LinkCard
-		title="How do you calculate AI agent ROI?"
-		href="/models-and-apis/how-do-you-calculate-ai-agent-roi/"
-		description="A buyer-intent economics page for teams trying to separate real workflow return from automation theater."
-	/>
-	<LinkCard
-		title="AI chatbot vs AI agent for business"
-		href="/agent-systems/ai-chatbot-vs-ai-agent-for-business/"
-		description="A strong business-decision page for teams trying to choose between simple answer systems, workflow assistants, and broader agents."
+		description="Define read, draft, approval, execution, and escalation boundaries before tools reach real systems."
 	/>
 	<LinkCard
 		title="When should an AI agent escalate to a human?"
 		href="/workflows/when-should-an-ai-agent-escalate-to-a-human/"
-		description="A workflow-control page for teams defining escalation by authority, consequence, evidence quality, and human ownership."
-	/>
-	<LinkCard
-		title="Should AI agents have access to customer data?"
-		href="/agent-systems/should-ai-agents-have-access-to-customer-data/"
-		description="A high-value trust and security page for narrowing customer-data access before agent rollout expands."
+		description="Use authority, consequence, evidence quality, and ownership to decide when automation should stop."
 	/>
 	<LinkCard
 		title="Should you build or buy an AI agent platform?"
 		href="/tool-comparisons/should-you-build-or-buy-an-ai-agent-platform/"
-		description="A commercial-intent build-vs-buy page for teams deciding which part of the agent stack is actually worth owning."
-	/>
-	<LinkCard
-		title="What is the best first use case for an AI agent?"
-		href="/use-cases/what-is-the-best-first-use-case-for-an-ai-agent/"
-		description="A starting-point page for teams trying to choose a first workflow that is valuable, bounded, and measurable."
-	/>
-	<LinkCard
-		title="Do AI agents need human approval in production?"
-		href="/workflows/do-ai-agents-need-human-approval-in-production/"
-		description="A control-boundary question page for teams trying to separate genuine approval lanes from expensive over-review."
-	/>
-	<LinkCard
-		title="What is human in the loop for AI agents?"
-		href="/workflows/what-is-human-in-the-loop-for-ai-agents/"
-		description="A practical oversight page for teams trying to define where human judgment should actually sit inside agent workflows."
-	/>
-	<LinkCard
-		title="Human in the loop vs human on the loop for AI agents"
-		href="/workflows/human-in-the-loop-vs-human-on-the-loop-for-ai-agents/"
-		description="A design-choice page for teams deciding between pre-action approval and exception-based supervision."
-	/>
-	<LinkCard
-		title="What should you log for an AI agent in production?"
-		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
-		description="An operations-first page for teams that need enough trace, approval, and outcome data to debug real runs."
-	/>
-	<LinkCard
-		title="How should AI teams set approval thresholds for agents?"
-		href="/workflows/how-should-ai-teams-set-approval-thresholds-for-agents/"
-		description="A workflow-governance page for teams choosing which actions should trigger review instead of relying on one generic confidence gate."
+		description="Decide which parts of the agent stack are worth owning and which should be bought."
 	/>
 	<LinkCard
 		title="What should an AI agent audit trail include?"
 		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
-		description="A governance page for teams that need durable records of approvals, evidence, and real-world side effects."
-	/>
-	<LinkCard
-		title="What is a good success rate for an AI agent in production?"
-		href="/evaluation/what-is-a-good-success-rate-for-an-ai-agent-in-production/"
-		description="A production-quality page for teams trying to judge autonomous success by workflow risk instead of one generic benchmark number."
-	/>
-	<LinkCard
-		title="Should AI agents run in a sandbox?"
-		href="/agent-systems/should-ai-agents-run-in-a-sandbox/"
-		description="A production-control page for teams deciding when runtime isolation is mandatory and what sandboxing still does not solve."
-	/>
-	<LinkCard
-		title="What should happen when an AI agent fails in production?"
-		href="/workflows/what-should-happen-when-an-ai-agent-fails-in-production/"
-		description="An incident-response page for teams deciding how failed runs should stop, retry, hand off, and trigger rollback."
+		description="Capture durable records of instructions, evidence, tool calls, approvals, outputs, and side effects."
 	/>
 	<LinkCard
 		title="How do you roll back an AI agent in production?"
 		href="/tooling/how-do-you-roll-back-an-ai-agent-in-production/"
-		description="A release-control page for teams that need practical rollback design across prompts, models, tools, and workflow versions."
-	/>
-	<LinkCard
-		title="How do you monitor AI agents in production?"
-		href="/evaluation/how-do-you-monitor-ai-agents-in-production/"
-		description="A live-operations page for teams that need real monitoring around failures, approvals, rescue work, and cost per outcome."
-	/>
-	<LinkCard
-		title="When should an AI agent ask for confirmation before acting?"
-		href="/workflows/when-should-an-ai-agent-ask-for-confirmation-before-acting/"
-		description="A user-control page for teams deciding when confirmation protects trust and when it only adds friction."
-	/>
-	<LinkCard
-		title="What is a good SLA for an AI agent?"
-		href="/workflows/what-is-a-good-sla-for-an-ai-agent/"
-		description="An operations page for teams setting realistic response targets across routing, drafting, approvals, and trusted completion."
+		description="Plan rollback across prompts, models, tools, workflow versions, integrations, and evaluation gates."
 	/>
 </div>
 
