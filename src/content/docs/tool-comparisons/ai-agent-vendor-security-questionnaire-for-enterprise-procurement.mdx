@@ -1,0 +1,225 @@
+---
+title: AI Agent Vendor Security Questionnaire for Enterprise Procurement
+description: A practical security and governance questionnaire for teams evaluating AI agent platforms, coding agents, support agents, and tool-connected AI vendors.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Quarterly review
+primaryKeyword: AI agent vendor security questionnaire
+searchIntent: select
+decisionStage: shortlist
+targetRoles:
+  - Security teams
+  - Procurement teams
+  - AI platform leads
+  - Engineering managers
+contentStatus: cornerstone
+datePublished: 2026-04-25
+lastReviewed: 2026-04-25
+problemSolved: How to evaluate AI agent vendors before procurement by asking concrete questions about data access, tool authority, audit trails, model routing, retention, evals, incidents, and support ownership.
+readerTakeaway: You should leave with a reusable enterprise questionnaire that separates credible production-agent vendors from tools that only look good in a demo.
+keyQuestions:
+  - What security questions should enterprise buyers ask AI agent vendors?
+  - How should teams evaluate AI agent data access, tool permissions, and audit trails?
+  - What vendor answers should block or delay an AI agent rollout?
+notFor:
+  - Consumer chatbot selection
+  - Teams buying single-user AI tools with no company data or tool access
+  - Procurement processes that have not defined the intended agent workflow
+updateTriggers:
+  - New AI agent platform security disclosures
+  - Changes in enterprise AI data retention, SOC 2, ISO, or admin-control expectations
+  - New incidents involving agent tool access, prompt injection, or data leakage
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# AI Agent Vendor Security Questionnaire for Enterprise Procurement
+
+Enterprise AI agent procurement is no longer a generic SaaS security review. A normal vendor may store data, expose an admin console, and integrate with business systems. An AI agent vendor may also read private context, choose tools, call APIs, write records, create code changes, send messages, search files, trigger workflows, and produce outputs that humans trust.
+
+That changes the questionnaire. The buyer needs to understand not only where data is stored, but what the agent can do with that data, whose authority it uses, how decisions are logged, how failures are contained, and whether the product can be evaluated before wider rollout.
+
+## Quick answer
+
+Ask AI agent vendors about eight areas: data access, retention, model routing, tool authority, identity and permissions, audit trails, eval and release controls, incident response, and commercial limits. A vendor that cannot explain side-effect boundaries, approval gates, trace evidence, and rollback behavior is not ready for high-consequence workflows, even if the demo looks strong.
+
+## The questionnaire structure
+
+| Area | Buyer goal | Red flag |
+| --- | --- | --- |
+| Data access | Know exactly what the agent can read | "It uses your workspace context" without source-level controls |
+| Retention | Know what is stored and for how long | No clear deletion, opt-out, or retention boundary |
+| Model routing | Know which models and providers process data | Hidden subcontractors or unclear provider routing |
+| Tool authority | Know what the agent can change | Broad write tools with weak approval controls |
+| Identity | Know whose permissions the agent uses | One powerful service account for many workflows |
+| Audit trails | Reconstruct what happened | Final answer logs without tool-call evidence |
+| Evals | Prove quality before rollout | Only anecdotal accuracy claims |
+| Incidents | Contain and roll back failures | No customer-visible incident or rollback process |
+
+Procurement should treat these as operating questions, not paperwork.
+
+## 1. Data access questions
+
+Ask:
+
+- Which data sources can the agent access by default?
+- Does the agent respect existing user permissions from systems such as docs, code repositories, CRM, helpdesk, or file storage?
+- Can admins restrict access by workspace, repository, customer segment, data class, or tool?
+- Can the agent access attachments, images, transcripts, browser pages, or retrieved files?
+- Is customer data, source code, employee data, financial data, or regulated data handled differently?
+- Can the product run with no training use of customer data?
+
+Stronger answer: the vendor can describe data classes, permission inheritance, admin allowlists, retention, and testable access boundaries.
+
+Weak answer: the vendor says the product is "secure" but cannot show exactly which sources are available to which agent.
+
+## 2. Retention and training-use questions
+
+Ask:
+
+- What inputs, outputs, tool calls, traces, embeddings, files, and logs are stored?
+- How long is each artifact retained?
+- Are prompts, outputs, or traces used for model training?
+- Can retention be configured by workspace or workflow?
+- Can a customer delete traces or files?
+- Are there separate controls for debug logs, eval datasets, and production traces?
+- What happens to data routed through third-party model providers?
+
+Agent systems often need traces for evaluation and audit. That does not mean all traces should be retained forever. The vendor should support a deliberate retention model.
+
+## 3. Model and provider routing questions
+
+Ask:
+
+- Which model providers are used?
+- Can the customer restrict providers?
+- Is model routing deterministic, policy-based, or vendor-managed?
+- Can the buyer see which model handled a request?
+- Are different data classes routed differently?
+- What happens during provider outage, rate limiting, or fallback?
+- Can a customer pin a model version or review changes before rollout?
+
+This matters because model routing is now part of the data-processing and reliability story.
+
+## 4. Tool authority questions
+
+Ask:
+
+- Which tools are read-only?
+- Which tools can create drafts?
+- Which tools can write to production systems?
+- Which actions require approval?
+- Are destructive, financial, customer-facing, or code-changing actions separated from low-risk actions?
+- Are tool inputs and outputs typed and logged?
+- Is retry behavior idempotent?
+- Can admins disable a tool immediately?
+
+The highest-risk vendor answer is a broad tool connection with vague assurance that the agent "knows when to ask."
+
+## 5. Identity and permission questions
+
+Ask:
+
+- Does the agent act as the user, as a service account, or through delegated workflow authority?
+- Can authority differ by tool and action class?
+- Are permissions checked at runtime or only during setup?
+- Can users grant excessive access accidentally?
+- Can admins see which agents have which scopes?
+- Can a terminated user leave active agent permissions behind?
+
+User-scoped authority can reduce blast radius. Service accounts can improve stability. Neither is automatically right. The buyer needs to know which model is used and why.
+
+## 6. Audit trail questions
+
+Ask whether the audit record includes:
+
+- original user instruction;
+- system and policy context;
+- retrieved sources and files;
+- model route;
+- tool calls;
+- tool inputs and outputs;
+- approval requests and decisions;
+- final output;
+- side effects in external systems;
+- errors, retries, and rollback events.
+
+If the audit trail only stores final messages, the product is hard to govern.
+
+## 7. Evaluation and release-control questions
+
+Ask:
+
+- Does the vendor provide eval tooling, trace sampling, or quality review workflows?
+- Can the customer build workflow-specific eval datasets?
+- Are model, prompt, and tool changes versioned?
+- Can changes be canaried?
+- Can the customer roll back prompts, tools, model routes, or workflow versions?
+- What quality metrics are available beyond user thumbs-up?
+- Can security or compliance teams review high-risk workflows before release?
+
+Agent quality should be measured at the workflow level. A vendor that only reports answer satisfaction may miss tool failures and unsafe side effects.
+
+## 8. Incident and rollback questions
+
+Ask:
+
+- What happens if the agent sends the wrong message, changes the wrong record, leaks data, creates bad code, or loops through tools?
+- Can the vendor help reconstruct the trace?
+- Can a customer disable one workflow without disabling the whole product?
+- Are there incident severity levels?
+- What customer notification commitments exist?
+- How are post-incident fixes turned into evals or guardrails?
+
+Production agents need incident response because failures are operational, not only conversational.
+
+## Commercial questions that affect security
+
+Budget design can create security pressure. Ask:
+
+- Are premium models, tool calls, search, and trace retention priced separately?
+- Can admins set usage budgets by team, workflow, or risk class?
+- Are overages visible before they become invoices?
+- Does the vendor charge for audit retention, eval runs, or reviewer seats?
+- Can low-risk workflows use cheaper lanes while sensitive workflows use stronger controls?
+
+Unexpected cost often causes teams to disable review, logging, or evals. That is a governance problem.
+
+## Procurement scoring model
+
+Use this scoring model:
+
+| Score | Meaning |
+| --- | --- |
+| 0 | Vendor cannot answer clearly |
+| 1 | Vendor has a general policy but no workflow-specific control |
+| 2 | Vendor has configurable controls but weak evidence or logs |
+| 3 | Vendor has clear controls, trace evidence, admin visibility, and rollback |
+
+Any vendor scoring 0 on data access, tool authority, identity, or audit trails should not be used for high-consequence agent workflows.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Should you build or buy an AI agent platform?"
+		href="/tool-comparisons/should-you-build-or-buy-an-ai-agent-platform/"
+		description="Use the questionnaire to decide which layers are safe to buy and which should stay internal."
+	/>
+	<LinkCard
+		title="Enterprise agent governance control plane"
+		href="/tooling/enterprise-agent-governance-control-plane/"
+		description="Turn procurement answers into operating controls after the vendor is selected."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Go deeper on evidence requirements for agent actions and incidents."
+	/>
+	<LinkCard
+		title="MCP security and approval boundaries"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Apply the same procurement logic to shared tool infrastructure and MCP servers."
+	/>
+</div>
