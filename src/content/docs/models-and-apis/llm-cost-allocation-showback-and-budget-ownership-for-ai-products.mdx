@@ -1,0 +1,114 @@
+---
+title: LLM cost allocation, showback, and budget ownership for AI products
+description: How AI product teams should allocate LLM, search, retrieval, tool, and review costs across features, tenants, teams, and workflows.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps AI teams move from raw token spend to accountable workflow-level budget ownership.
+readerTakeaway: You should leave with a practical cost allocation model that separates model calls, tools, retrieval, review, failures, and successful outcomes.
+primaryKeyword: LLM cost allocation
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI product leads
+  - Engineering managers
+  - FinOps teams
+  - Platform owners
+keyQuestions:
+  - How should LLM costs be allocated across AI product features?
+  - What should AI cost showback include besides token usage?
+  - Who should own budget when agents call tools, search, and retrieval?
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# LLM cost allocation, showback, and budget ownership for AI products
+
+AI costs become hard to manage when teams keep looking only at provider invoices. The bill may show token usage, requests, hosted tools, storage, or compute. The product team needs a different view: which feature, tenant, workflow, model route, tool chain, and outcome created the spend.
+
+Without cost allocation, AI products drift toward two bad habits. Teams either block useful work because the total bill looks scary, or they enable expensive behaviors because nobody can tell which workflow is wasting money.
+
+## Quick answer
+
+Allocate AI cost by workflow and outcome, not only by model call. A healthy showback model includes model input and output, cached tokens, retrieval, search, tool execution, code execution, reruns, human review, failed attempts, and successful completions. Budget ownership should map to the product surface or internal team that creates the demand, while platform teams own routing rules, observability, and guardrails.
+
+## The cost layers to track
+
+| Layer | What to measure | Why it matters |
+| --- | --- | --- |
+| Model calls | Input, output, cached tokens, model tier, retries | The visible API cost floor |
+| Retrieval | Search queries, vector reads, reranking, file search, storage | Often grows quietly with context size |
+| Tools | Web search, code execution, browser actions, external APIs | Adds latency and non-token cost |
+| Workflow retries | Failed plans, timeouts, duplicate calls, partial reruns | Shows where agents are expensive because they are unreliable |
+| Human review | Reviewer time, edit distance, escalation volume | AI savings can disappear in review burden |
+| Outcome | Successful completion, accepted draft, resolved ticket, shipped change | The only unit that business owners recognize |
+
+If the showback stops at tokens, it will undercount the real cost of agentic products.
+
+## Budget ownership model
+
+Use three layers of ownership:
+
+1. **Feature owner**: owns the user-facing or internal workflow budget.
+2. **Platform owner**: owns routing, provider configuration, usage logging, limits, and cost guardrails.
+3. **Business owner**: owns whether the outcome is worth the spend.
+
+This separation matters because the feature team can reduce unnecessary requests, the platform team can improve routing, and the business owner can decide whether premium reasoning or tool use is justified.
+
+## What showback should show
+
+A useful internal report should answer:
+
+- Which workflows spend the most?
+- Which tenants or teams create the most AI demand?
+- Which model routes are used most often?
+- Which tools add cost without improving completion rate?
+- Which workflows have high retry or failure cost?
+- Which features use premium models for low-risk tasks?
+- Which successful outcomes cost more than expected?
+
+The goal is not to shame teams. The goal is to make tradeoffs visible before finance or leadership imposes blunt caps.
+
+## Chargeback versus showback
+
+Showback is usually the right first step. It shows spend by owner without immediately creating internal billing pressure. Chargeback can come later when teams already trust the measurement and have levers to control behavior.
+
+Jumping straight to chargeback often creates defensive behavior: teams underuse AI, hide usage, or optimize for local budget instead of product value.
+
+## Red flags
+
+The cost model is weak if:
+
+- all AI spend sits under one platform budget;
+- product teams cannot see their workflow-level cost;
+- retrieval and hosted-tool cost are invisible;
+- failed attempts are not counted;
+- human review cost is excluded;
+- or "cost per request" is treated as equivalent to cost per useful outcome.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Cost per success and tool economics"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Use this when the next step is outcome-level economics rather than accounting allocation."
+	/>
+	<LinkCard
+		title="Tool-use latency and cost budgets"
+		href="/models-and-apis/tool-use-latency-and-cost-budgets/"
+		description="Set hard budgets before tools quietly multiply spend and latency."
+	/>
+	<LinkCard
+		title="What drives vector database spend?"
+		href="/models-and-apis/what-drives-vector-database-spend-in-ai-products/"
+		description="Use this when retrieval has become a material part of the cost story."
+	/>
+	<LinkCard
+		title="Production AI agent observability stack"
+		href="/tooling/production-ai-agent-observability-stack/"
+		description="Cost allocation only works when traces, logs, metrics, and workflow ownership are visible."
+	/>
+</div>

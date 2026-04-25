@@ -1,42 +1,125 @@
 ---
 title: Research and Analysis Teams
-description: Reference material for prompt-assisted research synthesis, structured analysis, and high-volume information workflows.
+description: How research and analysis teams should use AI for synthesis, evidence review, briefing workflows, and source-controlled decision support.
 referenceType: team-scenario
 adProfile: team-scenario
 commercialIntent: medium
 reviewCadence: Quarterly review
+contentStatus: cornerstone
+problemSolved: Helps research-heavy teams decide where AI should accelerate synthesis and where human judgment, source policy, and review gates must remain explicit.
+readerTakeaway: You should leave with a workflow model for AI-assisted research that improves speed without turning evidence quality into a black box.
+primaryKeyword: AI for research and analysis teams
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Research leads
+  - Strategy teams
+  - Product analysts
+  - Competitive intelligence teams
+keyQuestions:
+  - Where does AI help research teams most?
+  - What should a research AI workflow return besides a polished summary?
+  - How should teams control citations, source quality, and evidence gaps?
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
 # Research and Analysis Teams
 
-Research-heavy teams often benefit from prompt systems when the problem is information scale rather than the absence of judgment. The value comes from faster synthesis, drafting, classification, and comparison support.
+Research-heavy teams benefit from AI when the problem is information scale, comparison speed, and repeatable synthesis. They get into trouble when they treat a fluent answer as the same thing as a reliable research process.
+
+The useful role for AI is not "replace the analyst." It is to compress the mechanical parts of the workflow: source triage, extraction, clustering, comparison, briefing drafts, counterargument collection, and evidence packaging. The analyst still owns interpretation, decision framing, and what counts as sufficient support.
+
+## Quick answer
+
+Use AI for research when the team can define source boundaries, citation expectations, evidence quality, and review ownership. A strong workflow returns more than a final report: it should expose sources used, claims made, weak evidence, contradictions, unresolved questions, and a confidence or review status for each major conclusion.
 
 ## Strong-fit patterns
 
-- Multi-source synthesis and summary drafting.
-- Structured comparison work across documents or vendors.
-- Internal briefing creation and rapid note consolidation.
-- Early-stage information triage before human review.
+AI usually fits well when the work involves:
+
+- multi-source synthesis across documents, notes, transcripts, filings, product pages, or internal research;
+- structured comparison across vendors, products, competitors, markets, or technical options;
+- internal briefing creation where the same evidence must be reshaped for different audiences;
+- first-pass classification and triage before analysts spend time on deeper review;
+- extraction of claims, requirements, risks, and decision criteria from long materials;
+- and research backlog processing where speed matters but final judgment remains reviewed.
+
+These are high-leverage workflows because AI reduces handling time without needing to own the final decision.
+
+## Where AI should not be trusted alone
+
+AI should not be the final authority when:
+
+- the answer depends on legal, medical, financial, security, or safety interpretation;
+- source quality is weak or conflicted;
+- the system cannot show which source supports each claim;
+- the team needs current facts and the tool has no reliable live-search or source-refresh path;
+- or the output will be used externally without human review.
+
+In those cases, the AI system can still prepare evidence and draft structure, but it should not close the decision.
+
+## A better research output format
+
+The strongest research workflow does not return only a memo. It returns a package:
+
+| Output | Why it matters |
+| --- | --- |
+| Executive answer | Gives the reader the current best answer quickly |
+| Source table | Shows which materials were used and which were excluded |
+| Claim-to-source map | Lets reviewers inspect whether conclusions are supported |
+| Evidence gaps | Prevents fluent summaries from hiding weak support |
+| Contradictions | Surfaces conflict instead of smoothing it away |
+| Review questions | Shows where a human expert should focus |
+| Reusable brief | Turns the work into a repeatable internal asset |
+
+This format is slower than a simple summary but much more useful for teams that actually make decisions from research.
 
 ## Design pressures
 
-- Citation discipline and source traceability matter more than polished wording.
-- Human review remains important for interpretation-heavy outputs.
-- Tooling should support versioning, evidence capture, and repeatability.
+Research AI workflows need stronger controls around:
+
+1. **Source policy**: allowed sources, blocked sources, freshness expectations, and citation rules.
+2. **Evidence quality**: whether the system distinguishes primary sources from commentary, marketing, forums, and outdated material.
+3. **Traceability**: whether claims can be reviewed against source excerpts or structured notes.
+4. **Versioning**: whether a research answer can be refreshed without losing what changed.
+5. **Human review**: who approves conclusions and what triggers escalation.
+
+Without these controls, AI makes research faster but less accountable.
+
+## Practical rollout path
+
+Start narrow:
+
+1. Pick one repeatable research workflow, such as competitor briefs, vendor comparisons, account research, policy scanning, or product requirement synthesis.
+2. Define allowed source types and citation rules.
+3. Require evidence packets, not only prose.
+4. Review early outputs for missing sources, unsupported claims, and overconfident language.
+5. Add evals around claim support, citation accuracy, contradiction handling, and useful next questions.
+
+The goal is not to produce more reports. The goal is to reduce analyst time spent assembling context while improving the quality of reviewed decisions.
 
 ## Compare next
 
 <div class="portal-links">
 	<LinkCard
+		title="Deep research workflows for AI teams"
+		href="/use-cases/deep-research-workflows-for-ai-teams/"
+		description="Use this when research becomes a full workflow with source quality, citation policy, runtime budgets, and review gates."
+	/>
+	<LinkCard
+		title="What should a deep research system return besides a report?"
+		href="/workflows/what-should-a-deep-research-system-return-besides-a-report/"
+		description="Move from polished documents into evidence packets, gaps, contradictions, and review artifacts."
+	/>
+	<LinkCard
+		title="Deep research source quality and citation policy"
+		href="/workflows/deep-research-source-quality-and-citation-policy/"
+		description="Define source rules before research automation becomes a trust problem."
+	/>
+	<LinkCard
 		title="Prompt operations stack"
 		href="/tooling/promptops-stack/"
 		description="Choose tooling that preserves evidence, versions, and workflow traceability."
-	/>
-	<LinkCard
-		title="Evaluation stacks"
-		href="/tool-comparisons/evaluation-stacks-vs-manual-review/"
-		description="Compare structured evaluation layers against ad hoc review habits."
 	/>
 </div>

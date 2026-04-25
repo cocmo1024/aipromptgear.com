@@ -1,6 +1,21 @@
 ---
 title: GPT-Image-2 Prompt Patterns
 description: Editorial archive of adapted GPT-Image-2 prompt patterns built from public community cases, with attribution, reusable templates, controls, and failure-mode analysis.
+referenceType: foundation
+adProfile: foundation
+commercialIntent: medium
+reviewCadence: Monthly review
+primaryKeyword: image prompt patterns
+searchIntent: learn
+decisionStage: problem-aware
+targetRoles:
+  - Designers
+  - AI creators
+  - Prompt engineers
+  - Content operators
+contentStatus: cornerstone
+problemSolved: Helps image-generation users move from one-off prompt examples into reusable prompt patterns with attribution, controls, and failure-mode analysis.
+readerTakeaway: You should leave knowing how the image prompt archive is organized, why examples are rewritten, and how to use patterns without treating prompts as magic strings.
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
@@ -12,7 +27,7 @@ Most image-prompt collections stop at prompt dumping. That leaves three problems
 
 1. The prompt is not reusable once the subject or style changes.
 2. The source creator is rarely attributed cleanly.
-3. The page does not help with the real search intent, which is usually _how to get a specific result without breaking composition, text, lighting, or layout_.
+3. The page does not help with the real reader task, which is usually _how to get a specific result without breaking composition, text, lighting, or layout_.
 
 This archive fixes that by converting public prompt examples into attributed derivative patterns. Each page expands the original case into a reusable prompt frame, exposes the main controls, and documents the failure modes that usually waste iterations.
 
@@ -26,8 +41,8 @@ This archive fixes that by converting public prompt examples into attributed der
 		<p>Every page keeps attribution, avoids verbatim prompt reuse, and rewrites the case into an editorial pattern.</p>
 	</div>
 	<div>
-		<strong>Search intent</strong>
-		<p>Built for long-tail creator searches around GPT-Image-2 prompts, image generation styles, and prompt debugging.</p>
+		<strong>Reader task</strong>
+		<p>Built for creators who need reusable prompt controls, not one-off prompt dumping.</p>
 	</div>
 </div>
 
@@ -78,6 +93,12 @@ This archive fixes that by converting public prompt examples into attributed der
 		description="Model-comparison, text-rendering, and reference-edit patterns built for evaluation instead of one-off images."
 	/>
 </div>
+
+## Quality boundary
+
+This archive should not become a raw prompt warehouse. A page is useful only when it explains why the pattern works, which variables are safe to change, which details are fragile, and what a reader should inspect when the first output fails. That is why the archive favors controls, failure modes, attribution, and adaptation notes over isolated prompt strings.
+
+The goal is also to keep the examples reusable across tools and model revisions. A good image prompt page should help a creator reason about subject control, lighting, camera distance, text placement, composition density, and reference handling. If a page only says "use this prompt" without explaining those choices, it is not strong enough for the archive.
 
 ## What makes these pages higher value
 

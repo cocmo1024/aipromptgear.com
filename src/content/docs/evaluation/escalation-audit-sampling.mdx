@@ -14,6 +14,8 @@ targetRoles:
   - PromptOps teams
   - Audit owners
 contentStatus: seed
+problemSolved: Helps support AI teams sample escalation decisions so missed handoffs, over-escalation, and category-specific routing drift are found before they become customer-impact incidents.
+readerTakeaway: You should leave with a practical sampling model for checking whether AI support workflows escalate the right cases at the right time.
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -54,6 +56,20 @@ Audit sampling often reveals:
 - category-specific blind spots where certain intents are routinely downplayed.
 
 Those patterns are exactly what broad acceptance-rate metrics often fail to catch.
+
+## What makes a sample useful
+
+A useful audit sample is not only random. It also needs enough context for reviewers to understand the original customer issue, the system's decision, the source evidence available at the time, and the final outcome. Without that context, reviewers can only judge whether an answer sounded reasonable. They cannot judge whether the escalation decision was operationally correct.
+
+Strong samples usually preserve:
+
+- the original customer message and relevant account state;
+- the automation decision and its stated rationale;
+- the sources or policy snippets available to the workflow;
+- the human action taken later, if any;
+- a short reviewer label explaining whether the case should have escalated sooner, later, or not at all.
+
+That structure turns sampling into a feedback system instead of a vague quality exercise.
 
 ## Review cadence and triggers
 

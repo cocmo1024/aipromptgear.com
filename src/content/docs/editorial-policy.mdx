@@ -11,6 +11,19 @@ reviewCadence: Semiannual review
 
 AI Prompt Gear is designed as a reference site. That means editorial work is expected to support long-term understanding, comparison, and decision framing rather than fast publishing volume.
 
+## Search quality floor
+
+Every substantive page should be able to stand on its own for a defined professional reader. The page should not exist only because a phrase appears to have search volume.
+
+Before a new page is published or an existing page is substantially refreshed, it should pass these checks:
+
+- The reader and decision are clear.
+- The title and description accurately summarize the page.
+- The page provides analysis, tradeoffs, or implementation guidance beyond a summary of public announcements.
+- Internal links help the reader continue the task instead of forcing a crawl path.
+- Structured data describes the actual page topic and visible content.
+- The page can be reviewed later when pricing, product behavior, or operating assumptions change.
+
 ## Editorial standards
 
 Pages are intended to:
@@ -20,9 +33,36 @@ Pages are intended to:
 - Distinguish clearly between operator guidance, tooling choices, and model decisions.
 - Be revisited when material assumptions change.
 
+Pages should be revised, merged, or removed from promotion when they become thin, duplicative, stale, misleading, or primarily search-engine-first.
+- Give enough detail for a product, engineering, support, security, or operations reader to act, reject, or escalate a decision.
+- Avoid broad AI enthusiasm unless it is tied to workflow economics, governance, evaluation, implementation risk, or measurable user value.
+- Connect model, tool, prompt, and workflow claims to the operating boundary where they actually matter.
+
+## Publication floor
+
+A page should not be published only because an AI term is popular. Before a page becomes part of the reference system, it should answer:
+
+1. Which reader owns the decision?
+2. What expensive confusion, risk, or buying mistake does the page prevent?
+3. What implementation detail, cost boundary, eval rule, or governance control makes the answer usable?
+4. What should the reader do next if they are moving from research to rollout?
+5. Which assumptions must be reviewed when models, prices, APIs, or product behavior change?
+
+Pages that only summarize trends, repeat vendor language, or create near-duplicate topic variants should be expanded, merged, or deprioritized.
+
 ## Source approach
 
 Coverage may draw on public documentation, product information, industry materials, operating patterns, and structured comparison work. When a page depends on changing product behavior or pricing-sensitive claims, it should be treated as reviewable rather than permanent.
+
+News-sensitive AI pages are expected to move quickly from announcement summary into implementation consequence: rollout boundary, cost model, governance impact, evaluation need, or workflow design. If that durable decision layer is missing, the topic should not become a permanent reference page.
+
+## AI assistance and editorial responsibility
+
+AI assistance may be used for outlining, drafting, and auditing, but the reason for publishing must remain reader value. A page still needs original synthesis, clear tradeoffs, useful internal links, and a decision model that a serious practitioner would recognize as practical.
+
+## Titles, summaries, and structured data
+
+Titles, descriptions, headings, and structured metadata should describe the same visible page. A page should not imply current pricing, benchmark certainty, product endorsement, or rich-result eligibility unless the body content supports that claim. Internal links should help readers continue a coherent implementation path rather than simply increase link count.
 
 ## Corrections and updates
 
