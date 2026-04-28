@@ -1,0 +1,216 @@
+---
+title: AI Agent Trace Retention, Sampling, and Privacy Policy
+description: How production AI teams should decide which agent traces to keep, sample, redact, escalate, and convert into eval evidence without turning observability into privacy or cost debt.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI agent trace retention policy
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform leads
+  - EvalOps owners
+  - Security reviewers
+  - Product engineering managers
+contentStatus: growing
+datePublished: 2026-04-28
+lastReviewed: 2026-04-28
+problemSolved: Helps teams decide how long to retain agent traces, what to sample, what to redact, and which traces should become evaluation or audit evidence.
+readerTakeaway: You should leave with a practical retention and sampling model that supports debugging, evals, incident response, and privacy constraints without storing every run forever.
+keyQuestions:
+  - How long should AI agent traces be retained?
+  - Which traces should be sampled for evals?
+  - What trace data should be redacted before storage?
+  - How do retention policies affect observability cost?
+notFor:
+  - Hobby prototypes with no user data, tools, or production review burden
+  - Teams that have not yet defined basic run IDs and tool-call records
+updateTriggers:
+  - New enterprise data retention requirements
+  - Material changes in trace storage, eval tooling, or AI observability pricing
+  - Incidents caused by missing, excessive, or poorly redacted trace data
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+# AI Agent Trace Retention, Sampling, and Privacy Policy
+
+Agent teams usually discover trace policy late. The product starts with a few runs, then grows into tool calls, retrieval, browser actions, code edits, support-ticket changes, approvals, and human handoffs. At that point, traces are no longer just debugging artifacts. They may contain user input, retrieved documents, tool arguments, tool outputs, secrets-adjacent data, policy decisions, customer context, reviewer notes, and failure evidence.
+
+Keeping everything forever is not a mature observability strategy. Keeping too little makes production failures impossible to diagnose. The useful middle ground is a deliberate trace retention and sampling policy.
+
+## Quick answer
+
+Do not retain all production traces at full detail by default. Keep a short debugging window for high-detail traces, a longer window for summarized run records, a curated eval corpus for representative and risky examples, and a strict audit trail for actions with external side effects. Redact sensitive fields before long-term storage. Sample by risk, workflow, customer tier, tool type, failure mode, and release stage instead of taking a flat random percentage.
+
+The goal is to preserve enough evidence to improve quality and explain failures without turning every agent run into permanent sensitive data.
+
+## Why trace retention becomes a real product decision
+
+A trace is valuable because it shows the path of a run:
+
+- what the user or upstream system asked for,
+- what context the agent retrieved,
+- which tools it selected,
+- what arguments it passed,
+- what came back,
+- which approvals were requested,
+- where it retried or escalated,
+- and what final outcome reached the user or system.
+
+That is exactly why traces create governance pressure. The same data that makes failures debuggable can also increase privacy, security, retention, and cost exposure.
+
+The trace policy should be decided before the product reaches scale, because retrofitting retention after months of unbounded trace storage is usually harder than designing a smaller model upfront.
+
+## Separate trace data into retention classes
+
+Start by classifying trace fields, not whole traces.
+
+| Trace element | Typical value | Retention posture |
+| --- | --- | --- |
+| Run ID, timestamps, workflow name, version | Supports correlation and release review | Keep longer in summarized records |
+| Model route, latency, token spend, tool count | Supports cost and performance analysis | Keep longer if not sensitive |
+| User input | Needed for debugging and eval context | Short window or redacted long-term copy |
+| Retrieved documents or snippets | High diagnostic value but often sensitive | Redact, summarize, or store references only |
+| Tool arguments | Essential for side-effect review | Keep for action workflows, redact secrets |
+| Tool outputs | Often sensitive and bulky | Short window, selective retention, or field-level redaction |
+| Approval events | Governance-critical | Keep in audit trail when action risk is high |
+| Final output | Supports quality review | Keep according to user-data policy |
+| Reviewer notes | Useful for eval labels | Keep with eval corpus, not every raw trace |
+
+This split avoids the common failure where the team either stores everything because traces are useful or stores nothing because traces are sensitive.
+
+## Use four retention lanes
+
+Most production teams need four lanes.
+
+### 1. Short debugging window
+
+This lane stores high-detail traces for a short period so engineers can debug live issues.
+
+Use it for recent incidents, failed tool calls, latency spikes, approval loops, unexpected retrieval behavior, and early rollout analysis. The window should be long enough for the team to investigate real issues, but not so long that raw traces become the default long-term data store.
+
+### 2. Summarized production record
+
+This lane keeps durable run metadata without retaining every sensitive detail.
+
+It should usually include run ID, workflow, model route, release version, outcome class, cost and latency summaries, tool count, approval count, failure class, escalation status, and links to incident or eval records when applicable.
+
+This is the layer that supports trend analysis without forcing the team to inspect raw trace bodies.
+
+### 3. Curated eval corpus
+
+This lane keeps selected examples that are valuable for future testing.
+
+A trace belongs here when it represents a known failure mode, high-value success pattern, risky edge case, regression example, customer-impacting scenario, or release gate that should be tested again.
+
+The eval corpus should be reviewed, labeled, and redacted. It should not be an accidental dump of production traces.
+
+### 4. Governance and audit trail
+
+This lane is for actions that need durable accountability.
+
+Keep audit evidence when the agent changes customer state, writes code, sends messages, changes billing, changes permissions, updates records, triggers external workflows, or acts under an approval policy.
+
+The audit trail does not need every token of the trace. It needs enough evidence to show who requested the action, which agent and version acted, what tool was used, what approval happened, what external effect occurred, and how the result can be reviewed.
+
+## Sampling should be risk-weighted, not flat
+
+A flat sample such as "keep 5% of traces" is easy to explain but weak in practice. It can miss the small slice where real risk lives.
+
+Sample more heavily when:
+
+- the workflow is new,
+- the model route changed,
+- the agent uses write-capable tools,
+- the user segment is high-value or high-risk,
+- the run failed or escalated,
+- latency or cost exceeded thresholds,
+- a reviewer overrode the agent,
+- or a policy boundary was involved.
+
+Sample less heavily when:
+
+- the workflow is mature,
+- outcomes are repetitive,
+- no tools were used,
+- the run is read-only,
+- and recent evals show stable behavior.
+
+The sampling rule should be visible to product, engineering, security, and support. If no one can explain why certain traces are kept, the sampling policy is probably not mature enough.
+
+## Redaction should happen before long-term storage
+
+Do not rely only on future access control. Redact or transform sensitive fields before long-term retention where possible.
+
+Common redaction rules include:
+
+- remove secrets, tokens, keys, and credentials;
+- mask payment, identity, and regulated personal data where not needed;
+- store document references instead of full retrieved text when possible;
+- collapse large tool outputs into normalized outcome fields;
+- separate user-visible text from internal evidence;
+- and keep reviewer labels without preserving unnecessary raw context.
+
+Redaction is not just a compliance exercise. It improves eval quality by forcing the team to keep the evidence that actually matters.
+
+## Cost control is part of trace policy
+
+Trace storage cost grows quietly because agent traces are larger than normal application logs. Tool arguments, retrieval snippets, browser snapshots, code diffs, and multi-step outputs can turn a small workflow into a large observability stream.
+
+The cost model should track trace volume per workflow, average trace size, high-detail retention window, long-term summary size, eval corpus growth, reviewer workload, and query cost for debugging or audits.
+
+If trace cost is rising but eval coverage is not improving, the team is storing too much raw data and too little structured evidence.
+
+## Failure signs
+
+A trace policy is weak when:
+
+- engineers cannot reconstruct serious incidents;
+- security reviewers do not know what trace data is stored;
+- eval datasets are copied from production without review;
+- audit trails store final answers but not tool effects;
+- support cannot connect customer complaints to agent runs;
+- trace storage grows faster than usage;
+- or redaction is manual and inconsistent.
+
+These are operating problems, not tooling problems. Better tooling helps only after the retention model is explicit.
+
+## Implementation checklist
+
+<Steps>
+	1. Define run IDs, workflow IDs, model versions, tool-call IDs, and approval IDs.
+	2. Classify trace fields into debug, summary, eval, audit, and sensitive data classes.
+	3. Set a short high-detail retention window for raw traces.
+	4. Define summarized production records that survive longer.
+	5. Build a curated eval corpus from selected traces, not from a raw dump.
+	6. Apply redaction before long-term storage where possible.
+	7. Sample by workflow risk, release stage, tool authority, and failure mode.
+	8. Review retention policy after incidents, pricing changes, and major workflow releases.
+</Steps>
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Traces vs logs for agent eval ops"
+		href="/evaluation/traces-vs-logs-for-agent-debugging-and-eval-ops/"
+		description="Use this page when the team still needs to separate run-level trace truth from durable production logs."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Use this page when trace retention overlaps with approval evidence, side effects, and governance review."
+	/>
+	<LinkCard
+		title="How should AI teams sample live traffic for agent evals?"
+		href="/evaluation/how-should-ai-teams-sample-live-traffic-for-agent-evals/"
+		description="Use this page when the retention question becomes an eval sampling and reviewer capacity question."
+	/>
+	<LinkCard
+		title="LLM graders vs human review"
+		href="/evaluation/llm-graders-vs-human-review-for-agent-eval-ops/"
+		description="Use this page when retained trace evidence needs to become scalable review and scoring."
+	/>
+</div>

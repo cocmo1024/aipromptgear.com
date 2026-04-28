@@ -34,7 +34,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Teams often say they have "logging" when what they really need is tracing. Or they say they have "tracing" when what they really have is verbose logs with request IDs. The difference matters more as agents get tool use, retries, approvals, and handoffs. Once the system can take multiple steps, the unit of truth is no longer just the final output. It is the run.
 
-OpenAI's current SDK guidance is explicit about this sequence: use traces for debugging first, then move into evaluation loops【turn3view2†L640-L643】. That is the right operational mindset. Logs describe events. Traces describe the run.
+The right operational mindset is simple: use traces to understand a run, then convert selected trace evidence into evaluation cases, release checks, and incident review. Logs describe events. Traces describe the run.
 
 ## The short version
 
