@@ -297,7 +297,7 @@ Rules:
 		bestFor:
 			'Teams moving beyond a single default model and trying to decide where premium reasoning is worth the spend.',
 		whyItWorks:
-			'This prompt forces routing logic to be explicit about task classes, error tolerance, and escalation, which prevents vague “use the best model” habits.',
+			'This prompt forces routing logic to be explicit about task classes, error tolerance, and escalation, which prevents vague "use the best model" habits.',
 		sourceLabel: 'OpenAI prompting guide',
 		sourceUrl: 'https://developers.openai.com/api/docs/guides/prompting',
 		prompt: `You are designing a model-routing policy for an AI operations team.
@@ -401,7 +401,7 @@ Rules:
 		bestFor:
 			'Research, strategy, and diligence teams using AI for longer-form investigation and synthesis.',
 		whyItWorks:
-			'It prevents vague “research this for me” prompting by forcing a scope, evidence standard, and final claim log that can be reviewed.',
+			'It prevents vague "research this for me" prompting by forcing a scope, evidence standard, and final claim log that can be reviewed.',
 		sourceLabel: 'Google Gemini prompting strategies',
 		sourceUrl: 'https://ai.google.dev/gemini-api/docs/prompting-strategies',
 		prompt: `You are preparing a deep research brief.
@@ -574,5 +574,148 @@ Rules:
 <operating_model>
 {{operating_model}}
 </operating_model>`,
+	},
+	{
+		id: 'agent-memory-reset-and-rollback',
+		title: 'Agent Memory Reset and Rollback Prompt',
+		category: 'PromptOps',
+		summary:
+			'Reset stale agent assumptions while separating session cleanup from durable memory rollback, retrieval correction, and workflow recovery.',
+		bestFor:
+			'PromptOps and agent reliability teams dealing with stale context, bad saved memory, or repeated failures caused by persistent state.',
+		whyItWorks:
+			'The prompt forces the model to name what is kept, discarded, blocked, and revalidated, which prevents vague "forget everything" instructions from hiding state risk.',
+		sourceLabel: 'AIPromptGear memory rollback guide',
+		sourceUrl: '/tooling/ai-agent-memory-rollback-and-reset-prompt-best-practices/',
+		prompt: `You are restarting an AI agent task from a controlled checkpoint.
+
+Reset rules:
+1. Discard prior intermediate conclusions, speculative assumptions, and unverified plan steps.
+2. Keep only the current user goal, approved system policy, verified source material, and memory records explicitly marked as verified.
+3. Do not use suspect memory, stale retrieval chunks, or previous tool outputs unless they are revalidated against current approved context.
+4. If durable memory conflicts with current approved context, use the approved context and report the conflict.
+5. If the reset removes information required for safe completion, stop and ask for clarification.
+
+Before continuing, return:
+- current task restatement
+- allowed sources
+- discarded assumptions
+- memory records being used
+- blocked memory records
+- missing information
+- next safe action
+
+<task>
+{{task}}
+</task>
+
+<approved_context>
+{{approved_context}}
+</approved_context>
+
+<verified_memory>
+{{verified_memory}}
+</verified_memory>
+
+<blocked_memory>
+{{blocked_memory}}
+</blocked_memory>`,
+	},
+	{
+		id: 'prompt-comparison-release-review',
+		title: 'Prompt Comparison Release Review',
+		category: 'Evaluation',
+		summary:
+			'Compare old and new prompt versions on behavior, risk, grounding, formatting, escalation, cost, and rollback readiness before release.',
+		bestFor:
+			'Teams using prompt libraries, prompt management systems, or internal PromptOps workflows where prompt changes can affect production behavior.',
+		whyItWorks:
+			'It turns prompt comparison into a case-based evaluation instead of a text-diff conversation, so severe regressions are not averaged away.',
+		sourceLabel: 'AIPromptGear prompt comparison checklist',
+		sourceUrl: '/tooling/prompt-comparison-tool-for-production-prompt-changes/',
+		prompt: `You are reviewing a production prompt change.
+
+Compare <old_prompt> and <new_prompt> against the cases in <case_pack>.
+
+For each case, evaluate both prompt versions using:
+- task success
+- unsupported claims
+- grounding quality
+- policy or approval boundary
+- format compliance
+- escalation behavior
+- likely user or business impact if wrong
+
+Return:
+1. Summary of intended behavior change
+2. Cases where the new prompt improves behavior
+3. Cases where the new prompt regresses behavior
+4. Highest-severity failure found
+5. Cost or latency concerns if visible
+6. Release recommendation: approve / revise / reject
+7. Required rollback note
+
+Rules:
+- Do not average away severe failures.
+- Do not approve if the new prompt changes authority boundaries without explicit review.
+- If evidence is insufficient, recommend a larger case pack.
+
+<old_prompt>
+{{old_prompt}}
+</old_prompt>
+
+<new_prompt>
+{{new_prompt}}
+</new_prompt>
+
+<case_pack>
+{{test_cases}}
+</case_pack>`,
+	},
+	{
+		id: 'support-ai-outcome-qa',
+		title: 'Support AI Outcome QA Prompt',
+		category: 'Support Ops',
+		summary:
+			'Review AI-generated support outcomes for correctness, grounding, customer risk, escalation quality, and whether automation actually resolved the issue.',
+		bestFor:
+			'Support operations teams evaluating AI agent drafts, deflection outcomes, or automated support resolutions before scaling usage.',
+		whyItWorks:
+			'The prompt scores the outcome by operational consequence, not surface fluency, which is what support leaders need for automation governance.',
+		sourceLabel: 'AIPromptGear support operations cluster',
+		sourceUrl: '/use-cases/customer-support-operations/',
+		prompt: `You are a support operations QA reviewer evaluating an AI-assisted support outcome.
+
+Use the ticket, approved source material, AI output, and final outcome to assess whether the automation helped safely.
+
+Return:
+1. Outcome classification: resolved / partially resolved / escalated correctly / escalated incorrectly / unsafe
+2. Grounding quality: strong / mixed / weak
+3. Unsupported claims
+4. Missed escalation signals
+5. Customer risk if sent or acted on
+6. Recommended coaching or prompt change
+7. Should this case enter the eval set? yes / no, and why
+
+Rules:
+- Do not reward confident writing if the answer is unsupported.
+- Separate automation success from agent effort.
+- If the issue required policy, billing, legal, security, or account-specific judgment, check whether escalation was appropriate.
+
+<ticket>
+{{ticket}}
+</ticket>
+
+<approved_sources>
+{{approved_sources}}
+</approved_sources>
+
+<ai_output>
+{{ai_output}}
+</ai_output>
+
+<final_outcome>
+{{final_outcome}}
+</final_outcome>`,
 	},
 ];
