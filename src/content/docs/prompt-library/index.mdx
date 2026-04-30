@@ -54,6 +54,34 @@ Use this library when you need a starting prompt for a repeatable team workflow:
 
 For production use, copy the prompt, replace placeholders, run it on representative cases, then store the adopted version in a controlled prompt workspace. A library is a starting point. It is not a substitute for release discipline.
 
+## Choose prompts by operating job, not by model trick
+
+The highest-value team prompts usually belong to one of five operating jobs:
+
+| Operating job | Prompt should force | Failure if the prompt is weak |
+| --- | --- | --- |
+| Support triage | queue category, customer impact, escalation reason, missing context | confident but unrouteable summaries |
+| Deep research | source inventory, evidence map, uncertainty, decision-ready synthesis | polished reports with weak sourcing |
+| PromptOps review | diff summary, behavior risk, regression cases, rollback plan | prompt changes that ship without accountability |
+| EvalOps | scenario design, pass/fail rubric, edge cases, release gate | evals that measure style instead of product risk |
+| Agent control | tool boundary, approval rule, memory use, stop condition | agents that act from stale context or vague authority |
+
+This is why the library favors structured prompts over catchy one-liners. A reusable prompt should make the work easier to inspect after the model answers.
+
+## What to modify before copying a prompt
+
+Before a template becomes useful, replace or add:
+
+1. the real audience and business context;
+2. approved sources or retrieval scope;
+3. output format that your workflow can consume;
+4. uncertainty rules for missing evidence;
+5. escalation or approval rules;
+6. examples of unacceptable output;
+7. an owner and review cadence if the prompt becomes operational.
+
+The prompt can be copied in seconds. The operating boundary cannot.
+
 ## What makes this library different
 
 - the prompts are designed around business jobs instead of generic "write a good answer" requests;

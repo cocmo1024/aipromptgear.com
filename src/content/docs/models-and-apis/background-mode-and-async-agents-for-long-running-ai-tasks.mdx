@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-11
-lastReviewed: 2026-04-29
+lastReviewed: 2026-05-01
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -61,11 +61,25 @@ Without those pieces, background mode is only an async call. It is not yet a bac
 
 ![AI runtime map for interactive, background, and approval lanes](/agent-runtime-map.svg)
 
+## The exact build decision most teams miss
+
+The search intent behind this topic is usually not academic. A builder is trying to decide whether a long-running AI feature should be a normal API request, a background response, a batch job, or a full queue-backed workflow. The wrong answer creates expensive symptoms later:
+
+| Symptom | Usually means | Better design direction |
+| --- | --- | --- |
+| Users stare at a spinner for multi-minute work | The product is forcing a job workflow through an interactive lane | Background mode plus product-owned job status |
+| Support cannot tell whether a task is still running | Provider status is not mapped into product status | Internal job table and operator dashboard |
+| The task finishes but nobody trusts the result | Completion was confused with review | Add a review or approval state before delivery |
+| Long jobs retry unpredictably | Retry rules live only in client code | Move retry, cancellation, and failure policy server-side |
+| Every async feature becomes a custom exception | Runtime lanes are not standardized | Define interactive, background, batch, and approval lanes |
+
+For most production teams, the deciding question is: **does one user or workflow care about this specific job after the request ends?** If yes, background mode belongs inside a durable job design. If no, and the workload is many independent records, Batch may be the cheaper and cleaner path.
+
 ## Why this matters now
 
 OpenAI now documents background mode and longer-running agent patterns explicitly instead of treating all model work as one synchronous surface. That matters because the product decision is no longer just "call the model." It is "which runtime lane fits the task?" Teams that answer that early build calmer products and cleaner support boundaries.
 
-## Official platform signals checked April 29, 2026
+## Official platform signals checked May 1, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
@@ -74,6 +88,8 @@ OpenAI now documents background mode and longer-running agent patterns explicitl
 | [OpenAI built-in tools guide](https://platform.openai.com/docs/guides/tools) | Tool-connected workflows are central to the modern API surface | Longer tasks are often longer because tool orchestration, retrieval, or file work is involved |
 
 The important constraint is that the official runtime capability does not remove product ownership. Your application still owns user-visible state, internal audit trails, approval policy, and what happens when a job fails after the original session is gone.
+
+The Responses reference also exposes cancellation for background responses. That detail matters operationally: if a product lets users start long-running work, it should also define who can cancel it, what cancellation means for partial artifacts, and how a canceled job appears in audit logs.
 
 ## Which tasks belong in background mode
 

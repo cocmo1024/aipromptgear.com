@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-11
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-01
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -51,13 +51,15 @@ Use **Batch API** when you have large numbers of independent, non-urgent request
 
 Batch is a **bulk throughput tool**. Background mode is a **long-running task tool**.
 
-## Official signals checked April 11, 2026
+## Official signals checked May 1, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
-| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous request sets with lower-cost deferred execution | It is built for backlog processing, not live user waiting loops |
+| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous request sets, lower-cost deferred execution, higher async headroom, and completion within a 24-hour window | It is built for backlog processing, not live user waiting loops |
 | [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI publicly positions Batch as offering materially lower cost for eligible workloads | Deferred bulk jobs can have very different economics from live requests |
 | [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode is framed around long-running tasks that are created, polled, and completed asynchronously | It fits product flows where one task may outlast a normal synchronous response |
+
+The important economic distinction is not "async is cheaper." Batch can be cheaper because it trades urgency for deferred processing. Background mode is not primarily a discount mechanism; it is a product continuity mechanism for long-running jobs that still need status, retrieval, review, and cancellation.
 
 ## The easiest way to separate the two
 
@@ -68,6 +70,19 @@ Ask this first:
 If it is one important job that a user, operator, or workflow needs to track, you are closer to background mode.
 
 If it is ten thousand independent jobs that can be completed later, you are closer to Batch.
+
+## Decision table for real workloads
+
+| Workload | Better starting point | Reason |
+| --- | --- | --- |
+| Reclassify 500,000 old support tickets overnight | Batch | Independent records, low urgency, throughput economics |
+| Generate one 40-page research brief for a user | Background mode | One tracked job with result retrieval and likely review |
+| Run an evaluation suite across 2,000 prompts | Batch | Repeated independent calls where cost per case matters |
+| Analyze one large contract and notify a reviewer | Background mode | One workflow instance needs status, evidence, and approval |
+| Enrich a CRM export before tomorrow morning | Batch | Bulk deferred processing with predictable completion tolerance |
+| Draft a customer-facing reply that must be approved | Background mode plus approval lane | Completion is not the same as permission to send |
+
+If the workload seems to fit both, split it by unit of work. Use Batch for the offline backlog and background mode for the user-triggered item that someone must track.
 
 ## When Batch is the right answer
 
@@ -112,9 +127,13 @@ This is where background mode fits better than Batch.
 
 Batch is strongest when cost per task matters more than immediate completion. This is the right pattern when the business benefit comes from processing a lot of work at lower cost.
 
+Batch also changes how teams should measure success. The useful metric is not only token cost. It is **cost per accepted record** after invalid inputs, schema failures, retries, and downstream review are counted.
+
 ### Background mode optimizes product continuity
 
 Background mode is strongest when the product needs to hand work off, preserve user flow, and return results later without pretending the job is synchronous.
+
+Background mode should be measured by **cost per completed product job**, not just cost per model call. A job may include retrieval, tool calls, post-processing, review, storage, and retries. If those parts are invisible, the architecture will look cheaper than it is.
 
 One is mainly about deferred throughput. The other is mainly about product-safe async execution.
 
