@@ -1,0 +1,214 @@
+---
+title: Coding-Agent Quality Regression Playbook
+description: How engineering teams should detect, prove, triage, and roll back AI coding-agent quality regressions after model, prompt, effort, context, tool, or product-harness changes.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI coding agent quality regression
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Engineering managers
+  - Developer productivity teams
+  - AI platform teams
+  - EvalOps owners
+  - Staff engineers
+contentStatus: cornerstone
+datePublished: 2026-05-02
+lastReviewed: 2026-05-02
+problemSolved: How to move from subjective complaints that a coding agent got worse to a defensible diagnosis, rollback plan, and regression-prevention process.
+readerTakeaway: You should leave with a concrete operating model for proving coding-agent degradation, separating model issues from harness issues, and turning incidents into eval and release gates.
+keyQuestions:
+  - How do you prove an AI coding agent got worse?
+  - What signals separate model regression from prompt, context, tool, or product-harness changes?
+  - What should an engineering team roll back when coding-agent quality drops?
+notFor:
+  - One-person experimentation with no shared coding-agent rollout
+  - Teams that cannot inspect repository tasks, traces, or review outcomes
+updateTriggers:
+  - Major coding-agent model release
+  - Coding-agent incident or quality postmortem
+  - Changes to effort settings, prompt layer, context compaction, tool permissions, or code-review gates
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Coding-Agent Quality Regression Playbook
+
+When developers say a coding agent "got worse," the report is easy to dismiss because it sounds subjective. That is a mistake. Coding-agent regressions can be real even when the underlying model has not changed. They can come from effort defaults, session context handling, prompt-layer edits, tool-call behavior, permission changes, rate limits, cache misses, retrieval context, or the product harness around the model.
+
+The useful response is not to argue whether the model is smarter in the abstract. The useful response is to measure whether the agent still completes the engineering work your organization bought it to complete.
+
+## Quick answer
+
+Treat coding-agent quality as a product reliability surface. A regression investigation should collect reproducible repository tasks, compare traces before and after the suspected change, separate model output quality from harness behavior, and decide whether to roll back the model, prompt, effort setting, context policy, tool permissions, or workflow gate.
+
+If the team cannot show examples, traces, reviewer outcomes, and failure categories, it does not yet have a regression process. It only has sentiment.
+
+## Why this matters now
+
+April 2026 made this problem visible. Anthropic published an April 23 postmortem after recent Claude Code quality reports, saying the issues traced to separate changes affecting Claude Code, Claude Agent SDK, and Claude Cowork, while the API was not impacted. The postmortem described changes involving effort defaults, context handling after idle sessions, and a system-prompt instruction intended to reduce verbosity.
+
+That matters beyond one vendor because it demonstrates a general truth: coding-agent quality is not just model quality. The model sits inside a runtime with defaults, prompts, memory or context policies, tools, permissions, caches, review surfaces, and product decisions. Any one of those can move production quality.
+
+## The first mistake: benchmark-shopping after a production complaint
+
+When developers report degraded quality, teams often reach for public benchmarks. Benchmarks can be useful for background context, but they rarely answer the immediate question:
+
+**Can this agent still do our work in our repositories under our policies?**
+
+A benchmark cannot tell you whether:
+
+- the agent lost prior reasoning after an idle session;
+- the product changed default effort levels;
+- the system prompt now suppresses useful analysis;
+- tool permissions are blocking normal investigation;
+- subagents are using a cheaper or weaker lane;
+- cache behavior is increasing cost and reducing continuity;
+- review gates are catching fewer bad changes.
+
+Regression work starts with your traces and tasks, not with a leaderboard.
+
+## Build the evidence packet
+
+Every serious coding-agent quality report should produce an evidence packet:
+
+| Evidence | Why it matters |
+| --- | --- |
+| Repository task | Shows the actual work class affected, not a generic prompt |
+| Agent transcript or trace | Shows planning, tool use, context, retries, and failure point |
+| Model and effort setting | Separates model capability from runtime configuration |
+| Tool permissions and approvals | Shows whether the agent was blocked, over-permitted, or misrouted |
+| Reviewer outcome | Captures human acceptance, corrections, rework, or rejection |
+| Cost and latency | Shows whether quality changed alongside token use, retries, or time |
+| Prior successful run or baseline | Prevents one-off failures from being mistaken for regression |
+
+Without this packet, the team will keep debating anecdotes.
+
+## Classify the regression before deciding what to roll back
+
+Not all regressions are the same. Use this taxonomy:
+
+| Failure class | Symptom | Likely rollback target |
+| --- | --- | --- |
+| Model reasoning regression | Worse plans, weaker debugging, missed dependencies | Model version or routing rule |
+| Effort-level regression | Faster but shallower work, more missed edge cases | Effort default or premium-lane trigger |
+| Context regression | Repetition, forgetfulness, loss of prior rationale | Context compaction, cache, session policy |
+| Prompt-layer regression | Over-short answers, weak planning, odd refusal or format changes | System prompt or developer instructions |
+| Tool regression | Wrong tool choice, failed commands, missing diagnostics | Tool schema, permissions, tool timeout, sandbox |
+| Approval regression | Agent acts too freely or asks for approval constantly | Approval policy and workflow thresholds |
+| Review regression | Bad changes pass or good changes get stuck | PR gates, reviewer queue, evaluation scorecard |
+| Cost regression | Same task consumes more tokens, retries, or sessions | Routing, context, cache, subagent policy |
+
+This classification matters because rolling back the model will not fix a context-compaction bug, and changing the prompt will not fix an approval bottleneck.
+
+## Use repository-grounded regression cases
+
+A credible coding-agent eval set should include tasks from real repositories:
+
+- small bug fixes with clear tests;
+- cross-file refactors with dependency risk;
+- ambiguous issue reports that need investigation;
+- upgrade or migration tasks with hidden compatibility traps;
+- flaky-test diagnosis;
+- security or data-handling changes that require caution;
+- UI or docs tasks where final output quality matters;
+- failed historical runs that humans repaired.
+
+Each case should include the expected review standard, not only an expected patch. Coding-agent quality is often visible in the path: whether the agent investigates correctly, runs tests, explains tradeoffs, and avoids touching unrelated code.
+
+## Watch for these production signals
+
+Do not wait for developers to complain loudly. Monitor:
+
+- accepted PR rate from agent-created changes;
+- reviewer correction time;
+- test pass rate before human intervention;
+- rollback or revert rate;
+- number of tool calls per accepted task;
+- repeated failed commands;
+- approval-request frequency;
+- abandoned agent sessions;
+- context length and compaction events;
+- cost per accepted change;
+- developer satisfaction on sampled tasks.
+
+The best signal is not "the agent produced more code." It is "the agent produced changes humans accepted with less rework and no increase in incident risk."
+
+## A practical triage flow
+
+When quality drops, use this order:
+
+1. Freeze rollout expansion until the failure class is known.
+2. Collect five to twenty representative failing traces.
+3. Compare them against a stable baseline model or previous product version.
+4. Check model version, effort, prompt, context, tool, and permission changes.
+5. Re-run a small eval set under controlled settings.
+6. Roll back the smallest layer that plausibly caused the failure.
+7. Add every confirmed failure to the regression suite.
+8. Communicate the change to developers with the exact affected workflow classes.
+
+This is slower than arguing in Slack, but faster than letting a vague quality problem burn trust for weeks.
+
+## The rollback decision
+
+Rollback should be based on consequence, not embarrassment.
+
+Roll back immediately when:
+
+- bad changes are reaching protected branches;
+- security-sensitive changes are weaker;
+- the agent is losing context across multi-step work;
+- approval policy is being bypassed;
+- cost per accepted task spikes without quality improvement;
+- reviewer capacity is being consumed by avoidable errors.
+
+Use a canary or shadow comparison when:
+
+- the issue is limited to one workflow class;
+- the new model is better on some tasks and worse on others;
+- the failure appears tied to prompt style rather than safety;
+- the team can route high-risk work back to a stable lane.
+
+## Preventing the next regression
+
+The durable fix is release discipline:
+
+- model changes require task-class evals;
+- prompt-layer changes require ablation on coding-agent cases;
+- effort defaults require before-and-after reviewer outcome checks;
+- context or cache changes require long-session and idle-session tests;
+- tool-permission changes require approval-boundary tests;
+- production rollouts require canaries and rollback rules.
+
+The standard is simple: no hidden harness change should be able to degrade engineering output without leaving traces, alerts, and a rollback path.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Eval datasets for coding agents"
+		href="/evaluation/eval-datasets-for-coding-agents-and-repository-tasks/"
+		description="Build repository-based cases that measure actual engineering work rather than prompt demos."
+	/>
+	<LinkCard
+		title="Approval boundary tests for coding agents"
+		href="/evaluation/approval-boundary-tests-for-coding-agents/"
+		description="Validate that coding agents do not cross review, write, merge, or deployment boundaries accidentally."
+	/>
+	<LinkCard
+		title="PR checks and merge gates for coding agents"
+		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+		description="Turn regression lessons into repository-level gates that protect production code."
+	/>
+	<LinkCard
+		title="Claude Code premium seats and usage budgets"
+		href="/tool-comparisons/claude-code-premium-seats-and-usage-budgets/"
+		description="Budget coding-agent seats around accepted engineering outcomes, not only subscription price."
+	/>
+</div>
+
+## Source notes
+
+This page was informed by Anthropic's [April 23, 2026 update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem), the [Claude Code Week 16 release notes](https://code.claude.com/docs/en/whats-new/2026-w16), and OpenAI's [GPT-5.5 release note](https://openai.com/index/introducing-gpt-5-5/) describing long-horizon coding and tool-use improvements. The operational framework is vendor-neutral.

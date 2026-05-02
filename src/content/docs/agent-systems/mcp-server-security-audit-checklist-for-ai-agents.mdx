@@ -1,0 +1,271 @@
+---
+title: MCP Server Security Audit Checklist for AI Agents
+description: A practical security audit checklist for MCP servers exposed to AI agents, covering tool scopes, prompt injection, SSRF, browser automation, credentials, approvals, logs, and incident response.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: MCP server security checklist
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security engineers
+  - Internal tools architects
+  - DevSecOps teams
+  - Enterprise agent owners
+contentStatus: cornerstone
+datePublished: 2026-05-02
+lastReviewed: 2026-05-02
+problemSolved: How to audit MCP servers before they become shared production tool surfaces for AI agents.
+readerTakeaway: You should leave with a concrete MCP server audit model covering tool authority, network exposure, untrusted content, credentials, approvals, traces, and rollback.
+keyQuestions:
+  - What should security teams review before approving an MCP server?
+  - Which MCP tool types create the highest risk?
+  - How should prompt injection, SSRF, browser tools, credentials, and write actions be bounded?
+notFor:
+  - Local-only toy MCP demos with no shared data, credentials, browser access, or write tools
+  - Protocol introductions that do not cover production security review
+updateTriggers:
+  - MCP authorization spec changes
+  - Public MCP server security advisories
+  - New remote MCP deployment patterns
+  - Changes in enterprise agent tool-permission models
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# MCP Server Security Audit Checklist for AI Agents
+
+MCP is useful because it standardizes how AI systems connect to tools and context. That same standardization can turn one weak server into a reusable risk surface. If multiple AI clients can discover, call, or chain the same tools, the security review has to be stricter than a one-off internal script review.
+
+This page is an audit checklist for MCP servers before they are exposed to shared agents, remote clients, internal users, or production workflows.
+
+## Quick answer
+
+An MCP server should not be approved until the team can answer six questions:
+
+1. What can each tool read, write, execute, or send externally?
+2. Which content passed to the model is untrusted?
+3. Which credentials or tokens can the server reach?
+4. Which actions require approval before side effects?
+5. Which logs prove who called what, with which client, and what happened?
+6. How can the server be disabled, downgraded, or rolled back during an incident?
+
+If those answers are missing, the server is not production-ready even if the protocol integration works.
+
+## Why MCP security is different from ordinary API security
+
+An ordinary API is usually called by application code with expected inputs. An MCP tool may be selected by a model after reading retrieved documents, web pages, tickets, emails, logs, or browser output. That means the tool can be influenced by content that was never designed to be an instruction source.
+
+The audit must cover:
+
+- normal API authorization;
+- model-driven tool selection;
+- prompt injection through tool outputs;
+- browser or network reachability;
+- chained tool calls;
+- human approval before consequential actions;
+- trace evidence for incident review.
+
+The protocol is not the control plane. The MCP server still needs product security design around it.
+
+## Step 1: classify every tool by authority
+
+Do not approve a server as one object. Approve its tools.
+
+| Tool class | Examples | Default posture |
+| --- | --- | --- |
+| Safe read | Search public docs, read non-sensitive metadata | Allow inside bounded workflows |
+| Sensitive read | Read tickets, customer records, logs, private docs | Require user scope, tenant scope, and logging |
+| Draft write | Draft reply, create pending note, prepare PR summary | Allow only if output remains reviewable |
+| Reversible write | Update low-risk internal status, create non-final ticket | Require workflow-specific approval or policy |
+| Consequential write | Send email, refund order, modify production config, merge code | Require explicit approval and strong audit |
+| Execute | Run shell, browser automation, data query, code execution | Require sandbox, allowlist, timeout, and output controls |
+
+The highest-risk tool determines the server's review depth. A server with one shell or browser tool is not low risk because it also has harmless search tools.
+
+## Step 2: identify untrusted inputs
+
+For AI agents, untrusted input is broader than user input. Treat these as untrusted:
+
+- web pages;
+- retrieved documents;
+- customer emails;
+- support tickets;
+- repository files from unknown contributors;
+- PDF content;
+- issue comments;
+- browser DOM text;
+- logs containing user-controlled strings;
+- outputs from other tools.
+
+The MCP server should not rely on the model to "ignore malicious instructions." The runtime should separate data from authority.
+
+Audit questions:
+
+- Can a document tell the agent to call a dangerous tool?
+- Can a web page steer browser automation into exfiltration?
+- Can a ticket comment cause the agent to send customer data elsewhere?
+- Can retrieved text overwrite policy instructions?
+- Can tool output become tool input without review?
+
+If yes, the server needs stronger boundaries.
+
+## Step 3: review SSRF and network reachability
+
+MCP servers that fetch URLs, control browsers, call internal APIs, or run command-line tools can create server-side request forgery and internal network exposure risk.
+
+Audit:
+
+- Are outbound domains allowlisted?
+- Are private IP ranges blocked by default?
+- Are redirects checked after resolution?
+- Are metadata endpoints blocked?
+- Are file URLs and local paths blocked unless explicitly needed?
+- Are browser downloads disabled or sandboxed?
+- Are request headers stripped of secrets?
+- Are DNS rebinding and redirect chains handled?
+
+Browser tools need extra caution because a browser can see pages, click links, execute scripts, download files, and interact with forms. If a model controls the browser, untrusted web content can influence the next action.
+
+## Step 4: separate user-scoped and service-scoped authority
+
+An MCP server should not hide whose authority is being used.
+
+User-scoped access is appropriate when:
+
+- the agent acts on behalf of a named user;
+- permissions should match that user's access;
+- audit trails need individual accountability;
+- different users see different data.
+
+Service-scoped access is appropriate when:
+
+- the workflow is owned by an application;
+- the action is narrow, repeatable, and policy-defined;
+- the service role has limited permissions;
+- human approval is captured before side effects.
+
+The weak design is a broad service credential that lets every user and every agent reach the same sensitive tools.
+
+## Step 5: require approval before side effects
+
+Approval should be based on consequence, not model confidence.
+
+Require explicit approval for:
+
+- external messages;
+- billing, refund, procurement, or account-state changes;
+- code merges or deployment actions;
+- production configuration changes;
+- customer data exports;
+- actions that call another privileged system;
+- irreversible or hard-to-undo updates.
+
+Approval should capture:
+
+- proposed action;
+- evidence used;
+- user or reviewer identity;
+- tool and arguments;
+- risk reason;
+- timestamp;
+- result.
+
+"The model thought it was safe" is not approval evidence.
+
+## Step 6: constrain execution tools
+
+Any tool that runs code, shell commands, SQL, browser automation, or scripts needs a separate review.
+
+Minimum controls:
+
+- isolated sandbox;
+- no ambient secrets;
+- network allowlist;
+- filesystem allowlist;
+- command allowlist or policy engine;
+- timeouts;
+- output truncation and redaction;
+- no silent background processes;
+- explicit approval before persistent writes or external calls.
+
+For coding agents, read-only exploration and write-enabled execution should be different permission tiers. A tool that can run tests is not automatically safe to run deployment commands.
+
+## Step 7: log for incident review, not only debugging
+
+The log should answer:
+
+- Which user, client, and workflow called the tool?
+- What tool version and server version were active?
+- What arguments were passed?
+- What source content influenced the call?
+- Was approval required?
+- Who approved?
+- What result came back?
+- Was the output later used as input to another tool?
+- What did the agent do next?
+
+Debug logs are usually not enough. Security review needs traceability across model, tool, user, data, approval, and side effect.
+
+## Step 8: define the kill switch before launch
+
+Every production MCP server needs an incident control plan:
+
+- disable one tool without removing the whole server;
+- downgrade write tools to draft-only mode;
+- revoke service credentials;
+- block a client;
+- disable remote access;
+- force approval for all side effects;
+- replay or inspect recent traces;
+- notify workflow owners;
+- add confirmed failures to evals and approval-boundary tests.
+
+If the team cannot disable a dangerous tool quickly, the tool should not be broadly exposed.
+
+## Red flags during audit
+
+Stop and redesign when you find:
+
+- one broad token for many unrelated tools;
+- no separation between read and write tools;
+- browser automation with unrestricted network access;
+- shell execution with ambient secrets;
+- no tenant scoping;
+- no approval record for external side effects;
+- tool descriptions that hide dangerous behavior;
+- no way to identify which client made a call;
+- no rollout or kill-switch plan.
+
+These are not documentation issues. They are production risk.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="MCP security and approval boundaries"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Use this broader page to separate read/write tools, user-scoped access, system authority, and workflow-specific approval policy."
+	/>
+	<LinkCard
+		title="Tool outputs are untrusted"
+		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
+		description="Translate prompt-injection risk into runtime boundaries and tool-design rules."
+	/>
+	<LinkCard
+		title="Least-privilege tool scopes"
+		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
+		description="Break broad integrations into narrower capabilities that can be reviewed and approved independently."
+	/>
+	<LinkCard
+		title="Approval boundary tests"
+		href="/evaluation/approval-boundary-tests-for-coding-agents/"
+		description="Validate that tool policies work under realistic agent behavior."
+	/>
+</div>
+
+## Source notes
+
+This page uses the [MCP authorization specification](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization), the [MCP introduction](https://modelcontextprotocol.io/docs/getting-started/intro), and public ecosystem security discussions such as the GitHub issue on [SSRF, indirect prompt injection, and sandbox bypass in an MCP puppeteer server](https://github.com/modelcontextprotocol/servers/issues/3662). The audit model is intentionally vendor-neutral.

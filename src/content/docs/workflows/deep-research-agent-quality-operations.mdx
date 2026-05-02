@@ -1,0 +1,257 @@
+---
+title: Deep Research Agent Quality Operations
+description: How to operate deep research agents with source tiers, evidence packets, citation audits, contradiction handling, reviewer gates, runtime budgets, and escalation rules.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: deep research agent quality
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Research teams
+  - Strategy teams
+  - AI product managers
+  - Knowledge operations owners
+  - EvalOps teams
+contentStatus: cornerstone
+datePublished: 2026-05-02
+lastReviewed: 2026-05-02
+problemSolved: How to turn deep research agents from long-report generators into auditable workflows that produce evidence professional teams can review and reuse.
+readerTakeaway: You should leave with a practical operating model for source quality, citation accuracy, evidence packets, escalation, and cost control in deep research systems.
+keyQuestions:
+  - How should teams evaluate deep research agent output?
+  - What should a deep research agent return besides a polished report?
+  - How do source quality, citation audits, and reviewer gates work in production?
+notFor:
+  - Casual web summaries
+  - One-off consumer research prompts with no review or business consequence
+updateTriggers:
+  - Deep research product releases
+  - Search or citation feature changes
+  - New research-agent evaluation methods
+  - High-stakes research workflow incidents
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Deep Research Agent Quality Operations
+
+Deep research agents are becoming a premium AI workflow category. The risk is that teams will measure them by report length, citation count, or how confident the final answer sounds. That is not enough. A deep research system is only useful when reviewers can inspect the evidence, understand uncertainty, and reuse the output in a real decision.
+
+Quality operations for deep research should answer one question:
+
+**Can a professional reviewer trust how this answer was produced, not just how it reads?**
+
+## Quick answer
+
+A serious deep research agent should return more than a report. It should return an evidence packet:
+
+- research question and scope;
+- search plan;
+- source inventory;
+- source quality tiers;
+- excluded-source notes;
+- citation map;
+- contradictions and uncertainty;
+- claims requiring human review;
+- runtime and cost summary;
+- reusable next-step brief.
+
+If the system cannot show its work, it is not a production research workflow. It is a long-form answer generator.
+
+## Why this topic matters now
+
+Recent model and platform releases continue to push research, web search, and long-running tool work forward. OpenAI's GPT-5.5 release emphasized research, knowledge work, tool use, and multi-step tasks. Google has also expanded Deep Research and Deep Research Max as a research workflow category. The capability direction is clear: models can search more, read more, synthesize more, and generate larger reports.
+
+That makes quality operations more important, not less. Stronger models can produce more persuasive weak research when evidence handling is loose.
+
+## The wrong metric: report length
+
+Longer output is not deeper research. A longer report can hide:
+
+- weak source selection;
+- circular citations;
+- outdated information;
+- missing counterevidence;
+- unsupported claims;
+- invented certainty;
+- overuse of low-quality summaries;
+- unclear separation between evidence and model inference.
+
+The right metric is whether the report reduces uncertainty for the decision owner.
+
+## Define source tiers before the agent runs
+
+Deep research quality starts with source policy. A practical tiering model:
+
+| Tier | Source type | How to use it |
+| --- | --- | --- |
+| Tier 1 | Official docs, primary filings, standards, release notes, original research, direct data | Use for factual anchors and high-stakes claims |
+| Tier 2 | Reputable analysis, expert commentary, major trade publications | Use for interpretation, market framing, and context |
+| Tier 3 | Forums, social posts, community reports, secondary summaries | Use as signals or leads, not as final authority |
+| Excluded | Unsourced aggregation, content farms, unverifiable claims, stale copied material | Do not use except as examples of noise |
+
+The agent should know which claims require Tier 1 support and which can rely on lower-tier context.
+
+## Require a search plan
+
+Before the agent synthesizes, it should state:
+
+- the question it is answering;
+- the subquestions it will investigate;
+- expected source categories;
+- exclusion rules;
+- recency requirements;
+- what would count as conflicting evidence;
+- when to stop and ask for clarification.
+
+This prevents deep research from becoming unbounded browsing.
+
+## Build a citation map
+
+A citation map links major claims to sources. It is different from a bibliography.
+
+For each material claim, capture:
+
+- claim text;
+- source URL or document reference;
+- source tier;
+- date checked;
+- direct support level;
+- whether the source is primary or secondary;
+- whether another source contradicts it.
+
+This allows the reviewer to inspect the claims that matter instead of reading citations as decoration.
+
+## Handle contradictions explicitly
+
+Good research does not hide contradictions. The system should surface:
+
+- sources that disagree;
+- outdated versus current claims;
+- differences between vendor claims and independent reports;
+- regional or market-specific differences;
+- claims where evidence is too thin.
+
+The agent should not force a single confident answer when the evidence is legitimately mixed. In many professional workflows, the most valuable output is a clean statement of what is still unknown.
+
+## Return an evidence packet, not only a narrative
+
+A useful deep research output should include:
+
+### Executive answer
+
+The practical answer for the decision owner.
+
+### Evidence table
+
+The sources, tiers, dates, and claim support.
+
+### Contradictions and gaps
+
+What the system could not verify or what sources disagree on.
+
+### Decision implications
+
+What this means for product, procurement, compliance, strategy, or operations.
+
+### Reviewer checklist
+
+The claims a human should inspect before relying on the report.
+
+### Follow-up search plan
+
+What should be researched next if the decision remains high-stakes.
+
+This structure improves trust and reuse.
+
+## Runtime and cost budgets
+
+Deep research can get expensive when the system keeps searching without narrowing uncertainty.
+
+Set budgets for:
+
+- number of search passes;
+- maximum sources reviewed;
+- maximum paid tool calls;
+- maximum runtime;
+- maximum model spend;
+- maximum reviewer time;
+- escalation trigger when evidence remains weak.
+
+The budget should depend on decision value. A strategy memo for a large procurement can justify more research than a routine internal FAQ update.
+
+## Reviewer gates
+
+Human review should be mandatory when:
+
+- the output affects legal, medical, financial, security, hiring, or procurement decisions;
+- citations include conflicting evidence;
+- the agent relies heavily on secondary sources;
+- the claim is about a recent fast-moving event;
+- the report recommends a high-cost action;
+- the evidence packet has gaps.
+
+Reviewers should not be asked to judge prose quality alone. They should judge whether the evidence supports the decision.
+
+## Production evaluation metrics
+
+Track:
+
+- citation accuracy;
+- unsupported claim rate;
+- primary-source coverage;
+- source freshness;
+- contradiction detection rate;
+- reviewer correction time;
+- repeated missing-source patterns;
+- cost per accepted report;
+- number of reports reused in actual decisions.
+
+The most important metric is accepted decision usefulness, not volume of reports generated.
+
+## Deep research failure modes
+
+Watch for:
+
+- citation padding;
+- old sources treated as current;
+- vendor marketing treated as independent evidence;
+- weak sources used for high-stakes claims;
+- contradictory data smoothed over;
+- source summaries replacing source inspection;
+- recommendations that exceed evidence;
+- no record of what was searched and excluded.
+
+These failures are workflow problems. Better prompts help, but they do not replace quality operations.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Deep research workflows"
+		href="/use-cases/deep-research-workflows-for-ai-teams/"
+		description="Start with the workflow shape before adding quality operations."
+	/>
+	<LinkCard
+		title="Search evals and citation audits"
+		href="/evaluation/search-evals-and-citation-audits-for-deep-research-systems/"
+		description="Evaluate source choice, citation correctness, and missing evidence under realistic research tasks."
+	/>
+	<LinkCard
+		title="Deep research source quality"
+		href="/workflows/deep-research-source-quality-and-citation-policy/"
+		description="Define source tiers and citation rules before research outputs reach decision owners."
+	/>
+	<LinkCard
+		title="Deep research runtime budgets"
+		href="/workflows/deep-research-runtime-budgets-and-cost-controls/"
+		description="Control cost and latency before deep research becomes an unbounded premium workflow."
+	/>
+</div>
+
+## Source notes
+
+This page is informed by OpenAI's [GPT-5.5 release](https://openai.com/index/introducing-gpt-5-5/) and Google's [Deep Research and Deep Research Max announcement](https://blog.google/innovation-and-ai/models-and-research/gemini-models/next-generation-gemini-deep-research/). The operating model is vendor-neutral and focuses on evidence quality, not model branding.
+

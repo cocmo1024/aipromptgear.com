@@ -1,0 +1,231 @@
+---
+title: Enterprise Agent Platform RFP Checklist
+description: A practical RFP and evaluation checklist for enterprise teams comparing agent platforms by governance, identity, connectors, tool access, approvals, evals, audit trails, cost control, and incident response.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: enterprise agent platform RFP checklist
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - Enterprise architects
+  - AI platform leaders
+  - Procurement teams
+  - Security reviewers
+  - Product engineering leaders
+contentStatus: cornerstone
+datePublished: 2026-05-02
+lastReviewed: 2026-05-02
+problemSolved: How to compare enterprise agent platforms without reducing the decision to model demos, brand familiarity, or generic feature lists.
+readerTakeaway: You should leave with an RFP structure that tests whether an agent platform can be governed, audited, secured, evaluated, and operated after the demo.
+keyQuestions:
+  - What should an enterprise agent platform RFP ask?
+  - Which agent platform features matter after procurement?
+  - How should teams compare Gemini Enterprise, OpenAI, Anthropic, Microsoft, and custom agent stacks?
+notFor:
+  - Hobby AI tool selection
+  - Teams buying a single chatbot with no tool access or enterprise data boundary
+updateTriggers:
+  - Major enterprise agent platform releases
+  - New connector, identity, governance, or audit features
+  - Procurement requirements for regulated or security-sensitive agent deployments
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Enterprise Agent Platform RFP Checklist
+
+Enterprise agent platforms are becoming a real procurement category. The wrong buying process compares demos: one platform answers a question, another drafts a document, another runs a workflow. That is not enough. The platform that looks best in a demo may still be weak at identity, approvals, tool permissions, audit trails, evals, incident response, cost control, or connector governance.
+
+This checklist is for teams comparing enterprise agent platforms as operating infrastructure, not as shiny assistants.
+
+## Quick answer
+
+An enterprise agent platform RFP should test seven layers:
+
+1. agent inventory and ownership;
+2. identity, data access, and permission scope;
+3. connectors and tool governance;
+4. approvals and human review;
+5. evaluation, traces, and quality operations;
+6. cost controls and usage accountability;
+7. incident response, rollback, and audit evidence.
+
+If the platform cannot answer those layers clearly, it is not ready to own high-consequence work.
+
+## Why this topic matters now
+
+Google Cloud Next 2026 highlighted Gemini Enterprise Agent Platform and the broader move toward agentic enterprise infrastructure. OpenAI, Anthropic, Microsoft, Google, and independent platforms are all pushing toward agents that use tools, search data, draft outputs, and perform multi-step work. That shifts the buying question.
+
+The old question was:
+
+**Which assistant gives the best answer?**
+
+The new question is:
+
+**Which platform lets us govern thousands of AI actions across users, tools, data, models, and business systems?**
+
+That is an RFP problem, not a prompt test.
+
+## Section 1: agent inventory and ownership
+
+Ask vendors:
+
+- Can admins see every agent, workflow, routine, connector, and tool surface?
+- Can each agent have a named business owner and technical owner?
+- Can agents be tagged by department, risk class, data domain, and environment?
+- Can unused or duplicate agents be identified?
+- Can an agent be disabled without breaking the whole platform?
+- Can ownership be transferred when employees leave?
+
+Why it matters: without inventory, the organization will eventually have shadow agents with unclear access, stale prompts, and no responsible owner.
+
+## Section 2: identity and permission scope
+
+Ask:
+
+- Does the platform support user-scoped authorization?
+- Does it support service identities with narrow scopes?
+- Can the same tool behave differently by user, group, role, tenant, or environment?
+- Can permissions be inherited from existing IAM and SaaS systems?
+- Are admin roles separated from workflow author roles?
+- Can high-risk permissions require security approval?
+
+Reject vague answers like "the agent respects permissions" unless the vendor can show how permission checks happen at tool call time.
+
+## Section 3: connector and tool governance
+
+Connectors are where agent value and agent risk meet.
+
+Ask:
+
+- Which connectors are first-party, partner-built, or customer-built?
+- Can tools be classified as read, draft, write, execute, or external-send?
+- Can write tools require approval?
+- Can tool descriptions, schemas, and permissions be versioned?
+- Can tools be restricted by environment?
+- Can connector output be treated as untrusted content?
+- Can admins disable one tool without disabling the whole connector?
+
+The platform should make it easy to expose the smallest useful tool, not the broadest possible integration.
+
+## Section 4: approvals and human review
+
+An enterprise platform should support review by consequence, not only by confidence.
+
+Ask:
+
+- Can the platform require approval before external side effects?
+- Can approvals differ by action type, user role, data class, or dollar amount?
+- Does approval capture the proposed action, evidence, arguments, reviewer, and final result?
+- Can reviewers edit a draft before execution?
+- Can approval latency be monitored?
+- Can repeated low-risk approvals be safely batched or streamlined?
+
+Approval should not be a cosmetic modal. It should be part of the audit trail.
+
+## Section 5: evaluation, traces, and quality operations
+
+Ask:
+
+- Can runs be sampled for evaluation?
+- Are traces inspectable across model calls, tool calls, approvals, and outputs?
+- Can teams build eval sets from production failures?
+- Can model, prompt, tool, and workflow versions be attached to outcomes?
+- Can quality gates block rollout?
+- Can the platform compare behavior before and after a model or prompt change?
+- Can human review labels feed regression tests?
+
+If the vendor only shows dashboards but cannot support release decisions, the platform is observability-light, not EvalOps-ready.
+
+## Section 6: cost controls and usage accountability
+
+Enterprise agents can spend money through tokens, search, retrieval, compute, tools, and review labor.
+
+Ask:
+
+- Can usage be broken down by team, workflow, agent, model, tool, and tenant?
+- Can budgets be assigned to owners?
+- Can the platform set hard and soft limits?
+- Can expensive model lanes require routing rules?
+- Can search, deep research, or long-running tasks have cost budgets?
+- Can cost be measured per successful outcome, not only per request?
+
+The platform should make waste visible before finance discovers it in an invoice.
+
+## Section 7: incident response and rollback
+
+Ask:
+
+- Can an agent be paused immediately?
+- Can one model route be rolled back?
+- Can one prompt or tool version be reverted?
+- Can risky tools be downgraded to draft-only mode?
+- Can the platform preserve incident traces?
+- Can admins identify affected users and workflows?
+- Can the vendor provide post-incident support with evidence?
+
+An agent platform without rollback is a production system without brakes.
+
+## Vendor comparison lens
+
+Do not reduce the shortlist to one dimension. Use this grid:
+
+| Dimension | What good looks like |
+| --- | --- |
+| Model surface | Strong enough models for the target workflows, plus routing options |
+| Runtime ownership | Clear answer for what the vendor runs versus what your app owns |
+| Data boundary | Permission-aware access, tenant isolation, and connector policy |
+| Tool safety | Read/write separation, approval gates, and untrusted-output handling |
+| Evaluation | Trace-based evals, release gates, and production sampling |
+| Procurement | Security docs, compliance evidence, data retention options, admin controls |
+| Migration risk | Exportability of prompts, traces, evals, policies, and connector definitions |
+
+The winning vendor is not always the one with the flashiest model demo. It is the one whose operating model your organization can govern.
+
+## RFP red flags
+
+Watch for:
+
+- "agent marketplace" with weak validation details;
+- broad connectors with unclear tool-level permissions;
+- no user-scoped auth story;
+- no approval trail for side effects;
+- no trace export;
+- no model or prompt rollback;
+- no cost attribution below account level;
+- no answer for prompt injection through retrieved or tool-provided content;
+- no security review path for customer-built tools.
+
+These gaps become expensive after rollout.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Should you build or buy an AI agent platform?"
+		href="/tool-comparisons/should-you-build-or-buy-an-ai-agent-platform/"
+		description="Decide which layers are strategic to own and which can be bought safely."
+	/>
+	<LinkCard
+		title="Enterprise agent governance control plane"
+		href="/tooling/enterprise-agent-governance-control-plane/"
+		description="Turn RFP answers into an operating model for identity, tools, approvals, evals, budgets, and incidents."
+	/>
+	<LinkCard
+		title="OpenAI vs Anthropic vs Google Gemini"
+		href="/tool-comparisons/openai-vs-anthropic-vs-google-gemini-for-enterprise-agent-teams/"
+		description="Compare major model vendors by platform fit, governance posture, and agent operating model."
+	/>
+	<LinkCard
+		title="AI agent vendor security questionnaire"
+		href="/tool-comparisons/ai-agent-vendor-security-questionnaire-for-enterprise-procurement/"
+		description="Use a security-first vendor review before tools, data, or customer workflows are exposed."
+	/>
+</div>
+
+## Source notes
+
+This page was shaped by recent enterprise agent platform signals including [Google Cloud Next 2026](https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/next-2026/), Google's [Gemini Enterprise agent platform materials](https://cloud.google.com/gemini-enterprise/agents), OpenAI's [GPT-5.5 release](https://openai.com/index/introducing-gpt-5-5/), and Anthropic's [Claude Opus 4.7 release](https://www.anthropic.com/news/claude-opus-4-7). The RFP checklist is vendor-neutral.
+
