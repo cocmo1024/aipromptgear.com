@@ -1,0 +1,76 @@
+---
+import type { PromptRadarEntry } from '../data/prompt-radar';
+
+interface Props {
+	entry: PromptRadarEntry;
+	compact?: boolean;
+}
+
+const { entry, compact = false } = Astro.props;
+---
+
+<article class:list={['prompt-radar-card', compact && 'prompt-radar-card--compact']} data-media={entry.media}>
+	<div class="prompt-radar-card__head">
+		<div>
+			<p class="prompt-radar-card__eyebrow">
+				#{entry.rank} · {entry.media} · {entry.heat}
+			</p>
+			<h2>
+				<a href={`/prompts/${entry.slug}/`}>{entry.title}</a>
+			</h2>
+		</div>
+		<button class="prompt-radar-card__copy" type="button" data-copy-button>
+			Copy prompt
+		</button>
+	</div>
+	<p class="prompt-radar-card__summary">{entry.signalSummary}</p>
+	<div class="prompt-radar-card__meta">
+		<div>
+			<strong>Model</strong>
+			<span>{entry.model}</span>
+		</div>
+		<div>
+			<strong>Primary query</strong>
+			<span>{entry.primaryKeyword}</span>
+		</div>
+		<div>
+			<strong>Source signal</strong>
+			<a href={entry.sourceUrl} target={entry.sourceUrl.startsWith('/') ? undefined : '_blank'} rel={entry.sourceUrl.startsWith('/') ? undefined : 'noreferrer'}>
+				{entry.sourceLabel}
+			</a>
+		</div>
+	</div>
+	{!compact && (
+		<>
+			<p class="prompt-radar-card__use-case">
+				<strong>Use case:</strong> {entry.useCase}
+			</p>
+			<div class="prompt-radar-card__body">
+				<pre data-prompt-body>{entry.prompt}</pre>
+			</div>
+		</>
+	)}
+</article>
+
+<script is:inline>
+	document.querySelectorAll('[data-copy-button]').forEach((button) => {
+		if (button.dataset.copyBound === 'true') return;
+		button.dataset.copyBound = 'true';
+		button.addEventListener('click', async () => {
+			const root = button.closest('.prompt-radar-card');
+			const body = root?.querySelector('[data-prompt-body]');
+			const text = body?.textContent?.trim();
+			if (!text) return;
+			const originalLabel = button.textContent;
+			try {
+				await navigator.clipboard.writeText(text);
+				button.textContent = 'Copied';
+			} catch {
+				button.textContent = 'Copy failed';
+			}
+			setTimeout(() => {
+				button.textContent = originalLabel;
+			}, 1800);
+		});
+	});
+</script>

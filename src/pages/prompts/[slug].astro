@@ -1,0 +1,131 @@
+---
+import ReferenceShell from '../../layouts/ReferenceShell.astro';
+import PromptRadarCard from '../../components/PromptRadarCard.astro';
+import {
+	promptRadarEntries,
+	promptRadarEntryMap,
+} from '../../data/prompt-radar';
+import { siteMeta } from '../../utils/site-meta.mjs';
+
+export function getStaticPaths() {
+	return promptRadarEntries.map((entry) => ({
+		params: { slug: entry.slug },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const related = entry.relatedLinks
+	.map((link) => {
+		if (!link.href.startsWith('/prompts/')) return link;
+		const slug = link.href.replace('/prompts/', '').replaceAll('/', '');
+		const candidate = promptRadarEntryMap.get(slug);
+		return candidate ? { label: candidate.title, href: `/prompts/${candidate.slug}/` } : link;
+	})
+	.filter((link) => link.href !== `/prompts/${entry.slug}/`);
+const canonicalUrl = new URL(`/prompts/${entry.slug}/`, `${siteMeta.siteUrl}/`).toString();
+const creativeWork = {
+	'@context': 'https://schema.org',
+	'@type': 'CreativeWork',
+	'@id': `${canonicalUrl}#prompt-template`,
+	name: entry.title,
+	description: entry.signalSummary,
+	url: canonicalUrl,
+	isAccessibleForFree: true,
+	creativeWorkStatus: 'Published',
+	dateModified: entry.updatedAt,
+	keywords: [entry.primaryKeyword, entry.media, entry.model, 'AI prompt'].join(', '),
+	about: entry.useCase,
+	isBasedOn: entry.sourceUrl.startsWith('http')
+		? {
+				'@type': 'CreativeWork',
+				name: entry.sourceLabel,
+				url: entry.sourceUrl,
+			}
+		: undefined,
+	publisher: {
+		'@id': `${siteMeta.siteUrl}/#organization`,
+	},
+};
+---
+
+<ReferenceShell
+	title={entry.title}
+	description={`${entry.signalSummary} Includes a copyable prompt, variables, quality checks, failure modes, and source attribution.`}
+	eyebrow={`${entry.media} prompt`}
+	breadcrumbs={[
+		{ label: 'Home', href: '/' },
+		{ label: 'Prompts', href: '/prompts/' },
+		{ label: entry.title },
+	]}
+	canonicalPath={`/prompts/${entry.slug}/`}
+>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(creativeWork)} />
+
+	<section class="signal-strip">
+		<div>
+			<strong>Primary query</strong>
+			<p>{entry.primaryKeyword}</p>
+		</div>
+		<div>
+			<strong>Search intent</strong>
+			<p>{entry.searchIntent}</p>
+		</div>
+		<div>
+			<strong>Source signal</strong>
+			<p>
+				<a href={entry.sourceUrl} target={entry.sourceUrl.startsWith('/') ? undefined : '_blank'} rel={entry.sourceUrl.startsWith('/') ? undefined : 'noreferrer'}>
+					{entry.sourceLabel}
+				</a>
+			</p>
+		</div>
+	</section>
+
+	<PromptRadarCard entry={entry} />
+
+	<section class="reference-section">
+		<h2>What to customize first</h2>
+		<ul>
+			{entry.variables.map((variable) => (
+				<li>{variable}</li>
+			))}
+		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Why this prompt works</h2>
+		<p>{entry.whyItWorks}</p>
+	</section>
+
+	<section class="reference-section">
+		<h2>Quality checks before using the output</h2>
+		<ul>
+			{entry.qualityChecks.map((check) => (
+				<li>{check}</li>
+			))}
+		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Common failure modes</h2>
+		<ul>
+			{entry.failureModes.map((failure) => (
+				<li>{failure}</li>
+			))}
+		</ul>
+	</section>
+
+	{related.length > 0 && (
+		<section class="reference-section">
+			<h2>Related next steps</h2>
+			<div class="portal-links">
+				{related.map((link) => (
+					<a class="sl-link-card" href={link.href}>
+						<span class="title">{link.label}</span>
+						<span>Continue into the supporting reference page or prompt cluster.</span>
+					</a>
+				))}
+			</div>
+		</section>
+	)}
+</ReferenceShell>

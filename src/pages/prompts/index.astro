@@ -1,0 +1,168 @@
+---
+import ReferenceShell from '../../layouts/ReferenceShell.astro';
+import PromptRadarCard from '../../components/PromptRadarCard.astro';
+import {
+	promptRadarEntries,
+	promptRadarLastUpdated,
+	promptRadarMethod,
+	type PromptRadarMedia,
+} from '../../data/prompt-radar';
+import { siteMeta } from '../../utils/site-meta.mjs';
+
+const mediaGroups: Array<{ label: string; media: PromptRadarMedia; description: string }> = [
+	{
+		label: 'Image',
+		media: 'image',
+		description: 'Image prompts for reference edits, ads, infographics, typography, mockups, and social visuals.',
+	},
+	{
+		label: 'Video',
+		media: 'video',
+		description: 'Video prompts with shot lists, continuity rules, camera direction, and failure checks.',
+	},
+	{
+		label: 'Webpage',
+		media: 'webpage',
+		description: 'Webpage and landing-page prompts that preserve copy hierarchy, proof, and conversion logic.',
+	},
+	{
+		label: 'Workflow',
+		media: 'workflow',
+		description: 'Prompt workflows for model comparisons, testing, and reusable evaluation artifacts.',
+	},
+];
+
+const canonicalUrl = new URL('/prompts/', `${siteMeta.siteUrl}/`).toString();
+const itemList = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	'@id': `${canonicalUrl}#prompt-radar-list`,
+	name: 'Daily AI Prompt Radar',
+	description:
+		'Copyable AI prompts adapted from public creator and prompt-library signals with source attribution, controls, and failure modes.',
+	itemListOrder: 'https://schema.org/ItemListOrderAscending',
+	numberOfItems: promptRadarEntries.length,
+	itemListElement: promptRadarEntries.map((entry) => ({
+		'@type': 'ListItem',
+		position: entry.rank,
+		url: new URL(`/prompts/${entry.slug}/`, `${siteMeta.siteUrl}/`).toString(),
+		name: entry.title,
+		description: entry.signalSummary,
+	})),
+};
+---
+
+<ReferenceShell
+	title="Daily AI Prompt Radar"
+	description="A copy-ready radar for high-signal AI prompts across image, video, webpage, and workflow use cases. Each prompt is rewritten as an original reusable template with source attribution, controls, quality checks, and failure modes."
+	eyebrow="Prompt radar"
+	breadcrumbs={[
+		{ label: 'Home', href: '/' },
+		{ label: 'Prompts' },
+	]}
+	canonicalPath="/prompts/"
+>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(itemList)} />
+
+	<section class="prompt-radar-hero">
+		<div>
+			<p class="prompt-radar-hero__label">Updated {promptRadarLastUpdated}</p>
+			<h2>Hot prompts are useful only when they become reusable patterns.</h2>
+			<p>
+				This page tracks public creator and prompt-library signals, then converts them into practical templates that can be copied, modified, evaluated, and connected to deeper AI workflow pages.
+			</p>
+		</div>
+		<div class="prompt-radar-hero__stats" aria-label="Prompt radar coverage">
+			<div>
+				<strong>{promptRadarEntries.length}</strong>
+				<span>copyable prompts</span>
+			</div>
+			<div>
+				<strong>{mediaGroups.length}</strong>
+				<span>media classes</span>
+			</div>
+			<div>
+				<strong>daily</strong>
+				<span>update target</span>
+			</div>
+		</div>
+	</section>
+
+	<section class="signal-strip">
+		<div>
+			<strong>Not a scrape dump</strong>
+			<p>Prompts are rewritten as original templates with attribution and operating notes instead of reposting creator text verbatim.</p>
+		</div>
+		<div>
+			<strong>Built for search</strong>
+			<p>Every card targets a concrete query: floor plan render prompts, video storyboards, text rendering tests, product commercials, and model bakeoffs.</p>
+		</div>
+		<div>
+			<strong>Built for reuse</strong>
+			<p>Each prompt includes variables, quality checks, and failure modes so the page is useful beyond a one-time copy action.</p>
+		</div>
+	</section>
+
+	<section class="prompt-radar-filters" aria-label="Prompt filters">
+		<button type="button" class="prompt-radar-filter is-active" data-prompt-filter="all">All</button>
+		{mediaGroups.map((group) => (
+			<button type="button" class="prompt-radar-filter" data-prompt-filter={group.media}>
+				{group.label}
+			</button>
+		))}
+	</section>
+
+	<section>
+		<h2>Hottest prompt patterns this update</h2>
+		<div class="prompt-radar-grid" data-prompt-grid>
+			{promptRadarEntries.map((entry) => (
+				<PromptRadarCard entry={entry} />
+			))}
+		</div>
+	</section>
+
+	<section class="reference-section">
+		<h2>Browse by prompt class</h2>
+		<div class="portal-links">
+			{mediaGroups.map((group) => {
+				const count = promptRadarEntries.filter((entry) => entry.media === group.media).length;
+				return (
+					<a class="sl-link-card" href={`/prompts/#${group.media}`}>
+						<span class="title">{group.label} prompts</span>
+						<span>{group.description}</span>
+						<span>{count} current radar entries</span>
+					</a>
+				);
+			})}
+		</div>
+	</section>
+
+	<section class="reference-section">
+		<h2>Editorial update method</h2>
+		<ul>
+			{promptRadarMethod.map((method) => (
+				<li>{method}</li>
+			))}
+		</ul>
+		<p>
+			The practical update workflow is simple: keep the page focused on prompt patterns that can earn durable search traffic, then deepen individual winners into standalone explainers when impressions appear in Search Console.
+		</p>
+	</section>
+</ReferenceShell>
+
+<script is:inline>
+	const filterButtons = document.querySelectorAll('[data-prompt-filter]');
+	const cards = document.querySelectorAll('[data-media]');
+
+	filterButtons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const filter = button.getAttribute('data-prompt-filter');
+			filterButtons.forEach((candidate) => candidate.classList.remove('is-active'));
+			button.classList.add('is-active');
+			cards.forEach((card) => {
+				const show = filter === 'all' || card.getAttribute('data-media') === filter;
+				card.toggleAttribute('hidden', !show);
+			});
+		});
+	});
+</script>

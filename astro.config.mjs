@@ -35,6 +35,7 @@ export default defineConfig({
 						{ label: 'Workflows', link: '/workflows/' },
 						{ label: 'Tool Comparisons', link: '/tool-comparisons/' },
 						{ label: 'Tooling', link: '/tooling/' },
+						{ label: 'Prompt Radar', link: '/prompts/' },
 						{ label: 'Prompt Library', link: '/prompt-library/' },
 						{ label: 'Image Prompt Patterns', link: '/image-prompts/' },
 					],

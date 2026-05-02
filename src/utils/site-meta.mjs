@@ -76,8 +76,10 @@ export const siteMeta = {
 	},
 	keywords: [
 		'ai prompting',
+		'AI prompt radar',
 		'AI prompt library',
 		'copy prompts',
+		'trending AI prompts',
 		'gpt-image-2 prompts',
 		'image prompt patterns',
 		'image generation prompts',
@@ -92,6 +94,7 @@ export const siteMeta = {
 		'market-signals': 'Market Signals',
 		workflows: 'Workflows',
 		'agent-systems': 'Agent Systems',
+		prompts: 'Prompt Radar',
 		'prompt-library': 'Prompt Library',
 		'models-and-apis': 'Models and APIs',
 		tooling: 'Tooling',
