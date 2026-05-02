@@ -1,0 +1,99 @@
+---
+title: Support AI Cluster
+description: A durable cluster hub for AI support automation, support-agent economics, human review, escalation, QA scorecards, voice agents, and refund guardrails.
+referenceType: foundation
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI customer support automation
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Support leaders
+  - CX operations teams
+  - AI product managers
+  - Revenue operations teams
+contentStatus: cornerstone
+pageType: hub
+lifecycle: hub
+contentCluster: Support AI
+canonicalCluster: Support AI
+refreshPriority: medium
+problemSolved: How to navigate support AI content by economics, escalation, QA, agent answering, review burden, and customer-impact risk.
+readerTakeaway: You should leave with a path for deciding where support AI creates durable value and where human review must remain central.
+keyQuestions:
+  - Which support workflows should AI automate first?
+  - How should support agents be reviewed and escalated?
+  - How do platform AI, custom agents, and outcome pricing compare?
+notFor:
+  - Chatbot copywriting with no support operations model
+updateTriggers:
+  - Support AI pricing changes
+  - Major helpdesk AI releases
+  - New support-agent QA or escalation practices
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Support AI Cluster
+
+Support AI is valuable when it improves the operating model: faster triage, better evidence, safer escalation, cleaner answers, lower review burden, and measurable outcomes. This cluster keeps support automation tied to customer impact rather than chatbot novelty.
+
+## Support operating model
+
+<div class="portal-links">
+	<LinkCard
+		title="Customer support operations"
+		href="/use-cases/customer-support-operations/"
+		description="Start here for drafting, retrieval, routing, escalation, and human-in-the-loop workflows."
+	/>
+	<LinkCard
+		title="Human review and approval workflows"
+		href="/workflows/human-review-and-approval-workflows-for-agentic-support/"
+		description="Map approval logic by risk so teams do not recreate the old queue with more software."
+	/>
+	<LinkCard
+		title="When should an AI agent escalate to a human?"
+		href="/workflows/when-should-an-ai-agent-escalate-to-a-human/"
+		description="Use authority, consequence, evidence quality, and ownership to decide when automation stops."
+	/>
+</div>
+## Economics and platform choice
+
+<div class="portal-links">
+	<LinkCard
+		title="Intercom Fin vs Zendesk AI vs custom support agents"
+		href="/tool-comparisons/intercom-fin-vs-zendesk-ai-vs-custom-support-agents/"
+		description="Compare platform AI, suite-based AI, and custom support-agent ownership."
+	/>
+	<LinkCard
+		title="Fin outcomes economics"
+		href="/use-cases/fin-outcomes-economics-for-customer-support-teams/"
+		description="Decide whether outcome-priced support AI is financially healthy for the target queue."
+	/>
+	<LinkCard
+		title="Knowledge-base search vs agent answering"
+		href="/tool-comparisons/knowledge-base-search-vs-agent-answering-for-support/"
+		description="Choose between retrieval assistance and agentic answer ownership."
+	/>
+</div>
+
+## Quality and guardrails
+
+<div class="portal-links">
+	<LinkCard
+		title="QA scorecards for custom support agents"
+		href="/evaluation/qa-scorecards-for-custom-support-agents/"
+		description="Create a support QA model beyond confidence scores."
+	/>
+	<LinkCard
+		title="Billing and refund automation guardrails"
+		href="/use-cases/billing-and-refund-automation-guardrails/"
+		description="Control high-consequence support actions around billing and refunds."
+	/>
+	<LinkCard
+		title="Realtime voice agents"
+		href="/use-cases/realtime-voice-agents-for-customer-support-and-intake/"
+		description="Evaluate voice intake, routing, verification, and customer-support boundaries."
+	/>
+</div>

@@ -1,0 +1,99 @@
+---
+title: EvalOps Cluster
+description: A durable cluster hub for AI agent evaluation, trace grading, scorecards, release gates, ground truth, live sampling, and regression loops.
+referenceType: foundation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: EvalOps for AI teams
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - EvalOps owners
+  - AI platform teams
+  - Product engineering leaders
+  - QA leads
+contentStatus: cornerstone
+pageType: hub
+lifecycle: hub
+contentCluster: EvalOps
+canonicalCluster: EvalOps
+refreshPriority: high
+problemSolved: How to navigate evaluation content by traces, scorecards, release gates, production sampling, incidents, and regression prevention.
+readerTakeaway: You should leave with a path for turning evaluation into release discipline rather than occasional answer scoring.
+keyQuestions:
+  - What should an agent eval scorecard measure?
+  - How do teams sample live traffic safely?
+  - How should evals block or shape releases?
+notFor:
+  - Benchmark-only comparisons detached from production workflows
+updateTriggers:
+  - New evaluation tooling releases
+  - Production incidents
+  - Major model, prompt, retrieval, or tool changes
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# EvalOps Cluster
+
+EvalOps is the operating discipline that keeps AI systems from relying on vibes. This cluster groups pages that turn examples, traces, labels, scorecards, incidents, and release gates into a maintainable quality system.
+
+## Foundations
+
+<div class="portal-links">
+	<LinkCard
+		title="What is EvalOps for AI teams?"
+		href="/evaluation/what-is-evalops-for-ai-teams/"
+		description="Start here to turn evaluation into release discipline."
+	/>
+	<LinkCard
+		title="EvalOps implementation roadmap"
+		href="/evaluation/evalops-implementation-roadmap-for-production-ai-teams/"
+		description="Move from ad hoc evals into traces, datasets, scorecards, owners, and release gates."
+	/>
+	<LinkCard
+		title="What should an agent eval scorecard measure?"
+		href="/evaluation/what-should-an-agent-eval-scorecard-actually-measure/"
+		description="Measure outcome quality, tool behavior, review burden, and policy risk."
+	/>
+</div>
+## Production evidence
+
+<div class="portal-links">
+	<LinkCard
+		title="Trace grading for tool-using agents"
+		href="/evaluation/trace-grading-for-tool-using-ai-agents/"
+		description="Grade the whole run before the final answer hides process failures."
+	/>
+	<LinkCard
+		title="Live traffic sampling"
+		href="/evaluation/how-should-ai-teams-sample-live-traffic-for-agent-evals/"
+		description="Sample production traffic without missing risky slices or overwhelming reviewers."
+	/>
+	<LinkCard
+		title="Ground truth collection"
+		href="/evaluation/ground-truth-collection-and-labeling-for-agent-eval-ops/"
+		description="Build evaluation data from real production outcomes instead of benchmark theater."
+	/>
+</div>
+
+## Release and incident discipline
+
+<div class="portal-links">
+	<LinkCard
+		title="EvalOps release gates"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Use named owners, real gates, and explicit override discipline."
+	/>
+	<LinkCard
+		title="Shadow evals and canary rollouts"
+		href="/evaluation/shadow-evals-canary-rollouts-and-gradual-release-for-agent-systems/"
+		description="Stage agent changes before wide release."
+	/>
+	<LinkCard
+		title="How to review AI agent production incidents"
+		href="/evaluation/how-to-review-ai-agent-production-incidents/"
+		description="Turn incidents into eval cases, alerts, release gates, and ownership changes."
+	/>
+</div>

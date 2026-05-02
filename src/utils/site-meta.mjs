@@ -88,6 +88,8 @@ export const siteMeta = {
 	],
 	sectionLabels: {
 		'use-cases': 'Team Scenarios',
+		clusters: 'Topic Clusters',
+		'market-signals': 'Market Signals',
 		workflows: 'Workflows',
 		'agent-systems': 'Agent Systems',
 		'prompt-library': 'Prompt Library',

@@ -1,0 +1,99 @@
+---
+title: AI Cost and Compute Cluster
+description: A durable cluster hub for AI cost modeling, model routing, background mode, Batch, Flex, hosted APIs, rented GPUs, vector spend, and inference margin.
+referenceType: foundation
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI cost and compute economics
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - AI product leaders
+  - Platform teams
+  - Engineering finance owners
+  - Infrastructure leaders
+contentStatus: cornerstone
+pageType: hub
+lifecycle: hub
+contentCluster: AI Cost and Compute
+canonicalCluster: AI Cost and Compute
+refreshPriority: high
+problemSolved: How to navigate AI cost and compute content by workload shape, service tier, routing, hosted APIs, rented GPUs, and margin discipline.
+readerTakeaway: You should leave with a clear path for deciding which AI workloads deserve premium models, async processing, hosted APIs, or compute ownership.
+keyQuestions:
+  - How should teams calculate AI agent production cost?
+  - When are Batch, Flex, or background jobs better than realtime calls?
+  - When does GPU ownership become justified?
+notFor:
+  - Token-price comparisons with no workflow or margin model
+updateTriggers:
+  - Provider pricing changes
+  - New async processing, Batch, Flex, or hosted tool options
+  - GPU availability or major infrastructure cost changes
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# AI Cost and Compute Cluster
+
+AI economics is not token math alone. Real production cost includes model routing, retries, tool calls, search, retrieval, review labor, latency, failed outcomes, background processing, and sometimes rented compute. This cluster keeps those decisions connected.
+
+## Product cost model
+
+<div class="portal-links">
+	<LinkCard
+		title="How much does an AI agent cost in production?"
+		href="/models-and-apis/how-much-does-an-ai-agent-cost-in-production/"
+		description="Budget model, tool, review, failure, and maintenance economics around successful outcomes."
+	/>
+	<LinkCard
+		title="Cost per success and tool economics"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Judge AI workflows by completed outcomes instead of call-level spend."
+	/>
+	<LinkCard
+		title="LLM cost allocation and showback"
+		href="/models-and-apis/llm-cost-allocation-showback-and-budget-ownership-for-ai-products/"
+		description="Turn AI invoices into feature, workflow, tenant, and budget-owner accountability."
+	/>
+</div>
+## Routing and async processing
+
+<div class="portal-links">
+	<LinkCard
+		title="Model routing"
+		href="/models-and-apis/model-routing/"
+		description="Decide when routing, fallback, or tiered models beat a single default model."
+	/>
+	<LinkCard
+		title="OpenAI Batch vs background mode"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="Separate bulk deferred processing from tracked long-running jobs."
+	/>
+	<LinkCard
+		title="OpenAI Batch vs Flex vs Priority"
+		href="/models-and-apis/flex-processing-vs-priority-and-batch-for-ai-cost-control/"
+		description="Choose which workloads deserve guaranteed speed and which can wait."
+	/>
+</div>
+
+## Infrastructure ownership
+
+<div class="portal-links">
+	<LinkCard
+		title="GPU cloud vs hosted model APIs"
+		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
+		description="Decide when infrastructure ownership beats hosted API economics."
+	/>
+	<LinkCard
+		title="A100 vs H100 economics"
+		href="/models-and-apis/a100-vs-h100-economics-for-inference-products/"
+		description="Choose GPU class only after rented compute is already justified."
+	/>
+	<LinkCard
+		title="When Batch and Flex are cheaper than rented GPUs"
+		href="/models-and-apis/when-batch-and-flex-are-cheaper-than-rented-gpus/"
+		description="Check lower-cost hosted service tiers before taking on GPU ownership."
+	/>
+</div>

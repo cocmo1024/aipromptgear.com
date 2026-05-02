@@ -14,8 +14,8 @@ hero:
     - text: Browse team scenarios
       link: /use-cases/
       icon: right-arrow
-    - text: Explore workflows
-      link: /workflows/
+    - text: Browse topic clusters
+      link: /clusters/
       variant: minimal
 ---
 
@@ -24,6 +24,9 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 <CardGrid stagger>
 	<Card title="Use cases" icon="open-book">
 		Decision coverage for support operations, research systems, engineering teams, and AI-assisted execution.
+	</Card>
+	<Card title="Topic clusters" icon="starlight">
+		Stable entrances for coding agents, deep research, MCP security, agent platforms, EvalOps, support AI, and cost.
 	</Card>
 	<Card title="Workflow design" icon="rocket">
 		Orchestration patterns, escalation thresholds, approval logic, handoffs, and operator runbooks.
@@ -49,11 +52,24 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 	<Card title="Evaluation" icon="approve-check-circle">
 		Regression design, scorecards, trace review, human review loops, and release gates.
 	</Card>
+	<Card title="Market signals" icon="document">
+		Current AI releases, platform changes, and incidents filtered into durable implementation and governance topics.
+	</Card>
 </CardGrid>
 
-## Navigate by decision
+## Navigate by stable hub
 
 <div class="portal-links">
+	<LinkCard
+		title="Browse topic clusters"
+		href="/clusters/"
+		description="Start here when you want the durable map of the site instead of a long article list."
+	/>
+	<LinkCard
+		title="Review market signals"
+		href="/market-signals/"
+		description="Track current model releases, platform launches, and public incidents only where they feed durable reference work."
+	/>
 	<LinkCard
 		title="Browse team scenarios"
 		href="/use-cases/"
@@ -103,68 +119,48 @@ import { Card, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 
 ## Current priority clusters
 
-The homepage is intentionally curated. New long-tail pages enter the relevant hub first; the homepage promotes only stable cluster entrances with strong commercial or implementation intent.
+The homepage is intentionally limited. New long-tail pages enter a cluster first; the homepage promotes only stable entrances with strong commercial or implementation intent.
 
 <div class="portal-links">
 	<LinkCard
-		title="AI runtime economics"
-		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
-		description="Model, tool, review, latency, and failure cost framed around successful outcomes instead of raw API line items."
+		title="Coding agents"
+		href="/clusters/coding-agents/"
+		description="Repository tasks, PR gates, approval systems, quality regressions, seat budgets, and reviewer capacity."
 	/>
 	<LinkCard
-		title="OpenAI background processing"
-		href="/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/"
-		description="Durable job records, polling, webhooks, cancellation, review gates, failure handling, retention, and data-control boundaries."
+		title="Deep research"
+		href="/clusters/deep-research/"
+		description="Source quality, citation audits, evidence packets, runtime budgets, review gates, and research workflow design."
 	/>
 	<LinkCard
-		title="Batch, Flex, and async lanes"
-		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
-		description="A cluster for separating deferred backlog processing, long-running product tasks, service tiers, limits, expiration, and retry behavior."
+		title="MCP security"
+		href="/clusters/mcp-security/"
+		description="MCP architecture, server audits, prompt injection, tool scopes, SSRF, browser tools, credentials, and approval boundaries."
 	/>
 	<LinkCard
-		title="Agent tool safety"
-		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
-		description="Authority boundaries for tool outputs, retrieved chunks, files, screenshots, browser pages, and prompt-injection resistance."
+		title="Enterprise agent platforms"
+		href="/clusters/enterprise-agent-platforms/"
+		description="RFPs, build-versus-buy decisions, governance control planes, vendor security, identity, connectors, and audit trails."
 	/>
 	<LinkCard
-		title="Coding-agent governance"
-		href="/use-cases/ai-coding-agents-for-engineering-teams/"
-		description="Approval systems, repository permissions, sandboxing, PR checks, reviewer queues, and release gates for engineering teams."
+		title="AI cost and compute"
+		href="/clusters/ai-cost-and-compute/"
+		description="Model routing, cost per success, Batch, Flex, hosted APIs, GPU cloud, vector spend, and inference margin."
 	/>
 	<LinkCard
-		title="EvalOps release discipline"
-		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
-		description="Scorecards, traces, datasets, owners, canaries, sampling, and rollback logic for production AI systems."
+		title="EvalOps"
+		href="/clusters/evalops/"
+		description="Trace grading, scorecards, release gates, ground truth, live sampling, incident review, and regression loops."
 	/>
 	<LinkCard
-		title="Agent observability and incident response"
-		href="/tooling/production-ai-agent-observability-stack/"
-		description="Traces, logs, metrics, alerts, rollback evidence, incident runbooks, and post-incident eval updates for production agents."
+		title="Support AI"
+		href="/clusters/support-ai/"
+		description="Support automation economics, human review, escalation, QA scorecards, voice agents, and refund guardrails."
 	/>
 	<LinkCard
-		title="Deep research systems"
-		href="/use-cases/deep-research-workflows-for-ai-teams/"
-		description="Source quality, citation policy, evidence packets, runtime budgets, search evals, and escalation thresholds."
-	/>
-	<LinkCard
-		title="Support AI economics"
-		href="/tool-comparisons/intercom-fin-vs-zendesk-ai-vs-custom-support-agents/"
-		description="Outcome pricing, reviewer cost, escalation quality, custom agent QA, and support automation fit."
-	/>
-	<LinkCard
-		title="Coding seats and AI IDE rollout"
-		href="/tool-comparisons/cursor-vs-github-copilot-vs-claude-code-for-engineering-teams/"
-		description="Cursor, GitHub Copilot, Claude Code, premium seats, usage budgets, rollout control, and engineering adoption risk."
-	/>
-	<LinkCard
-		title="Retrieval and search economics"
-		href="/models-and-apis/file-search-vs-external-vector-databases-for-ai-products/"
-		description="Managed file search, vector databases, web search, RAG, long context, caching, and retrieval ownership."
-	/>
-	<LinkCard
-		title="GPU cloud versus hosted APIs"
-		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
-		description="A100, H100, rented compute, hosted APIs, Batch, Flex, utilization, reliability, and infrastructure margin discipline."
+		title="Market signals"
+		href="/market-signals/"
+		description="Recent AI releases and incidents filtered into durable reference topics instead of short-lived commentary."
 	/>
 	<LinkCard
 		title="Image prompt archive"

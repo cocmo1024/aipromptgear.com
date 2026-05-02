@@ -1,0 +1,82 @@
+---
+title: MCP Security Cluster
+description: A durable cluster hub for MCP architecture, MCP server audits, prompt injection, tool scopes, browser automation risk, and approval boundaries.
+referenceType: foundation
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: MCP security
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security engineers
+  - Internal tools architects
+  - DevSecOps teams
+contentStatus: cornerstone
+pageType: hub
+lifecycle: hub
+contentCluster: MCP Security
+canonicalCluster: MCP Security
+refreshPriority: high
+problemSolved: How to navigate MCP content by architecture fit, server security, tool authority, prompt injection, and approval design.
+readerTakeaway: You should leave with a practical path for reviewing MCP before it becomes reusable production risk.
+keyQuestions:
+  - When should teams use MCP?
+  - How should MCP servers be audited?
+  - How should tool outputs, browser tools, and write actions be bounded?
+notFor:
+  - Local demos with no shared tools or credentials
+updateTriggers:
+  - MCP specification changes
+  - New MCP security advisories
+  - New remote MCP or connector deployment patterns
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# MCP Security Cluster
+
+MCP is valuable because it standardizes context and tool access. The security problem is that standardized access can scale mistakes. This cluster keeps MCP content anchored in architecture, server audits, tool authority, untrusted outputs, credentials, and approvals.
+
+## Architecture decision
+
+<div class="portal-links">
+	<LinkCard
+		title="Model Context Protocol for enterprise AI teams"
+		href="/agent-systems/model-context-protocol-for-enterprise-ai-teams/"
+		description="Start here to decide whether MCP belongs in the architecture."
+	/>
+	<LinkCard
+		title="Remote MCP servers vs direct tool integrations"
+		href="/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/"
+		description="Choose between shared MCP infrastructure and simpler app-owned tool wiring."
+	/>
+	<LinkCard
+		title="A2A vs MCP"
+		href="/agent-systems/a2a-vs-mcp-for-enterprise-agent-systems/"
+		description="Separate tool-access protocols from remote agent interoperability."
+	/>
+</div>
+
+## Security and approval
+
+<div class="portal-links">
+	<LinkCard
+		title="MCP server security audit checklist"
+		href="/agent-systems/mcp-server-security-audit-checklist-for-ai-agents/"
+		description="Audit tool authority, prompt injection, SSRF, browser automation, credentials, approvals, traces, and kill switches."
+	/>
+	<LinkCard
+		title="MCP security and approval boundaries"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Separate read/write tools, user-scoped access, service authority, and approval policy."
+	/>
+	<LinkCard
+		title="Tool outputs are untrusted"
+		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
+		description="Treat retrieved content, files, browser pages, and tool results as data, not authority."
+	/>
+</div>
+
+The cluster should expand around concrete server classes: browser tools, database tools, ticketing tools, repo tools, admin APIs, and analytics connectors.

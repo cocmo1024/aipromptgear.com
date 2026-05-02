@@ -57,6 +57,13 @@ const updateTriggers =
 	Array.isArray(data.updateTriggers) && data.updateTriggers.every((item) => typeof item === 'string')
 		? data.updateTriggers
 		: [];
+const pageType = typeof data.pageType === 'string' ? data.pageType : undefined;
+const contentCluster = typeof data.contentCluster === 'string' ? data.contentCluster : undefined;
+const canonicalCluster =
+	typeof data.canonicalCluster === 'string' ? data.canonicalCluster : undefined;
+const lifecycle = typeof data.lifecycle === 'string' ? data.lifecycle : undefined;
+const refreshPriority =
+	typeof data.refreshPriority === 'string' ? data.refreshPriority : undefined;
 
 const lastReviewed = formatDate(route.lastUpdated ?? data.lastReviewed);
 
@@ -72,6 +79,26 @@ const signals = [
 	lastReviewed && {
 		label: 'Last substantive update',
 		value: { kind: 'text', value: lastReviewed },
+	},
+	contentCluster && {
+		label: 'Content cluster',
+		value: { kind: 'text', value: contentCluster },
+	},
+	pageType && {
+		label: 'Page type',
+		value: { kind: 'text', value: pageType },
+	},
+	canonicalCluster && {
+		label: 'Canonical cluster',
+		value: { kind: 'text', value: canonicalCluster },
+	},
+	lifecycle && {
+		label: 'Lifecycle',
+		value: { kind: 'text', value: lifecycle },
+	},
+	refreshPriority && {
+		label: 'Refresh priority',
+		value: { kind: 'text', value: refreshPriority },
 	},
 	siteMeta.editorialMethodSummary &&
 		route.id !== 'index' &&

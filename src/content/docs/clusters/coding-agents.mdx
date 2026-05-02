@@ -1,0 +1,104 @@
+---
+title: Coding Agents Cluster
+description: A durable cluster hub for AI coding agents, repository tasks, PR review gates, quality regressions, approval systems, and engineering rollout economics.
+referenceType: foundation
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI coding agents for engineering teams
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering managers
+  - Staff engineers
+  - Developer productivity teams
+  - AI platform teams
+contentStatus: cornerstone
+pageType: hub
+lifecycle: hub
+contentCluster: Coding Agents
+canonicalCluster: Coding Agents
+refreshPriority: high
+problemSolved: How to navigate the coding-agent content set without losing the thread between seat rollout, repository risk, quality regression, approval design, and evaluation.
+readerTakeaway: You should leave with a clear path through the coding-agent pages based on whether your problem is adoption, governance, evaluation, or production control.
+keyQuestions:
+  - Where should an engineering team start with coding agents?
+  - How should coding-agent output be reviewed and gated?
+  - How should teams detect quality regressions and budget premium coding seats?
+notFor:
+  - Consumer vibe-coding examples with no repository governance
+updateTriggers:
+  - Major coding-agent model releases
+  - Changes in Cursor, Claude Code, Copilot, Codex, or repository-agent workflows
+  - Public coding-agent incident reports or quality postmortems
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Coding Agents Cluster
+
+Coding-agent content should not be organized around vendor excitement alone. The durable problem is operational: engineering teams need to know where agents can safely create leverage, how reviewer capacity changes, what boundaries protect repositories, and how quality regressions are detected before trust collapses.
+
+Start with the page that matches the current decision.
+
+## Adoption and seat rollout
+
+<div class="portal-links">
+	<LinkCard
+		title="AI coding agents for engineering teams"
+		href="/use-cases/ai-coding-agents-for-engineering-teams/"
+		description="Start here when the team needs to decide where coding agents belong in engineering work."
+	/>
+	<LinkCard
+		title="Cursor vs GitHub Copilot vs Claude Code"
+		href="/tool-comparisons/cursor-vs-github-copilot-vs-claude-code-for-engineering-teams/"
+		description="Compare coding-seat categories by workflow center, governance burden, and rollout fit."
+	/>
+	<LinkCard
+		title="Claude Code premium seats"
+		href="/tool-comparisons/claude-code-premium-seats-and-usage-budgets/"
+		description="Budget high-agency terminal workflows around accepted engineering outcomes."
+	/>
+</div>
+
+## Repository control and approval
+
+<div class="portal-links">
+	<LinkCard
+		title="Read-only vs write-enabled coding agents"
+		href="/workflows/read-only-vs-write-enabled-coding-agents/"
+		description="Separate exploratory coding agents from agents that can create repository changes."
+	/>
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="Design risk-based approval for repo read, write, merge, and deploy boundaries."
+	/>
+	<LinkCard
+		title="PR checks and merge gates"
+		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+		description="Translate coding-agent risk into repository checks that protect production code."
+	/>
+</div>
+
+## Quality, evals, and incidents
+
+<div class="portal-links">
+	<LinkCard
+		title="Coding-agent quality regression playbook"
+		href="/evaluation/coding-agent-quality-regression-playbook/"
+		description="Move from subjective complaints to evidence, traces, rollback, and prevention."
+	/>
+	<LinkCard
+		title="Eval datasets for coding agents"
+		href="/evaluation/eval-datasets-for-coding-agents-and-repository-tasks/"
+		description="Use repository-grounded eval cases instead of generic prompt demos."
+	/>
+	<LinkCard
+		title="Reviewer queues and approval capacity"
+		href="/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/"
+		description="Prevent agent output from overwhelming the human review bottleneck."
+	/>
+</div>
+
+The cluster should grow by adding deeper pages around specific engineering failure modes, not by repeating tool comparisons.

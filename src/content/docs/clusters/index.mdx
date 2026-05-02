@@ -1,0 +1,81 @@
+---
+title: Topic Clusters
+description: Stable topic-cluster hubs for AI Prompt Gear, organizing deep pages by durable operating problems instead of an ever-growing article list.
+template: splash
+referenceType: foundation
+adProfile: foundation
+commercialIntent: medium
+reviewCadence: Monthly review
+pageType: hub
+lifecycle: hub
+contentCluster: Site architecture
+canonicalCluster: Topic Clusters
+hero:
+  title: Topic Clusters
+  tagline: "Stable entrances for durable AI operating problems: coding agents, deep research, MCP security, agent platforms, EvalOps, cost, and support AI."
+  actions:
+    - text: Browse coding agents
+      link: /clusters/coding-agents/
+      icon: right-arrow
+    - text: Review market signals
+      link: /market-signals/
+      variant: minimal
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Topic Clusters
+
+This hub keeps the site scalable. New pages should not be exposed directly on the global navigation by default. They should enter one durable cluster first, then link outward to related implementation, comparison, cost, evaluation, and governance pages.
+
+The purpose is simple: preserve topical authority as the site grows. Each cluster is built around a professional operating problem rather than a single model release, tool launch, or keyword variation.
+
+## Stable clusters
+
+<div class="portal-links">
+	<LinkCard
+		title="Coding Agents"
+		href="/clusters/coding-agents/"
+		description="Repository tasks, coding-agent evals, PR gates, approval systems, seat budgets, quality regressions, and reviewer capacity."
+	/>
+	<LinkCard
+		title="Deep Research"
+		href="/clusters/deep-research/"
+		description="Source quality, citation audits, evidence packets, runtime budgets, review gates, and research workflow design."
+	/>
+	<LinkCard
+		title="MCP Security"
+		href="/clusters/mcp-security/"
+		description="MCP architecture, server audits, prompt injection, tool scopes, SSRF, browser tools, credentials, and approval boundaries."
+	/>
+	<LinkCard
+		title="Enterprise Agent Platforms"
+		href="/clusters/enterprise-agent-platforms/"
+		description="Build-versus-buy decisions, RFPs, governance control planes, vendor security, identity, connectors, and audit trails."
+	/>
+	<LinkCard
+		title="AI Cost and Compute"
+		href="/clusters/ai-cost-and-compute/"
+		description="Model routing, cost per success, Batch, Flex, background mode, hosted APIs, GPU cloud, vector spend, and margin discipline."
+	/>
+	<LinkCard
+		title="EvalOps"
+		href="/clusters/evalops/"
+		description="Trace grading, scorecards, live sampling, release gates, ground truth, regression loops, and incident-driven eval updates."
+	/>
+	<LinkCard
+		title="Support AI"
+		href="/clusters/support-ai/"
+		description="Support automation economics, human review, escalation, QA scorecards, refund guardrails, voice agents, and help-center deflection."
+	/>
+</div>
+
+## Publishing rule
+
+Every new long-form page should answer three routing questions before publication:
+
+- Which cluster owns the page?
+- Which existing page is the canonical parent?
+- Which neighboring pages should receive internal links from it?
+
+If those answers are unclear, the page is probably too broad, too duplicative, or not ready to publish.

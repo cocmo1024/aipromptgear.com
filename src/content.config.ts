@@ -48,6 +48,28 @@ export const collections = {
 					.optional(),
 				targetRoles: z.array(z.string()).optional(),
 				contentStatus: z.enum(['seed', 'growing', 'cornerstone']).optional(),
+				contentCluster: z.string().optional(),
+				canonicalCluster: z.string().optional(),
+				pageType: z
+					.enum([
+						'hub',
+						'decision-guide',
+						'comparison',
+						'implementation-guide',
+						'security-checklist',
+						'cost-model',
+						'playbook',
+						'rfp-checklist',
+						'market-signal',
+						'question-answer',
+						'prompt-library',
+						'policy',
+					])
+					.optional(),
+				lifecycle: z
+					.enum(['evergreen', 'market-signal', 'seasonal', 'policy', 'hub'])
+					.optional(),
+				refreshPriority: z.enum(['low', 'medium', 'high']).optional(),
 				authorKey: z.string().optional(),
 				editorKey: z.string().optional(),
 				datePublished: z.coerce.date().optional(),

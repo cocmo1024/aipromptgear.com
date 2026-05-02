@@ -1,0 +1,58 @@
+---
+title: Market Signals
+description: Current AI market-signal reviews that convert model releases, platform launches, and public incidents into durable implementation and governance topics.
+template: splash
+referenceType: foundation
+adProfile: foundation
+commercialIntent: medium
+reviewCadence: Monthly review
+pageType: hub
+lifecycle: hub
+contentCluster: Market Signals
+canonicalCluster: Market Signals
+hero:
+  title: Market Signals
+  tagline: Current AI release and industry signals, filtered into durable reference work instead of short-lived commentary.
+  actions:
+    - text: Read May 2026 map
+      link: /use-cases/ai-hotspots-may-2026-long-term-search-map/
+      icon: right-arrow
+    - text: Browse topic clusters
+      link: /clusters/
+      variant: minimal
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# Market Signals
+
+This section prevents hot topics from polluting the main information architecture. Model launches, agent-platform releases, vendor incidents, and industry drama can be useful, but only when they are converted into durable questions: rollout, cost, governance, safety, evaluation, procurement, and workflow design.
+
+Market-signal pages should not become a news feed. Each page should point readers toward stable cluster pages that will remain useful after the current release cycle.
+
+## Signal reports
+
+<div class="portal-links">
+	<LinkCard
+		title="AI hotspots May 2026 and long-term search map"
+		href="/use-cases/ai-hotspots-may-2026-long-term-search-map/"
+		description="Current signals around GPT-5.5, Claude Code quality reports, MCP security, Gemini Enterprise, deep research, and coding-agent economics."
+	/>
+	<LinkCard
+		title="AI platform changes in April 2026"
+		href="/use-cases/ai-hotspots-april-2026-long-term-search-map/"
+		description="Earlier signal map around agentic workflow rollout, managed-agent architecture, workspace AI, safety, and compute capacity."
+	/>
+</div>
+
+## How signal reports should age
+
+Each signal report should feed at least one durable cluster:
+
+- frontier model releases feed the AI Cost and Compute cluster;
+- coding-agent incidents feed Coding Agents and EvalOps;
+- MCP disclosures feed MCP Security;
+- enterprise agent launches feed Enterprise Agent Platforms;
+- deep research product updates feed Deep Research.
+
+If a signal cannot be connected to a durable cluster, it should not become a page.
