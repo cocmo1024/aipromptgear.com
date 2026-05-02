@@ -1,13 +1,13 @@
 ---
 title: Tool timeouts, retries, and idempotency for AI agents
-description: How to design timeout, retry, and idempotency rules for tool-using agents before slow tools and repeated actions quietly become production failures.
+description: How to design timeout, retry, and idempotency rules for tool-using agents before slow tools, duplicate writes, and ambiguous failures become production incidents.
 referenceType: workflow
 adProfile: workflow
 commercialIntent: high
 reviewCadence: Monthly review
-contentStatus: growing
-problemSolved: Helps teams define timeout and retry rules for tool-using agents so the system does not multiply failures, duplicate writes, or hide operational drift behind repeated tool attempts.
-readerTakeaway: You should leave with a practical control model for when agents should retry, when they should stop, and why idempotency matters more once tools can write or trigger side effects.
+contentStatus: cornerstone
+problemSolved: Helps teams define timeout, retry, and idempotency rules for tool-using agents so the system does not multiply failures, duplicate writes, or hide operational drift behind repeated tool attempts.
+readerTakeaway: You should leave with a practical control model for when agents should retry, when they should stop, when they should ask for approval, and why idempotency matters once tools can write or trigger side effects.
 primaryKeyword: ai agent retries
 searchIntent: design
 decisionStage: implementation
@@ -20,6 +20,7 @@ keyQuestions:
   - When should an agent retry a failed tool call?
   - Which tools need stronger idempotency guarantees?
   - How should teams separate recoverable latency from dangerous repeated action?
+  - What should be logged when agent tool calls time out or retry?
 notFor:
   - Pure model-prompt retries with no tool side effects
   - General distributed-systems theory outside agent workflows
@@ -30,91 +31,174 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-14
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-02
 ---
 
-## What matters first
+## Quick answer
 
 Agents should retry only when the failure is **recoverable**, the action is **safe to repeat**, and the team can explain why another attempt is more likely to succeed.
 
-If the tool can write, purchase, submit, delete, or trigger side effects, idempotency matters before retry logic does.
+If a tool can write, purchase, submit, delete, notify, deploy, schedule, or mutate state, idempotency matters before retry logic does. A retry policy without idempotency is not reliability. It is a duplicate-action generator.
+
+The useful rule is:
+
+> Retry reads cautiously, retry writes only with idempotency, and escalate high-risk ambiguity instead of letting the model improvise.
 
 ## Why this is an agent control problem
 
-Without explicit timeout and retry rules, agents tend to do the wrong thing in production:
+Timeouts and retries are ordinary engineering topics, but tool-using agents make them more dangerous.
 
-- wait too long on slow tools,
-- retry the wrong calls,
-- duplicate side effects,
-- or keep trying until the workflow looks busy enough to appear intelligent.
+A traditional backend service usually calls a known dependency from known code. An agent may choose tools dynamically, build arguments from uncertain context, and decide whether to continue after partial failure. That means a retry is not merely another HTTP request. It may be another attempt at a plan that was already wrong.
 
-This is not resilience. It is uncontrolled repetition.
+Without explicit rules, agents tend to do the wrong thing in production:
 
-## The three controls that matter
+- wait too long on slow tools;
+- retry the wrong call;
+- submit duplicate writes;
+- turn a partial outage into repeated external traffic;
+- hide failures behind "I will try another way";
+- create audit trails that nobody can reconstruct later.
 
-### 1. Timeouts
+The goal is not to make agents persistent. The goal is to make them bounded, inspectable, and safe.
 
-Every tool class needs a deadline.
+## The four decisions every tool needs
 
-If the task is interactive, timeout budgets should be tighter. If the task is backgrounded, longer budgets may be fine, but they still need a stop condition.
+Every production tool exposed to an agent should have four policies.
 
-### 2. Retries
+| Policy | Question it answers | Example |
+| --- | --- | --- |
+| Timeout | How long may this tool occupy the workflow? | Search may get 8 seconds; a background export may get minutes. |
+| Retry | Which failures may be attempted again? | Rate limit, 502, network reset, temporary upstream outage. |
+| Idempotency | Can the same logical action be replayed safely? | A support note update uses a dedupe key; a payment does not retry blindly. |
+| Escalation | When must the agent stop or ask? | Ambiguous write result, missing approval, high-value transaction. |
 
-Retries should happen only for failures likely to recover:
+If a tool does not have these policies, the model will invent behavior at runtime.
 
-- transient network issues,
-- temporary rate limits,
-- or short-lived upstream instability.
+## Timeout budgets by workflow type
 
-They should not be the default response to ambiguous tool errors.
+Timeouts should match the human expectation and operational risk.
 
-### 3. Idempotency
+| Workflow type | Timeout posture | Why |
+| --- | --- | --- |
+| Interactive chat | Short, visible deadlines. | Users notice delay immediately; stalled tools degrade trust. |
+| Copilot or editor assistant | Very short for UI actions; longer for background analysis. | The user is waiting in the product surface. |
+| Internal research task | Moderate deadlines with progress reporting. | Slow tools are acceptable if the task is clearly backgrounded. |
+| Batch enrichment | Long but bounded jobs. | Throughput matters more than instant response. |
+| Write or mutation tool | Short decision deadline plus explicit failure state. | Ambiguous writes are more dangerous than slow reads. |
 
-Any tool with side effects needs a model for safe repetition. If the same request can create duplicate writes or repeated submissions, retries can make the system actively dangerous.
+The important mistake is not choosing a timeout that is too short or too long. The bigger mistake is failing to define what the agent should do after the timeout.
+
+## Retry classes that are usually safe
+
+Retries are most defensible when the failure is known and transient.
+
+| Failure class | Retry posture | Notes |
+| --- | --- | --- |
+| Network reset | Usually safe for reads. | Writes need idempotency or confirmation. |
+| 429 rate limit | Retry only with backoff and budget. | Do not let agents hammer the same dependency. |
+| 502 or 503 | Retry with small bounded count. | Treat repeated failure as outage, not model confusion. |
+| Timeout on read | Sometimes retry with shorter scope. | The next attempt should change something measurable. |
+| Timeout on write | Dangerous. | The action may have succeeded but the response was lost. |
+| Validation error | Do not retry blindly. | Fix the input or stop. |
+| Permission error | Do not retry. | Ask for authorization or escalate. |
+| Business rule rejection | Do not retry. | The system is telling the agent "no." |
+
+An agent should not decide that a failed write "probably did not work." It should check idempotency state, verify downstream state, or ask for review.
+
+## Idempotency by tool class
+
+Not every tool needs the same guarantees.
+
+| Tool class | Idempotency need | Safer pattern |
+| --- | --- | --- |
+| Search, retrieve, classify | Low. | Bounded retries and trace logs are usually enough. |
+| Draft generation | Low to moderate. | Re-running is safe if no external state changes. |
+| File creation | Moderate. | Use deterministic paths, versioning, or duplicate detection. |
+| CRM or ticket update | High. | Use request IDs, patch semantics, and audit logs. |
+| Email sending | High. | Deduplicate by message intent; require confirmation for sensitive sends. |
+| Payment, purchase, deployment | Very high. | Require explicit idempotency key, approval, and post-action verification. |
+
+The threshold changes when the agent is allowed to operate unattended. A tool that is acceptable in a human-reviewed workflow may be unacceptable in an autonomous loop.
 
 ## The practical retry rule
 
-Retry only when all three are true:
+Retry only when all five are true:
 
-1. the failure class is known and transient,
-2. the tool action is idempotent or safely replayable,
-3. another attempt has a realistic chance of success.
+1. the failure class is known;
+2. the failure is likely transient;
+3. the tool action is read-only, idempotent, or safely replayable;
+4. another attempt has a realistic chance of success;
+5. the retry remains inside a configured budget.
 
-If one of those is false, escalate or stop.
+If one of those is false, stop, escalate, or ask for approval.
 
-## Where teams get this wrong
+## Retry budgets
 
-The most common failures are:
+A retry budget prevents the agent from turning uncertainty into load.
 
-- using the same retry policy for read and write tools,
-- letting the model decide to "try again" without system constraints,
-- and ignoring whether the target system supports idempotency keys or deduplication logic.
+Useful budgets include:
 
-That leads to invisible duplication and confusing audit trails.
+- maximum attempts per tool call;
+- maximum retries per workflow;
+- maximum wall-clock time;
+- maximum write attempts;
+- maximum cost per task;
+- maximum consecutive failures by dependency;
+- circuit-breaker threshold for shared outages.
 
-## A practical policy split
-
-| Tool class | Healthier retry model |
-| --- | --- |
-| Read-only search or fetch | Limited retries on known transient errors |
-| File or retrieval lookups | Retries with bounded attempt count and timeout budget |
-| Write actions | Retry only with explicit idempotency support or human confirmation |
-| High-risk side effects | Prefer escalation over autonomous retries |
-
-This split is more useful than a global retry count.
+The agent should know when the budget is exhausted. The user-facing answer should not say "I could not complete this" without explaining which dependency failed, what was attempted, and what is safe to do next.
 
 ## What to log
 
 At minimum, log:
 
-- original tool request,
-- failure class,
-- retry count,
-- timeout reason,
-- idempotency token or dedupe key if used,
-- and whether the final action was completed, abandoned, or escalated.
+- workflow ID;
+- user or service actor;
+- original tool request;
+- normalized tool arguments;
+- timeout budget;
+- failure class;
+- retry count;
+- retry reason;
+- idempotency key or dedupe key;
+- approval state;
+- final action state: completed, abandoned, escalated, or unknown.
 
-Without those logs, the team cannot tell whether the agent is resilient or just noisy.
+For high-risk workflows, also log the state before and after the write, plus a human-readable explanation of why the agent believed the action was allowed.
+
+Without these logs, the team cannot tell whether the agent is resilient or merely noisy.
+
+## Example: support ticket update
+
+A support agent wants to add a note to a customer ticket.
+
+Bad policy:
+
+- if the tool times out, try again three times;
+- if it still fails, ask the model to summarize what happened.
+
+Better policy:
+
+- use a deterministic idempotency key based on workflow ID and note intent;
+- set a short write timeout;
+- if response is missing, check whether the note exists;
+- if existence cannot be verified, mark state as unknown and escalate;
+- never submit a second note with different wording unless a human approves.
+
+The difference is operational. The first policy may create duplicate customer notes. The second policy preserves state clarity.
+
+## Implementation checklist
+
+Your retry system is probably mature enough when:
+
+- each tool declares whether it is read-only or mutating;
+- each mutating tool has an idempotency or approval strategy;
+- retries are tied to failure classes, not model confidence;
+- validation and permission errors do not retry;
+- timeout behavior is visible in traces;
+- workflow state can represent "unknown write outcome";
+- the agent has a retry budget;
+- evaluation cases include timeouts, partial success, and duplicate-action risks.
 
 ## Compare next
 
@@ -122,3 +206,4 @@ Without those logs, the team cannot tell whether the agent is resilient or just 
 - [Batch API vs background mode for large AI jobs](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/)
 - [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
 - [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
+- [Agent evals for tool-using AI systems](/evaluation/agent-evals-for-tool-using-ai-systems/)

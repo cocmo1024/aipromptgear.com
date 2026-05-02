@@ -1,12 +1,12 @@
 ---
 title: Agent evals for tool-using AI systems
-description: How to evaluate tool-using agents without reducing the problem to single-turn prompt quality or surface-level success rates.
+description: How to evaluate tool-using agents by plan quality, tool choice, tool arguments, approval behavior, trace quality, and final outcome instead of shallow answer accuracy.
 referenceType: evaluation
 adProfile: evaluation
 commercialIntent: high
 reviewCadence: Monthly review
 contentStatus: cornerstone
-problemSolved: Helps teams design evaluation loops for tool-using AI systems where success depends on planning, tool choice, tool arguments, and approval behavior rather than one text answer.
+problemSolved: Helps teams design evaluation loops for tool-using AI systems where success depends on planning, tool choice, tool arguments, approval behavior, trace quality, and final state rather than one text answer.
 readerTakeaway: You should leave with a practical evaluation framework for tool-using agents that measures the decisions that actually matter in production.
 primaryKeyword: agent evals tool use
 searchIntent: design
@@ -16,78 +16,190 @@ targetRoles:
   - Evaluation owners
   - Application engineers
   - AI product leads
+keyQuestions:
+  - How do you evaluate tool-using AI agents?
+  - Which failures should be scored separately?
+  - What should an agent eval dataset contain?
+  - How should approval and side-effect behavior be measured?
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-04-14
+lastReviewed: 2026-05-02
 ---
 
-## What matters first
+## Quick answer
 
-Tool-using agents should not be evaluated like ordinary chatbots. A good eval must check:
+Tool-using agents should not be evaluated like ordinary chatbots. A useful eval must score the chain of operational decisions:
 
-- whether the agent chose the right tool,
-- whether it called the tool with the right arguments,
-- whether it escalated or paused when it should,
-- and whether the final outcome was correct.
+- whether the agent understood the task boundary;
+- whether it planned a safe path;
+- whether it chose the right tool;
+- whether it called the tool with valid arguments;
+- whether it respected approval boundaries;
+- whether it handled tool failure correctly;
+- whether the final state was correct and auditable.
 
-If you only score the final answer, you will miss the most expensive failures.
+If you only score the final answer, you will miss the failures that matter most in production.
 
-## Why this is different from ordinary prompt evals
+## Why tool-use evals are different
 
-A tool-using agent can fail in several distinct ways:
+A normal prompt eval can often ask, "Was the answer correct?" A tool-using agent eval has to ask, "Was the path correct?"
 
-- wrong plan,
-- wrong tool,
-- wrong arguments,
-- wrong order,
-- missing approval,
-- or wrong final answer.
+The final answer may look good even when the agent:
 
-That means one top-line "accuracy" score hides too much.
+- used the wrong data source;
+- skipped a required approval;
+- called a write tool with risky arguments;
+- retried an ambiguous failure;
+- completed the task but left the system in an unsafe state;
+- fabricated a summary after a failed tool call.
 
-## What the eval should measure
+Those are not writing-quality problems. They are control-system problems.
 
-A healthy eval set usually measures:
+## The evaluation layers
 
-1. plan correctness,
-2. tool selection correctness,
-3. tool-argument correctness,
-4. approval or escalation correctness,
-5. final outcome quality.
+A practical tool-use eval should separate at least six layers.
 
-These layers expose whether the agent is reliable for the right reasons.
+| Layer | What it measures | Failure example |
+| --- | --- | --- |
+| Task understanding | Did the agent identify the real goal and constraints? | Treats a read-only request as permission to update records. |
+| Plan quality | Did the agent choose a safe sequence? | Writes before checking state. |
+| Tool selection | Did the agent choose the right tool or no tool? | Uses web search when internal policy requires a CRM lookup. |
+| Tool arguments | Were parameters correct and scoped? | Searches the wrong customer ID or date range. |
+| Approval behavior | Did the agent pause when required? | Sends email, deploys code, or edits billing without confirmation. |
+| Recovery behavior | Did the agent handle failure safely? | Retries a write after an unknown timeout. |
+| Final state | Was the real-world outcome correct? | Response says success, but the ticket was not updated. |
 
-## The failure that matters most
+Teams often combine these into one score too early. Keep them separate until the system is mature enough to know where it fails.
 
-The worst production failures are often not bad text. They are:
+## The dataset should include operational cases
 
-- an unnecessary write action,
-- a missed approval gate,
-- a wrong external search path,
-- or a bad internal mutation triggered with high confidence.
+Many eval sets are too clean. They test happy paths and obvious instructions, then fail to catch production problems.
 
-That is why eval design must reflect operational risk classes, not only benchmark style.
+A stronger dataset includes:
 
-## The practical eval design rule
+- normal successful tasks;
+- tasks that require no tool call;
+- tasks where one tool is clearly wrong;
+- ambiguous user requests;
+- missing permissions;
+- stale or conflicting records;
+- tool timeouts;
+- rate limits;
+- validation errors;
+- write actions that require approval;
+- requests that should be refused or escalated;
+- duplicate-action traps;
+- partial success cases where final state must be verified.
 
-For every tool-using workflow, define:
+The point is not to make the agent fail. The point is to learn whether the system fails safely.
 
-- the valid tool set,
-- the forbidden tool paths,
-- the approval-required boundaries,
-- and the acceptable final states.
+## Golden traces matter more than golden answers
 
-Then test those directly.
+For tool-using agents, a golden answer is not enough. You need golden traces.
+
+A golden trace should define:
+
+- expected tool path;
+- allowed alternative paths;
+- forbidden tools;
+- required approval checkpoints;
+- expected arguments or argument constraints;
+- acceptable retry behavior;
+- required final state;
+- expected user-facing explanation.
+
+This lets evaluators distinguish a correct outcome reached safely from a correct-looking outcome reached by luck.
+
+## Scoring rubric
+
+Use a rubric that can diagnose failures.
+
+| Score area | Example scoring question |
+| --- | --- |
+| Plan | Did the agent choose a sequence that protects data and user intent? |
+| Tool choice | Did it use the right tool, avoid unnecessary tools, and avoid forbidden tools? |
+| Arguments | Were IDs, filters, dates, permissions, and payload fields correct? |
+| Approval | Did it ask before high-risk side effects? |
+| Failure handling | Did it stop, retry, or escalate according to policy? |
+| Final outcome | Was the task completed correctly in the external system? |
+| Explanation | Did the user get a truthful summary of what happened? |
+
+For high-risk workflows, a single approval failure should be a hard fail even if every other score is high.
+
+## What to evaluate by workflow type
+
+| Workflow | Highest-value eval focus |
+| --- | --- |
+| Customer support agent | Policy compliance, CRM lookup correctness, escalation, safe note creation. |
+| Coding agent | Patch scope, test behavior, approval boundaries, no unrelated reversions. |
+| Research agent | Source choice, citation accuracy, query strategy, uncertainty handling. |
+| Sales or RevOps agent | Account matching, CRM writes, duplicate prevention, communication approval. |
+| Data analyst agent | Query correctness, schema awareness, privacy boundaries, calculation accuracy. |
+| Infrastructure agent | Permission boundaries, deployment gates, rollback planning, audit logs. |
+
+The tool-use eval should reflect what a mistake would actually cost.
+
+## Human review is still part of the loop
+
+Automated graders are useful, but tool-use evals often need human review for edge cases:
+
+- Was the plan reasonable under uncertainty?
+- Was the approval request clear enough?
+- Did the agent expose the right risk?
+- Did the trace show enough evidence?
+- Did the final answer overstate success?
+
+Human review should not be random opinion. Reviewers need a rubric, labeled examples, and disagreement review so the eval set improves over time.
+
+## Release gates
+
+Agent evals become valuable when they control releases.
+
+Useful gates include:
+
+- no regression on high-risk approval cases;
+- no increase in forbidden tool calls;
+- no increase in duplicate-write attempts;
+- minimum pass rate on core happy paths;
+- minimum pass rate on failure recovery cases;
+- trace completeness threshold;
+- cost and latency budget threshold.
+
+If evals do not affect release decisions, they become dashboards instead of controls.
+
+## Common mistakes
+
+Avoid these patterns:
+
+- scoring only the final response;
+- mixing read-only and write workflows in one accuracy number;
+- using only synthetic happy paths;
+- ignoring tool arguments;
+- ignoring no-tool cases;
+- allowing the model to self-grade risky actions without trace evidence;
+- treating retries as success when they create duplicate side effects;
+- failing to preserve production failures as regression tests.
+
+The best eval set grows from real incidents, near misses, and support escalations.
 
 ## Implementation checklist
 
-Your agent evals are probably healthy when:
+Your tool-use eval system is probably healthy when:
 
-- tool choice is measured explicitly;
-- approval behavior is scored;
-- final answer quality is only one layer of the rubric;
-- regression tests include real failure modes from production;
-- and the team can identify whether a failure came from planning, tool use, or execution.
+- every workflow has a risk class;
+- each eval case defines allowed and forbidden tools;
+- tool arguments are scored, not only tool names;
+- approval behavior has hard-fail cases;
+- failure recovery cases are included;
+- traces are stored and reviewable;
+- production failures become regression cases;
+- release gates block changes that weaken safety or reliability.
 
 ## Compare next
 
+- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
 - [Regression loops](/evaluation/regression-loops/)
 - [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
+- [Tool timeouts, retries, and idempotency for AI agents](/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/)
 - [Human review and approval workflows for agentic support](/workflows/human-review-and-approval-workflows-for-agentic-support/)
