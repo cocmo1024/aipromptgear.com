@@ -1,0 +1,203 @@
+---
+title: OpenAI Codex Skills, Plugins, and MCP Workflow Design
+description: How to use Codex skills, plugins, app connectors, and MCP servers without mixing reusable instructions, installable bundles, and tool authority.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex skills plugins MCP
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Developer productivity teams
+  - AI platform teams
+  - Staff engineers
+  - Engineering managers
+contentStatus: cornerstone
+pageType: implementation-guide
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to decide when a repeated Codex workflow should become a skill, a plugin, an MCP server, or a normal prompt.
+readerTakeaway: You should leave with a practical boundary for reusable Codex workflows, installable plugin bundles, app connectors, and MCP tool access.
+keyQuestions:
+  - What is the difference between a Codex skill, plugin, connector, and MCP server?
+  - When should a team create a skill instead of another prompt?
+  - How should tool permissions be scoped when Codex uses plugins or MCP?
+notFor:
+  - Teams installing every available plugin before defining workflows
+  - Readers looking for a list of novelty plugins with no security boundary
+updateTriggers:
+  - Changes to Codex plugin packaging
+  - New official Codex skill or MCP guidance
+  - New curated plugin capabilities in Codex
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Skills, Plugins, and MCP Workflow Design
+
+Codex becomes more valuable when it can reuse workflows and access the right tools. It also becomes riskier. Skills, plugins, app connectors, and MCP servers solve related but different problems. If a team treats them as interchangeable, it will either underuse Codex or give it too much authority too early.
+
+The practical boundary:
+
+- a prompt is a one-time instruction;
+- a skill is reusable workflow knowledge;
+- a plugin is an installable bundle that can include skills, apps, and MCP server setup;
+- an app connector gives Codex access to a specific external service;
+- an MCP server exposes tools or context through a protocol boundary.
+
+## Quick answer
+
+Create a Codex skill when the team repeats a workflow and wants Codex to follow the same steps every time. Package a skill as a plugin when other people or projects should install it. Use app connectors when Codex needs access to systems like GitHub, Gmail, Drive, Slack, or similar tools. Use MCP when Codex needs structured access to custom tools, internal documentation, browser capabilities, Figma, logs, or services that are not already covered by a connector.
+
+Do not start with MCP just because it sounds architectural. Start with the job to be done.
+
+## Decision table
+
+| Need | Best fit | Example |
+| --- | --- | --- |
+| One-off local instruction | Prompt | "Fix this failing test and report evidence" |
+| Reusable team workflow | Skill | "Run our frontend visual QA loop" |
+| Shareable bundle | Plugin | "Install our release review workflow with GitHub integration" |
+| External SaaS context | App connector | "Summarize unread Gmail launch threads" |
+| Custom tool access | MCP server | "Query internal docs, feature flags, or staging diagnostics" |
+| Deterministic helper | Script inside a skill or repo tool | "Render screenshots and compare them" |
+
+The mistake is turning every repeated prompt into an MCP server. Most workflow reuse starts as a skill.
+
+## What belongs in a skill
+
+A strong Codex skill contains:
+
+- a focused description that helps Codex know when to use it;
+- imperative steps;
+- explicit inputs and outputs;
+- project or team conventions;
+- references or example files;
+- optional scripts for deterministic steps;
+- failure and escalation rules.
+
+Good skill candidates:
+
+- "create a Starlight documentation page";
+- "run the Playwright visual QA loop";
+- "prepare a PR review summary";
+- "audit a Cloudflare Worker config";
+- "triage failed GitHub Actions logs";
+- "update a sitemap and submit IndexNow";
+- "render and verify a PPTX deck";
+- "analyze an XLSX performance report."
+
+Bad skill candidates:
+
+- "be smarter";
+- "write better code";
+- "do SEO";
+- "make good decisions";
+- "use all tools available."
+
+A skill should be narrower than a team philosophy and broader than one command.
+
+## What belongs in a plugin
+
+OpenAI's Codex plugin documentation defines plugins as reusable bundles that can include skills, app integrations, and MCP servers. That makes plugins useful for distribution.
+
+Create a plugin when:
+
+- multiple repositories need the same workflow;
+- onboarding should not require copying skill folders manually;
+- the workflow depends on one or more connectors;
+- the team wants a stable installable unit;
+- a marketplace or team catalog is needed.
+
+Example plugin:
+
+| Plugin component | Role |
+| --- | --- |
+| Skill | "Address GitHub review comments using our PR policy" |
+| App connector | GitHub for PR comments and repo context |
+| MCP server | Internal CI log search |
+| Helper script | Normalize test command output |
+| Documentation | Setup, permissions, examples, and failure cases |
+
+The plugin should not hide authority. If it can read email, post to Slack, or change issues, users and admins need to understand that.
+
+## What belongs in MCP
+
+Use MCP when Codex needs a structured tool boundary. Examples:
+
+- internal documentation search;
+- deployment status lookup;
+- feature flag read access;
+- Figma selection context;
+- local browser automation;
+- test fixture generation;
+- log query tools;
+- issue tracker operations not covered by a plugin;
+- custom RAG over controlled sources.
+
+MCP tools should be narrow. A tool named `run_anything` is usually a smell. Better tools look like:
+
+- `search_docs(query, product_area)`;
+- `get_ci_failure(pr_number)`;
+- `list_feature_flags(service_name)`;
+- `create_draft_release_note(pr_number)`;
+- `capture_localhost_screenshot(url, viewport)`.
+
+Narrow tools create better agent behavior and easier approval review.
+
+## Permission design
+
+Before enabling a plugin or MCP server, classify each capability:
+
+| Capability | Risk class | Default |
+| --- | --- | --- |
+| Read public docs | Low | Allow |
+| Read internal docs | Medium | Allow with user scope |
+| Read repo files | Medium | Allow inside project |
+| Write repo files | Medium to high | Require review |
+| Post messages | Medium | Draft first when possible |
+| Change tickets | Medium to high | Require confirmation for status changes |
+| Access credentials | High | Avoid direct access |
+| Deploy or merge | High | Human owned |
+| Use browser or desktop apps | High context exposure | Prompt and scope |
+
+The security question is not only "can Codex use this tool?" It is "whose authority is Codex using, what can it change, and what evidence remains afterward?"
+
+## Workflow design sequence
+
+1. Prove the workflow manually with normal prompts.
+2. Extract stable instructions into a skill.
+3. Add helper scripts only where deterministic execution matters.
+4. Add plugin packaging when distribution matters.
+5. Add MCP only for tool access that cannot be solved more simply.
+6. Add automation only after the skill has produced reliable manual runs.
+
+This sequence keeps complexity tied to demonstrated value.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Codex automations playbook"
+		href="/workflows/openai-codex-automations-playbook-for-engineering-teams/"
+		description="Use skills and plugins to make automations durable instead of rewriting long prompts repeatedly."
+	/>
+	<LinkCard
+		title="Codex sandboxing and approval policy"
+		href="/agent-systems/openai-codex-sandboxing-approvals-and-network-access-policy/"
+		description="Every tool integration needs a permission and approval boundary."
+	/>
+	<LinkCard
+		title="MCP security boundary"
+		href="/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/"
+		description="Use the broader MCP security framework for production agent systems."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex plugins documentation](https://developers.openai.com/codex/plugins), [Codex skills documentation](https://developers.openai.com/codex/skills), [Codex MCP documentation](https://developers.openai.com/codex/mcp), and [Codex configuration reference](https://developers.openai.com/codex/config-reference).
+

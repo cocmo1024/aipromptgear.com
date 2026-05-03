@@ -1,0 +1,197 @@
+---
+title: OpenAI Codex Computer Use, In-App Browser, and Visual QA
+description: How to use Codex desktop computer use, in-app browser, screenshots, and visual workflows for frontend QA, app testing, bug reproduction, and UI iteration.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex computer use visual QA
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Frontend engineers
+  - QA engineers
+  - Product engineers
+  - Design engineers
+  - Developer productivity teams
+contentStatus: cornerstone
+pageType: implementation-guide
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to use Codex visual capabilities for UI tasks where file edits and test output are not enough.
+readerTakeaway: You should leave with a practical rule for when to use the in-app browser, when to use computer use, and how to turn visual QA into reviewable evidence.
+keyQuestions:
+  - When should Codex use the in-app browser instead of command-line checks?
+  - When is computer use appropriate?
+  - What evidence should Codex return after visual QA?
+notFor:
+  - Teams using visual tools to bypass deterministic tests
+  - Sensitive desktop workflows without permission and data review
+updateTriggers:
+  - Changes in Codex computer use availability
+  - Changes in browser tooling or visual preview behavior
+  - New official guidance on Codex visual workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Computer Use, In-App Browser, and Visual QA
+
+Many coding tasks cannot be verified by reading files or running unit tests alone. A button may be misaligned, a modal may trap focus, a chart may overflow, or a desktop app bug may only appear when a human clicks through the interface. Codex desktop adds visual workflow options that help close this gap: in-app browser workflows, screenshots, image generation in some workflows, and computer use for operating graphical interfaces.
+
+The important rule: use visual tools to create evidence, not vibes.
+
+## Quick answer
+
+Use the in-app browser first for web apps you are building locally. Use computer use when Codex needs to operate a desktop app or a graphical workflow that cannot be reached through files, commands, or structured integrations. Require evidence after every visual task: screenshots, reproduction steps, viewport details, changed files, and what was verified.
+
+## In-app browser vs computer use
+
+| Task | Prefer | Why |
+| --- | --- | --- |
+| Local web app UI check | In-app browser | Built for web workflows and comments on pages |
+| Frontend screenshot comparison | In-app browser or browser automation skill | Easier to reproduce and capture evidence |
+| Desktop app settings | Computer use | Requires GUI interaction outside web app |
+| iOS simulator or native app QA | Computer use or dedicated simulator tooling | Visual state matters |
+| Data in a GUI-only app | Computer use | No structured connector available |
+| Gmail, Drive, Slack, GitHub data | Plugin or connector first | Structured access is safer and repeatable |
+| Browser workflow with credentials | Structured integration first, computer/browser only if necessary | Visible content and credentials create risk |
+
+Computer use is powerful because it can operate graphical interfaces. It is also high-context and higher-risk because it may see screen content, screenshots, app windows, and clipboard state.
+
+## Visual QA prompt pattern
+
+```text
+Open the local preview in the in-app browser and inspect the pricing page
+at desktop and mobile widths.
+
+Check:
+- hero layout;
+- CTA visibility;
+- horizontal overflow;
+- font size and line height;
+- card spacing;
+- footer readability.
+
+If you find an issue, make the smallest CSS or component change.
+After each change, re-check the same viewport.
+
+Return:
+- viewport sizes tested;
+- screenshots or visual observations;
+- files changed;
+- whether there is remaining risk.
+```
+
+This prompt makes the visual task bounded. It does not ask Codex to "make it beautiful" without constraints.
+
+## When visual QA is worth the cost
+
+Use visual QA for:
+
+- responsive layout changes;
+- landing pages;
+- dashboard changes;
+- interactive forms;
+- screenshot-to-code work;
+- game or canvas behavior;
+- accessibility-affecting UI flows;
+- PDF, slide, spreadsheet, or document rendering checks;
+- regressions where the failing behavior is visible but not captured by tests.
+
+Do not use visual QA as a substitute for:
+
+- unit tests;
+- type checks;
+- linting;
+- deterministic accessibility checks;
+- API contract tests;
+- snapshot or screenshot tests where stable automation already exists.
+
+Visual review and deterministic checks should reinforce each other.
+
+## Computer use safety rules
+
+Before asking Codex to use computer use:
+
+1. Name the exact app.
+2. Name the exact flow.
+3. State what Codex may click or type.
+4. Keep secrets out of visible areas when possible.
+5. Avoid finance, identity, production admin, or irreversible workflows.
+6. Stay present for sensitive flows.
+7. Prefer plugins or MCP servers when structured access exists.
+
+Example:
+
+```text
+Use computer use to open the local desktop app only.
+Do not open browser password managers, email, or production admin pages.
+Reproduce the onboarding bug by clicking New Project, selecting Blank,
+and pressing Continue. If the app crashes or blocks, stop and report
+the visible state before editing files.
+```
+
+## Evidence packet
+
+A Codex visual QA result should include:
+
+- what was opened;
+- viewport or app window state;
+- steps taken;
+- issue observed;
+- files changed;
+- before and after observation;
+- commands run;
+- residual risks;
+- any permission prompt encountered.
+
+Weak result:
+
+> Looks good now.
+
+Strong result:
+
+> Tested `/pricing/` at 1440x900 and 390x844 in the in-app browser. The mobile CTA wrapped below the hero image and caused horizontal overflow. Updated `PricingHero.astro` to change the grid breakpoint and constrain the image width. Rechecked both viewports. No horizontal scroll observed. Did not test Safari.
+
+The second result is useful because it tells a reviewer what to trust and what not to trust.
+
+## Visual tasks that can drive traffic
+
+For content sites and tool pages, Codex visual QA can support:
+
+- screenshot-based tutorials;
+- UI comparison articles;
+- "before and after" implementation guides;
+- responsive design repair playbooks;
+- Markdown-to-image workflows;
+- prompt-to-landing-page examples;
+- app setup guides with visual steps.
+
+Those pages can attract qualified readers because they solve real problems that ordinary text-only articles do not solve. But the visuals must be useful evidence, not decoration.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Codex desktop for engineering teams"
+		href="/use-cases/openai-codex-desktop-for-engineering-teams/"
+		description="Use visual QA as part of the broader engineering workflow, not as a separate toy."
+	/>
+	<LinkCard
+		title="Computer Use API vs browser automation"
+		href="/agent-systems/computer-use-api-vs-browser-automation-for-ai-agents/"
+		description="For production agent systems, compare visual control against deterministic browser automation."
+	/>
+	<LinkCard
+		title="Codex prompt playbook"
+		href="/prompt-library/openai-codex-desktop-prompt-playbook/"
+		description="Copy prompt patterns for frontend QA, screenshot review, and visual debugging."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex computer use documentation](https://developers.openai.com/codex/app/computer-use), [Codex in-app browser documentation](https://developers.openai.com/codex/app/in-app-browser), and [Codex for almost everything](https://openai.com/index/codex-for-almost-everything/).

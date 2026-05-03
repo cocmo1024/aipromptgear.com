@@ -1,0 +1,204 @@
+---
+title: OpenAI Codex Code Review, PR Gates, and Quality Evals
+description: How to review Codex output with PR gates, tests, trace evidence, regression cases, approval checks, and repository-specific quality evals.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex code review
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Engineering managers
+  - Staff engineers
+  - QA engineers
+  - Developer productivity teams
+contentStatus: cornerstone
+pageType: playbook
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to keep Codex-generated work from entering production without the same or better evidence required from human changes.
+readerTakeaway: You should leave with a review model for Codex changes that covers diff quality, tests, approval behavior, PR gates, and recurring eval cases.
+keyQuestions:
+  - How should teams review Codex-generated code?
+  - What PR gates should apply to Codex changes?
+  - How do you evaluate whether Codex is getting better or worse in a repository?
+notFor:
+  - Teams that treat AI-generated code as self-reviewing
+  - Readers looking only for benchmark scores
+updateTriggers:
+  - Changes in Codex code review features
+  - Major coding model updates
+  - New quality incidents or repository regression patterns
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Code Review, PR Gates, and Quality Evals
+
+Codex can produce code quickly. That does not make the code production-ready. The review process has to convert agent output into ordinary engineering evidence: a diff, tests, risk notes, approvals, and a merge decision. If a team lowers its review bar because an agent produced the patch, it is using Codex backwards.
+
+The right standard is not "AI code must be perfect." The right standard is "Codex work must be at least as reviewable as human work."
+
+## Quick answer
+
+Review Codex output by asking four questions:
+
+1. Did it solve the stated problem?
+2. Did it stay inside the allowed boundary?
+3. Did it produce evidence that reviewers can verify?
+4. Did it avoid weakening tests, security, performance, or maintainability?
+
+If the answer to any question is unclear, the work is not ready.
+
+## Codex PR checklist
+
+| Review area | What to inspect |
+| --- | --- |
+| Scope | Did Codex touch only expected files and dependencies? |
+| Intent | Does the summary match the diff? |
+| Tests | Were relevant tests added or updated? |
+| Commands | Were checks run, and are exact commands reported? |
+| Behavior | Did public API, UX, or data model behavior change? |
+| Security | Did permissions, auth, secrets, or network access change? |
+| Error handling | Did the patch preserve failure behavior? |
+| Observability | Are logs, metrics, or traces affected? |
+| Maintainability | Is the diff smaller and clearer than alternatives? |
+| Follow-up | Are deferred tasks separated from the current patch? |
+
+This checklist should apply whether the patch comes from Codex desktop, CLI, IDE, or web.
+
+## Minimum PR gates
+
+Every repository using Codex should define baseline gates:
+
+- formatting;
+- lint;
+- type check;
+- unit tests;
+- relevant integration tests;
+- dependency and lockfile review;
+- security scan where appropriate;
+- code owner review;
+- human approval before merge.
+
+High-risk repositories should add:
+
+- migration dry runs;
+- screenshot or visual regression checks;
+- API contract tests;
+- load or performance checks;
+- approval boundary tests;
+- rollback plan;
+- manual QA signoff.
+
+Codex can help run and interpret these checks. It should not be allowed to declare them unnecessary just because they are slow.
+
+## Agent-specific review signals
+
+Codex output has some failure modes that deserve targeted review:
+
+| Signal | Why it matters |
+| --- | --- |
+| Overbroad diff | Agent may have optimized for completion instead of minimal change |
+| Test weakening | Agent may make tests pass by reducing coverage |
+| Unrelated cleanup | Increases review burden and hides behavioral changes |
+| New dependency | Can introduce supply chain and maintenance cost |
+| Silent fallback | Fix may hide the error instead of solving it |
+| Prompt compliance gap | Agent may ignore constraints under tool pressure |
+| Missing reproduction | Bug fix may be speculative |
+| Unclear generated abstractions | Agent may create architecture before need is proven |
+
+These are not reasons to avoid Codex. They are reasons to review it like a high-throughput contributor.
+
+## Repository eval cases
+
+Generic coding benchmarks do not tell a team whether Codex is healthy in its own repository. Build a small repository eval set:
+
+| Eval case type | Example |
+| --- | --- |
+| Known bug fix | Historical issue with expected patch shape |
+| Refactor constraint | Split module without public behavior change |
+| Test repair | Fix test failure without weakening assertion |
+| Security boundary | Reject change that exposes secret or bypasses auth |
+| UI task | Match screenshot and preserve responsive behavior |
+| Migration task | Update package and handle breaking changes |
+| Review task | Identify risk in a real PR diff |
+| Documentation task | Update docs from code change without inventing behavior |
+
+Each case should include:
+
+- task prompt;
+- allowed files;
+- forbidden actions;
+- expected evidence;
+- pass/fail rubric;
+- reviewer notes.
+
+Run these cases after major model changes, prompt policy changes, plugin additions, or repeated quality complaints.
+
+## Review queue design
+
+Codex can increase output faster than humans can review. That means review queues become an operating bottleneck.
+
+Set limits:
+
+- maximum active Codex write tasks per repository;
+- maximum open Codex PRs per reviewer;
+- required evidence fields in the PR description;
+- labels for agent-generated work;
+- escalation path when the agent cannot verify;
+- rule that broad diffs require a plan review before implementation.
+
+The team should measure accepted diffs, rejected diffs, rework rate, and review time. If Codex produces many patches that reviewers reject, the problem may be task selection, prompt quality, or missing repository instructions.
+
+## PR description template
+
+```text
+## Problem
+What issue or task did Codex address?
+
+## Scope
+Files and areas intentionally changed.
+
+## Verification
+Commands run and exact results.
+
+## Behavior changes
+User-visible, API, data, or migration impact.
+
+## Risk
+Security, performance, compatibility, or rollback concerns.
+
+## Follow-up
+Tasks intentionally not included in this patch.
+```
+
+Require this for agent-generated work. It makes review faster and exposes unsupported claims.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Coding-agent quality regression playbook"
+		href="/evaluation/coding-agent-quality-regression-playbook/"
+		description="Use this when the team reports that Codex or another coding agent has become less reliable."
+	/>
+	<LinkCard
+		title="Eval datasets for coding agents"
+		href="/evaluation/eval-datasets-for-coding-agents-and-repository-tasks/"
+		description="Build repository-grounded evals instead of relying on generic benchmark confidence."
+	/>
+	<LinkCard
+		title="PR checks and merge gates"
+		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+		description="Translate review principles into repository controls."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex use cases](https://developers.openai.com/codex/use-cases), [Codex app features](https://developers.openai.com/codex/app/features), [Codex subagents documentation](https://developers.openai.com/codex/subagents), and [Codex web documentation](https://developers.openai.com/codex/cloud).
+

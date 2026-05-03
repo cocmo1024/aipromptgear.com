@@ -1,0 +1,132 @@
+---
+title: OpenAI Codex Desktop Cluster
+description: A durable cluster hub for using the OpenAI Codex desktop app across local projects, worktrees, automations, skills, plugins, MCP, security, review, and Windows setup.
+referenceType: foundation
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex desktop
+searchIntent: learn
+decisionStage: implementation
+targetRoles:
+  - Engineering managers
+  - Staff engineers
+  - Developer productivity teams
+  - AI operations teams
+  - Technical founders
+contentStatus: cornerstone
+pageType: hub
+lifecycle: hub
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to learn and operate the Codex desktop app as a real multi-agent engineering workspace instead of treating it like another chat box.
+readerTakeaway: You should leave with a map of the Codex desktop workflow, including where to use the app, CLI, IDE, web, worktrees, automations, plugins, MCP, computer use, and approval controls.
+keyQuestions:
+  - What is OpenAI Codex desktop best used for?
+  - How should teams organize Codex worktrees, agents, skills, plugins, and automations?
+  - What security and review boundaries should exist before Codex works on real repositories?
+notFor:
+  - One-off prompt collections with no repository workflow
+  - Readers looking only for legacy OpenAI Codex API history
+updateTriggers:
+  - Major Codex app releases
+  - Changes in Codex plan access, desktop availability, plugins, automations, or sandbox behavior
+  - New official OpenAI guidance on Codex skills, MCP, subagents, or security
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Desktop Cluster
+
+OpenAI Codex desktop is not just a local chat wrapper for code. It is a command center for supervising coding agents across projects, worktrees, tools, plugins, automations, and review loops. That makes it valuable, but also easy to misuse. The durable search problem is not "what is Codex?" It is "how do I turn Codex into a controlled engineering workflow that produces reviewable work?"
+
+This cluster is built for that second question. It organizes Codex desktop content by real operating jobs: choosing the right Codex surface, setting up Windows and local projects, running parallel agents, designing automations, packaging repeatable workflows with skills and plugins, connecting tools through MCP, doing visual QA, and protecting repositories with sandbox and approval rules.
+
+## Start here
+
+<div class="portal-links">
+	<LinkCard
+		title="OpenAI Codex desktop for engineering teams"
+		href="/use-cases/openai-codex-desktop-for-engineering-teams/"
+		description="A practical operating guide for using Codex desktop as an engineering workspace, not just a prompt window."
+	/>
+	<LinkCard
+		title="Codex app vs CLI vs IDE vs web"
+		href="/tool-comparisons/openai-codex-app-vs-cli-vs-ide-vs-web/"
+		description="Choose the right Codex surface for pairing, delegation, cloud tasks, PR work, and multi-agent supervision."
+	/>
+	<LinkCard
+		title="Windows, PowerShell, WSL, and local environments"
+		href="/tooling/openai-codex-windows-powershell-wsl-and-local-environment-setup/"
+		description="Set up Codex on Windows without mixing terminal choice, filesystem location, sandboxing, and project scripts."
+	/>
+</div>
+
+## Multi-agent operating layer
+
+<div class="portal-links">
+	<LinkCard
+		title="Worktrees and parallel agents"
+		href="/workflows/openai-codex-worktrees-and-parallel-agents-playbook/"
+		description="Use worktrees to keep multiple Codex threads isolated while preserving reviewable Git state."
+	/>
+	<LinkCard
+		title="Codex automations playbook"
+		href="/workflows/openai-codex-automations-playbook-for-engineering-teams/"
+		description="Turn recurring repository, PR, triage, and follow-up work into scheduled Codex runs with safe boundaries."
+	/>
+	<LinkCard
+		title="Codex prompt playbook"
+		href="/prompt-library/openai-codex-desktop-prompt-playbook/"
+		description="Copy-ready prompts for planning, implementing, reviewing, debugging, using subagents, and creating automations."
+	/>
+</div>
+
+## Tools, plugins, and safety
+
+<div class="portal-links">
+	<LinkCard
+		title="Skills, plugins, and MCP workflow design"
+		href="/agent-systems/openai-codex-skills-plugins-and-mcp-workflow-design/"
+		description="Separate reusable instructions, installable plugin bundles, app connectors, and MCP tool access."
+	/>
+	<LinkCard
+		title="Computer Use, in-app browser, and visual QA"
+		href="/agent-systems/openai-codex-computer-use-in-app-browser-and-visual-qa/"
+		description="Use visual tools for UI debugging, local browser checks, app flows, screenshots, and tasks that files cannot prove."
+	/>
+	<LinkCard
+		title="Sandboxing, approvals, and network access"
+		href="/agent-systems/openai-codex-sandboxing-approvals-and-network-access-policy/"
+		description="Define the practical security boundary before Codex edits files, runs commands, reaches the network, or uses apps."
+	/>
+	<LinkCard
+		title="Code review, PR gates, and quality evals"
+		href="/evaluation/openai-codex-code-review-pr-gates-and-quality-evals/"
+		description="Turn Codex output into reviewable engineering work with PR checks, trace evidence, and regression cases."
+	/>
+</div>
+
+## Official source map
+
+This cluster is grounded in current OpenAI materials, including:
+
+- [Introducing the Codex app](https://openai.com/index/introducing-the-codex-app/)
+- [Codex for almost everything](https://openai.com/index/codex-for-almost-everything/)
+- [Codex app features](https://developers.openai.com/codex/app/features)
+- [Codex app automations](https://developers.openai.com/codex/app/automations)
+- [Codex app worktrees](https://developers.openai.com/codex/app/worktrees)
+- [Codex plugins](https://developers.openai.com/codex/plugins)
+- [Codex skills](https://developers.openai.com/codex/skills)
+- [Codex MCP](https://developers.openai.com/codex/mcp)
+- [Codex approvals and security](https://developers.openai.com/codex/agent-approvals-security)
+- [Codex app for Windows](https://developers.openai.com/codex/app/windows)
+- [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-chatgpt)
+
+## How to use this cluster
+
+If you are new to Codex, start with the engineering team guide and the surface comparison. If you are already using Codex casually, go straight to worktrees, automations, and the prompt playbook. If you are rolling it out to a team, start with sandboxing, approvals, plugins, and PR gates before encouraging broad write-enabled use.
+
+The correct operating model is simple: give Codex more context and tools only after the review boundary is clear. Powerful desktop agents create leverage when they are tied to Git, tests, approvals, and durable instructions. Without those boundaries, they create review debt faster than they create production value.
+

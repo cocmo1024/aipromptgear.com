@@ -1,0 +1,194 @@
+---
+title: "OpenAI Codex on Windows: PowerShell, WSL, Sandbox, and Local Environment Setup"
+description: A practical Windows setup guide for OpenAI Codex desktop, including PowerShell, WSL2, project location, sandboxing, integrated terminal choice, and local environment scripts.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex Windows setup
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Windows developers
+  - Engineering teams
+  - Developer productivity teams
+  - Technical founders
+contentStatus: cornerstone
+pageType: implementation-guide
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to configure Codex on Windows without confusing the desktop app, PowerShell, WSL, project paths, sandboxing, and local setup scripts.
+readerTakeaway: You should leave with a practical Windows operating model for Codex desktop and a checklist for choosing native PowerShell or WSL2.
+keyQuestions:
+  - Should Codex on Windows use PowerShell or WSL?
+  - Where should projects live for Codex?
+  - How should local environment scripts be written for reliable Codex runs?
+notFor:
+  - Readers looking for unsupported WSL1 workflows
+  - Teams that want to disable sandboxing for convenience
+updateTriggers:
+  - Changes in Codex Windows app behavior
+  - Changes in WSL or sandbox support
+  - New official OpenAI Windows setup guidance
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex on Windows: PowerShell, WSL, Sandbox, and Local Environment Setup
+
+Codex on Windows is not just "the Mac app, but on Windows." The Windows setup has real choices: native Windows agent or WSL2, PowerShell or another integrated terminal, project location, sandbox behavior, local environment scripts, and how commands are expected to run. If those choices are mixed casually, Codex may fail for reasons that look like model weakness but are really environment mismatch.
+
+The goal is to make Codex's execution environment boring.
+
+## Quick answer
+
+Use the Windows-native Codex app with PowerShell when your project, scripts, and tools already work well on Windows. Use WSL2 when the repository expects a Linux toolchain, Linux paths, or Linux-specific shell behavior. Keep projects on the filesystem that matches the agent environment. Avoid opening WSL projects from awkward paths unless the workflow is explicitly tested.
+
+## Setup decision table
+
+| Project reality | Recommended Codex setup |
+| --- | --- |
+| Node, Astro, .NET, PowerShell-friendly scripts | Windows native agent and PowerShell |
+| Python or Node app with cross-platform scripts | Windows native may work; test setup script |
+| Linux-first repo with bash scripts | WSL2 agent |
+| Docker-heavy local dev | WSL2 often cleaner, depending on Docker setup |
+| Repo lives in `C:\` and runs from PowerShell | Windows native |
+| Repo lives under Linux filesystem | WSL2 agent |
+| Mixed Windows and Linux commands | Normalize scripts before heavy Codex use |
+
+The wrong answer is switching randomly per task. Codex needs predictable commands.
+
+## Native Windows mode
+
+OpenAI's Windows documentation says the Codex app supports a native Windows agent with PowerShell and Windows sandbox support. This is the simplest path when the repo is already Windows-compatible.
+
+Use native mode when:
+
+- the project lives on the Windows filesystem;
+- `npm`, `pnpm`, `python`, `dotnet`, or other tools work in PowerShell;
+- test scripts are cross-platform;
+- path assumptions do not require Linux;
+- the team wants Windows-native editor integration.
+
+Watch for:
+
+- scripts that use `rm`, `cp`, `grep`, or bash syntax;
+- path separators hardcoded as `/` or `\`;
+- commands that assume executable permissions;
+- toolchains installed only inside WSL;
+- package postinstall scripts that behave differently on Windows.
+
+## WSL2 mode
+
+Use WSL2 when the repository expects Linux. Codex can run the agent in WSL2, but the project and tooling should be kept consistent.
+
+Use WSL2 when:
+
+- CI runs Linux and local parity matters;
+- scripts use bash heavily;
+- dependencies expect Linux binaries;
+- Docker, build tools, or package scripts are smoother in Linux;
+- the team already develops inside WSL2.
+
+Avoid WSL1. OpenAI's Windows docs note that WSL1 support ended when the Linux sandbox moved to bubblewrap in Codex 0.115.
+
+## Project location policy
+
+The project should live where the agent runs.
+
+| Agent mode | Better project location |
+| --- | --- |
+| Windows native | Windows filesystem, such as `C:\Users\...\repo` or another local drive |
+| WSL2 agent | Linux filesystem under the chosen WSL distribution |
+| Windows native accessing WSL files | Avoid unless tested |
+| WSL accessing Windows files | Possible through `/mnt/c/...`, but watch performance and path issues |
+
+This is not only about speed. It affects file watching, permissions, path resolution, package manager behavior, and sandbox assumptions.
+
+## Integrated terminal choice
+
+The integrated terminal is not always the same thing as the agent runtime. A team can configure the terminal separately from the agent. That flexibility is useful, but it can confuse debugging.
+
+Recommended policy:
+
+- keep terminal and agent aligned for most projects;
+- document exceptions in project setup notes;
+- restart the app after changing agent mode or terminal mode;
+- test a clean command loop after switching.
+
+For Windows-native projects, use PowerShell unless the repo has a documented reason for Git Bash or another terminal. For WSL projects, use WSL consistently.
+
+## Local environment script checklist
+
+Codex should know how to prepare the project. A good local environment setup should answer:
+
+- which package manager to use;
+- which install command is safe;
+- which test command is the smallest useful check;
+- which build command verifies production output;
+- which commands require network;
+- which commands write outside the workspace;
+- which platform-specific steps apply.
+
+Example project note:
+
+```text
+Use npm on Windows. Install with npm ci.
+For content-only changes, run npm run build.
+For component changes, run npm run build and inspect the affected page in the browser.
+Do not run deployment commands unless explicitly requested.
+```
+
+This is the kind of instruction that belongs in repository guidance or a Codex skill, not in every individual prompt.
+
+## Sandbox and approvals on Windows
+
+Keep sandbox protections enabled unless a task has a specific reason to exceed them. Full access can make a blocked task pass, but it also allows broader file and system impact.
+
+Practical defaults:
+
+- use default sandbox permissions for normal work;
+- keep write access inside the project;
+- approve network access when needed;
+- avoid full access for routine edits;
+- explicitly disallow deploy, secret, and destructive commands;
+- use rules for known safe commands instead of broad full access.
+
+Codex is more useful when it can run checks. It is not more trustworthy just because it can run anything.
+
+## Windows troubleshooting checklist
+
+| Symptom | Likely cause | Fix |
+| --- | --- | --- |
+| Command works in WSL but not Codex | Agent is Windows-native | Switch agent to WSL or make script cross-platform |
+| `npm ci` fails with native package errors | Platform-specific dependency mismatch | Reinstall in the active environment |
+| Codex cannot find a command | Tool installed only in another shell | Install in agent environment or update PATH |
+| File path looks wrong | Mixed Windows and Linux paths | Keep project in matching filesystem |
+| Sandbox blocks command | Command writes or reaches outside allowed boundary | Approve narrowly or adjust rule |
+| Browser or GUI task fails | Not a shell problem | Use in-app browser or computer use where appropriate |
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Codex app vs CLI vs IDE vs web"
+		href="/tool-comparisons/openai-codex-app-vs-cli-vs-ide-vs-web/"
+		description="Surface choice matters more when Windows, WSL, editor, and cloud environments differ."
+	/>
+	<LinkCard
+		title="Sandboxing and approval policy"
+		href="/agent-systems/openai-codex-sandboxing-approvals-and-network-access-policy/"
+		description="Environment setup should not weaken the permission boundary."
+	/>
+	<LinkCard
+		title="Codex desktop for engineering teams"
+		href="/use-cases/openai-codex-desktop-for-engineering-teams/"
+		description="Use Windows setup as part of the broader engineering operating model."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex app for Windows documentation](https://developers.openai.com/codex/app/windows), [Codex app settings documentation](https://developers.openai.com/codex/app/settings), [Codex local environments documentation](https://developers.openai.com/codex/app/local-environments), and [Codex approvals and security documentation](https://developers.openai.com/codex/agent-approvals-security).

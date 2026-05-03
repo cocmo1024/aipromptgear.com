@@ -1,0 +1,217 @@
+---
+title: OpenAI Codex Desktop Beyond Coding for Knowledge Workflows
+description: How to use Codex desktop beyond code for documents, spreadsheets, slide decks, inbox triage, research, app workflows, and repeatable knowledge work with review boundaries.
+referenceType: team-scenario
+adProfile: workflow
+commercialIntent: medium
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex beyond coding
+searchIntent: learn
+decisionStage: implementation
+targetRoles:
+  - Product managers
+  - Operations teams
+  - Research teams
+  - Technical founders
+  - Developer productivity teams
+contentStatus: growing
+pageType: playbook
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: medium
+problemSolved: How to use Codex desktop for non-code work without turning it into an uncontrolled general assistant.
+readerTakeaway: You should leave with practical Codex workflows for documents, spreadsheets, slides, inboxes, research, and app actions, plus the review boundaries needed to keep them safe.
+keyQuestions:
+  - Can Codex desktop be used beyond coding?
+  - What non-code workflows are good fits for Codex?
+  - How should teams review Codex work that touches documents, spreadsheets, email, or apps?
+notFor:
+  - Users who want Codex to send messages or modify external systems without review
+  - Pure consumer productivity tips with no operating boundary
+updateTriggers:
+  - New Codex plugin or computer use capabilities
+  - Changes in memory, automations, app connectors, or file preview support
+  - New official OpenAI guidance on Codex knowledge work
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Desktop Beyond Coding for Knowledge Workflows
+
+Codex is built around code, but code is not the only work it can help organize. The desktop app increasingly supports workflows that involve documents, spreadsheets, slides, inboxes, browser tasks, app context, and repeated operations. OpenAI's Codex direction is clear: the same agentic discipline used for software can apply to technical knowledge work when the work has sources, tools, artifacts, and review.
+
+The catch is that non-code work can be less bounded than code. A repository has tests, Git diffs, and files. A document, inbox, or spreadsheet may have softer boundaries. That makes the prompt and review contract more important, not less.
+
+## Quick answer
+
+Use Codex beyond coding when the workflow has:
+
+- source material;
+- a clear output artifact;
+- a review owner;
+- a safe tool boundary;
+- evidence requirements;
+- reversible edits or draft-only behavior.
+
+Do not use Codex to send, publish, approve, delete, or change sensitive external systems without explicit human confirmation.
+
+## Strong non-code workflows
+
+| Workflow | Codex job | Review evidence |
+| --- | --- | --- |
+| Spreadsheet analysis | Clean data, calculate, summarize findings | Workbook changes, formulas, assumptions |
+| Slide deck creation | Turn outline or data into a presentation | Rendered deck, source list, visual QA |
+| Document synthesis | Combine notes into a structured memo | Source references and uncertainty |
+| Inbox triage | Find important messages and draft replies | Drafts only, source thread links |
+| Research report | Build evidence packet and decision summary | Source tiers, citations, gaps |
+| App workflow | Use a plugin or computer use for a scoped task | Actions taken and permission prompts |
+| Issue triage | Cluster bugs and propose priority | Labels proposed, not silently applied |
+| Release notes | Summarize merged work from PRs | PR links and change categories |
+
+The common pattern is not "Codex can do anything." It is "Codex can operate on structured inputs and produce reviewable outputs."
+
+## Documents and memos
+
+Good fit:
+
+```text
+Read the provided project notes and draft a decision memo.
+Separate confirmed facts from assumptions.
+Use headings: Context, Options, Tradeoffs, Recommendation, Open Questions.
+Do not invent dates, metrics, owners, or commitments.
+Return a source map showing which notes support each major claim.
+```
+
+Bad fit:
+
+```text
+Write a great strategy document.
+```
+
+The first prompt gives Codex an evidence standard. The second invites generic prose.
+
+## Spreadsheets
+
+For spreadsheet work, Codex should preserve originals and explain transformations.
+
+Good tasks:
+
+- clean duplicated rows;
+- calculate cohort metrics;
+- create a summary tab;
+- build a chart from defined columns;
+- identify outliers;
+- produce a short analysis note.
+
+Require:
+
+- no destructive overwrite of source data;
+- formulas explained;
+- assumptions listed;
+- rendered or recalculated output verified where possible.
+
+## Slides and visual artifacts
+
+Codex can help with slide decks when the task is framed as a communication artifact, not as decoration.
+
+Good prompt:
+
+```text
+Create a 10-slide executive briefing from these notes.
+Audience: engineering leadership.
+Goal: decide whether to fund the Codex rollout.
+Each slide should have one message, one supporting visual or table where useful,
+and speaker notes with source assumptions.
+Render the deck and inspect for layout issues before finalizing.
+```
+
+The value is not only slide generation. It is source-to-artifact transformation plus visual verification.
+
+## Inbox and collaboration tools
+
+Use plugins or connectors for structured access where possible. Draft first, send later.
+
+Good boundaries:
+
+- read only messages matching a clear query;
+- summarize decisions and action items;
+- draft replies without sending;
+- list uncertainty and missing context;
+- ask before posting, assigning, or changing status.
+
+Bad boundaries:
+
+- "handle my inbox";
+- "reply to everything";
+- "clean up Slack";
+- "close stale issues" without a review list.
+
+## Research workflows
+
+Codex can support research when it returns more than a polished answer. Require:
+
+- source list;
+- source quality tiers;
+- claims mapped to evidence;
+- uncertainty;
+- conflicting sources;
+- recommendation;
+- follow-up questions.
+
+This is especially useful when combined with deep research, documents, spreadsheets, or connected knowledge sources.
+
+## App workflows and computer use
+
+When Codex uses desktop apps or a browser visually, keep the task narrow:
+
+- "open this local app and reproduce the onboarding bug";
+- "verify the export flow up to the confirmation screen";
+- "inspect this PDF rendering and note layout problems";
+- "change this local setting, then report the exact path used."
+
+Avoid sensitive flows:
+
+- banking;
+- production admin;
+- identity and access changes;
+- billing;
+- destructive data operations.
+
+## Review model for non-code Codex work
+
+| Output | Review before accepting |
+| --- | --- |
+| Memo | Are claims supported and uncertainty visible? |
+| Spreadsheet | Are formulas correct and source data preserved? |
+| Slide deck | Does rendered output match the story and sources? |
+| Email draft | Does tone, fact, recipient, and authority match? |
+| Issue triage | Are labels and priority justified? |
+| Browser/app task | Are actions reversible and evidence recorded? |
+
+Non-code work still needs a diff-like review. It may be a rendered deck, a workbook, a source map, or a draft queue instead of Git diff.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Codex prompt playbook"
+		href="/prompt-library/openai-codex-desktop-prompt-playbook/"
+		description="Use the non-code prompt pattern as a starting point for safe knowledge workflows."
+	/>
+	<LinkCard
+		title="Codex skills, plugins, and MCP"
+		href="/agent-systems/openai-codex-skills-plugins-and-mcp-workflow-design/"
+		description="Package repeated knowledge workflows as skills and connect tools only when needed."
+	/>
+	<LinkCard
+		title="Codex computer use and visual QA"
+		href="/agent-systems/openai-codex-computer-use-in-app-browser-and-visual-qa/"
+		description="Use computer use only when structured data access is not enough."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex for almost everything](https://openai.com/index/codex-for-almost-everything/), [Codex use cases](https://developers.openai.com/codex/use-cases), [Codex plugins documentation](https://developers.openai.com/codex/plugins), and [Codex computer use documentation](https://developers.openai.com/codex/app/computer-use).
+

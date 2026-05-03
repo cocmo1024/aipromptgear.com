@@ -1,0 +1,195 @@
+---
+title: OpenAI Codex Sandboxing, Approvals, and Network Access Policy
+description: A practical policy guide for Codex sandbox modes, approval behavior, network access, tool permissions, secrets, worktrees, and enterprise rollout.
+referenceType: policy
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex sandbox approvals
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Security engineers
+  - Engineering managers
+  - AI governance teams
+  - Developer productivity teams
+contentStatus: cornerstone
+pageType: security-checklist
+lifecycle: policy
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to let Codex do useful work while preventing uncontrolled file, network, app, credential, or tool access.
+readerTakeaway: You should leave with a concrete permission policy for local Codex work, desktop app tasks, plugins, MCP tools, automations, and repository changes.
+keyQuestions:
+  - Which Codex sandbox mode should teams use?
+  - When should Codex ask for approval?
+  - How should network access, secrets, and external tools be handled?
+notFor:
+  - Teams that want unattended full-access agents by default
+  - Readers looking for legal or compliance advice
+updateTriggers:
+  - Changes in Codex sandbox or approval policy behavior
+  - New official OpenAI security guidance
+  - New Codex plugin, computer use, or automation permissions
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Sandboxing, Approvals, and Network Access Policy
+
+Codex is useful because it can read files, edit code, run commands, use tools, and in some desktop workflows interact with applications. Those same abilities create the core security problem. A coding agent that can change files and run commands needs a permission model, not just a friendly prompt.
+
+OpenAI's Codex security documentation frames the controls around sandboxing and approvals. The practical team policy should translate that into clear rules: what Codex may do freely, what requires approval, what should be blocked, and what should remain human-owned.
+
+## Quick answer
+
+Use the narrowest sandbox and approval policy that still lets Codex complete the intended workflow. For most repositories, start with workspace-limited write access and approval for actions that leave the workspace, use the network, access sensitive tools, or perform side effects. Reserve full access for explicitly bounded sessions, not as a default.
+
+## Permission tiers
+
+| Tier | Codex can do | Review posture |
+| --- | --- | --- |
+| Read-only exploration | Read project files, explain architecture, propose plans | Low risk, good onboarding step |
+| Workspace write | Edit files in the project, run local checks | Normal coding-agent mode with diff review |
+| Network-enabled task | Install packages, fetch docs, call external APIs | Approval and source scrutiny required |
+| Tool-connected workflow | Use plugins, MCP tools, connectors, browser, apps | Scope each tool and record evidence |
+| Full access | Act outside normal workspace boundaries | Rare, time-limited, explicitly justified |
+| Production side effects | Deploy, merge, change secrets, modify billing, delete data | Human-owned by default |
+
+The team should write these tiers down before broad rollout. Otherwise each developer improvises a different risk model.
+
+## Sandbox is not the whole policy
+
+Sandboxing controls what Codex can technically touch. Approval policy controls when Codex must ask before acting. Tool permissions control which external capabilities are available. Git and review rules control whether output reaches production.
+
+These layers must work together:
+
+1. Sandbox prevents accidental filesystem and network overreach.
+2. Approval prompts interrupt higher-risk actions.
+3. Tool scopes restrict external systems.
+4. Worktrees isolate parallel changes.
+5. Tests and PR gates verify behavior.
+6. Human review owns merge and deployment.
+
+Removing any layer increases the burden on the others.
+
+## Network access policy
+
+Network access is often necessary for:
+
+- package installation;
+- documentation lookup;
+- dependency updates;
+- API examples;
+- cloud deployment previews;
+- remote MCP servers;
+- connected tools.
+
+Network access is risky because it can:
+
+- exfiltrate context if misused;
+- pull untrusted code;
+- follow malicious instructions from external content;
+- make tool behavior less reproducible;
+- hide dependency changes inside agent work.
+
+Recommended rule:
+
+| Network use | Default |
+| --- | --- |
+| Fetch official docs | Allow with task relevance |
+| Install dependencies | Approve and review lockfile |
+| Call production APIs | Block unless explicitly required |
+| Access secrets | Avoid direct agent access |
+| Browse arbitrary web pages | Allow only when source quality matters |
+| Download executables | Require explicit approval and verification |
+
+## Secrets policy
+
+Do not rely on prompt instructions alone to protect secrets. Use environment and tool design:
+
+- keep secrets out of files Codex does not need;
+- avoid printing secrets in terminal output;
+- use scoped tokens where tools require authentication;
+- prefer read-only tokens for inspection tasks;
+- do not grant deploy credentials to exploratory workflows;
+- rotate credentials if a session exposed them accidentally;
+- keep production admin work human-owned unless a mature approval system exists.
+
+If Codex needs to reason about configuration, give it redacted examples or schema-level documentation where possible.
+
+## Plugins and MCP policy
+
+Plugins and MCP servers should be classified by authority:
+
+| Tool class | Example | Approval default |
+| --- | --- | --- |
+| Read-only docs | Internal docs search | Allow |
+| Read-only project context | GitHub issue read | Allow or prompt by repository |
+| Draft output | Create draft PR summary | Allow with review |
+| Write collaboration tool | Post Slack message | Prompt or draft first |
+| Write issue tracker | Change label or status | Prompt |
+| Write code | Apply patch | Normal code review |
+| Deploy or merge | Production deployment | Human-owned |
+
+Tool outputs should be treated as untrusted context. A web page, issue comment, or document can contain instructions that conflict with the user's intent. Codex should not treat external text as authority just because a tool returned it.
+
+## Automation policy
+
+Automations require stricter defaults because they run unattended.
+
+Minimum rules:
+
+- test manually before scheduling;
+- use worktrees for recurring write tasks;
+- avoid full access by default;
+- define allowed and forbidden actions in the prompt;
+- require evidence in every run;
+- review early runs;
+- assign an owner;
+- add stop conditions for repeated failures.
+
+If an automation cannot explain what it inspected and why it acted, it should not be making changes.
+
+## Red-line actions
+
+These should normally require explicit human action outside Codex:
+
+- merge to protected branches;
+- deploy to production;
+- change DNS;
+- change billing or payment settings;
+- rotate or expose secrets;
+- delete production data;
+- modify access control;
+- approve its own changes;
+- bypass CI;
+- weaken tests to make a build pass.
+
+Codex can prepare evidence or draft commands, but ownership should remain human.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="Use this broader approval design when Codex becomes part of engineering governance."
+	/>
+	<LinkCard
+		title="Tool outputs are untrusted"
+		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
+		description="External content returned by plugins, MCP, browser tools, and files should not become instructions."
+	/>
+	<LinkCard
+		title="Codex code review and PR gates"
+		href="/evaluation/openai-codex-code-review-pr-gates-and-quality-evals/"
+		description="Security controls should feed review, checks, and merge gates."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex agent approvals and security documentation](https://developers.openai.com/codex/agent-approvals-security), [Codex sandboxing concept documentation](https://developers.openai.com/codex/sandboxing), [Codex MCP documentation](https://developers.openai.com/codex/mcp), [Codex plugins documentation](https://developers.openai.com/codex/plugins), and [Codex automations documentation](https://developers.openai.com/codex/app/automations).
+

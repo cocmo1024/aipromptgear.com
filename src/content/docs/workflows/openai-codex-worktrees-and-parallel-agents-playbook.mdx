@@ -1,0 +1,206 @@
+---
+title: OpenAI Codex Worktrees and Parallel Agents Playbook
+description: How to use Codex desktop worktrees and parallel agent threads for isolated repository changes, alternative implementations, reviewable diffs, and safe cleanup.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex worktrees
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Staff engineers
+  - Engineering managers
+  - Developer productivity teams
+  - Release managers
+contentStatus: cornerstone
+pageType: playbook
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to run multiple Codex tasks in parallel without corrupting local work, overwhelming reviewers, or losing track of which agent changed what.
+readerTakeaway: You should leave with a concrete playbook for using Codex worktrees, choosing which tasks deserve parallel agents, and cleaning up safely.
+keyQuestions:
+  - When should Codex use a worktree?
+  - How many parallel Codex agents should a team run?
+  - How should reviewers compare and merge worktree output?
+notFor:
+  - Teams trying to bypass code review by running more agents
+  - Repositories without Git discipline
+updateTriggers:
+  - Changes in Codex worktree behavior
+  - New official guidance on subagents or desktop parallelism
+  - Major changes in Git worktree cleanup behavior
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Worktrees and Parallel Agents Playbook
+
+Worktrees are one of the most important Codex desktop concepts because they turn agent parallelism from chaos into reviewable isolation. Without worktrees, multiple agents editing the same checkout can collide with each other and with the developer's own changes. With worktrees, each task can run in its own Git-backed copy while the main working tree stays usable.
+
+The point is not to run the maximum number of agents. The point is to run independent work in isolation, then compare the results with normal engineering discipline.
+
+## Quick answer
+
+Use Codex worktrees when a task is independent, likely to modify files, or long enough that you do not want it touching your active checkout. Keep the first rollout conservative: two to four parallel agents are usually enough until the team knows its review capacity. More agents create more diffs, more tests, more follow-up decisions, and more cleanup.
+
+## When a worktree is worth it
+
+Use a worktree for:
+
+- multi-file features;
+- refactors;
+- dependency migrations;
+- UI changes that may need repeated attempts;
+- bug fixes where you want to preserve your local state;
+- alternative implementation experiments;
+- scheduled automations that might edit files;
+- subagent exploration where each agent owns a different question.
+
+Do not use a worktree just because it sounds sophisticated. For a one-line comment or a small local test change, the local checkout may be simpler.
+
+## The right task shape
+
+A good worktree task has:
+
+| Element | Example |
+| --- | --- |
+| Objective | "Add CSV export for billing reports" |
+| Boundary | "Stay within reports, billing, and tests unless blocked" |
+| Verification | "Run npm test -- billing and npm run typecheck" |
+| Evidence | "Report commands, failures, files changed, and migration risk" |
+| Review path | "Do not commit; leave a clean diff for review" |
+
+The worktree does not remove the need for scope. It just gives the agent a safer place to work.
+
+## Parallel agent patterns
+
+### One implementation, one reviewer agent
+
+Use one Codex thread to implement and a second read-only or review-focused thread to inspect the diff.
+
+Good for:
+
+- production fixes;
+- complex refactors;
+- security-sensitive changes;
+- migrations where regressions are easy to miss.
+
+Prompt shape:
+
+```text
+Agent A: implement the smallest fix for the failing auth refresh test.
+Agent B: independently review Agent A's eventual diff for behavior changes,
+security issues, missing tests, and migration risk. Do not edit files.
+```
+
+### Multiple alternative implementations
+
+Use two agents when the design choice is unclear.
+
+Good for:
+
+- UI architecture choices;
+- data model migrations;
+- package replacement decisions;
+- performance fixes with competing tradeoffs.
+
+The reviewer should compare:
+
+- diff size;
+- test coverage;
+- migration risk;
+- maintainability;
+- performance evidence;
+- rollback complexity.
+
+Do not merge both. The value is in choosing one stronger path.
+
+### Parallel exploration
+
+Use several agents for read-heavy investigation when the problem has independent dimensions:
+
+- one agent maps the frontend path;
+- one maps the API path;
+- one maps tests and fixtures;
+- one looks for prior incidents or TODOs.
+
+Then consolidate before any implementation begins. This reduces context pollution and helps the main agent work from sharper evidence.
+
+## Review capacity limit
+
+Parallelism is bounded by human review, not model throughput.
+
+Use this simple capacity rule:
+
+| Team state | Recommended active write agents per repo |
+| --- | --- |
+| New to Codex | 1 |
+| Comfortable with reviewable diffs | 2 |
+| Strong tests and named reviewers | 3 to 4 |
+| Dedicated developer productivity workflow | More, only with queue policy |
+
+If reviewers are already behind, more agents make the system worse. The bottleneck moves from typing code to deciding whether code is safe.
+
+## Worktree cleanup
+
+Worktrees consume disk space because each one can have repo files, dependencies, build output, and caches. The official Codex worktrees docs note that Codex manages worktrees and keeps a limited number by default, but teams should still treat cleanup as an operating habit.
+
+Cleanup policy:
+
+1. Archive threads that are no longer useful.
+2. Pin only worktrees with unresolved value.
+3. Delete failed explorations after extracting learning.
+4. Avoid leaving dependency caches in many stale worktrees.
+5. Write a short decision note before deleting an alternative path.
+
+The goal is not perfect cleanliness. The goal is to avoid an invisible backlog of half-decisions.
+
+## Handoff between local and worktree
+
+Codex can move threads between local and worktree modes. Use this intentionally:
+
+- start in a worktree when the agent may explore;
+- hand back to local only after the direction is accepted;
+- avoid handoff when your local checkout has uncommitted changes that conflict with the agent's work;
+- rerun verification after handoff because environment state can differ.
+
+Treat handoff as a merge step, not a magic teleport.
+
+## Risks and controls
+
+| Risk | Control |
+| --- | --- |
+| Two agents change the same file differently | Assign file ownership in the prompt |
+| Reviewer cannot understand diff intent | Require plan and summary before final review |
+| Worktree uses stale dependencies | Run setup or local environment scripts explicitly |
+| Automation edits active work | Use background worktrees for recurring changes |
+| Too many stale worktrees | Archive or delete after decision |
+| Subagents spend tokens without value | Use subagents only for independent questions |
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Codex automations playbook"
+		href="/workflows/openai-codex-automations-playbook-for-engineering-teams/"
+		description="Automations can run on worktrees, but only after the task has a durable prompt and safe review loop."
+	/>
+	<LinkCard
+		title="Codex sandboxing and approvals"
+		href="/agent-systems/openai-codex-sandboxing-approvals-and-network-access-policy/"
+		description="Worktree isolation is not the same thing as full security isolation."
+	/>
+	<LinkCard
+		title="Codex PR gates and evals"
+		href="/evaluation/openai-codex-code-review-pr-gates-and-quality-evals/"
+		description="Use review gates to decide which worktree output should move toward merge."
+	/>
+</div>
+
+## Source notes
+
+This playbook is based on OpenAI's [Codex worktrees documentation](https://developers.openai.com/codex/app/worktrees), [Codex app features](https://developers.openai.com/codex/app/features), and [subagents documentation](https://developers.openai.com/codex/subagents).
+

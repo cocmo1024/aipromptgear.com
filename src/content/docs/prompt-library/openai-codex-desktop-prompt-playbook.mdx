@@ -1,0 +1,357 @@
+---
+title: OpenAI Codex Desktop Prompt Playbook
+description: Copy-ready prompt patterns for using OpenAI Codex desktop to explore codebases, plan changes, implement patches, run tests, use subagents, review PRs, create skills, and schedule automations.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex prompts
+searchIntent: select
+decisionStage: implementation
+targetRoles:
+  - Developers
+  - Engineering managers
+  - Staff engineers
+  - Developer productivity teams
+contentStatus: cornerstone
+pageType: prompt-library
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to write Codex desktop prompts that produce bounded, reviewable, evidence-backed engineering work instead of broad agent output.
+readerTakeaway: You should leave with reusable prompt templates for the most valuable Codex desktop workflows.
+keyQuestions:
+  - What should I ask Codex desktop to do?
+  - How do I keep Codex prompts scoped and reviewable?
+  - How should prompts change for planning, implementation, review, subagents, and automations?
+notFor:
+  - Readers looking for novelty prompts with no review boundary
+  - Teams using prompts to bypass engineering process
+updateTriggers:
+  - New Codex prompting guidance
+  - New Codex app capabilities that change workflow design
+  - Repeated prompt failure patterns observed in coding-agent work
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Desktop Prompt Playbook
+
+Codex desktop prompts should not sound like generic chatbot prompts. The best prompts behave like small work orders: they define the job, boundary, verification method, and reporting format. Codex can do more when given tools and context, but the prompt still determines whether the result is reviewable.
+
+Use these templates as starting points. Replace file paths, commands, and constraints with the real repository context.
+
+## 1. Read-only codebase exploration
+
+Use this before allowing writes in an unfamiliar repo.
+
+```text
+Explore this repository without editing files.
+
+Goal:
+- explain how [feature or flow] works from entry point to persistence layer.
+
+Scope:
+- inspect only the files needed to answer;
+- do not run network commands;
+- do not change files.
+
+Return:
+- main files involved;
+- request or data flow;
+- important abstractions;
+- tests that cover the behavior;
+- risks or unclear areas;
+- a short follow-up plan if we later modify this feature.
+```
+
+Why it works: it builds context and reveals whether Codex understands the system before creating diff review burden.
+
+## 2. Plan before patch
+
+Use this when the implementation may touch several files.
+
+```text
+Before editing, make a short implementation plan for [task].
+
+Include:
+- files you expect to inspect;
+- files you expect to change;
+- assumptions that need verification;
+- tests or commands you will run;
+- risks that might make the task larger than expected.
+
+Wait for approval before editing.
+```
+
+Why it works: it separates reasoning from file modification and gives the human a checkpoint.
+
+## 3. Small bug fix with evidence
+
+```text
+Fix [bug or failing test].
+
+Constraints:
+- make the smallest behavior-preserving change that solves the issue;
+- stay within [directories/files] unless you find a direct dependency;
+- do not update dependencies;
+- do not weaken tests.
+
+Verification:
+- run [exact test command];
+- if the command fails for an unrelated reason, report the failure and stop.
+
+Final response:
+- root cause;
+- files changed;
+- test command and result;
+- remaining risk.
+```
+
+Why it works: it blocks the common failure mode where an agent expands scope to make progress.
+
+## 4. Refactor without behavior change
+
+```text
+Refactor [module/file] to [desired structure] without changing behavior.
+
+Rules:
+- preserve public API and existing behavior;
+- avoid opportunistic cleanup outside the target area;
+- keep commits or changes reviewable by logical step;
+- add or update tests only if the refactor exposes missing coverage.
+
+Verification:
+- run [unit test command];
+- run [typecheck/lint command].
+
+Report:
+- what changed structurally;
+- why behavior should be unchanged;
+- commands run;
+- any behavior risk reviewers should inspect.
+```
+
+Why it works: it tells Codex that "cleaner" is not permission to redesign.
+
+## 5. Frontend visual QA loop
+
+```text
+Open the local app preview and inspect [page/component].
+
+Check:
+- desktop viewport [size];
+- mobile viewport [size];
+- horizontal overflow;
+- CTA visibility;
+- spacing and typography;
+- interactive states if relevant.
+
+If an issue is visible, make the smallest code change, then re-check.
+
+Return:
+- viewports tested;
+- issue observed;
+- files changed;
+- before/after evidence;
+- limitations of the check.
+```
+
+Why it works: visual tasks need evidence and repeatability, not taste-only comments.
+
+## 6. PR review with risk categories
+
+```text
+Review the current diff as if you are a senior reviewer.
+
+Focus on:
+- correctness bugs;
+- security and permission changes;
+- missing tests;
+- behavior regressions;
+- performance or reliability risk;
+- maintainability problems.
+
+Do not rewrite the code unless asked.
+
+Return findings first, ordered by severity, with file references and a short explanation.
+If there are no findings, say that explicitly and list residual testing gaps.
+```
+
+Why it works: it forces a review mindset and prevents the agent from drifting into unsolicited implementation.
+
+## 7. Subagent exploration
+
+Use only when questions are independent.
+
+```text
+Spawn separate agents to investigate these independent questions.
+Do not edit files.
+
+1. Map the frontend flow for [feature].
+2. Map the backend/API flow for [feature].
+3. Find relevant tests and fixtures.
+4. Identify migration or compatibility risks.
+
+Wait for all agents, then consolidate:
+- strongest evidence;
+- conflicting findings;
+- recommended implementation boundary;
+- files likely to change.
+```
+
+Why it works: subagents are useful for parallel exploration, but expensive for tasks that are not truly separable.
+
+## 8. Worktree implementation
+
+```text
+Start this task in a Codex-managed worktree so it does not touch my local checkout.
+
+Task:
+- implement [specific change].
+
+Boundaries:
+- allowed files/directories: [list];
+- forbidden changes: [list];
+- do not commit or merge.
+
+Verification:
+- run [commands].
+
+Final response:
+- branch/worktree context;
+- files changed;
+- commands and results;
+- whether the change is ready for human review.
+```
+
+Why it works: it makes isolation explicit and preserves local developer state.
+
+## 9. Turn a repeated workflow into a skill
+
+```text
+Create a Codex skill for this repeated workflow: [workflow].
+
+The skill should include:
+- a focused description;
+- when to use it;
+- required inputs;
+- step-by-step instructions;
+- verification commands;
+- output format;
+- failure and escalation rules.
+
+Do not overgeneralize. Keep the skill focused on one job.
+After drafting it, explain how I should test whether Codex triggers it appropriately.
+```
+
+Why it works: it turns reliable prompting into reusable operations without jumping straight to plugin complexity.
+
+## 10. Draft an automation safely
+
+```text
+Draft a Codex automation for [recurring task].
+
+Before creating it, propose:
+- schedule;
+- whether it should be a thread or standalone automation;
+- whether it should use local mode or a worktree;
+- allowed actions;
+- forbidden actions;
+- evidence required in each run;
+- stop conditions;
+- first-run review plan.
+
+Do not create the automation until the proposal is clear.
+```
+
+Why it works: unattended work needs more policy than interactive work.
+
+## 11. Debug a failed Codex run
+
+```text
+Analyze why the previous Codex attempt failed.
+
+Separate possible causes:
+- unclear task scope;
+- missing repository context;
+- wrong environment or shell;
+- sandbox or approval limitation;
+- missing dependency;
+- bad test command;
+- model/tool mistake;
+- prompt instruction conflict.
+
+Return:
+- most likely cause;
+- evidence;
+- smaller retry prompt;
+- what I should change in repo instructions or setup.
+```
+
+Why it works: it prevents users from blaming the model when the real failure is environment or task design.
+
+## 12. Non-code knowledge work using Codex
+
+```text
+Use Codex as a structured work agent for [report, spreadsheet, document, slide deck, inbox, or research task].
+
+Inputs:
+- [files, folders, connected app, or source list].
+
+Rules:
+- preserve source evidence;
+- do not invent facts;
+- identify uncertainty;
+- create a reviewable artifact;
+- do not send, publish, or modify external systems without approval.
+
+Return:
+- artifact created or updated;
+- sources inspected;
+- assumptions;
+- next actions requiring human judgment.
+```
+
+Why it works: Codex desktop can support knowledge work, but the same engineering principles apply: source, boundary, artifact, review.
+
+## Prompt quality checklist
+
+Before sending a Codex prompt, check:
+
+- Is the task small enough to review?
+- Does Codex know which files or systems are in scope?
+- Are forbidden actions explicit?
+- Is there a verification command or evidence requirement?
+- Should Codex plan before editing?
+- Should the task run in a worktree?
+- Is a plugin, skill, MCP server, browser, or computer use actually needed?
+- What should Codex report at the end?
+
+If the prompt lacks a verification path, it is usually not ready for write-enabled work.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Codex desktop for engineering teams"
+		href="/use-cases/openai-codex-desktop-for-engineering-teams/"
+		description="Use these prompts inside a larger operating model for real repositories."
+	/>
+	<LinkCard
+		title="Codex automations playbook"
+		href="/workflows/openai-codex-automations-playbook-for-engineering-teams/"
+		description="Automations need durable prompts with stop conditions and review policy."
+	/>
+	<LinkCard
+		title="Codex skills, plugins, and MCP"
+		href="/agent-systems/openai-codex-skills-plugins-and-mcp-workflow-design/"
+		description="Turn repeated prompts into skills only after the workflow is proven."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex prompting concept documentation](https://developers.openai.com/codex/prompting), [Codex app features](https://developers.openai.com/codex/app/features), [Codex automations documentation](https://developers.openai.com/codex/app/automations), [Codex skills documentation](https://developers.openai.com/codex/skills), and [Codex subagents documentation](https://developers.openai.com/codex/subagents).
+

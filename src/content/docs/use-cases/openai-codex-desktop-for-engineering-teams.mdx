@@ -1,0 +1,218 @@
+---
+title: OpenAI Codex Desktop for Engineering Teams
+description: How engineering teams should use the OpenAI Codex desktop app for repository work, parallel agents, local projects, reviewable diffs, skills, plugins, and automations.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex desktop for engineering teams
+searchIntent: learn
+decisionStage: implementation
+targetRoles:
+  - Engineering managers
+  - Staff engineers
+  - Developer productivity teams
+  - Technical founders
+contentStatus: cornerstone
+pageType: implementation-guide
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to turn Codex desktop from a powerful novelty into a controlled engineering workflow that creates reviewable changes.
+readerTakeaway: You should leave with a practical operating model for starting Codex work, choosing task types, using worktrees, reviewing output, and expanding into skills, plugins, and automations.
+keyQuestions:
+  - What work should engineering teams give to Codex desktop first?
+  - How should Codex threads be scoped so output remains reviewable?
+  - Which controls should exist before Codex handles large or recurring work?
+notFor:
+  - Teams that want agents to merge or deploy without human review
+  - Teams with no tests, no Git discipline, and no owner for reviewing agent output
+updateTriggers:
+  - Major Codex desktop feature releases
+  - Changes to worktree, automation, plugin, or security behavior
+  - New official OpenAI guidance for Codex app workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Desktop for Engineering Teams
+
+OpenAI Codex desktop is best understood as an engineering workbench for supervising agents, not as a faster autocomplete box. The app gives teams one place to run Codex threads across projects, review diffs, use worktrees, invoke skills and plugins, create automations, and keep local work separate from agent experiments. That is a different workflow from chatting with a model in a browser or accepting inline suggestions in an editor.
+
+The practical question is not whether Codex can write code. It can read, edit, and run code. The question is whether the team can give Codex tasks that are scoped enough to review, instrumented enough to verify, and isolated enough that parallel work does not damage the developer's current checkout.
+
+## Quick answer
+
+Start Codex desktop with tasks that already have a clear success test:
+
+| Task type | Good first use | Why it works |
+| --- | --- | --- |
+| Bug fix | Reproduce the failing test, patch the smallest path, rerun the test | The success condition is objective |
+| Refactor | Split a file or remove dead code without changing behavior | The diff can be reviewed structurally |
+| UI adjustment | Match a screenshot, run local preview, capture evidence | Codex can combine code edits with visual checks |
+| Dependency cleanup | Update one package family and run checks | The blast radius is bounded |
+| Codebase exploration | Map a flow, identify owners, propose plan only | Read-only work builds trust before writes |
+| Review support | Summarize PR risk and suggest checks | Human merge authority stays intact |
+
+Avoid starting with "make the app better" or "modernize everything." Those prompts invite broad edits, hidden assumptions, and long diffs that reviewers cannot trust.
+
+## What makes the desktop app different
+
+OpenAI's official Codex app introduction describes the desktop app as a command center for agents. The important operational difference is that the app is built around supervising multiple long-running tasks, not around one inline completion at a time. It supports thread organization, built-in worktrees, reviewable diffs, Git workflows, skills, automations, and a desktop context that can include local files and tools.
+
+That matters because serious engineering work is rarely one prompt. A feature may require exploration, a plan, a first patch, test repair, design review, documentation, and a final PR note. Codex desktop gives those steps a workspace. The team still needs to provide boundaries.
+
+## The operating model
+
+Use Codex desktop in five layers.
+
+| Layer | What the team defines | Codex should do |
+| --- | --- | --- |
+| Task boundary | Repository, files, bug, user story, non-goals | Gather context and propose a narrow plan |
+| Execution boundary | Allowed writes, commands, package changes, network use | Edit inside the approved scope and run checks |
+| Evidence boundary | Tests, screenshots, logs, type checks, lint output | Return proof, not just a summary |
+| Review boundary | Who reviews, what blocks merge, what needs follow-up | Produce a reviewer-friendly diff and notes |
+| Reuse boundary | Which workflows repeat often enough to become skills or automations | Convert repeatable tasks into stable instructions |
+
+The mistake is skipping straight to the reuse layer. Do not create automations or broad skills before the team has learned what a good one-off Codex task looks like.
+
+## Recommended first-week rollout
+
+Day one should be low-risk and evidence-heavy:
+
+1. Add one repository to Codex desktop.
+2. Ask Codex to explain a module or trace a request path without editing files.
+3. Ask Codex to make a small documentation or test-only change.
+4. Review the diff in the app and in Git.
+5. Run the same checks manually or through the project's normal scripts.
+
+Day two can introduce small write-enabled tasks:
+
+1. Choose a real bug with a failing test or reproducible steps.
+2. Ask Codex to propose a plan before editing.
+3. Let it implement the smallest fix.
+4. Require evidence: test command, result, files changed, and follow-up risk.
+5. Do not merge until a human reviewer has read the diff.
+
+Week one can introduce worktrees and parallelism:
+
+1. Put independent tasks into separate Codex worktrees.
+2. Keep large refactors separate from urgent fixes.
+3. Compare alternative implementations before choosing one.
+4. Archive stale worktrees to control disk use and decision debt.
+
+## What to ask Codex for
+
+Good Codex desktop prompts have four parts:
+
+1. the job;
+2. the boundary;
+3. the verification command;
+4. the reporting format.
+
+Example:
+
+```text
+In this repository, fix the failing checkout tax calculation test.
+Stay within src/checkout and the related test files unless you find a direct dependency.
+Before editing, summarize the likely cause and the files you will inspect.
+After editing, run npm test -- checkout and report the exact command, result, files changed, and any residual risk.
+```
+
+That prompt is not long because it is fancy. It is long because it encodes the review contract.
+
+## When to use worktrees
+
+Use a Codex worktree when:
+
+- the task may take more than a few minutes;
+- the agent may touch many files;
+- the task is independent from your current local edits;
+- you want multiple agents to explore different paths;
+- the automation may modify files in the background.
+
+Use local mode when the task is tiny, you are actively supervising it, and the work belongs directly in your current checkout.
+
+Worktrees are not only a convenience. They are a control boundary. They let agents explore without forcing the developer to keep mental track of every local file change.
+
+## When to introduce skills
+
+Introduce a Codex skill when a task repeats and the "right way" depends on team-specific knowledge. Examples:
+
+- how to run the local test suite;
+- how to make a Starlight documentation page;
+- how to update a Cloudflare Worker safely;
+- how to create a PR summary in the team's preferred format;
+- how to run visual QA after frontend changes;
+- how to perform a release-note sweep.
+
+The skill should package instructions, resources, and optional helper scripts. It should not become a dumping ground for every preference. A good skill has one job.
+
+## When to introduce plugins and MCP
+
+Plugins and MCP are useful when Codex needs external context or actions:
+
+- GitHub for issues, PRs, review comments, and repository context;
+- Slack for launch notes, incident channels, or team decisions;
+- Gmail or Google Drive for knowledge work that spans documents and email;
+- Figma for design handoff;
+- browser or computer use for visual verification;
+- custom MCP servers for internal docs, logs, feature flags, or deployment systems.
+
+The rule is to connect only the tool authority needed for the workflow. A broad connector with write access should not be the default for early rollout.
+
+## Common failure modes
+
+| Failure mode | Symptom | Fix |
+| --- | --- | --- |
+| Prompt too broad | Large diff, weak explanation, uncertain tests | Split into exploration, plan, patch, verify |
+| No verification | Summary says "done" but no command result | Require exact evidence in the prompt |
+| Review overload | Agents create more diffs than humans can inspect | Limit concurrent write tasks |
+| Tool sprawl | Plugins are installed before workflows are understood | Add tools only after a use case proves need |
+| Sandbox overreach | Full access becomes the default | Use workspace boundaries and allowlist exceptions |
+| Automation too early | Recurring jobs create noisy findings | Test manually before scheduling |
+
+## A healthy Codex desktop workflow
+
+A strong Codex workflow leaves behind:
+
+- a clear prompt;
+- a narrow plan;
+- a reviewable diff;
+- a test or evidence packet;
+- a summary of files changed;
+- residual risks;
+- follow-up tasks that are separated from the current patch.
+
+If the output lacks those things, the team has not yet earned more automation.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Codex app vs CLI vs IDE vs web"
+		href="/tool-comparisons/openai-codex-app-vs-cli-vs-ide-vs-web/"
+		description="Choose the Codex surface that matches the job instead of forcing every task into the desktop app."
+	/>
+	<LinkCard
+		title="Worktrees and parallel agents"
+		href="/workflows/openai-codex-worktrees-and-parallel-agents-playbook/"
+		description="Use isolated branches and agent threads when the team starts running work in parallel."
+	/>
+	<LinkCard
+		title="Sandboxing and approval policy"
+		href="/agent-systems/openai-codex-sandboxing-approvals-and-network-access-policy/"
+		description="Define what Codex can touch before it starts touching important systems."
+	/>
+	<LinkCard
+		title="Codex prompt playbook"
+		href="/prompt-library/openai-codex-desktop-prompt-playbook/"
+		description="Copy practical prompt patterns for exploration, implementation, review, and automation setup."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex app announcement](https://openai.com/index/introducing-the-codex-app/), [Codex app features documentation](https://developers.openai.com/codex/app/features), [Codex worktrees documentation](https://developers.openai.com/codex/app/worktrees), and [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-chatgpt).
+

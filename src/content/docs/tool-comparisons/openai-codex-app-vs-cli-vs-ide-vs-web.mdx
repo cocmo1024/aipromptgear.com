@@ -1,0 +1,170 @@
+---
+title: OpenAI Codex App vs CLI vs IDE vs Web
+description: Compare the OpenAI Codex desktop app, CLI, IDE extension, and Codex web by workflow fit, local control, cloud delegation, review, worktrees, and team rollout.
+referenceType: tool-comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: Codex app vs CLI vs IDE vs web
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - Engineering managers
+  - Staff engineers
+  - Developer productivity teams
+  - AI platform teams
+contentStatus: cornerstone
+pageType: comparison
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to choose the correct Codex surface for pairing, local editing, cloud delegation, PR work, and multi-agent desktop supervision.
+readerTakeaway: You should leave with a practical selection rule for when to use Codex app, CLI, IDE extension, or Codex web.
+keyQuestions:
+  - When should I use the Codex desktop app instead of the CLI?
+  - When is Codex web better than local Codex?
+  - How should teams mix Codex surfaces without creating fragmented workflows?
+notFor:
+  - Readers looking for a generic AI coding assistant ranking
+updateTriggers:
+  - Changes in Codex app, CLI, IDE, or web capabilities
+  - New Codex pricing, rate limit, or plan availability updates
+  - Major changes in cloud delegation or GitHub integration
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex App vs CLI vs IDE vs Web
+
+OpenAI Codex now exists across several surfaces: the desktop app, CLI, IDE extension, and Codex web. They are connected by the same broader Codex product direction, but they do not optimize for the same kind of work. Choosing the wrong surface is one of the fastest ways to turn a capable coding agent into a frustrating workflow.
+
+The short rule: use the desktop app to supervise multiple agent threads, the CLI for terminal-native local work, the IDE extension for editor-centered pairing, and Codex web when delegation to a cloud environment is the point.
+
+## Comparison table
+
+| Surface | Best fit | Weak fit | Main operating boundary |
+| --- | --- | --- | --- |
+| Codex desktop app | Multi-agent supervision, worktrees, local projects, reviewable diffs, automations, plugins, skills | Ultra-fast inline edits where the editor already has the context | Local machine plus app sandbox and project settings |
+| Codex CLI | Terminal-native development, scripting, local repo edits, direct command loops | Visual review or complex multi-thread project supervision | Current shell, local filesystem, CLI sandbox and approvals |
+| Codex IDE extension | Pairing inside VS Code, Cursor, or Windsurf, local edits while staying in the editor | Coordinating many independent agent runs | Editor workspace and IDE affordances |
+| Codex web | Cloud delegation, GitHub-connected tasks, background PR work | Tasks that require private local state unavailable in cloud | Cloud sandbox and connected repository/environment setup |
+
+This is not a maturity ladder. The desktop app is not always "better" than the CLI. The right surface depends on where the task's context, verification, and review should live.
+
+## Use Codex desktop when supervision is the job
+
+The desktop app is strongest when the developer or engineering manager is coordinating multiple pieces of work. OpenAI describes it as a command center for agents, and that framing is accurate. It supports the pattern where several tasks are active at once, each with its own thread, worktree, and review context.
+
+Use the app when:
+
+- you want to run multiple agents on separate tasks;
+- you need built-in worktree isolation;
+- you want to review diffs inside the Codex thread;
+- you plan to create or manage automations;
+- you want a dedicated UI for skills and plugins;
+- you need to switch across projects without constantly changing terminals;
+- you want to keep an agent conversation tied to a project history.
+
+The app is weaker when the task is a tiny edit inside a file you are already reading in the editor. In that case, the IDE extension may be less disruptive.
+
+## Use Codex CLI when the terminal is the source of truth
+
+The CLI is best when the workflow is already command-driven. It is a natural fit for:
+
+- running tests and linters;
+- editing a small set of files;
+- exploring logs and command output;
+- working in scripts and infrastructure repos;
+- using Codex from a server or devbox;
+- running non-interactive or automation-like tasks.
+
+The CLI's advantage is directness. The developer can stay near Git, package managers, shells, and project scripts. The downside is that complex multi-agent coordination can become harder to track if every thread is just another terminal session.
+
+## Use the IDE extension when code locality matters
+
+The IDE extension is best when the developer is editing, reading, and navigating code in the editor. It fits:
+
+- small implementation changes;
+- refactors that benefit from editor navigation;
+- local context while browsing definitions;
+- explaining unfamiliar code while the developer is inside the file;
+- moving from model suggestion to manual edit quickly.
+
+The IDE extension is not always the best place for long-running background work. If the task needs a separate worktree, scheduled follow-up, or several agents, the desktop app becomes the more natural control plane.
+
+## Use Codex web when delegation matters more than local context
+
+Codex web is the cloud-delegation lane. It is valuable when a task can be run in a configured cloud environment connected to a GitHub repository. It fits:
+
+- background implementation tasks;
+- PR creation;
+- repository questions that do not need private local state;
+- issue or PR delegation from GitHub;
+- tasks that should not occupy the developer's local machine.
+
+The tradeoff is environment fidelity. If the task depends on a private local database, a local app window, a device, or files that only exist on your computer, the desktop app, CLI, or IDE may be healthier.
+
+## How teams should mix surfaces
+
+Healthy teams define a surface rule:
+
+| Work class | Preferred surface | Review rule |
+| --- | --- | --- |
+| Quick local code edits | IDE extension or CLI | Developer reviews diff before commit |
+| Multi-step feature or refactor | Desktop app with worktree | Human review plus tests before merge |
+| Cloud-ready issue implementation | Codex web | PR review through normal repo process |
+| Recurring triage or PR follow-up | Desktop automation or cloud workflow | First runs manually reviewed |
+| Visual QA or app flow testing | Desktop app with browser or computer use | Evidence includes screenshots or reproduction notes |
+| Codebase explanation | Any local surface | No write access needed |
+
+The goal is not to standardize on one surface. It is to prevent task routing from being random.
+
+## Decision checklist
+
+Ask these questions before choosing:
+
+1. Does the task need local-only files, apps, or credentials?
+2. Does it need a separate worktree?
+3. Will it run long enough that background supervision matters?
+4. Does it need visual inspection?
+5. Is the expected output a PR, a local diff, a report, or an answer?
+6. Will several agents work in parallel?
+7. Which surface makes the review easiest?
+
+If the answer is "several agents, local project, reviewable diff," use Codex desktop. If the answer is "one terminal-native task," use CLI. If the answer is "I am already editing the code," use IDE. If the answer is "delegate this repository task in the cloud," use Codex web.
+
+## Common wrong choices
+
+| Wrong choice | Why it fails | Better choice |
+| --- | --- | --- |
+| Use web for a local-only bug | Cloud sandbox cannot reproduce private local state | Desktop app, CLI, or IDE |
+| Use CLI for five parallel tasks | Harder to track context and review each run | Desktop app with worktrees |
+| Use desktop app for a one-line edit | Adds workflow overhead | IDE extension |
+| Use IDE for scheduled follow-up | Editor is not an automation control plane | Codex automations |
+| Use any surface with vague scope | The model is not the problem; the task is | Write a narrower task contract |
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="OpenAI Codex desktop for engineering teams"
+		href="/use-cases/openai-codex-desktop-for-engineering-teams/"
+		description="Start here for the broader operating model before choosing a surface."
+	/>
+	<LinkCard
+		title="Worktrees and parallel agents"
+		href="/workflows/openai-codex-worktrees-and-parallel-agents-playbook/"
+		description="Use this when the desktop app is becoming the multi-agent control plane."
+	/>
+	<LinkCard
+		title="Windows setup"
+		href="/tooling/openai-codex-windows-powershell-wsl-and-local-environment-setup/"
+		description="Use this when surface choice is affected by PowerShell, WSL, sandboxing, or local environment scripts."
+	/>
+</div>
+
+## Source notes
+
+This comparison is grounded in OpenAI's [Codex app docs](https://developers.openai.com/codex/app/features), [Codex CLI docs](https://developers.openai.com/codex/cli), [Codex IDE docs](https://developers.openai.com/codex/ide), [Codex web docs](https://developers.openai.com/codex/cloud), and [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-chatgpt).
+

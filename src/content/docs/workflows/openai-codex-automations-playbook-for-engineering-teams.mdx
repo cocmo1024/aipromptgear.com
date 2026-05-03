@@ -1,0 +1,210 @@
+---
+title: OpenAI Codex Automations Playbook for Engineering Teams
+description: How to design Codex automations for recurring engineering work, PR follow-up, issue triage, CI monitoring, content updates, and safe unattended runs.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Codex automations
+searchIntent: deploy
+decisionStage: operations
+targetRoles:
+  - Engineering managers
+  - Developer productivity teams
+  - Release managers
+  - AI operations teams
+contentStatus: cornerstone
+pageType: playbook
+lifecycle: evergreen
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+refreshPriority: high
+problemSolved: How to schedule Codex work safely without creating noisy, risky, or unreviewed agent activity.
+readerTakeaway: You should leave with a practical model for deciding which Codex tasks deserve automation, how to write durable automation prompts, and how to review early runs.
+keyQuestions:
+  - What should teams automate with Codex?
+  - When should a Codex automation run in a thread, project, or worktree?
+  - What permissions and review rules should apply to unattended runs?
+notFor:
+  - Teams that have not manually tested the workflow they want to automate
+  - Workflows that can cause production side effects without approval
+updateTriggers:
+  - Changes in Codex automation types
+  - Changes in Codex sandbox or approval behavior for unattended runs
+  - New plugin and skill capabilities relevant to scheduled workflows
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# OpenAI Codex Automations Playbook for Engineering Teams
+
+Codex automations are powerful because they let Codex wake up and run repeatable work without a fresh manual prompt every time. That makes them useful for PR follow-up, issue triage, content maintenance, release checks, and long-running review loops. It also makes them dangerous if the team automates vague work before it has a stable workflow.
+
+The rule is simple: do not automate a Codex task until you can run it manually and recognize a good result.
+
+## Quick answer
+
+Good Codex automations are narrow, evidence-driven, and reviewable. They should answer:
+
+- what to inspect;
+- what action is allowed;
+- what action is forbidden;
+- what evidence to report;
+- when to stop;
+- when to ask a human;
+- where changes should be made.
+
+If the prompt only says "keep this project updated" or "watch for problems," it is not ready.
+
+## Strong automation candidates
+
+| Automation | Why it fits | Required guardrail |
+| --- | --- | --- |
+| PR review follow-up | Repeatedly checks for new review comments | Do not force-push or merge |
+| CI failure triage | Converts logs into likely causes and patch suggestions | Do not change unrelated files |
+| Issue labeling | Reads issue content and proposes labels or priority | Human confirms first batches |
+| Dependency watch | Checks a narrow package family and opens a bounded diff | Run tests and summarize risk |
+| Documentation freshness | Finds stale docs after API or config changes | Link changes to source evidence |
+| Content update queue | Adds new pages from a controlled editorial brief | Follow site quality policy |
+| Broken link scan | Runs a tool and proposes fixes | Avoid changing target meaning |
+| Release note drafting | Summarizes merged changes | Require source PR links |
+
+Weak candidates include "improve code quality weekly" and "make the site better every day." Those are not automations. They are unmanaged agent labor.
+
+## Thread automation vs standalone automation
+
+Use a thread automation when context should accumulate:
+
+- waiting for a deployment to finish;
+- continuing a research or review loop;
+- following the same PR until it is ready;
+- checking a long-running command or external status repeatedly.
+
+Use standalone or project automations when each run should be independent:
+
+- weekly dependency sweep;
+- daily issue triage;
+- recurring docs freshness check;
+- scheduled content update based on a fixed policy.
+
+The official Codex automation docs describe thread automations as recurring wake-ups attached to a conversation. That is useful only when the prior context remains valuable. If each run should start clean, do not attach it to a growing thread.
+
+## Prompt template for safe automation
+
+```text
+Every weekday at 09:00, inspect this repository for new failing CI signals
+related to the main branch.
+
+Allowed:
+- read GitHub checks and recent logs;
+- summarize likely cause;
+- create a small patch only if the fix is limited to test metadata,
+  obvious configuration drift, or a single broken assertion;
+- run the relevant test command if available.
+
+Forbidden:
+- do not merge;
+- do not change production behavior without asking;
+- do not update unrelated dependencies;
+- do not modify secrets or deployment settings.
+
+Report:
+- whether there was anything actionable;
+- source links or command output reviewed;
+- files changed;
+- test command and result;
+- whether human review is required.
+
+Stop condition:
+- if the same failure appears three runs in a row and no safe patch is available,
+  stop patching and ask for direction.
+```
+
+This is longer than a reminder prompt because unattended runs need policy embedded in the prompt.
+
+## Permissions and sandboxing
+
+Automations use default sandbox settings, so the permission model matters. If the sandbox is read-only, modification attempts fail. If workspace write is enabled, the automation can write in the project boundary. If full access is enabled, the risk is higher because unattended work may reach outside the project or use the network depending on configuration.
+
+For most engineering teams, the healthy default is:
+
+- workspace-write sandbox for repository maintenance;
+- narrow allowlists for commands that need elevated permissions;
+- explicit disallow rules for deploy, secret, and destructive commands;
+- human review for any code behavior change;
+- worktree isolation for recurring write-enabled tasks.
+
+Do not use full access as a convenience setting for automations unless the workflow has a tested reason and an owner.
+
+## Skills make automations maintainable
+
+Codex automations become much stronger when the repeated workflow is packaged as a skill. The skill defines:
+
+- the workflow steps;
+- required inputs;
+- verification commands;
+- output format;
+- project-specific rules;
+- helper scripts if deterministic behavior is needed.
+
+The automation then calls the skill instead of restating all instructions in every schedule. This makes it easier to update the workflow and easier for a team to share it across projects.
+
+Example:
+
+```text
+Every Monday, run the $release-notes-sweep skill for this repository.
+If the skill finds missing release notes, draft a patch in a worktree and
+report the changed files, source PRs, and any uncertainty.
+```
+
+## First-run review process
+
+Review the first three to five automation runs manually. Do not judge only whether the output is helpful. Judge whether the automation respected boundaries.
+
+Check:
+
+- Did it inspect the right sources?
+- Did it avoid forbidden actions?
+- Did it produce evidence?
+- Was the diff small enough to review?
+- Did it stop when it lacked authority?
+- Did it create too much noise?
+- Did it repeat stale context?
+
+Only after that should the team reduce supervision.
+
+## Automation failure modes
+
+| Failure mode | Cause | Fix |
+| --- | --- | --- |
+| Noisy inbox | Trigger is too broad | Narrow schedule, source, and report threshold |
+| Risky diffs | Prompt lacks forbidden actions | Add explicit side-effect boundaries |
+| Repeated stale work | Thread context accumulates old assumptions | Use standalone runs or stop conditions |
+| Silent failures | Automation cannot use needed tools under sandbox | Adjust sandbox or make the task read-only |
+| Unreviewed changes | No owner for runs | Assign triage owner and review cadence |
+| Tool sprawl | Automation uses plugins opportunistically | Specify approved plugins and data sources |
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Skills, plugins, and MCP workflow design"
+		href="/agent-systems/openai-codex-skills-plugins-and-mcp-workflow-design/"
+		description="Automations should usually call stable skills and approved plugins instead of improvising every run."
+	/>
+	<LinkCard
+		title="Worktrees and parallel agents"
+		href="/workflows/openai-codex-worktrees-and-parallel-agents-playbook/"
+		description="Use worktrees when scheduled runs may produce file changes."
+	/>
+	<LinkCard
+		title="Sandboxing and approvals"
+		href="/agent-systems/openai-codex-sandboxing-approvals-and-network-access-policy/"
+		description="Unattended runs require stronger permission thinking than interactive chat."
+	/>
+</div>
+
+## Source notes
+
+This page is based on OpenAI's [Codex automations documentation](https://developers.openai.com/codex/app/automations), [Codex worktrees documentation](https://developers.openai.com/codex/app/worktrees), [Codex skills documentation](https://developers.openai.com/codex/skills), and [Codex approvals and security documentation](https://developers.openai.com/codex/agent-approvals-security).
+
