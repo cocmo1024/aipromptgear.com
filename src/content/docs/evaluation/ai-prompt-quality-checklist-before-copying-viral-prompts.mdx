@@ -1,0 +1,358 @@
+---
+title: AI Prompt Quality Checklist Before Copying Viral Prompts
+description: A practical checklist for evaluating viral AI prompts before reusing them in image, video, coding, research, support, or production workflows.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+contentCluster: PromptOps
+canonicalCluster: EvalOps
+pageType: playbook
+lifecycle: evergreen
+refreshPriority: high
+problemSolved: Helps readers avoid copying viral prompts that look impressive but fail under real tasks, source constraints, brand needs, or production review.
+readerTakeaway: You should leave with a repeatable quality checklist for deciding which prompts deserve reuse, adaptation, testing, or rejection.
+primaryKeyword: AI prompt quality checklist
+searchIntent: learn
+decisionStage: problem-aware
+targetRoles:
+  - AI creators
+  - Prompt engineers
+  - Content operators
+  - Product teams
+  - Marketing teams
+keyQuestions:
+  - How do you evaluate a viral AI prompt before using it?
+  - What makes a copied prompt risky?
+  - How should teams adapt prompts without blindly copying them?
+notFor:
+  - One-off entertainment prompts where accuracy, ownership, and reuse do not matter
+  - Teams that have no review or output acceptance standard
+  - Users looking for a single magic prompt with no testing
+updateTriggers:
+  - New prompt radar patterns that create repeatable failures
+  - New model capabilities that change prompt reliability
+  - New copyright, brand, or platform rules affecting prompt reuse
+---
+
+# AI Prompt Quality Checklist Before Copying Viral Prompts
+
+Viral prompts are useful signals. They show what people are trying, what models can now handle, and which formats are spreading across creator communities.
+
+They are also risky shortcuts.
+
+A prompt that produces a great screenshot can still be weak for repeatable work. It may depend on hidden reference images, cherry-picked outputs, model-specific behavior, unsafe brand assumptions, vague style language, or a lucky generation. It may work for a social post and fail in a client workflow, production system, or repeatable content pipeline.
+
+The right move is not to ignore viral prompts. The right move is to evaluate them before copying.
+
+## Quick answer
+
+Before using a viral prompt, check seven things:
+
+1. What exact task does it solve?
+2. Which inputs are required but not shown?
+3. Which model and settings were likely used?
+4. Which output qualities are repeatable versus lucky?
+5. Which legal, brand, privacy, or safety risks are hidden?
+6. Which variables should be exposed before reuse?
+7. What test set proves the prompt works beyond one example?
+
+If the prompt cannot survive that checklist, treat it as inspiration, not a reusable template.
+
+## Why viral prompts fool people
+
+Most prompt posts show the best output, not the full run.
+
+Missing details often include:
+
+- number of attempts;
+- rejected outputs;
+- reference images;
+- model version;
+- aspect ratio;
+- seed or hidden settings;
+- post-processing;
+- safety or policy filters;
+- source material;
+- license or attribution;
+- whether the prompt was copied from someone else.
+
+That does not make the prompt useless. It means the visible prompt is only part of the system.
+
+For image and video prompts, the hidden system may include reference strength, cropping, model-specific defaults, and selection bias. For coding prompts, it may include repository context, tests, branch state, and tool permissions. For research prompts, it may include source access, search quality, and citation review.
+
+Copying only the text means copying only the surface.
+
+## Checklist 1: define the job
+
+Ask:
+
+- Is this prompt for exploration, production, evaluation, or final output?
+- What would success look like after five runs, not one?
+- Who will use the output?
+- What would make the output unacceptable?
+- Is this a creative prompt, an operational prompt, or a decision-support prompt?
+
+A prompt cannot be high quality in the abstract. It is high quality for a job.
+
+Example:
+
+> "Make this image look cinematic" is not a job.
+
+Better:
+
+> "Create a realistic ecommerce hero image for a glass perfume bottle where bottle geometry, label placement, reflections, and premium lighting must remain consistent across three campaign variants."
+
+The second version gives you something to evaluate.
+
+## Checklist 2: identify hidden inputs
+
+Many viral prompts depend on invisible context.
+
+Look for:
+
+- reference image;
+- source text;
+- target audience;
+- style examples;
+- brand constraints;
+- allowed and forbidden transformations;
+- desired output format;
+- model capabilities;
+- review criteria.
+
+If the prompt says "make it like this" but the "this" is not included, the prompt is not portable. It is a workflow fragment.
+
+For reusable prompts, replace hidden assumptions with variables:
+
+```text
+Reference image: {{reference_image}}
+Primary transformation: {{transformation_goal}}
+Elements to preserve: {{must_preserve}}
+Elements to change: {{may_change}}
+Output format: {{format_and_aspect_ratio}}
+Quality bar: {{acceptance_criteria}}
+```
+
+Variables make the prompt reusable and reviewable.
+
+## Checklist 3: separate style from constraints
+
+Viral prompts often stack style words:
+
+- cinematic;
+- realistic;
+- premium;
+- viral;
+- award-winning;
+- beautiful;
+- hyper-detailed;
+- professional.
+
+Those words may influence the output, but they do not control the job.
+
+A stronger prompt separates:
+
+- subject;
+- structure;
+- constraints;
+- style;
+- acceptance checks;
+- failure boundaries.
+
+For example, an image prompt should not only say "luxury perfume commercial." It should define bottle consistency, reflection control, label behavior, camera movement, allowed props, and what not to invent.
+
+For a research prompt, style is even less important. Source quality, evidence tables, uncertainty handling, and citation boundaries matter more than polished prose.
+
+## Checklist 4: check repeatability
+
+A prompt that works once may not be reliable.
+
+Run a simple repeatability test:
+
+1. Use the same prompt three to five times.
+2. Change only one variable at a time.
+3. Test a normal case and a hard case.
+4. Record failure types.
+5. Decide whether the prompt needs stronger constraints.
+
+For image prompts, test:
+
+- different subjects;
+- different aspect ratios;
+- reference-heavy versus no-reference cases;
+- text-heavy outputs;
+- product consistency;
+- hands, faces, packaging, and labels.
+
+For work prompts, test:
+
+- incomplete input;
+- contradictory input;
+- policy-sensitive input;
+- high-risk actions;
+- required citations;
+- required structure.
+
+If quality collapses when the example changes, the prompt is not a template yet.
+
+## Checklist 5: find the risk boundary
+
+The risk boundary depends on use case.
+
+| Prompt use | Hidden risk |
+| --- | --- |
+| Image prompt | IP, likeness, brand marks, fake text, unsafe transformation, low repeatability |
+| Video prompt | continuity, anatomy, product consistency, brand misuse, misleading realism |
+| Coding prompt | destructive edits, missing tests, dependency changes, secret exposure |
+| Research prompt | weak sources, hallucinated citations, false certainty, missing counterevidence |
+| Support prompt | invented policy, wrong escalation, customer-specific claims |
+| Agent prompt | unauthorized tool use, side effects, approval bypass, audit gaps |
+
+If the prompt can affect money, customer trust, production systems, legal claims, or brand reputation, it needs an explicit stop condition.
+
+Example:
+
+```text
+If the task requires customer-specific account action, legal interpretation, policy exception, refund commitment, destructive code change, credential access, or unsupported factual claim, stop and ask for human review.
+```
+
+## Checklist 6: make attribution and reuse clean
+
+Do not confuse inspiration with ownership.
+
+For public prompt reuse:
+
+- cite the source if it directly inspired the adapted prompt;
+- do not copy creator text verbatim unless the license allows it;
+- rewrite the prompt around your own variables and acceptance criteria;
+- avoid using names, likenesses, trademarks, or living artists where that creates avoidable risk;
+- document what changed.
+
+For internal company use:
+
+- keep a source note;
+- record model and settings;
+- store approved prompt version;
+- separate draft prompts from production prompts;
+- require review before customer-facing deployment.
+
+This is especially important for a prompt library. A prompt without provenance becomes hard to audit later.
+
+## Checklist 7: create a test pack
+
+Every reusable prompt should have a small test pack.
+
+Minimum test pack:
+
+- one easy case;
+- one normal production case;
+- one edge case;
+- one incomplete-input case;
+- one case that should trigger refusal or escalation;
+- one case that tests format compliance.
+
+For creative prompts, use visual acceptance criteria:
+
+- subject preservation;
+- composition;
+- text accuracy;
+- material realism;
+- product consistency;
+- absence of major artifacts;
+- brand safety.
+
+For operational prompts, use behavioral acceptance criteria:
+
+- groundedness;
+- correct structure;
+- no unsupported claims;
+- correct escalation;
+- correct tool boundary;
+- review-ready output;
+- cost and latency within budget if relevant.
+
+## How to rewrite a viral prompt into a durable template
+
+Use this pattern:
+
+```text
+Role:
+You are {{role}}.
+
+Task:
+{{specific_task}}
+
+Inputs:
+{{input_1}}
+{{input_2}}
+{{input_3}}
+
+Constraints:
+- {{constraint_1}}
+- {{constraint_2}}
+- {{constraint_3}}
+
+Output:
+Return {{output_format}}.
+
+Quality bar:
+- {{acceptance_check_1}}
+- {{acceptance_check_2}}
+- {{acceptance_check_3}}
+
+Stop conditions:
+- {{case_where_model_should_not_continue}}
+```
+
+This structure turns a catchy prompt into a controllable prompt.
+
+## Prompt quality scorecard
+
+Use this scorecard before adding a prompt to a library, product workflow, or team template.
+
+| Criterion | Low quality | High quality |
+| --- | --- | --- |
+| Task clarity | Vague style or outcome | Specific task and user |
+| Inputs | Hidden context | Named variables |
+| Constraints | Style adjectives only | Explicit boundaries |
+| Repeatability | One screenshot | Tested across cases |
+| Risk handling | No stop conditions | Review and refusal rules |
+| Output format | Ambiguous | Structured and usable |
+| Attribution | Unknown source | Source and adaptation note |
+| Evaluation | None | Test pack and failure modes |
+
+If a prompt scores poorly, do not discard it immediately. Rewrite it.
+
+## When to keep, adapt, or reject
+
+Keep the prompt when:
+
+- the task is clear;
+- outputs repeat across cases;
+- risks are low;
+- variables are obvious;
+- source and reuse boundary are clean.
+
+Adapt the prompt when:
+
+- the idea is strong but hidden inputs are missing;
+- style works but constraints are weak;
+- the example is impressive but not repeatable yet;
+- the prompt needs safer output rules.
+
+Reject the prompt when:
+
+- it depends on unverifiable claims;
+- it encourages unsafe actions;
+- it copies protected style or identity in a way your use case should avoid;
+- it cannot be tested;
+- it looks good only because the example is cherry-picked.
+
+## Related next steps
+
+- Use the [Daily AI Prompt Radar](/prompts/) for copyable prompt patterns with source notes and failure modes.
+- Use [Prompt comparison tool for production prompt changes](/tooling/prompt-comparison-tool-for-production-prompt-changes/) when a prompt is ready for release review.
+- Use [Regression case generator](/prompt-library/#regression-case-generator) when a reusable prompt needs a first test pack.
+- Use [What should an agent eval scorecard actually measure?](/evaluation/what-should-an-agent-eval-scorecard-actually-measure/) when prompt behavior affects production outcomes.
