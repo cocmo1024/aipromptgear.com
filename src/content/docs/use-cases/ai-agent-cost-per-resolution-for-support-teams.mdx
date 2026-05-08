@@ -1,0 +1,228 @@
+---
+title: AI Agent Cost Per Resolution for Support Teams
+description: How support, product, and finance teams should calculate AI agent cost per resolved ticket, including model, tool, search, QA, escalation, and failure cost.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: cornerstone
+problemSolved: Helps teams judge whether support AI is economically useful by measuring cost per accepted resolution instead of only deflection rate or token spend.
+readerTakeaway: You should leave with a practical cost-per-resolution model that includes agent runs, tool calls, search, human QA, escalations, retries, and unresolved cases.
+primaryKeyword: AI agent cost per resolution
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Support operations leaders
+  - AI product managers
+  - Finance teams
+  - CX leaders
+  - Platform engineers
+keyQuestions:
+  - How do you calculate AI support agent cost per resolution?
+  - What costs are hidden behind AI deflection rate?
+  - How should teams compare AI agents, help center search, vendor AI add-ons, and human support economics?
+notFor:
+  - Personal chatbots without customer support volume, escalation, QA, or outcome ownership
+  - Teams that cannot identify accepted resolutions, escalations, reopens, and customer-visible failures
+  - Simple FAQ search projects where there is no agent workflow or production cost model
+updateTriggers:
+  - New pricing models for support AI vendors, model APIs, search, retrieval, or agent tooling
+  - New examples of support AI incidents, hallucination reviews, or escalation-cost changes
+  - Changes in customer support metrics around deflection, containment, CSAT, QA, and resolution acceptance
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+# AI Agent Cost Per Resolution for Support Teams
+
+Support AI usually gets sold through a simple promise: reduce ticket volume, deflect repetitive questions, and let human agents focus on complex work. That promise may be real, but the headline metric can be misleading. A bot that answers cheaply but creates reopens, escalations, refunds, angry customers, QA work, and policy risk is not cheap.
+
+The useful economic metric is cost per accepted resolution.
+
+That means the cost of the AI work that actually solved the customer problem, including the cost of failures that did not solve it.
+
+## Quick answer
+
+AI support agent cost per resolution should include model calls, tool calls, search or retrieval, workflow orchestration, vendor fees, human QA, escalation handling, reopens, refunds, and failed runs. The denominator should be accepted resolutions, not total conversations or attempted answers. A support AI system is economically healthy only when cost per accepted resolution falls without damaging CSAT, policy compliance, or long-term support trust.
+
+## Why deflection rate is not enough
+
+Deflection rate can hide important problems:
+
+- the customer gave up but was not helped;
+- the answer looked confident but was wrong;
+- the ticket was reopened later;
+- a human agent had to clean up the conversation;
+- the AI avoided escalation when escalation was required;
+- the AI resolved simple tickets but made complex tickets harder;
+- QA, prompt maintenance, and knowledge-base cleanup costs moved elsewhere.
+
+Deflection is useful only when paired with outcome quality.
+
+Related page: <LinkCard title="Fin Outcomes Economics for Customer Support Teams" href="/use-cases/fin-outcomes-economics-for-customer-support-teams/" />
+
+## The cost-per-resolution formula
+
+Start with this model:
+
+```text
+AI cost per accepted resolution =
+  (AI system cost + tool cost + search/retrieval cost + QA cost + escalation cleanup cost + failed run cost)
+  / accepted AI-assisted resolutions
+```
+
+Do not divide by all AI conversations. Divide by resolutions that meet your acceptance definition.
+
+An accepted resolution may require:
+
+- customer confirms the issue is solved;
+- no reopen within a defined window;
+- no policy violation;
+- no refund or escalation caused by AI error;
+- QA sample passes;
+- human agent does not rewrite the answer substantially;
+- the answer cites or uses an approved knowledge source where required.
+
+The exact definition depends on the support environment. The important part is that "answered" is not the same as "resolved."
+
+## Cost categories to include
+
+| Cost category | What belongs here | Common mistake |
+| --- | --- | --- |
+| Model cost | Input, output, reasoning, image, voice, or premium model calls | Counting only the first response |
+| Tool cost | CRM, order lookup, billing, refund, account, or diagnostic tool calls | Ignoring retries and failed calls |
+| Search and retrieval | Help center search, file search, vector database, web search | Treating retrieval as free |
+| Orchestration | Agent platform, workflow engine, hosting, observability | Hiding platform cost in engineering budget |
+| Human QA | Sample reviews, policy checks, escalation audits | Calling review "training" instead of cost |
+| Escalation cleanup | Human time to repair bad or incomplete AI attempts | Counting escalated tickets as neutral |
+| Reopen cost | Tickets that return after a weak answer | Measuring only same-session containment |
+| Knowledge maintenance | Article cleanup, prompt updates, policy sync | Assuming AI can fix bad knowledge |
+| Incident cost | Customer harm, refunds, credits, policy corrections | Ignoring tail risk |
+
+The goal is not to make AI look expensive. The goal is to know where the real economics are.
+
+## Segment by ticket class
+
+Average cost per resolution is too broad. Segment by job type.
+
+| Ticket class | AI fit | What to measure |
+| --- | --- | --- |
+| Password, access, account basics | Usually strong if identity flow is safe | Completion rate, fallback rate, security edge cases |
+| Billing explanation | Strong only with reliable account data | Tool accuracy, policy compliance, escalation threshold |
+| Refund or cancellation | Risky if policy is nuanced | Approval boundary, refund error rate, CSAT |
+| Technical troubleshooting | Depends on diagnostic depth | Steps completed, reopen rate, tool success |
+| Product how-to | Strong if docs are current | Citation quality, answer freshness |
+| Enterprise contract issue | Usually needs human handoff | Correct routing, context capture |
+| Angry customer escalation | AI can triage, but not always resolve | Sentiment detection, escalation timing |
+
+Some categories should not be fully automated even if the model can produce plausible answers.
+
+Related page: <LinkCard title="Intercom Fin vs Zendesk AI vs Custom Support Agents" href="/tool-comparisons/intercom-fin-vs-zendesk-ai-vs-custom-support-agents/" />
+
+## Include failure cost
+
+Failed AI runs are part of the cost base.
+
+Failure examples:
+
+- agent cannot find the right account;
+- tool call times out;
+- retrieval returns outdated policy;
+- customer asks a question outside allowed scope;
+- agent loops through the same clarifying question;
+- answer triggers human correction;
+- customer reopens the issue;
+- QA rejects the conversation;
+- the agent escalates without useful context.
+
+If the cost model excludes failed runs, it will overstate the value of automation. A workflow that solves 60 percent of cases cheaply but makes the remaining 40 percent more expensive may not be a good rollout candidate.
+
+## Human escalation is not failure by default
+
+Escalation can be healthy if it happens early, with context, and for the right reason.
+
+Track:
+
+- escalation rate by ticket type;
+- whether escalation happened before customer frustration;
+- whether the AI collected useful context;
+- how much human handle time was saved;
+- whether the human agent trusted the summary;
+- whether the customer had to repeat information;
+- whether escalation prevented policy risk.
+
+The best support AI systems often reduce human work without pretending every problem should be solved automatically.
+
+Related page: <LinkCard title="Human Review and Approval Workflows for Agentic Support" href="/workflows/human-review-and-approval-workflows-for-agentic-support/" />
+
+## Build a monthly scorecard
+
+Use a scorecard that finance, support, and product can all understand.
+
+| Metric | Why it matters |
+| --- | --- |
+| Accepted AI resolutions | Real denominator |
+| Attempted AI conversations | Shows volume exposure |
+| Cost per accepted resolution | Main economic metric |
+| Reopen rate | Detects weak answers |
+| Escalation cleanup time | Shows hidden human cost |
+| QA pass rate | Protects quality |
+| Tool-call failure rate | Reveals integration problems |
+| Knowledge miss rate | Shows content debt |
+| Customer satisfaction delta | Prevents fake savings |
+| Human handle-time saved | Converts AI output into operations value |
+
+Do not let a single metric dominate. A low cost per resolution with low trust is not a win.
+
+## Vendor AI versus custom agent economics
+
+The comparison is not simply subscription price versus API cost.
+
+| Option | Economic advantage | Economic risk |
+| --- | --- | --- |
+| Vendor AI add-on | Fast integration, built-in support workflows, lower engineering burden | Pricing may scale with resolved conversations or seats |
+| Custom agent | Control over workflow, tools, policy, evals, and routing | Engineering, observability, QA, and maintenance cost are real |
+| Help center search | Low risk for informational queries | May not complete workflows or reduce human handle time enough |
+| Human-only support | High judgment and trust | Cost scales linearly with volume |
+
+The right choice depends on ticket mix, policy risk, available engineering capacity, and whether the team can measure accepted resolution reliably.
+
+Related page: <LinkCard title="AI Agent Budget Guardrails and Runaway Spend Prevention" href="/models-and-apis/ai-agent-budget-guardrails-and-runaway-spend-prevention/" />
+
+## Implementation checklist
+
+Before expanding support AI:
+
+1. Define accepted resolution by ticket class.
+2. Tag AI-attempted, AI-resolved, AI-assisted, and human-resolved cases.
+3. Capture model, tool, search, and workflow cost per conversation.
+4. Track reopens and escalations after the AI session.
+5. Sample conversations for QA and policy compliance.
+6. Separate simple deflection from true workflow completion.
+7. Measure human cleanup time.
+8. Compare cost per accepted resolution by category.
+9. Set budget guardrails for loops, retries, and premium model routes.
+10. Review knowledge gaps monthly.
+
+If the team cannot do these steps, it is not ready to claim AI support economics precisely.
+
+## What good looks like
+
+A healthy support AI program usually shows:
+
+- cost per accepted resolution is stable or falling;
+- QA pass rate is acceptable for the ticket class;
+- reopens do not rise;
+- human escalation includes usable context;
+- high-risk issues are escalated early;
+- tool failures are visible and improving;
+- knowledge gaps feed the documentation backlog;
+- support leaders and finance agree on the measurement model.
+
+The objective is not maximum automation. The objective is cheaper, faster, safer resolution for the right cases.
+
+Next-step references:
+
+- <LinkCard title="QA Scorecards for Custom Support Agents" href="/evaluation/qa-scorecards-for-custom-support-agents/" />
+- <LinkCard title="Knowledge Base Search vs Agent Answering for Support" href="/tool-comparisons/knowledge-base-search-vs-agent-answering-for-support/" />
+- <LinkCard title="What Is a Good SLA for an AI Agent?" href="/workflows/what-is-a-good-sla-for-an-ai-agent/" />
