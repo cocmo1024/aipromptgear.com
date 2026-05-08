@@ -58,11 +58,27 @@ function wordCount(text) {
 
 const blockers = [];
 const warnings = [];
-const governanceGaps = {
-	pageType: 0,
-	contentCluster: 0,
-	canonicalCluster: 0,
-};
+const requiredMetadata = [
+	'referenceType',
+	'adProfile',
+	'commercialIntent',
+	'reviewCadence',
+	'primaryKeyword',
+	'searchIntent',
+	'decisionStage',
+	'targetRoles',
+	'contentStatus',
+	'contentCluster',
+	'canonicalCluster',
+	'pageType',
+	'lifecycle',
+	'refreshPriority',
+	'authorKey',
+	'editorKey',
+	'lastReviewed',
+	'problemSolved',
+	'readerTakeaway',
+];
 
 for (const file of walk(docsDir)) {
 	const rel = path.relative(root, file).replaceAll(path.sep, '/');
@@ -85,6 +101,11 @@ for (const file of walk(docsDir)) {
 
 	if (!title) blockers.push(`${rel}: missing title`);
 	if (!description) blockers.push(`${rel}: missing description`);
+	for (const name of requiredMetadata) {
+		if (!field(frontmatter, name) && !new RegExp(`^${name}:`, 'm').test(frontmatter)) {
+			blockers.push(`${rel}: missing required metadata field ${name}`);
+		}
+	}
 	if (title && title.length > 90) warnings.push(`${rel}: title is long (${title.length} chars)`);
 	if (description && (description.length < 70 || description.length > 220)) {
 		warnings.push(`${rel}: description length is ${description.length} chars`);
@@ -94,9 +115,11 @@ for (const file of walk(docsDir)) {
 	}
 	if (isReferencePage && !problemSolved) warnings.push(`${rel}: missing problemSolved`);
 	if (isReferencePage && !readerTakeaway) warnings.push(`${rel}: missing readerTakeaway`);
-	if (isReferencePage && !pageType) governanceGaps.pageType += 1;
-	if (isReferencePage && !contentCluster) governanceGaps.contentCluster += 1;
-	if (isReferencePage && !canonicalCluster) governanceGaps.canonicalCluster += 1;
+	if (pageType === 'hub' && lifecycle !== 'hub') warnings.push(`${rel}: hub page should set lifecycle: hub`);
+	if (pageType !== 'hub' && lifecycle === 'hub' && !isIndex) warnings.push(`${rel}: non-hub page uses lifecycle: hub`);
+	if (contentCluster && canonicalCluster && contentCluster !== canonicalCluster && pageType === 'hub') {
+		warnings.push(`${rel}: hub has different contentCluster and canonicalCluster`);
+	}
 	if (isMarketSignal && !isHub && lifecycle !== 'market-signal') {
 		warnings.push(`${rel}: market signal page should set lifecycle: market-signal`);
 	}
@@ -107,14 +130,6 @@ for (const file of walk(docsDir)) {
 }
 
 console.log(`Search-quality audit scanned ${walk(docsDir).length} MDX pages.`);
-
-const governanceGapTotal =
-	governanceGaps.pageType + governanceGaps.contentCluster + governanceGaps.canonicalCluster;
-if (governanceGapTotal) {
-	console.log(
-		`Governance metadata advisory: ${governanceGaps.pageType} pages missing pageType, ${governanceGaps.contentCluster} missing contentCluster, ${governanceGaps.canonicalCluster} missing canonicalCluster.`
-	);
-}
 
 if (warnings.length) {
 	console.log(`Advisory warnings (${warnings.length}):`);
