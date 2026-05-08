@@ -39,6 +39,33 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Deep research is a durable category because every model provider can improve search and synthesis, but teams still need evidence discipline. The cluster should focus on source quality, citation accuracy, reviewer confidence, cost boundaries, and uncertainty handling.
 
+## How to use this cluster
+
+Deep research pages should be read by the decision risk:
+
+| Risk | Start here | What to verify |
+| --- | --- | --- |
+| Reports are long but not auditable | [What should a deep research system return besides a report?](/workflows/what-should-a-deep-research-system-return-besides-a-report/) | Whether the system returns evidence, citations, uncertainty, and reviewer context |
+| Sources look plausible but may be weak | [Deep research source quality](/workflows/deep-research-source-quality-and-citation-policy/) | Whether source tiers and citation rules exist before reports influence decisions |
+| Runtime cost is hard to control | [Deep research runtime budgets](/workflows/deep-research-runtime-budgets-and-cost-controls/) | Which tasks justify long-running research and which should be capped |
+| Reviewers cannot tell what changed | [Search evals and citation audits](/evaluation/search-evals-and-citation-audits-for-deep-research-systems/) | Whether citations are correct, material, and complete enough |
+
+This cluster should not reward longer reports for their own sake. It should reward research that makes uncertainty and evidence easier to inspect.
+
+## The minimum acceptable output
+
+A serious deep research workflow should usually return:
+
+- a short answer or recommendation;
+- a source map grouped by claim;
+- citation notes explaining why each important source was used;
+- uncertainty and missing-evidence notes;
+- excluded-source or weak-source warnings where relevant;
+- cost/runtime metadata if the workflow is expensive;
+- a reviewer checklist for consequential use.
+
+Without those artifacts, the output may still be useful as a draft, but it is not strong decision support. The deeper pages in this cluster should keep pushing toward auditable research, not polished synthesis alone.
+
 ## Core workflow
 
 <div class="portal-links">

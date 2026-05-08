@@ -39,6 +39,31 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 EvalOps is the operating discipline that keeps AI systems from relying on vibes. This cluster groups pages that turn examples, traces, labels, scorecards, incidents, and release gates into a maintainable quality system.
 
+## How to use this cluster
+
+Use this hub by the failure mode you are trying to prevent:
+
+| Failure mode | Start here | What the page should help you decide |
+| --- | --- | --- |
+| The team has demos but no release standard | [What is EvalOps for AI teams?](/evaluation/what-is-evalops-for-ai-teams/) | Whether evaluation is owned by product, QA, platform, or engineering |
+| Agent runs look good until a tool call fails | [Trace grading for tool-using agents](/evaluation/trace-grading-for-tool-using-ai-agents/) | Whether the whole run is being evaluated, not only the final answer |
+| Scorecards are subjective | [What should an agent eval scorecard measure?](/evaluation/what-should-an-agent-eval-scorecard-actually-measure/) | Which outcome, policy, tool, and review metrics belong in the gate |
+| Production quality drifts after launch | [Live traffic sampling](/evaluation/how-should-ai-teams-sample-live-traffic-for-agent-evals/) | How to sample real traffic without overwhelming reviewers |
+| Releases depend on judgment calls | [EvalOps release gates](/evaluation/eval-ops-release-gates-and-scorecard-ownership/) | Which failures block rollout and who can override them |
+
+This keeps the cluster focused on operational evaluation, not generic benchmark commentary.
+
+## The quality floor for pages in this cluster
+
+Pages in this cluster should answer at least four practical questions:
+
+1. What artifact is being evaluated: answer, trace, tool call, retrieval result, policy decision, or final business outcome?
+2. Who owns the score: product, QA, platform, security, support operations, or engineering?
+3. What action follows a bad score: block release, route for review, retrain labels, change prompts, or roll back?
+4. How does the team prevent the same failure from disappearing into a spreadsheet?
+
+If a page cannot answer those questions, it is probably too shallow for this cluster. EvalOps content should make a team better at shipping, not only better at discussing AI quality.
+
 ## Foundations
 
 <div class="portal-links">

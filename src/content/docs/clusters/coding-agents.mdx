@@ -41,6 +41,31 @@ Coding-agent content should not be organized around vendor excitement alone. The
 
 Start with the page that matches the current decision.
 
+## How to navigate the decision
+
+Coding-agent adoption usually fails in one of four places:
+
+| Problem | Better starting point | Decision it supports |
+| --- | --- | --- |
+| Engineers are experimenting but leadership lacks rollout policy | [AI coding agents for engineering teams](/use-cases/ai-coding-agents-for-engineering-teams/) | Which workflows deserve agent support first |
+| Reviewers are overwhelmed by generated diffs | [Reviewer queues and approval capacity](/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/) | How much agent output the human review system can safely absorb |
+| Agents need write access | [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/) | Which repository actions require stronger boundaries |
+| Quality complaints are anecdotal | [Coding-agent quality regression playbook](/evaluation/coding-agent-quality-regression-playbook/) | How to turn failures into eval cases, gates, and rollback rules |
+
+The cluster should stay anchored in repository safety and engineering throughput. Tool comparisons are useful only when they lead to a rollout decision.
+
+## The operating model every coding-agent page should respect
+
+Coding-agent content should separate at least five boundaries:
+
+1. **Read**: repo exploration, search, issue analysis, and code understanding.
+2. **Write**: bounded file edits, tests, docs, and refactors.
+3. **Verify**: local tests, static checks, CI, eval cases, and reviewer inspection.
+4. **Merge**: human accountability for changes entering shared branches.
+5. **Deploy**: production-impacting actions, secrets, infrastructure, and incident response.
+
+If a page treats all of those as one generic "agent permission" topic, it is too vague. The commercial value is in helping engineering teams gain leverage without losing control of the repository.
+
 ## Adoption and seat rollout
 
 <div class="portal-links">

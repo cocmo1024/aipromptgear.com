@@ -39,6 +39,34 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 MCP is valuable because it standardizes context and tool access. The security problem is that standardized access can scale mistakes. This cluster keeps MCP content anchored in architecture, server audits, tool authority, untrusted outputs, credentials, and approvals.
 
+## How to use this cluster
+
+MCP security decisions should start with tool authority:
+
+| Risk | Start here | What to decide |
+| --- | --- | --- |
+| The team is not sure MCP belongs in the architecture | [Model Context Protocol for enterprise AI teams](/agent-systems/model-context-protocol-for-enterprise-ai-teams/) | Whether standardization is worth the shared-risk surface |
+| A shared MCP server is proposed | [MCP server security audit checklist](/agent-systems/mcp-server-security-audit-checklist-for-ai-agents/) | Which tools, credentials, network paths, and logs need review |
+| Tool outputs may contain hostile instructions | [Tool outputs are untrusted](/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/) | How to keep retrieved content from becoming authority |
+| Write actions are possible | [MCP security and approval boundaries](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/) | Which actions need approval, scopes, and audit trails |
+| The team is choosing MCP versus direct integrations | [Remote MCP servers vs direct tool integrations](/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/) | Whether a shared server or app-owned tool wiring creates less risk |
+
+This keeps the cluster practical. MCP is not inherently safe or unsafe; the risk depends on what the server can read, write, call, fetch, and impersonate.
+
+## Security model every page should respect
+
+Strong MCP guidance should separate:
+
+- read-only tools from write-enabled tools;
+- user-scoped authorization from service-account authority;
+- trusted configuration from untrusted tool output;
+- local developer servers from remote shared servers;
+- browser/network tools from narrow business APIs;
+- optional human confirmation from mandatory approval gates;
+- logs useful for debugging from audit trails useful after an incident.
+
+If those distinctions are missing, an MCP page is too shallow for production teams.
+
 ## Architecture decision
 
 <div class="portal-links">

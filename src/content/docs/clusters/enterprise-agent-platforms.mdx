@@ -38,6 +38,36 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 Enterprise agent platforms are not only model wrappers. They become operating infrastructure for tools, data, identity, approvals, traces, evaluation, budgets, and incidents. This cluster organizes platform buying and governance content around those layers.
 
+## How to use this cluster
+
+Enterprise teams should enter the cluster by procurement risk:
+
+| Buying problem | Start here | What to decide |
+| --- | --- | --- |
+| The RFP is still model-demo driven | [Enterprise agent platform RFP checklist](/tool-comparisons/enterprise-agent-platform-rfp-checklist/) | Which governance, identity, connector, eval, and audit requirements belong in the RFP |
+| The team is unsure whether to build or buy | [Should you build or buy an AI agent platform?](/tool-comparisons/should-you-build-or-buy-an-ai-agent-platform/) | Which control-plane layers are strategic to own |
+| Security review is blocking rollout | [AI agent vendor security questionnaire](/tool-comparisons/ai-agent-vendor-security-questionnaire-for-enterprise-procurement/) | Which vendor claims need evidence before tool/data access |
+| Platform use is spreading without inventory | [Enterprise agent governance control plane](/tooling/enterprise-agent-governance-control-plane/) | How to govern agents, tools, permissions, budgets, and incidents |
+| Vendor comparison is stuck on model quality | [OpenAI vs Anthropic vs Google Gemini](/tool-comparisons/openai-vs-anthropic-vs-google-gemini-for-enterprise-agent-teams/) | How operating model and governance fit change the shortlist |
+
+This cluster should help buyers avoid the most expensive mistake: purchasing a polished assistant surface while leaving identity, tool authority, review, rollback, and evidence ownership undefined.
+
+## Platform capability map
+
+Every enterprise agent platform evaluation should separate:
+
+- model access and routing;
+- tool and connector registry;
+- identity, user-scoped auth, and service accounts;
+- data access boundaries;
+- human approval and escalation workflows;
+- tracing, audit trails, and evidence retention;
+- evals, release gates, and incident review;
+- budget controls and cost attribution;
+- admin visibility across teams.
+
+If a vendor is strong in one layer and weak in another, the buyer should know which missing layer the internal platform team must own. That is the difference between a platform decision and a demo decision.
+
 ## Buying and platform ownership
 
 <div class="portal-links">

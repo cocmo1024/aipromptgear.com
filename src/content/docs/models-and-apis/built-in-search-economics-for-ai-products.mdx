@@ -28,7 +28,7 @@ Built-in search is worth paying for when the workflow depends on current externa
 
 The economics only make sense when search changes the outcome enough to justify the added runtime and cost.
 
-## Official signals checked April 11, 2026
+## Official signals to check during review
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
@@ -79,6 +79,45 @@ If search adds:
 
 then the economics may work. If it only makes answers longer or slower, it probably does not.
 
+## Cost model for a search-enabled workflow
+
+The cost model should include more than the search call:
+
+| Cost or benefit | What to measure |
+| --- | --- |
+| Search/tool invocation rate | How often the workflow actually needs external evidence |
+| Model tokens after search | Search results often expand context and synthesis cost |
+| Latency | Slower answers may reduce conversion or increase abandonment |
+| Citation review | Source-grounded answers may still require human verification |
+| Cacheability | Repeated questions may not need repeated live search |
+| Avoided failure | Search may prevent stale or hallucinated answers that create support cost |
+| User value | Some workflows command higher willingness to pay because evidence is current |
+
+The product question is whether the search-enabled version changes the user's decision enough to justify those costs.
+
+## Routing rule
+
+Do not turn search on globally. Route it by question class:
+
+- **Always search** when the user asks for current events, prices, regulations, market changes, vendor releases, or public-source evidence.
+- **Sometimes search** when the answer depends on a mix of internal knowledge and recent external confirmation.
+- **Do not search** when the task is writing, transformation, summarization of provided content, internal workflow execution, or stable reference knowledge.
+
+This routing rule usually saves more than prompt-level micro-optimization because it prevents unnecessary tool use at the workflow boundary.
+
+## Evaluation questions
+
+Before shipping built-in search, evaluate:
+
+1. Does search improve factual correctness on the target question set?
+2. Does it improve citation usefulness, not just citation count?
+3. Does it reduce user follow-up questions?
+4. Does it create latency users will tolerate?
+5. Does it produce source selections reviewers trust?
+6. Does the workflow have a fallback when search fails or returns weak evidence?
+
+If the answer is weak, search should stay behind an explicit user action or a narrower router. Search is valuable when it makes the product more trustworthy, not when it makes every answer look more elaborate.
+
 ## The best decision rule
 
 Use built-in search when:
@@ -88,6 +127,18 @@ Use built-in search when:
 - and the user benefit is measurable.
 
 Do not use it by default for internal copilots, narrow operational tasks, or any workflow where curated retrieval already solves the problem cleanly.
+
+## Where search creates durable product value
+
+Search tends to create durable value in products that sell evidence, not just generation:
+
+- competitive and market research assistants;
+- policy, regulatory, or procurement research tools;
+- financial, vendor, and pricing monitoring workflows;
+- technical support systems that need current public documentation;
+- analyst workflows where citations become part of the deliverable.
+
+It is weaker in workflows where the user already supplied the necessary context or where the answer should come from a governed internal source. In those cases, the better investment is often retrieval quality, document freshness, or eval coverage rather than open web search.
 
 ## Implementation checklist
 

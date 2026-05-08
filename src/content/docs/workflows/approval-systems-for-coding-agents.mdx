@@ -39,6 +39,21 @@ Split actions into at least four classes:
 
 Each class should have a different approval expectation.
 
+## Approval matrix
+
+Use a matrix instead of one global permission toggle:
+
+| Agent action | Default approval posture | Required evidence |
+| --- | --- | --- |
+| Read files, search code, summarize issues | Auto-allow in approved repositories | Activity log and source references |
+| Propose a patch in a bounded scope | Allow draft, require review before merge | Diff, tests run, files touched, known risks |
+| Modify tests or docs only | Allow draft, review can be lighter | Clear scope and proof that production code was not changed |
+| Change dependencies, build scripts, or CI | Require explicit approval before change and before merge | Reason, blast radius, rollback path |
+| Touch auth, payments, secrets, infra, or deployment | Require strong approval and senior review | Security review, test evidence, rollback plan |
+| Execute external tools or network actions | Require policy-based allowlist | Tool purpose, data exposure, logs |
+
+The matrix should be visible to engineers. If reviewers cannot explain why an action needed approval, the policy will be ignored or over-applied.
+
 ## What should usually be auto-allowed
 
 Low-risk actions can often proceed without per-step human approval:
@@ -62,6 +77,8 @@ Most code-writing activity belongs here:
 
 The agent can draft the work, but a human should still own the merge decision.
 
+The merge decision matters because coding agents can be locally convincing and globally wrong. A patch may pass the narrow test it added while breaking product assumptions, security boundaries, or operational conventions that are not encoded in tests.
+
 ## What should require stronger approval
 
 These usually need stricter gates:
@@ -73,6 +90,16 @@ These usually need stricter gates:
 - or edits to security-sensitive code paths.
 
 This is where coding-agent leverage can quickly turn into operational risk.
+
+Strong approval should not mean "ask a human every time and hope." It should define:
+
+- who can approve the action;
+- what evidence must be attached;
+- whether the agent can continue after approval or must stop for review;
+- how the action is logged;
+- what rollback or cleanup path exists.
+
+That makes approval auditable instead of performative.
 
 ## The wrong approval model
 
@@ -92,6 +119,34 @@ Your coding-agent approval system is probably healthy when:
 - the human reviewer remains accountable for consequential changes;
 - verification requirements scale with risk class;
 - and the team can explain why a given agent action did or did not need approval.
+
+## Failure modes to test
+
+Before standardizing the approval model, test it against realistic failures:
+
+1. the agent wants to edit files outside the assigned scope;
+2. the agent adds or upgrades a dependency;
+3. the agent changes a CI workflow to make tests pass;
+4. the agent encounters a secret or `.env` file;
+5. the agent needs network access to fetch docs or packages;
+6. the agent proposes a migration or irreversible data operation;
+7. the agent produces a large diff that reviewers cannot inspect quickly.
+
+If the approval system does not define what happens in those cases, it is not ready for high-agency coding work.
+
+## What to log for governance
+
+A useful audit trail should include:
+
+- task request and repository scope;
+- files read and files changed;
+- tools invoked;
+- approvals requested and granted;
+- tests or checks run;
+- unresolved risks named by the agent or reviewer;
+- final merge decision.
+
+The purpose is not bureaucracy. The purpose is to make coding-agent work inspectable when something breaks later.
 
 ## Compare next
 

@@ -76,11 +76,38 @@ Compare the vendors by:
 - procurement and ecosystem alignment,
 - and how costly it would be to switch later.
 
+## Enterprise evaluation worksheet
+
+Run the comparison through the same task set instead of asking each vendor to show its best demo:
+
+| Evaluation area | What to test | Why it matters |
+| --- | --- | --- |
+| Tool use | Multi-step tool calls, bad tool results, missing permissions, retries | Agent systems fail in process, not only in final wording |
+| Structured output | Schemas, validation failures, partial output, recovery | Production workflows need predictable interfaces |
+| Long-context work | Large docs, repo context, conflicting evidence, source selection | Enterprise tasks often mix volume with ambiguity |
+| Governance | audit logs, data controls, approval boundaries, policy configuration | Regulated or high-consequence teams need inspectability |
+| Cost control | routing, caching, async work, usage budgets, failure cost | Vendor choice changes workflow economics |
+| Reviewer workload | how easy humans can inspect traces, sources, and decisions | Human review is often the bottleneck in agent rollout |
+
+This worksheet produces better buying evidence than a leaderboard because it tests the operating conditions that enterprise teams actually face.
+
 ## A practical shortlist rule
 
 - If the team wants a broad, agent-oriented platform surface and fast iteration, OpenAI often lands early.
 - If the team cares most about controlled reasoning behavior and will build more of its own surrounding runtime, Anthropic often deserves serious weight.
 - If the organization already leans heavily into Google and wants ecosystem continuity alongside model capability, Gemini often becomes more attractive than the raw discourse suggests.
+
+## Switching-cost questions
+
+Before standardizing on one vendor, answer:
+
+- Which parts of the agent runtime are vendor-specific?
+- Are prompts, evals, schemas, traces, and tool definitions portable enough to test another provider?
+- Does the team depend on proprietary hosted tools or can it swap them behind an internal abstraction?
+- What would break if procurement required a second provider?
+- Which workloads need best-quality routing and which need stable governance more than peak quality?
+
+The safest enterprise posture is not always full multi-vendor abstraction. That can slow teams down. But the team should know which decisions create lock-in and which are easy to revisit after models and APIs change.
 
 ## Compare next
 
