@@ -15,7 +15,7 @@ targetRoles:
   - AI platform teams
 contentStatus: growing
 datePublished: 2026-04-24
-lastReviewed: 2026-04-24
+lastReviewed: 2026-05-14
 problemSolved: How to translate AI infrastructure headlines into practical capacity decisions for hosted APIs, async lanes, rented GPUs, utilization, and product margins.
 readerTakeaway: You should leave with a capacity-planning framework that separates model demand, latency class, utilization risk, queue design, and infrastructure ownership.
 keyQuestions:
@@ -40,7 +40,6 @@ editorKey: review-desk
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# AI Compute Capacity Planning for Frontier Model Products
 
 AI compute headlines are getting larger because model demand is getting larger. That does not mean every product team should rent GPUs or build inference infrastructure. The practical question is: which workloads justify hosted APIs, which can move to cheaper async lanes, and which are mature enough to justify capacity ownership?
 
@@ -151,6 +150,11 @@ This model prevents infrastructure decisions from being driven by headline compu
 		title="GPU cloud vs hosted model APIs"
 		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
 		description="Compare ownership burden against hosted API economics once volume becomes serious."
+	/>
+	<LinkCard
+		title="Agentic inference capacity planning"
+		href="/models-and-apis/agentic-inference-capacity-planning-for-ai-products/"
+		description="Use this page when reasoning steps, tool loops, retries, context growth, and queueing drive the capacity model."
 	/>
 	<LinkCard
 		title="When batch and flex are cheaper than rented GPUs"

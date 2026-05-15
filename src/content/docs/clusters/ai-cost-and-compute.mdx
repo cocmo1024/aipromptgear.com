@@ -33,12 +33,11 @@ updateTriggers:
   - GPU availability or major infrastructure cost changes
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-14
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# AI Cost and Compute Cluster
 
 AI economics is not token math alone. Real production cost includes model routing, retries, tool calls, search, retrieval, review labor, latency, failed outcomes, background processing, and sometimes rented compute. This cluster keeps those decisions connected.
 
@@ -50,6 +49,7 @@ Start with the economic unit, not the vendor invoice:
 | --- | --- | --- |
 | The bill is growing but no one owns it | [LLM cost allocation and showback](/models-and-apis/llm-cost-allocation-showback-and-budget-ownership-for-ai-products/) | Spend needs owners before optimization is credible |
 | A product team wants to turn on premium models everywhere | [Model routing](/models-and-apis/model-routing/) | Premium models should be reserved for tasks that change outcome quality |
+| Agentic workloads create bursty inference demand | [Agentic inference capacity planning](/models-and-apis/agentic-inference-capacity-planning-for-ai-products/) | Step count, tool loops, context growth, retries, and concurrency drive the real capacity need |
 | A workflow is slow but does not need realtime response | [OpenAI Batch vs background mode](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/) | Async processing can reduce cost pressure without lowering quality |
 | The team is considering rented GPUs | [GPU cloud vs hosted model APIs](/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/) | Infrastructure ownership should be justified by utilization and control needs |
 | Search, tools, and retries make cost hard to explain | [Cost per success and tool economics](/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/) | Successful outcomes are a better unit than raw calls |
@@ -121,6 +121,11 @@ Pages that ignore those categories tend to create false savings. A cheaper model
 		title="GPU cloud vs hosted model APIs"
 		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
 		description="Decide when infrastructure ownership beats hosted API economics."
+	/>
+	<LinkCard
+		title="Agentic inference capacity planning"
+		href="/models-and-apis/agentic-inference-capacity-planning-for-ai-products/"
+		description="Model capacity demand from workflow attempts, agent steps, model calls, generated tokens, retries, queues, and cache pressure."
 	/>
 	<LinkCard
 		title="A100 vs H100 economics"

@@ -6,9 +6,47 @@ const route = Astro.locals.starlightRoute;
 const seo = buildSeo(route, Astro.url);
 const imageType = seo.imageType;
 
+const managedMetaProperties = new Set([
+	'og:type',
+	'og:site_name',
+	'og:locale',
+	'og:url',
+	'og:image',
+	'og:image:secure_url',
+	'og:image:type',
+	'og:image:width',
+	'og:image:height',
+	'og:image:alt',
+	'og:updated_time',
+	'article:published_time',
+	'article:section',
+	'article:tag',
+	'article:modified_time',
+]);
+
+const managedMetaNames = new Set([
+	'robots',
+	'googlebot',
+	'theme-color',
+	'referrer',
+	'application-name',
+	'apple-mobile-web-app-title',
+	'author',
+	'creator',
+	'editor',
+	'twitter:title',
+	'twitter:description',
+	'twitter:card',
+	'twitter:image',
+	'twitter:image:alt',
+	'twitter:site',
+]);
+
 const filteredHead = route.head.filter((entry) => {
 	if (entry.tag !== 'meta' || !entry.attrs) return true;
-	return entry.attrs.property !== 'og:type' && entry.attrs.property !== 'og:locale';
+	const property = typeof entry.attrs.property === 'string' ? entry.attrs.property : undefined;
+	const name = typeof entry.attrs.name === 'string' ? entry.attrs.name : undefined;
+	return !(property && managedMetaProperties.has(property)) && !(name && managedMetaNames.has(name));
 });
 
 ---

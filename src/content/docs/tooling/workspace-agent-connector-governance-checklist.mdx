@@ -1,0 +1,226 @@
+---
+title: "Workspace Agent Connector Governance Checklist"
+description: "A practical governance checklist for workspace AI agent connectors across identity, OAuth scopes, data access, approvals, audit trails, and deprovisioning."
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+contentCluster: enterprise-agent-platforms
+canonicalCluster: enterprise-agent-platforms
+pageType: security-checklist
+lifecycle: evergreen
+refreshPriority: high
+problemSolved: Helps IT, security, and AI platform teams govern workspace agent connectors before email, files, chat, calendar, CRM, ticketing, or code integrations spread without oversight.
+readerTakeaway: You should leave with a connector governance checklist covering inventory, identity, scopes, approvals, logs, risk tiers, and shutdown procedures.
+primaryKeyword: workspace agent connector governance
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - IT leaders
+  - Security reviewers
+  - AI platform teams
+  - Compliance teams
+  - Workspace admins
+keyQuestions:
+  - How should enterprises govern workspace AI agent connectors?
+  - Which connector scopes require approval before rollout?
+  - What audit evidence should connector-enabled agents produce?
+notFor:
+  - Personal productivity users connecting a single private assistant
+  - Teams that have not identified workspace data owners
+  - Vendor comparison shoppers who do not yet have an integration policy problem
+updateTriggers:
+  - New workspace AI connector or marketplace capabilities
+  - New admin controls for OAuth apps, delegated access, or agent actions
+  - Security incidents involving AI connectors, data leakage, or tool abuse
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-05-12
+lastReviewed: 2026-05-12
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+Workspace agents become materially more useful when they connect to email, documents, shared drives, calendars, chat, CRM, ticketing systems, code repositories, and internal knowledge bases. They also become materially harder to govern.
+
+A connector is not just a convenience feature. It is a permission boundary.
+
+## Quick answer
+
+Govern workspace agent connectors with an inventory, risk tiers, scope approvals, data-owner review, audit logging, deprovisioning rules, and periodic recertification. Start with read-only and draft-only connectors. Move to write-capable connectors only when the organization can explain who authorized access, what the agent can do, which logs prove it, and how access is revoked.
+
+## The connector governance checklist
+
+| Control | What to verify | Why it matters |
+| --- | --- | --- |
+| Inventory | Every connector has an owner, system, data class, and business purpose | Untracked connectors become shadow access paths |
+| Identity model | User-delegated, service-account, team-owned, or system authority is explicit | Authority determines blast radius |
+| OAuth scopes | Requested scopes match the workflow, not the broadest available API | Excess scopes turn narrow agents into broad data actors |
+| Data classification | Customer, employee, legal, financial, code, or regulated data is labeled | Sensitive data changes approval and retention rules |
+| Action tier | Read, draft, write, delete, approve, or irreversible actions are separated | Write capability should not hide inside generic access |
+| Approval path | High-risk scopes require security, data owner, or business owner approval | Connectors often cross team boundaries |
+| Audit trail | Prompts, retrieved records, tool calls, approvals, outputs, and side effects are logged | Incidents need evidence, not screenshots |
+| Deprovisioning | User departure, role change, vendor removal, and incident shutdown are covered | Access should not outlive need |
+| Recertification | Owners periodically confirm the connector is still needed and correctly scoped | Stale integrations accumulate risk |
+
+If a connector cannot satisfy these controls, keep it out of production workflows.
+
+## Classify connectors by consequence
+
+Not all connectors deserve the same governance burden.
+
+| Connector class | Examples | Default posture |
+| --- | --- | --- |
+| Read-only knowledge | approved docs, intranet, policy library, public help center | Allow with owner and source freshness rules |
+| Personal workspace | email, calendar, private files, chat history | Use delegated identity and visible user controls |
+| Customer systems | CRM, support inbox, ticketing, billing notes | Require data-owner review and audit logs |
+| Engineering systems | code repositories, CI, issues, deployment tools | Route through coding-agent permission and review policy |
+| Regulated or irreversible | payments, contracts, legal, HR, healthcare, access control | Require explicit approval, stronger logs, and limited rollout |
+
+This classification keeps low-risk knowledge access moving while preventing a broad "connect everything" rollout.
+
+## Identity is the first review question
+
+Every connector should answer whose authority is being used:
+
+- the individual user's delegated access;
+- a team-owned service account;
+- a workflow-specific service identity;
+- a vendor-managed system identity;
+- a temporary elevated token;
+- an admin-approved connector scope.
+
+User-delegated access often respects existing permissions, but it can make automation inconsistent across users. Service accounts are stable, but they can be dangerously broad. The governance review should choose intentionally.
+
+## OAuth scopes should be narrow and named
+
+Connector proposals should list requested scopes in plain language:
+
+- read email metadata;
+- read email body;
+- draft email;
+- send email;
+- read files;
+- write files;
+- search chat history;
+- create tickets;
+- update CRM fields;
+- trigger external workflow actions.
+
+Do not approve vague scope bundles such as "full workspace access" unless the workflow truly requires it and the approval record explains why.
+
+## Write actions require a stronger packet
+
+Read connectors can still leak data, but write connectors create side effects. Before a connector can write, the review packet should include:
+
+- the exact action types;
+- whether actions are reversible;
+- who approves or supervises them;
+- what record is changed;
+- which user or service identity appears in downstream logs;
+- how rollback works;
+- how failed or partial actions are detected.
+
+If the team cannot answer these questions, the connector should remain read-only or draft-only.
+
+## Audit evidence should follow the action
+
+Connector-enabled agents need audit records that connect the request to the side effect.
+
+At minimum, capture:
+
+- user request;
+- connector name and version;
+- identity used;
+- scopes used;
+- records retrieved or modified;
+- model route or agent version;
+- approval decision where relevant;
+- final output;
+- downstream system response;
+- retry, failure, or rollback events.
+
+This makes incident review possible and also creates material for future evals.
+
+## Data owners should have veto power
+
+Workspace agents often cross departmental boundaries. A productivity team may want a connector to support a broad assistant, but the data owner may know that the source contains customer secrets, employee records, legal work, or sensitive financial context.
+
+Data-owner review should be required when connectors touch:
+
+- customer records;
+- employee data;
+- contracts or legal matters;
+- finance or billing systems;
+- source code or security systems;
+- regulated operational records.
+
+The point is not to block all integrations. It is to stop AI adoption teams from silently inheriting data-governance authority they do not own.
+
+## Deprovisioning is part of the design
+
+Connector access should end when:
+
+- a user changes role;
+- a user leaves the organization;
+- a vendor is no longer approved;
+- a connector is no longer used;
+- a workflow moves from pilot to redesign;
+- an incident requires containment;
+- a data owner revokes approval.
+
+If revocation depends on tribal knowledge, the connector is not governed.
+
+## Red flags during review
+
+Pause rollout when you see:
+
+- broad scopes with a narrow business justification;
+- service accounts shared across unrelated workflows;
+- no owner for the downstream data source;
+- no logs tying agent actions to system changes;
+- no limit on external file or message access;
+- no plan for user offboarding;
+- no process for connector recertification;
+- write actions hidden behind a generic "automation" label.
+
+These patterns are common because they make pilots faster. They also make production rollouts harder to defend.
+
+## A practical rollout model
+
+1. Inventory candidate connectors and data owners.
+2. Classify each connector by data sensitivity and action tier.
+3. Approve read-only and draft-only pilots first.
+4. Add audit logging before expanding access.
+5. Require data-owner signoff for customer, employee, financial, legal, code, or regulated data.
+6. Add write actions only after rollback and approval behavior is tested.
+7. Recertify connector owners and scopes on a fixed schedule.
+
+This model lets useful workspace agents ship without turning connectors into hidden enterprise permissions.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Workspace AI agents for enterprise knowledge work"
+		href="/use-cases/workspace-ai-agents-for-enterprise-knowledge-work/"
+		description="Use this page when the organization is still deciding which workspace workflows should get agent support first."
+	/>
+	<LinkCard
+		title="Enterprise agent governance control plane"
+		href="/tooling/enterprise-agent-governance-control-plane/"
+		description="Use this page when connector governance needs to sit inside a broader agent inventory, budget, approval, and incident model."
+	/>
+	<LinkCard
+		title="User-scoped auth vs service accounts"
+		href="/agent-systems/user-scoped-auth-vs-service-accounts-for-ai-agents/"
+		description="Use this page when connector authority depends on delegated identity versus shared automation accounts."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Use this page to define evidence records for connector-enabled actions."
+	/>
+</div>

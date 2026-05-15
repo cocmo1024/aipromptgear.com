@@ -21,14 +21,13 @@ lifecycle: hub
 refreshPriority: medium
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-15
 problemSolved: Helps readers solve the practical question behind Evaluation instead of stopping at a generic definition or feature list.
 readerTakeaway: "You should leave with a clearer decision model, implementation boundary, or next-step checklist for Evaluation."
 ---
 
 import { LinkCard, Steps } from '@astrojs/starlight/components';
 
-# Evaluation
 
 Evaluation is the discipline that keeps prompt systems from drifting into anecdote-driven operations. This section focuses on test design, review loops, and ongoing quality control once teams start shipping changes regularly.
 
@@ -49,6 +48,11 @@ Evaluation is the discipline that keeps prompt systems from drifting into anecdo
 		title="Coding-agent quality regression playbook"
 		href="/evaluation/coding-agent-quality-regression-playbook/"
 		description="Use this page when developers report that an AI coding agent got worse and the team needs evidence, traces, rollback, and prevention."
+	/>
+	<LinkCard
+		title="Benchmark vs production evals"
+		href="/evaluation/benchmark-vs-production-evals-for-ai-agents/"
+		description="Use this page when public benchmark confidence needs to be converted into workflow-specific release gates, traces, and review decisions."
 	/>
 	<LinkCard
 		title="Coding-agent adoption metrics"

@@ -41,7 +41,6 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# Tool outputs are untrusted: prompt injection boundary for AI agents
 
 "Tool outputs are untrusted" is a short phrase with large architecture consequences. It means the model should treat returned content as information to inspect, not as instructions to obey. A web page, retrieved passage, support ticket, PDF, screenshot, database record, or third-party API response can contain text that tries to redirect the agent. That text may look like an instruction, but it has no authority by default.
 

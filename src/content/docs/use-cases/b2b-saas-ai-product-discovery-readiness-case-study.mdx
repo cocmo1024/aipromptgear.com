@@ -1,0 +1,303 @@
+---
+title: "B2B SaaS AI Product Discovery Readiness Case Study"
+description: "A composite case study for B2B SaaS teams improving AI-assisted product discovery through clearer comparison pages, evidence, measurement, and sales handoff."
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+contentCluster: models-and-apis
+canonicalCluster: models-and-apis
+pageType: case-study
+lifecycle: evergreen
+refreshPriority: high
+problemSolved: Helps B2B SaaS teams turn vague AI discovery interest into a concrete page, measurement, and sales-handoff improvement plan.
+readerTakeaway: You should leave with a reusable case pattern for improving product pages, comparison content, log measurement, and qualified buyer handoff around AI-assisted discovery.
+primaryKeyword: B2B SaaS AI product discovery case study
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - B2B SaaS founders
+  - Product marketers
+  - Growth teams
+  - Revenue operations teams
+  - Content strategists
+keyQuestions:
+  - How should a B2B SaaS team prepare for AI-assisted product discovery?
+  - What should a product comparison page include when buyers use AI assistants to shortlist vendors?
+  - How should growth and sales teams measure whether AI-assisted discovery is producing qualified demand?
+notFor:
+  - Teams looking for a fake customer success story or inflated attribution claim
+  - Sites with no current product facts, comparison pages, or conversion measurement
+  - Consumer brands where visual merchandising matters more than B2B evaluation criteria
+updateTriggers:
+  - Major AI browser, conversational product discovery, or assistant referral changes
+  - New evidence that buyers arrive with AI-generated vendor shortlists
+  - Product, pricing, integration, security, or ICP changes that affect comparison pages
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-05-12
+lastReviewed: 2026-05-13
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+This is a composite operating case, not a claim about one named customer. It is built from a common B2B SaaS pattern: the product has real value, but its public pages are too vague for a buyer or an AI assistant to understand fit, evidence, tradeoffs, and next steps.
+
+The result is familiar. Buyers arrive with sharper questions than the site can answer. Sales hears the same objections repeatedly. Analytics shows visits, but the team cannot tell whether AI-assisted discovery is helping the right accounts move forward.
+
+## Quick answer
+
+A B2B SaaS team should treat AI-assisted product discovery as a buyer enablement problem. The fix is not to publish more generic articles. The fix is to make product, comparison, pricing, integration, and security pages specific enough that an assistant can extract the same evidence a serious buyer needs.
+
+The operating goal is simple:
+
+**When an AI assistant summarizes the vendor, the summary should reflect real fit, constraints, proof, and next-step evaluation criteria.**
+
+## The company profile
+
+The composite company looks like this:
+
+| Attribute | Case profile |
+| --- | --- |
+| Product | B2B workflow SaaS for operations teams |
+| Sales motion | Self-serve trial plus sales-assisted midmarket deals |
+| Buyer | Operations, RevOps, support, or IT leader |
+| Average evaluation | 2 to 5 vendor shortlist, security review for larger accounts |
+| Current pages | Homepage, pricing page, feature pages, a few generic articles |
+| Weak spot | Comparison and implementation pages do not explain fit boundaries |
+| Measurement gap | Bot activity, referrals, demo quality, and sales notes are not connected |
+
+The team does not need a full site rebuild. It needs a decision layer that matches how buyers evaluate tools.
+
+## The symptoms
+
+The team sees several signals at once:
+
+- Sales calls mention AI-generated shortlists, but the CRM has no structured field for it.
+- Some comparison pages get qualified sessions, but the pages do not explain where the product is a poor fit.
+- The pricing page hides plan boundaries behind sales language.
+- Integration pages list logos but do not explain what each integration can actually do.
+- The security page exists, but it is hard to connect to procurement questions.
+- Server logs show crawler and fetch activity, but analytics reports do not separate bots from humans.
+- Product marketing wants more content, while sales needs clearer evidence on existing pages.
+
+This is a strong candidate for a focused readiness sprint because the problem is not awareness alone. The problem is that evaluation evidence is scattered.
+
+## Before state: why the pages underperform
+
+The site is not empty. It is just not decision-ready.
+
+| Page type | Before state | Buyer or assistant problem |
+| --- | --- | --- |
+| Homepage | Broad value proposition and logos | Hard to tell the exact workflow fit |
+| Feature pages | Capability lists without operating examples | Hard to compare against alternatives |
+| Pricing page | Contact-sales language with weak plan boundaries | Hard to estimate cost and buying path |
+| Integration pages | Logo grid and short descriptions | Hard to know whether integrations are read, write, sync, or automate |
+| Comparison page | "Why we are better" copy | Hard to trust because poor-fit cases are missing |
+| Security page | Generic trust statements | Hard to answer procurement review questions |
+
+An AI assistant can still summarize these pages, but the summary will be generic because the source material is generic.
+
+## The operating hypothesis
+
+The team writes a measurable hypothesis before changing pages:
+
+> If we expose buyer-fit criteria, comparison logic, integration depth, pricing boundaries, security evidence, and next-step evaluation paths, then AI-assisted discovery and direct buyer research should produce better-qualified demo and trial conversations.
+
+This hypothesis matters because it prevents the team from optimizing for crawler activity alone. The desired outcome is better evaluation, not louder dashboards.
+
+## The 30-day fix
+
+### Week 1: map the buyer questions
+
+The team interviews sales, support, customer success, and product marketing. The goal is to collect the questions buyers keep asking after reading the site.
+
+The recurring questions are:
+
+- Does this product fit our company size?
+- Which workflow does it replace or improve?
+- What integrations are required?
+- Does it write back into our systems or only read data?
+- How long does implementation take?
+- Which plan includes the features we need?
+- What happens if our workflow is highly customized?
+- What security evidence is available before procurement review?
+- Which competitor is a better fit for simpler or more complex teams?
+
+These questions become the page structure.
+
+### Week 2: rebuild the comparison layer
+
+The team creates or rewrites three pages:
+
+1. a category comparison page;
+2. an alternatives page;
+3. a buyer-fit page.
+
+Each page includes:
+
+- a direct verdict by buyer situation;
+- where the product fits;
+- where it is a poor fit;
+- plan and implementation boundaries;
+- integration requirements;
+- security and procurement notes;
+- next-step evaluation checklist.
+
+The most important addition is the poor-fit section. It makes the recommendation more trustworthy because the page no longer pretends every buyer should choose the product.
+
+## The comparison page pattern
+
+A useful B2B comparison page should look less like a campaign page and more like a buying memo.
+
+| Section | What it should answer |
+| --- | --- |
+| Direct answer | Which buyer should shortlist this product? |
+| Best fit | Where the product is strongest |
+| Poor fit | Where another option may be better |
+| Evaluation criteria | What buyers should compare before choosing |
+| Implementation burden | What setup, migration, training, and data work is required |
+| Integration depth | Which systems are read-only, write-enabled, synced, or automated |
+| Pricing boundary | Which plan or buying path usually applies |
+| Security review | What evidence procurement will ask for |
+| Next step | What the buyer should verify before a demo or trial |
+
+This structure helps humans decide and gives AI systems clearer source material.
+
+## Week 3: connect measurement to buyer progress
+
+The team updates measurement in three places.
+
+| System | Change | Why |
+| --- | --- | --- |
+| Server logs | Preserve user agent, path, status, referrer, and cache status | Separates crawler or fetch access from human sessions |
+| Analytics | Add events for comparison views, pricing engagement, integration clicks, and demo starts | Measures decision progress instead of raw page movement |
+| CRM | Add discovery-source notes and shortlist context | Helps sales capture whether buyers arrived with assistant-generated research |
+
+The team does not claim precise end-to-end attribution. It creates enough evidence to ask better monthly questions.
+
+## Week 4: build the sales handoff
+
+The best page changes fail if sales cannot use the new evidence. The team creates a lightweight handoff packet:
+
+- top buyer-fit criteria;
+- common poor-fit cases;
+- integration boundary table;
+- security review links;
+- pricing-plan explanation;
+- competitor questions to ask;
+- page links to send after calls.
+
+This makes the content useful beyond acquisition. It becomes part of the sales and evaluation workflow.
+
+## What changed on the site
+
+The site changes are narrow:
+
+- homepage copy names the primary workflow and buyer more directly;
+- pricing page explains plan boundaries and buying path;
+- integration pages explain authority: read, draft, write, sync, or automate;
+- comparison pages include fit, poor fit, criteria, and procurement notes;
+- security page links to procurement-ready evidence;
+- demo CTA pages ask what shortlist or assistant research the buyer has already done.
+
+No large redesign is required. The important change is that each page now carries more decision evidence.
+
+## What changed in measurement
+
+The monthly report shifts from "which pages got visits" to:
+
+1. Which pages were accessed by crawlers, fetchers, or assistant browsing surfaces?
+2. Which pages produced qualified human sessions?
+3. Which comparison or pricing pages appeared in demo journeys?
+4. Which buyer questions still appear after the site answered them?
+5. Which pages need fact refresh because product, pricing, integration, or security claims changed?
+
+This report is more useful because it connects discovery signals to operational work.
+
+## Leading indicators
+
+The team should look for leading indicators before claiming revenue impact:
+
+- more demo forms mentioning a clear use case;
+- fewer first-call questions about basic fit;
+- more buyers arriving with specific integration or security questions;
+- higher engagement with comparison and pricing pages;
+- shorter sales follow-up because evidence pages already exist;
+- fewer support or sales requests for facts that should be public;
+- clearer CRM notes about how the buyer formed the shortlist.
+
+These are not vanity metrics. They show whether buyers are better prepared.
+
+## Common mistakes in this case
+
+### Mistake 1: treating AI crawler access as success
+
+A crawler request proves that a page was fetched. It does not prove that a buyer considered the product. Keep crawler reporting separate.
+
+### Mistake 2: publishing generic comparison pages
+
+Comparison pages that only say "we are better" are weak. The page should explain buyer situations where competitors or simpler tools may be better.
+
+### Mistake 3: hiding implementation cost
+
+B2B buyers care about rollout burden. If the page hides setup, migration, admin, integration, or security work, the buyer will ask later or leave earlier.
+
+### Mistake 4: leaving sales outside the content loop
+
+Sales hears the missing evidence first. If repeated buyer questions do not feed page updates, the content program stays disconnected from revenue reality.
+
+## Replication checklist
+
+Use this checklist for a B2B SaaS product-discovery sprint:
+
+- Identify the five buyer questions sales hears most often.
+- Map those questions to current pages.
+- Add direct fit and poor-fit language to comparison pages.
+- Explain integration authority, not just integration names.
+- Make pricing-plan boundaries clearer.
+- Link security evidence from decision-stage pages.
+- Separate crawler/fetch activity from human sessions.
+- Track comparison, pricing, and demo-intent events.
+- Add CRM notes for assistant-led research or shortlist context.
+- Review the pages monthly with sales and product changes.
+
+If the team cannot maintain these facts, it should not publish more comparison pages yet.
+
+## Bottom line
+
+The durable lesson from this case is that AI-assisted product discovery rewards decision clarity. A B2B SaaS site does not win by looking bigger than it is. It wins by making buyer fit, evidence, implementation burden, pricing boundaries, and next steps easier to inspect.
+
+That helps the buyer. It also gives AI assistants better material to summarize, compare, and route into the right evaluation path.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI browser search and product discovery readiness"
+		href="/models-and-apis/ai-browser-search-and-product-discovery-readiness/"
+		description="Use this page for the broader readiness checklist behind this case study."
+	/>
+	<LinkCard
+		title="AI crawler referral and conversion measurement"
+		href="/models-and-apis/ai-crawler-referral-and-conversion-measurement-for-product-sites/"
+		description="Use this page to build the measurement layer for crawlers, referrals, landing pages, and qualified conversions."
+	/>
+	<LinkCard
+		title="Product comparison page structure"
+		href="/models-and-apis/product-comparison-page-structure-for-ai-assisted-discovery/"
+		description="Use this page to turn the case study into a repeatable comparison and alternatives page blueprint."
+	/>
+	<LinkCard
+		title="Sales and revenue teams"
+		href="/use-cases/sales-and-revenue-teams/"
+		description="Use this page when the content changes need to support account research, follow-up, and revenue workflows."
+	/>
+	<LinkCard
+		title="Cost per success and tool economics"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Use this page when discovery, assistant tools, and measurement need to connect to completed outcomes."
+	/>
+</div>

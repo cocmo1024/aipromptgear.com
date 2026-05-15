@@ -1,0 +1,168 @@
+---
+title: Physical AI Robotics Readiness for Operations Teams
+description: Prepare operations teams for physical AI and robotics with task selection, simulation, supervision, safety, data capture, evals, and incident review.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: physical AI robotics readiness
+searchIntent: design
+decisionStage: problem-aware
+targetRoles:
+  - Operations leaders
+  - Manufacturing teams
+  - Facilities teams
+  - Robotics program owners
+  - AI platform teams
+contentStatus: growing
+contentCluster: use-cases
+canonicalCluster: use-cases
+pageType: playbook
+lifecycle: evergreen
+refreshPriority: high
+datePublished: 2026-05-15
+lastReviewed: 2026-05-15
+problemSolved: How to decide whether an operations team is ready to test physical AI and robotics workflows beyond demos, videos, or vendor pilots.
+readerTakeaway: You should leave with a readiness checklist for selecting the first physical AI use case, collecting evidence, adding supervision, and reviewing incidents.
+keyQuestions:
+  - Which physical AI use cases are safe enough to test first?
+  - What does an operations team need before robot autonomy is useful?
+  - How should physical AI systems be evaluated before broader rollout?
+notFor:
+  - Consumer robot buyers
+  - Teams looking for speculative humanoid robot predictions only
+  - Robotics programs with no safety, supervision, or operations owner
+updateTriggers:
+  - Major robotics model releases from Google DeepMind, NVIDIA, or robotics platform vendors
+  - New safety, simulation, or embodied reasoning benchmarks
+  - Industrial or facilities deployments that change practical rollout patterns
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Physical AI becomes useful only when it is tied to a real operations problem. A robot demo is not an operating model. Operations teams need task boundaries, physical safety rules, simulation, labeled failure examples, human supervision, and incident review before autonomy should be expanded.
+
+## Quick answer
+
+The best first physical AI use case is:
+
+- repeatable;
+- observable;
+- low consequence if stopped;
+- valuable even with human review;
+- rich in visual or sensor evidence;
+- easy to replay in simulation or video review;
+- and owned by a team that already understands the physical process.
+
+Avoid first projects where a robot can injure people, damage expensive equipment, block production, or make irreversible decisions without a human checkpoint.
+
+## Why this matters now
+
+Physical AI is moving from research language into platform roadmaps. NVIDIA is pushing Cosmos, Isaac, and GR00T as building blocks for production-scale robotics. Google DeepMind's Gemini Robotics-ER 1.6 emphasizes embodied reasoning, success detection, instrument reading, and physical safety. Deloitte's 2026 enterprise AI report also treats physical AI as part of enterprise readiness, not a separate science project.
+
+For operations teams, the durable question is not whether robots will become more capable. The question is which workflows can absorb that capability safely.
+
+## First-use-case filter
+
+| Candidate use case | Starting fit | Why |
+| --- | --- | --- |
+| Facility instrument reading | Strong | Visual task, clear output, human review possible, low direct manipulation |
+| Inventory shelf inspection | Strong | Repetitive, observable, measurable, easy to compare against ground truth |
+| Equipment anomaly photo review | Strong | Agent can triage evidence before a technician acts |
+| Pick-and-place near people | Weak first project | Physical action, safety envelope, and retry behavior are harder |
+| Autonomous forklift routing | Weak first project | High consequence and environment complexity |
+| Surgical or clinical robot control | Not an early general-agent project | Regulated, high consequence, expert supervision required |
+| Warehouse exception handling | Moderate | Valuable, but needs strong stop rules and escalation |
+| Quality inspection with image evidence | Strong | Clear labels, replayable failures, and measurable false positives |
+
+Start with perception, inspection, and evidence tasks before letting a robot perform physical changes.
+
+## Readiness checklist
+
+| Area | Required before rollout |
+| --- | --- |
+| Task definition | Written task boundary, success state, stop state, and out-of-scope cases |
+| Environment map | Known zones, hazards, access limits, lighting, occlusion, and human proximity |
+| Data capture | Images, video, sensor logs, timestamps, and operator labels |
+| Simulation or replay | Way to test policies before real-world action |
+| Human supervision | Clear owner, review queue, emergency stop, and escalation path |
+| Safety policy | Physical constraints, forbidden actions, speed or force limits, and lockout rules |
+| Tool boundary | Which APIs, robot controls, or facility systems the AI can access |
+| Evaluation | Ground-truth labels, task success, false safe, false unsafe, and recovery metrics |
+| Incident review | Evidence packet, replay, root cause, corrective action, and rollback decision |
+
+If any row is missing, treat the pilot as observation-only.
+
+## Control levels
+
+| Level | AI role | Operational posture |
+| --- | --- | --- |
+| Observe | Captures and summarizes visual or sensor state | Safe default for early pilots |
+| Recommend | Suggests a reading, anomaly, or next step | Human confirms before action |
+| Navigate | Moves through a constrained environment | Requires mapping, safety zones, and stop controls |
+| Manipulate | Handles objects or controls equipment | Requires task-specific safety validation |
+| Coordinate | Plans across multiple robots or systems | Requires operations control plane and incident playbooks |
+
+Most teams should not jump from Observe to Manipulate. The middle layers are where reliability and trust are earned.
+
+## What to evaluate
+
+Physical AI evals need more than text-answer accuracy.
+
+| Metric | What it measures |
+| --- | --- |
+| Success detection | Whether the system knows the task is complete |
+| False safe rate | How often it says a risky state is safe |
+| False stop rate | How often it stops unnecessarily |
+| Recovery quality | Whether it chooses stop, retry, or escalation correctly |
+| Multi-view consistency | Whether different camera views are reconciled correctly |
+| Instrument reading error | Numeric or categorical error on gauges, displays, and panels |
+| Human override rate | How often operators intervene and why |
+| Incident evidence completeness | Whether the team can reconstruct what happened |
+
+In physical AI, a confident wrong answer can become a physical hazard. The evaluation should punish false safe decisions heavily.
+
+## Failure modes
+
+| Failure | Safer design response |
+| --- | --- |
+| Poor lighting or occlusion | Ask for another viewpoint or stop |
+| Ambiguous object identity | Require human confirmation |
+| Unexpected human in workspace | Stop and alert |
+| Tool or actuator timeout | Stop instead of retrying blindly |
+| Partial task completion | Mark needs review; do not infer success |
+| Unsafe retry loop | Limit attempts and require operator approval |
+| Sensor disagreement | Escalate with evidence packet |
+| Simulation gap | Restrict rollout to observed environments until real-world evidence improves |
+
+Retries that are harmless in software can be dangerous in the physical world.
+
+## Source notes checked May 15, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [Google DeepMind Gemini Robotics-ER 1.6](https://deepmind.google/blog/gemini-robotics-er-1-6/) | Google emphasizes spatial reasoning, success detection, instrument reading, multi-view reasoning, and physical safety. |
+| [NVIDIA physical AI ecosystem release](https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Global-Robotics-Leaders-Take-Physical-AI-to-the-Real-World/) | NVIDIA positions Cosmos, Isaac, and GR00T as a stack for production-scale physical AI and robotics ecosystem deployment. |
+| [Deloitte State of AI in the Enterprise 2026](https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html) | Deloitte includes physical AI and readiness as part of broader enterprise AI planning. |
+
+## Related pages
+
+<div class="portal-links">
+	<LinkCard
+		title="Tool timeouts, retries, and idempotency for AI agents"
+		href="/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/"
+		description="Use this page before allowing repeated physical or tool actions after failure."
+	/>
+	<LinkCard
+		title="AI agent incident response runbook"
+		href="/tooling/ai-agent-incident-response-runbook/"
+		description="Prepare review and rollback procedures before autonomy expands."
+	/>
+	<LinkCard
+		title="Computer Use API vs browser automation"
+		href="/agent-systems/computer-use-api-vs-browser-automation-for-ai-agents/"
+		description="A related control-boundary page for UI-facing agents where interpretation and deterministic automation overlap."
+	/>
+</div>

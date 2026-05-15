@@ -1,6 +1,6 @@
 ---
 title: Conversation State vs RAG vs Long Context for AI Agents
-description: A practical guide to deciding when an AI product needs stateful conversation memory, retrieval, or long-context prompting instead of treating them as the same architecture choice.
+description: Decide when an AI product needs conversation memory, retrieval, or long context instead of treating them as one architecture choice.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -39,7 +39,6 @@ lastReviewed: 2026-05-09
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# Conversation State vs RAG vs Long Context for AI Agents
 
 Teams often treat conversation state, retrieval, and long context as if they all solve "memory." They do not. They solve different problems, at different costs, with different failure modes. The wrong architecture usually happens when a product adds all three before the team has written down what the system is actually supposed to remember.
 

@@ -1,0 +1,3 @@
+# Canonical host redirects for Cloudflare Pages.
+http://www.aipromptgear.com/* https://aipromptgear.com/:splat 301
+https://www.aipromptgear.com/* https://aipromptgear.com/:splat 301

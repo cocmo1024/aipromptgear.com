@@ -1,6 +1,6 @@
 ---
-title: OpenAI Batch API vs background mode for large AI jobs
-description: How to choose between OpenAI Batch API and background mode, and why bulk deferred jobs are not the same thing as tracked long-running product tasks.
+title: "OpenAI Batch API vs Background Mode: Which Async Pattern Fits?"
+description: Choose OpenAI Batch for bulk offline requests or background mode for tracked product jobs. Compare cost, status, review, and cancellation needs.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-11
-lastReviewed: 2026-05-01
+lastReviewed: 2026-05-15
 contentCluster: ai-cost-and-compute
 canonicalCluster: ai-cost-and-compute
 pageType: decision-guide
@@ -41,7 +41,6 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# OpenAI Batch API vs background mode for large AI jobs
 
 Teams often say they need "async AI," but that phrase hides two very different OpenAI workload shapes:
 
@@ -56,12 +55,25 @@ Use **Batch API** when you have large numbers of independent, non-urgent request
 
 Batch is a **bulk throughput tool**. Background mode is a **long-running task tool**.
 
-## Official signals checked May 1, 2026
+## Quick comparison
+
+| Question | Choose Batch API when... | Choose background mode when... |
+| --- | --- | --- |
+| Unit of work | You have many independent requests | You have one meaningful product job |
+| User expectation | Nobody is actively waiting for each record | A user or operator needs to return to the result |
+| Status need | Batch-level status is enough | Job-level status, cancellation, retry, or review matters |
+| Completion window | A deferred window is acceptable | The task may be long, but the product still needs continuity |
+| Cost model | Lower-cost throughput is the main benefit | Product-safe async execution is the main benefit |
+| Typical examples | eval sweeps, enrichment, classification, backfills | research briefs, document analysis, tool-heavy jobs, approval-ready drafts |
+
+If the workload is "many rows," start with Batch. If the workload is "one user's job," start with background mode.
+
+## Official signals checked May 15, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
-| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous request sets, lower-cost deferred execution, higher async headroom, and completion within a 24-hour window | It is built for backlog processing, not live user waiting loops |
-| [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI publicly positions Batch as offering materially lower cost for eligible workloads | Deferred bulk jobs can have very different economics from live requests |
+| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous request sets, separate batch rate limits, and completion within a 24-hour window | It is built for backlog processing, not live user waiting loops |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI publicly positions Batch as a lower-cost lane for eligible asynchronous workloads | Deferred bulk jobs can have very different economics from live requests |
 | [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode is framed around long-running tasks that are created, polled, and completed asynchronously | It fits product flows where one task may outlast a normal synchronous response |
 
 The important economic distinction is not "async is cheaper." Batch can be cheaper because it trades urgency for deferred processing. Background mode is not primarily a discount mechanism; it is a product continuity mechanism for long-running jobs that still need status, retrieval, review, and cancellation.

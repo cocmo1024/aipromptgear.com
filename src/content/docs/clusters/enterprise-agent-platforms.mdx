@@ -32,12 +32,11 @@ updateTriggers:
   - New governance, connector, audit, identity, or marketplace features
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-15
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# Enterprise Agent Platforms Cluster
 
 Enterprise agent platforms are not only model wrappers. They become operating infrastructure for tools, data, identity, approvals, traces, evaluation, budgets, and incidents. This cluster organizes platform buying and governance content around those layers.
 
@@ -50,6 +49,10 @@ Enterprise teams should enter the cluster by procurement risk:
 | The RFP is still model-demo driven | [Enterprise agent platform RFP checklist](/tool-comparisons/enterprise-agent-platform-rfp-checklist/) | Which governance, identity, connector, eval, and audit requirements belong in the RFP |
 | The team is unsure whether to build or buy | [Should you build or buy an AI agent platform?](/tool-comparisons/should-you-build-or-buy-an-ai-agent-platform/) | Which control-plane layers are strategic to own |
 | Security review is blocking rollout | [AI agent vendor security questionnaire](/tool-comparisons/ai-agent-vendor-security-questionnaire-for-enterprise-procurement/) | Which vendor claims need evidence before tool/data access |
+| Privacy or sovereignty requirements are blocking procurement | [Private and sovereign AI architecture](/models-and-apis/private-and-sovereign-ai-architecture-for-enterprise-agents/) | Which workloads need regional inference, data residency, trace limits, or local controls |
+| Workspace connectors are spreading | [Workspace agent connector governance](/tooling/workspace-agent-connector-governance-checklist/) | Which connector scopes, identities, approvals, logs, and shutdown paths must exist |
+| Executives want rollout visibility | [Workspace agent admin analytics](/tooling/workspace-agent-admin-analytics-checklist/) | Which departments, workflows, connectors, permissions, costs, and incidents need admin reporting |
+| Business teams want packaged vertical workflows | [Vertical AI agent template rollout](/use-cases/vertical-ai-agent-template-rollout-model-for-business-teams/) | How to map templates to workflow owners, connector scopes, approval classes, and outcome metrics |
 | Platform use is spreading without inventory | [Enterprise agent governance control plane](/tooling/enterprise-agent-governance-control-plane/) | How to govern agents, tools, permissions, budgets, and incidents |
 | Vendor comparison is stuck on model quality | [OpenAI vs Anthropic vs Google Gemini](/tool-comparisons/openai-vs-anthropic-vs-google-gemini-for-enterprise-agent-teams/) | How operating model and governance fit change the shortlist |
 
@@ -89,6 +92,16 @@ If a vendor is strong in one layer and weak in another, the buyer should know wh
 		href="/tool-comparisons/openai-vs-anthropic-vs-google-gemini-for-enterprise-agent-teams/"
 		description="Compare major vendors by operating model, governance posture, and platform fit."
 	/>
+	<LinkCard
+		title="Private and sovereign AI architecture"
+		href="/models-and-apis/private-and-sovereign-ai-architecture-for-enterprise-agents/"
+		description="Classify enterprise agent workloads by privacy, residency, regional control, trace retention, and vendor evidence requirements."
+	/>
+	<LinkCard
+		title="Vertical AI agent template rollout"
+		href="/use-cases/vertical-ai-agent-template-rollout-model-for-business-teams/"
+		description="Turn finance, sales, operations, and small-business agent templates into governed workflows with owners, approvals, connectors, and measurement."
+	/>
 </div>
 
 ## Governance and security review
@@ -98,6 +111,16 @@ If a vendor is strong in one layer and weak in another, the buyer should know wh
 		title="Enterprise agent governance control plane"
 		href="/tooling/enterprise-agent-governance-control-plane/"
 		description="Govern agent inventory, identity, permissions, tools, approvals, audit trails, budgets, evals, and rollback."
+	/>
+	<LinkCard
+		title="Workspace agent connector governance"
+		href="/tooling/workspace-agent-connector-governance-checklist/"
+		description="Review connector inventory, identity, OAuth scopes, data owners, approvals, audit evidence, and deprovisioning."
+	/>
+	<LinkCard
+		title="Workspace agent admin analytics"
+		href="/tooling/workspace-agent-admin-analytics-checklist/"
+		description="Define admin views for adoption, workflow value, connector use, permissions, quality, cost, and incidents."
 	/>
 	<LinkCard
 		title="AI agent vendor security questionnaire"

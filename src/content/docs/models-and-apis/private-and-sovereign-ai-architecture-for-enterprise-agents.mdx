@@ -1,0 +1,175 @@
+---
+title: Private and Sovereign AI Architecture for Enterprise Agents
+description: Decide when enterprise agents need private AI, sovereign AI, regional inference, data residency, trace controls, model locality, and vendor evidence.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: private and sovereign AI architecture
+searchIntent: design
+decisionStage: shortlist
+targetRoles:
+  - Enterprise architects
+  - AI platform leaders
+  - Security reviewers
+  - Compliance teams
+  - Procurement teams
+contentStatus: growing
+contentCluster: enterprise-agent-platforms
+canonicalCluster: enterprise-agent-platforms
+pageType: decision-guide
+lifecycle: evergreen
+refreshPriority: high
+datePublished: 2026-05-15
+lastReviewed: 2026-05-15
+problemSolved: How to decide whether an enterprise agent product needs private AI controls, sovereign deployment boundaries, or a standard hosted-model architecture.
+readerTakeaway: You should leave with a practical architecture checklist for data location, inference location, logs, tools, vendors, and operational ownership.
+keyQuestions:
+  - What is the difference between private AI and sovereign AI?
+  - When do enterprise agents need regional or private inference?
+  - Which evidence should vendors provide before handling regulated agent workflows?
+notFor:
+  - Consumer AI app selection
+  - Teams with no sensitive data, jurisdiction, or regulated workflow requirements
+  - Generic cloud migration planning with no AI-specific tool or trace behavior
+updateTriggers:
+  - New sovereign AI regulations or data-residency requirements
+  - Provider changes in regional inference, retention, ZDR, or private deployment options
+  - Major enterprise AI reports on privacy, sovereignty, cloud security, or agent governance
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Private AI and sovereign AI are often discussed as if they are the same thing. They are not. Private AI is about protecting enterprise data, access, and exposure. Sovereign AI is about jurisdiction, residency, regulatory control, and local operating requirements. Enterprise agents can need one, both, or neither.
+
+## Quick answer
+
+Use this rule:
+
+| Requirement | Architecture direction |
+| --- | --- |
+| Sensitive internal data but no hard residency rule | Private AI controls may be enough |
+| Data, inference, logs, or support access must stay in a region | Sovereign AI boundary is required |
+| Agent tools touch regulated systems | Tool scope, audit trail, and identity controls matter as much as model location |
+| Model calls are low-risk and public-data only | Standard hosted API may be enough |
+| Cross-border traces are forbidden | Logging, evals, and support workflows must be redesigned, not only inference |
+
+The mistake is treating sovereignty as a hosting checkbox. Agents move prompts, retrieved files, tool outputs, traces, reviewer notes, and support artifacts. Every one of those layers needs a location and access decision.
+
+## Private AI vs sovereign AI
+
+| Dimension | Private AI | Sovereign AI |
+| --- | --- | --- |
+| Main concern | Enterprise control over sensitive data and access | Jurisdiction, residency, national or regional control |
+| Typical driver | Security, IP protection, customer data, internal policy | Regulation, public-sector requirements, financial services, healthcare, defense, cross-border restrictions |
+| Core question | Who can see the data and how is it protected? | Where may data, inference, logs, and operations exist? |
+| Deployment shape | Private cloud, tenant isolation, VPC, ZDR, encryption, access control | Regional model serving, local cloud, sovereign cloud, country-specific operations, local support controls |
+| Agent-specific risk | Tools, traces, memory, and files expand exposure | Agent workflows may cross jurisdictions through tools, logs, and human review |
+
+Private AI can still be globally hosted. Sovereign AI can still use cloud. The question is which control boundary the workload actually requires.
+
+## Agent architecture checklist
+
+Evaluate each layer separately:
+
+| Layer | Question to answer |
+| --- | --- |
+| User prompt | Can the prompt contain personal, regulated, or confidential data? |
+| Retrieved context | Where are files, embeddings, indexes, and caches stored? |
+| Model inference | Which region or environment processes the request? |
+| Tool calls | Can tools move data across systems or borders? |
+| Agent memory | Is memory retained, and who can inspect or delete it? |
+| Traces and logs | Are prompts, tool outputs, errors, and reviewer notes stored locally? |
+| Evals | Can production traces be copied into eval datasets? |
+| Support access | Can vendor support personnel view customer data or logs? |
+| Incident review | Where does evidence live after a failure? |
+| Backup and disaster recovery | Do replicas cross the same boundary the live system must obey? |
+
+Most weak plans only answer the model inference row. That is not enough for agents.
+
+## Decision model
+
+| Workload | Likely fit | Why |
+| --- | --- | --- |
+| Public marketing copy generation | Hosted API | Low sensitivity if inputs are public and no customer records are used |
+| Internal policy assistant over confidential docs | Private AI controls | Data access, retrieval, logs, and user identity need strong control |
+| Healthcare claims workflow | Private plus sovereign review | Patient data, audit trails, and jurisdiction may drive deployment |
+| Government casework assistant | Sovereign AI boundary | Data, inference, logs, and support access may need local control |
+| Global sales email drafting | Hybrid | CRM data may need private controls, but generated text may not require sovereign inference |
+| Coding agent on proprietary repositories | Private controls with strict tool scopes | Source code, secrets, dependency changes, and PR traces require containment |
+
+## Vendor evidence to request
+
+Before a vendor handles enterprise agent workflows, ask for:
+
+- supported inference regions;
+- data retention defaults and opt-out options;
+- zero-data-retention or equivalent controls;
+- log redaction behavior;
+- tool-call and connector logging policy;
+- support access controls;
+- subprocessor and region list;
+- encryption and key-management model;
+- tenant isolation evidence;
+- incident notification process;
+- export and deletion workflow for traces, memories, and files;
+- whether eval datasets can be built without moving regulated traces.
+
+If the vendor can only answer model questions, the enterprise platform team still owns the missing architecture.
+
+## Implementation pattern
+
+Start with a workload classification table:
+
+| Classification | Allowed architecture |
+| --- | --- |
+| Public | Standard hosted API, standard logging, normal support |
+| Internal confidential | Private controls, restricted logging, scoped tools, audit trail |
+| Regulated | Private controls plus retention, redaction, reviewer evidence, and incident workflow |
+| Sovereign | Regional inference, regional logs, regional support path, local backup and DR policy |
+| Prohibited | No model submission until data is transformed, consented, or excluded |
+
+Then bind every agent to a classification before it receives tools or documents.
+
+## Failure modes
+
+| Failure | Why it happens |
+| --- | --- |
+| Logs violate residency rules | Team localized inference but left traces in a global observability tool |
+| Evals leak sensitive data | Production traces are copied into shared review datasets without redaction |
+| Tool calls cross boundaries | Agent retrieves from a local system and writes to a global SaaS tool |
+| Vendor support sees regulated data | Support access was excluded from the architecture review |
+| Memory retention surprises users | Agent memory and conversation history outlive the approved retention window |
+| Backup breaks sovereignty | Disaster-recovery replicas move data into a non-approved jurisdiction |
+
+Agents widen the blast radius because they connect data, tools, and human review in one workflow.
+
+## Source notes checked May 15, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [NTT DATA private and sovereign AI report release](https://us.nttdata.com/en/news/press-release/2026/may/enterprise-ai-hits-the-wall-ntt-data-research-reveals-growing-privacy-and-sovereignty-barriers) | Privacy, sovereignty, cross-border restrictions, and cloud security posture are becoming enterprise AI blockers. |
+| [Deloitte State of AI in the Enterprise 2026](https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html) | Enterprise AI readiness now includes sovereign AI, agentic AI, physical AI, workforce skills, and workflow redesign. |
+| [Anthropic enterprise agents 2026 survey](https://claude.com/blog/how-enterprises-are-building-ai-agents-in-2026) | Enterprises are moving from simple automation to multi-stage workflows and cross-functional processes. |
+
+## Related pages
+
+<div class="portal-links">
+	<LinkCard
+		title="Enterprise agent platform RFP checklist"
+		href="/tool-comparisons/enterprise-agent-platform-rfp-checklist/"
+		description="Turn private and sovereign requirements into RFP evidence instead of accepting vendor claims."
+	/>
+	<LinkCard
+		title="Background mode, ZDR, and retention"
+		href="/models-and-apis/openai-background-mode-zdr-store-true-and-retention-limits/"
+		description="Use this page when long-running background work intersects with data-retention restrictions."
+	/>
+	<LinkCard
+		title="AI agent vendor security questionnaire"
+		href="/tool-comparisons/ai-agent-vendor-security-questionnaire-for-enterprise-procurement/"
+		description="Ask the security and governance questions before granting data, tools, or code access."
+	/>
+</div>

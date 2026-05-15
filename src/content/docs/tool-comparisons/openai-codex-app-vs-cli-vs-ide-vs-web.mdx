@@ -1,6 +1,6 @@
 ---
-title: OpenAI Codex App vs CLI vs IDE vs Web
-description: Compare the OpenAI Codex desktop app, CLI, IDE extension, and Codex web by workflow fit, local control, cloud delegation, review, worktrees, and team rollout.
+title: "OpenAI Codex App vs CLI vs IDE vs Web: Which Should You Use?"
+description: "Compare Codex app, CLI, IDE extension, and Codex web by task fit: local control, cloud delegation, worktrees, reviews, and team rollout."
 referenceType: tool-comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -33,16 +33,25 @@ updateTriggers:
   - Major changes in cloud delegation or GitHub integration
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-15
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# OpenAI Codex App vs CLI vs IDE vs Web
 
 OpenAI Codex now exists across several surfaces: the desktop app, CLI, IDE extension, and Codex web. They are connected by the same broader Codex product direction, but they do not optimize for the same kind of work. Choosing the wrong surface is one of the fastest ways to turn a capable coding agent into a frustrating workflow.
 
 The short rule: use the desktop app to supervise multiple agent threads, the CLI for terminal-native local work, the IDE extension for editor-centered pairing, and Codex web when delegation to a cloud environment is the point.
+
+## Quick answer by task
+
+| Task you need done | Best starting surface | Why |
+| --- | --- | --- |
+| Run several coding agents on one local project | Codex desktop app | Worktrees, threads, review context, skills, plugins, and local project supervision matter |
+| Make one terminal-native change and run commands | Codex CLI | The shell, Git, tests, package managers, and local scripts are the workflow |
+| Pair while reading and editing code in the editor | Codex IDE extension | The file, symbols, and local editor context are already in front of the developer |
+| Delegate a repository task away from your machine | Codex web | The task can run in a cloud environment and come back as reviewed work or a PR |
+| Compare surfaces for a team rollout | Start with desktop plus web, then allow CLI/IDE by task class | Teams need routing rules, not one universal surface |
 
 ## Comparison table
 
@@ -170,4 +179,3 @@ If the answer is "several agents, local project, reviewable diff," use Codex des
 ## Source notes
 
 This comparison is grounded in OpenAI's [Codex app docs](https://developers.openai.com/codex/app/features), [Codex CLI docs](https://developers.openai.com/codex/cli), [Codex IDE docs](https://developers.openai.com/codex/ide), [Codex web docs](https://developers.openai.com/codex/cloud), and [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-chatgpt).
-

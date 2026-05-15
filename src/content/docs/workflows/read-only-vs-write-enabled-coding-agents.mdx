@@ -1,6 +1,6 @@
 ---
-title: Read-only vs write-enabled coding agents
-description: How engineering teams should separate read-only coding agents from write-enabled ones so agent leverage grows without collapsing repo safety and review discipline.
+title: "Read-Only vs Write-Enabled Coding Agents: When to Allow Repo Edits"
+description: How engineering teams should separate read-only coding agents from write-enabled agents, repo edits, PR creation, approvals, and production write boundaries.
 referenceType: workflow
 adProfile: workflow
 commercialIntent: high
@@ -23,12 +23,27 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-15
 ---
+
+import { LinkCard } from '@astrojs/starlight/components';
 
 ## What matters first
 
 Read-only and write-enabled coding agents are not the same product category. Read-only agents are usually research, explanation, search, and diagnosis tools. Write-enabled agents create change-management, review, and rollback risk immediately. Teams should not use the same approval model for both.
+
+## Quick answer
+
+Keep coding agents read-only for exploration, explanation, impact analysis, and test-failure diagnosis. Allow write-enabled mode only after the team defines safe file classes, review owners, test expectations, PR rules, and rollback paths.
+
+| Capability | Default policy |
+| --- | --- |
+| Read repository files | Usually allow within repo and data-sensitivity boundaries |
+| Explain code or trace a bug | Allow as read-only work |
+| Suggest a patch | Allow, but keep it separate from applying the patch |
+| Apply a patch | Require bounded scope and human diff review |
+| Open a PR | Allow only with tests, summary, and normal review gates |
+| Merge, deploy, or change production systems | Require explicit approval and strong rollback controls |
 
 ## Why this distinction matters
 
@@ -122,7 +137,25 @@ That means the process can handle agent edits as a governed change source, not a
 
 ## Compare next
 
-- [Approval systems for coding agents](/workflows/approval-systems-for-coding-agents/)
-- [AI coding agents for engineering teams](/use-cases/ai-coding-agents-for-engineering-teams/)
-- [Trace grading for tool-using AI agents](/evaluation/trace-grading-for-tool-using-ai-agents/)
-- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
+<div class="portal-links">
+	<LinkCard
+		title="Should AI agents write to production systems?"
+		href="/agent-systems/what-should-an-ai-agent-be-allowed-to-do-in-production/"
+		description="Use this page when repo write access expands into broader production permissions."
+	/>
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="Design approval boundaries for repo read, write, PR, merge, and deployment actions."
+	/>
+	<LinkCard
+		title="AI coding agents for engineering teams"
+		href="/use-cases/ai-coding-agents-for-engineering-teams/"
+		description="Use this page for the broader engineering rollout model."
+	/>
+	<LinkCard
+		title="Trace grading for tool-using AI agents"
+		href="/evaluation/trace-grading-for-tool-using-ai-agents/"
+		description="Grade whether the agent used tools and edits correctly, not only whether the final answer sounded plausible."
+	/>
+</div>

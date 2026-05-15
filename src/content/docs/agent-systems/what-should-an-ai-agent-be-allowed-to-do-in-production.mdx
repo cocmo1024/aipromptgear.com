@@ -1,11 +1,11 @@
 ---
-title: What should an AI agent be allowed to do in production?
-description: A practical permission model for production AI agents covering read access, draft actions, approvals, write boundaries, and the safest way to expand scope over time.
+title: Should AI Agents Be Allowed to Write to Production Systems?
+description: A practical permission model for deciding when AI agents can read, draft, propose, or write to production systems, and which actions require approval.
 referenceType: workflow
 adProfile: workflow
 commercialIntent: high
 reviewCadence: Monthly review
-primaryKeyword: ai agent permissions in production
+primaryKeyword: should ai agents be allowed to write to production systems
 searchIntent: design
 decisionStage: implementation
 targetRoles:
@@ -35,12 +35,11 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-15
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# What should an AI agent be allowed to do in production?
 
 ## What matters first
 
@@ -52,6 +51,20 @@ The safest default is:
 - and **never execute broad side effects by default**.
 
 Production AI agents should earn permission in stages. They should not start with wide authority just because the workflow sounds useful.
+
+## Quick answer
+
+AI agents can be allowed to write to production systems only when the write scope is narrow, the action class is low enough risk, the agent identity is explicit, the audit trail is complete, and approval rules are enforced before consequential side effects.
+
+| Action class | Default production policy |
+| --- | --- |
+| Read approved sources | Allow with narrow scope and logging |
+| Draft a response, ticket, patch, or plan | Allow within workflow boundaries |
+| Propose a production change | Allow if a human or policy gate approves execution |
+| Write low-risk internal metadata | Consider after traces, tests, and rollback are proven |
+| Write customer, financial, security, permission, or deployment state | Require explicit approval and a narrow rollback path |
+
+The question is not whether an agent is generally trustworthy. The question is whether this specific action has enough scope control, review evidence, and rollback support.
 
 ## The permission ladder
 

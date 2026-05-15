@@ -1,6 +1,6 @@
 ---
-title: OpenAI Batch API vs Flex Processing vs Priority for AI cost control
-description: Compare OpenAI Batch API, Flex processing, and Priority processing for AI workloads where cost, latency, reliability, and queue design all matter.
+title: OpenAI Batch vs Flex vs Priority Processing for API Cost Control
+description: Compare OpenAI Batch API, Flex processing, and Priority processing by cost, latency, reliability, queue design, and workload class.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -30,7 +30,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-15
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-15
 contentCluster: ai-cost-and-compute
 canonicalCluster: ai-cost-and-compute
 pageType: decision-guide
@@ -38,9 +38,12 @@ lifecycle: evergreen
 refreshPriority: high
 ---
 
-# OpenAI Batch API vs Flex Processing vs Priority for AI cost control
 
 OpenAI Batch, Flex processing, and Priority processing are all cost or service-tier decisions, but they do not solve the same problem. Batch is for many deferred jobs. Flex is for work that can tolerate softer responsiveness. Priority is for traffic where speed and reliability are worth paying for. Treating all three as generic discount options is how teams cut API spend and damage the product at the same time.
+
+## Terminology note
+
+OpenAI Flex processing is an API service tier. It is unrelated to CSS flexbox. If the question is "OpenAI API vs flexbox," the useful comparison is usually **standard API requests vs Flex processing**, not a web layout feature.
 
 ## What matters first
 
@@ -63,14 +66,25 @@ As AI products get more tool-heavy and more stateful, token cost is no longer th
 
 That makes service-tier choice part of product design, not just infrastructure tuning.
 
-## Official signals checked April 15, 2026
+## Official signals checked May 15, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
 | [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI now exposes **priority processing**, **batch**, and **flex processing** as distinct service options | Teams should stop treating cost control as only a model-choice problem |
 | [OpenAI API pricing](https://openai.com/api/pricing/) | Batch emphasizes lower-cost asynchronous processing over a longer completion window | Batch belongs to deferred workloads, not interactive request paths |
-| [OpenAI API pricing](https://openai.com/api/pricing/) | Flex processing explicitly trades lower price for slower response and occasional resource unavailability | Flex is a queueing and reliability decision, not just a discount |
+| [OpenAI API pricing](https://openai.com/api/pricing/) | Flex processing trades lower price for slower response and occasional resource unavailability | Flex is a queueing and reliability decision, not just a discount |
 | [Priority processing](https://openai.com/api-priority-processing) | Priority is positioned around speed and reliability guarantees for faster production traffic | Priority spend should be reserved for requests with real business-value sensitivity |
+
+## Direct decision table
+
+| Workload | Better lane | Reason |
+| --- | --- | --- |
+| Customer is actively waiting | Priority or standard | Latency and reliability affect trust immediately |
+| Nightly evals or enrichment | Batch | The work can leave the live request path |
+| Low-priority internal report | Flex | Delay is acceptable and the product can tolerate softer availability |
+| Paid workflow with SLA | Priority | The business impact justifies stronger service expectations |
+| Large backfill | Batch | Throughput and cost matter more than immediate completion |
+| Optional feature on a lower plan | Flex or standard with queueing | Product promise can be softer if communicated clearly |
 
 ## The cleanest workload split
 

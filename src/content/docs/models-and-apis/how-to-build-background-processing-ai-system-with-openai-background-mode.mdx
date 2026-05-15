@@ -1,6 +1,6 @@
 ---
-title: Build Background Processing AI with OpenAI Background Mode
-description: A production architecture for OpenAI background mode covering job records, status polling, streaming recovery, review gates, cancellation, and failure handling.
+title: How to Build a Background Processing AI System with OpenAI Background Mode
+description: A step-by-step architecture for OpenAI background mode with job records, status polling, result storage, review gates, cancellation, retries, and recovery.
 referenceType: workflow
 adProfile: workflow
 commercialIntent: high
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-24
-lastReviewed: 2026-04-24
+lastReviewed: 2026-05-15
 contentCluster: models-and-apis
 canonicalCluster: models-and-apis
 pageType: decision-guide
@@ -41,11 +41,25 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# How to build a background processing AI system with OpenAI background mode
 
 OpenAI background mode solves only one part of a background processing system: it lets a long-running response continue outside the normal synchronous request path. The product still needs a durable job model around it. Without that model, the API call may be asynchronous, but the user experience, review process, support workflow, and failure recovery are still improvised.
 
 The mistake is to treat background mode as a replacement for job architecture. It is better to treat it as one execution lane inside a product-owned background processing system.
+
+## Direct answer
+
+Build the system as a durable job workflow:
+
+| Layer | Minimum implementation |
+| --- | --- |
+| Job table | Internal job ID, user or workspace scope, job type, provider response ID, submitted input summary, current status, and timestamps |
+| Execution adapter | Code path that starts the OpenAI response in background mode and stores the returned response ID |
+| Status worker | Polls the response, maps provider state to product state, and records failure class |
+| Result store | Saves final output, files, citations, structured data, cost metadata, and evidence needed for review |
+| Review gate | Separates model completion from business completion when the output can affect users, customers, or systems |
+| Control actions | Cancel, retry, escalate, approve, archive, and expire jobs under explicit rules |
+
+The OpenAI API can run the long task. Your product still owns the lifecycle.
 
 ## The smallest useful architecture
 

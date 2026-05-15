@@ -1,0 +1,234 @@
+---
+title: "Cloud Coding-Agent Task Routing Model"
+description: "Route coding-agent tasks across local sessions, cloud worktrees, read-only exploration, CI repair, and human-owned engineering work."
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+contentCluster: coding-agents
+canonicalCluster: coding-agents
+pageType: playbook
+lifecycle: evergreen
+refreshPriority: high
+problemSolved: Helps engineering teams route coding-agent work by risk, coupling, review burden, and verification so cloud agents do not become random background diff generators.
+readerTakeaway: You should leave with a task-routing model for local agents, cloud agents, read-only explorers, parallel worktrees, CI fixes, and human-owned work.
+primaryKeyword: cloud coding agent task routing
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering leaders
+  - Developer productivity teams
+  - Staff engineers
+  - Platform teams
+  - Security reviewers
+keyQuestions:
+  - Which coding-agent tasks should run in the cloud?
+  - When should coding agents stay local and interactive?
+  - Which repository tasks should remain human-owned?
+notFor:
+  - Teams looking to outsource architecture decisions to agents
+  - Repositories without basic test, review, or ownership boundaries
+  - Personal experiments with no shared branch or reviewer impact
+updateTriggers:
+  - Major changes in cloud coding-agent products, worktree isolation, or review workflows
+  - New CI, sandbox, or repository permission patterns for coding agents
+  - Evidence that background coding-agent tasks are increasing reviewer load or defect risk
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-05-12
+lastReviewed: 2026-05-12
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+Cloud coding agents are useful when the task can be described clearly, isolated from high-risk systems, verified with tests or static checks, and reviewed without forcing a human to rediscover the entire problem. They are harmful when teams use them as a dumping ground for ambiguous engineering work.
+
+The routing question should come before the prompt.
+
+## Quick answer
+
+Route coding-agent tasks by coupling, risk, verification, and review burden. Use cloud agents for bounded tasks that can run in isolated worktrees with clear success checks. Use local interactive agents when requirements need back-and-forth or visual inspection. Use read-only agents for exploration. Keep architecture, security-sensitive design, incident judgment, and high-blast-radius migrations human-owned until the task can be reduced into reviewable subwork.
+
+## The routing table
+
+| Task type | Best lane | Why |
+| --- | --- | --- |
+| Repo exploration, impact analysis, dependency mapping | Read-only agent | The value is understanding, not file mutation |
+| Small bug fix with failing test | Cloud worktree agent | The task has a clear reproduction and verification target |
+| UI polish requiring visual judgment | Local interactive agent | The human needs to inspect screenshots and interaction details |
+| CI failure triage | Cloud or local agent depending on secrets and logs | The agent can summarize logs, propose fixes, and run checks |
+| Dependency update | Human-led with agent assistance | Blast radius and trust decisions need owner judgment |
+| Large migration | Human plan, agent subtask workers | The route should split work into bounded slices |
+| Security-sensitive auth, secrets, deployment, or permission changes | Human-owned with narrow agent drafting | Consequence is too high for broad background edits |
+| Documentation and test expansion | Cloud worktree agent | Scope is usually reviewable and easy to verify |
+
+The best lane is the one that keeps the review packet small enough for a human to trust.
+
+## Four questions before assigning a cloud agent
+
+Ask these before starting a cloud task:
+
+1. Can the desired change be expressed in one or two concrete outcomes?
+2. Can the agent verify the result without production secrets or fragile manual steps?
+3. Can a reviewer understand the diff without reading half the repository?
+4. Can the change be abandoned safely if the agent goes in the wrong direction?
+
+If the answer is no, keep the task local, exploratory, or human-led.
+
+## Read-only exploration should be a first-class lane
+
+Many teams jump straight from "agent can read the repo" to "agent can create a PR." That skips the safest value: fast repo understanding.
+
+Read-only agents are good for:
+
+- locating ownership boundaries;
+- summarizing related files;
+- mapping call paths;
+- identifying likely tests;
+- explaining a dependency chain;
+- preparing a change plan for human review;
+- estimating blast radius before write access.
+
+This lane is underrated because it does not produce a diff. It often produces better diffs later.
+
+## Cloud worktrees fit bounded implementation
+
+Cloud agents work best when the task has:
+
+- a clear file or module boundary;
+- a failing test or expected check;
+- a small desired behavior change;
+- no need for private production access;
+- low rollback cost;
+- a predictable reviewer.
+
+Examples:
+
+- add tests around an existing parser;
+- fix a type error after a library upgrade;
+- update docs based on changed behavior;
+- repair a small regression with a known failing command;
+- implement a narrow API response shape change.
+
+The cloud lane should not mean "less supervision." It should mean "better isolation and clearer packets."
+
+## Local interactive agents fit ambiguous work
+
+Use local interactive agents when the task depends on:
+
+- product judgment;
+- visual QA;
+- browser interaction;
+- local credentials or hardware;
+- rapid clarification;
+- user-facing copy or layout decisions;
+- tradeoffs that are still being discovered.
+
+Local work is slower than fire-and-forget background execution, but it avoids generating a pile of plausible diffs for a problem that was not ready to delegate.
+
+## Parallel agents need disjoint ownership
+
+Parallel coding agents create leverage only when each worker owns a separate area. Good splits look like:
+
+- frontend component updates in one path;
+- test fixture updates in another path;
+- documentation updates in a third path;
+- migration scripts separated from runtime code.
+
+Weak splits look like:
+
+- three agents editing the same shared utility;
+- multiple agents changing the same test suite without coordination;
+- parallel work before the architecture is settled;
+- agents competing to solve the same bug.
+
+Disjoint ownership reduces merge conflicts and makes review easier.
+
+## The routing packet
+
+Every cloud coding-agent task should include:
+
+- goal;
+- files or directories in scope;
+- files or systems out of scope;
+- expected verification command;
+- risk class;
+- reviewer or owner;
+- known uncertainty;
+- whether the agent may add tests, edit dependencies, or touch config.
+
+Without this packet, the agent is forced to infer boundaries that the team should have made explicit.
+
+## When humans should keep ownership
+
+Keep humans in charge when the task involves:
+
+- architecture direction;
+- security boundaries;
+- secrets or credentials;
+- deployment policy;
+- irreversible migrations;
+- dependency trust decisions;
+- incident response;
+- customer-data handling;
+- unclear product requirements;
+- cross-team contract changes.
+
+Agents can still help with analysis, drafting, tests, and migration slices. They should not own the judgment.
+
+## How to measure whether routing works
+
+Good routing improves:
+
+- accepted diffs per reviewer hour;
+- lower rework after review;
+- shorter cycle time for bounded tasks;
+- fewer abandoned agent branches;
+- fewer broad, noisy diffs;
+- clearer reviewer packets;
+- stable defect rates after merge.
+
+Poor routing shows up as:
+
+- reviewers rewriting agent work;
+- many branches abandoned after large token or runtime spend;
+- repeated scope creep;
+- CI fixes that mask real failures;
+- human engineers spending more time explaining than implementing.
+
+Measure accepted work, not generated work.
+
+## A practical routing rule
+
+Use this rule before assigning the task:
+
+**If the task cannot be scoped, verified, and reviewed cleanly, it is not ready for a cloud coding agent.**
+
+That does not mean the agent cannot help. It means the first agent task should be exploration, planning, or test identification rather than implementation.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="OpenAI Codex worktrees and parallel agents"
+		href="/workflows/openai-codex-worktrees-and-parallel-agents-playbook/"
+		description="Use this page when isolated worktrees and parallel agent threads are part of the operating model."
+	/>
+	<LinkCard
+		title="Read-only vs write-enabled coding agents"
+		href="/workflows/read-only-vs-write-enabled-coding-agents/"
+		description="Use this page when the routing decision depends on whether the agent may mutate repository state."
+	/>
+	<LinkCard
+		title="Coding-agent reviewer queues and approval capacity"
+		href="/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/"
+		description="Use this page when cloud task volume is starting to stress human review capacity."
+	/>
+	<LinkCard
+		title="PR checks and merge gates for coding agents"
+		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+		description="Use this page when routed work needs stronger automated checks before merge review."
+	/>
+</div>

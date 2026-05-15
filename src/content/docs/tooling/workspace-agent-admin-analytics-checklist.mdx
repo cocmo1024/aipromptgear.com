@@ -1,0 +1,266 @@
+---
+title: "Workspace Agent Admin Analytics Checklist"
+description: "A practical admin analytics checklist for enterprise workspace AI agents across adoption, connector use, permissions, quality, cost, incidents, and department rollout."
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+contentCluster: enterprise-agent-platforms
+canonicalCluster: enterprise-agent-platforms
+pageType: tool-guide
+lifecycle: evergreen
+refreshPriority: high
+problemSolved: Helps IT, security, and AI adoption teams decide which admin analytics are required before workspace agents expand across departments.
+readerTakeaway: You should leave with an admin analytics model that separates adoption, value, permissions, connector risk, quality, cost, and incident evidence.
+primaryKeyword: workspace agent admin analytics
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - IT leaders
+  - Workspace admins
+  - AI adoption leads
+  - Security teams
+  - Governance teams
+keyQuestions:
+  - What analytics should admins track for workspace AI agents?
+  - How should workspace agent adoption be measured by department and workflow?
+  - Which admin signals show that agent rollout is creating risk or value?
+notFor:
+  - Individual productivity users
+  - Teams measuring only seat activation without workflow outcomes
+  - Organizations without ownership for workspace data and connectors
+updateTriggers:
+  - New workspace AI admin dashboards, connector logs, audit controls, or policy features
+  - Department expansion from pilot to broad rollout
+  - Incidents involving data access, connector misuse, or low-quality automated outputs
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-05-13
+lastReviewed: 2026-05-13
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+Workspace AI agents spread quickly because they sit inside tools people already use: email, documents, calendars, chat, meetings, shared drives, tickets, CRM, and internal knowledge. Seat activation is easy to count. Governed value is harder.
+
+Admins need analytics that show not only who clicked the assistant, but which workflows are improving, which connectors are being used, which data boundaries are involved, and where quality or risk is drifting.
+
+## Quick answer
+
+Workspace agent admin analytics should cover seven layers:
+
+1. adoption by department and workflow;
+2. connector and data-source use;
+3. permission and identity patterns;
+4. quality and correction signals;
+5. human review and escalation behavior;
+6. cost, usage, and budget ownership;
+7. incidents, policy events, and deprovisioning.
+
+If the dashboard only reports active users and prompts submitted, it is not enough for enterprise rollout.
+
+## The admin analytics map
+
+| Analytics layer | What to measure | Why it matters |
+| --- | --- | --- |
+| Adoption | active users, teams, roles, departments, repeated workflows | Shows whether usage is real or only launch curiosity |
+| Workflow value | drafts accepted, meetings summarized, tickets created, documents updated, research packets used | Connects adoption to work completed |
+| Connector use | connected apps, data sources queried, action types, failed calls | Reveals where the agent is touching enterprise systems |
+| Permission risk | delegated scopes, service accounts, broad access, sensitive data classes | Shows blast radius before incidents |
+| Quality | corrections, rejected outputs, hallucination reports, stale source flags | Prevents confident but low-quality rollout |
+| Review burden | approvals requested, approvals denied, queue latency, escalations | Shows whether agents are creating hidden human work |
+| Cost | usage by department, model tier, tool calls, premium steps, cost per useful workflow | Connects budget to actual operating value |
+| Incidents | policy violations, data exposure, connector failures, unsafe actions, rollback events | Gives governance teams evidence for containment |
+
+Each layer should have an owner. Analytics without ownership becomes passive reporting.
+
+## Adoption metrics should be workflow-specific
+
+Generic usage metrics are weak:
+
+- seats enabled;
+- monthly active users;
+- prompts submitted;
+- documents summarized.
+
+Those numbers can be useful for rollout awareness, but they do not show value. Better adoption metrics attach usage to a recurring workflow:
+
+- support managers using weekly ticket summaries;
+- sales teams drafting account follow-ups from approved notes;
+- HR teams searching policy documents;
+- engineering managers summarizing release status;
+- finance teams preparing variance explanations;
+- legal teams drafting internal research packets from approved sources.
+
+The admin view should answer: which department uses the agent for which workflow, how often, and with what review outcome?
+
+## Connector analytics are risk analytics
+
+Workspace agents become riskier when connectors expand. Admins should be able to see:
+
+- which connectors are enabled;
+- which teams use each connector;
+- which scopes are granted;
+- whether access is user-delegated or service-account based;
+- which connectors are read-only, draft-only, or write-capable;
+- which connectors touch customer, employee, legal, finance, code, or regulated data;
+- which calls fail, retry, or produce policy events.
+
+Connector activity should not be hidden inside a generic assistant usage chart.
+
+## Permission analytics should expose broad access
+
+The dashboard should flag:
+
+- users with elevated connector scopes;
+- service accounts shared across workflows;
+- agents with access to multiple sensitive systems;
+- departments using connectors outside approved workflows;
+- inactive owners for active connectors;
+- stale grants after role changes;
+- agents that can write or send without review.
+
+These signals matter because workspace agents often inherit existing permission problems and make them easier to use at scale.
+
+## Quality analytics should include human correction
+
+Workspace AI quality is not only whether the answer looked fluent. Admins should track:
+
+- draft acceptance rate;
+- edit distance or correction time where available;
+- rejected suggestions;
+- flagged hallucinations;
+- stale source complaints;
+- missing citation or source complaints;
+- repeated user corrections by workflow;
+- escalation to a human expert;
+- downstream rework.
+
+Quality metrics should be grouped by workflow. A meeting-summary agent and a policy-answering agent should not share one quality score.
+
+## Review and escalation analytics reveal hidden cost
+
+Agents often move work from creation to review. That can still be valuable, but only if review load is measured.
+
+Track:
+
+- approval requests by workflow;
+- approval denial rate;
+- reviewer queue latency;
+- repeated escalation reasons;
+- actions blocked by policy;
+- actions auto-completed after review;
+- workflows paused due to poor quality;
+- departments with high correction burden.
+
+If workspace agents create more human review work than they remove, the rollout needs redesign.
+
+## Cost analytics should be department-owned
+
+Workspace AI cost should be visible by:
+
+- department;
+- workflow;
+- connector;
+- model or capability tier;
+- tool-call volume;
+- premium steps;
+- review time;
+- failed or retried runs;
+- useful output accepted.
+
+The useful question is not "How many prompts did users send?" It is "Which workflows produce accepted output at a cost the department can defend?"
+
+## Incident analytics should support containment
+
+Admins need enough evidence to answer:
+
+- which agent or assistant generated the output;
+- which user or service identity was used;
+- which connector or data source was accessed;
+- which records were read or changed;
+- which approval policy applied;
+- whether a human approved the action;
+- whether the action was reversed;
+- which similar workflows might be affected.
+
+Without these records, incident response becomes guesswork.
+
+## A practical dashboard layout
+
+Use five dashboard views:
+
+| View | Primary audience | Decision it supports |
+| --- | --- | --- |
+| Executive rollout | CIO, AI adoption lead | Which departments are getting value and where expansion is justified |
+| Admin operations | Workspace admins | Which connectors, scopes, and workflows need attention |
+| Security review | Security and compliance | Which data and action boundaries create risk |
+| Workflow quality | Business owners | Which workflows need source, prompt, or review changes |
+| Budget ownership | Finance and department leads | Which usage should expand, pause, or be charged back |
+
+One dashboard cannot serve all of these audiences cleanly. Separate views prevent admin analytics from becoming a wall of numbers.
+
+## Minimum viable admin review
+
+For each department pilot, review monthly:
+
+1. active workflows, not only active users;
+2. connected data sources and scopes;
+3. accepted output rate;
+4. correction and rejection patterns;
+5. approval and escalation burden;
+6. cost by workflow owner;
+7. incidents, policy events, and access changes;
+8. stale connectors or inactive owners.
+
+This review should decide whether to expand, hold, narrow, or shut down the pilot.
+
+## Red flags
+
+Pause expansion when:
+
+- usage grows but accepted output does not;
+- connector scopes expand faster than workflow ownership;
+- service accounts are shared broadly;
+- security cannot reconstruct data access;
+- departments cannot explain the workflow value;
+- reviewers are overwhelmed;
+- cost rises because of retries, low-quality prompts, or premium steps;
+- offboarding does not reliably revoke access.
+
+These are operating signals, not analytics trivia.
+
+## Bottom line
+
+Workspace agent admin analytics should help leaders answer one question:
+
+**Which agents are creating governed value, and which ones are quietly expanding data, connector, review, or cost risk?**
+
+Active-user charts are only the first inch of that answer. Serious rollout needs workflow-level, connector-level, and department-level analytics.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Workspace AI agents for enterprise knowledge work"
+		href="/use-cases/workspace-ai-agents-for-enterprise-knowledge-work/"
+		description="Use this page to frame the workflows that admin analytics should measure."
+	/>
+	<LinkCard
+		title="Workspace agent connector governance"
+		href="/tooling/workspace-agent-connector-governance-checklist/"
+		description="Use this page when connector scopes, identities, approvals, logs, and deprovisioning need a stronger control model."
+	/>
+	<LinkCard
+		title="Enterprise agent governance control plane"
+		href="/tooling/enterprise-agent-governance-control-plane/"
+		description="Use this page when workspace analytics need to feed enterprise-wide inventory, budgets, evals, and incidents."
+	/>
+	<LinkCard
+		title="Workspace agent rollout scorecard"
+		href="/tool-comparisons/workspace-agent-rollout-scorecard-for-enterprise-teams/"
+		description="Use this page when the organization needs a broader rollout scorecard before expanding seats."
+	/>
+</div>

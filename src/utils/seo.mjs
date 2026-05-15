@@ -464,8 +464,10 @@ export function buildSeo(route, currentUrl) {
 		editorUrl: authorship.editor?.url,
 		editorialMethodSummary: siteMeta.editorialMethodSummary,
 		robots:
-			pageKind === 'not-found' || NOINDEX_PAGE_IDS.has(route.id)
+			pageKind === 'not-found'
 				? 'noindex, nofollow, noarchive, max-snippet:0, max-image-preview:none, max-video-preview:0'
+				: NOINDEX_PAGE_IDS.has(route.id)
+					? 'noindex, follow, noarchive, max-snippet:0, max-image-preview:none, max-video-preview:0'
 				: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
 		structuredData: [
 			buildOrganizationNode(),

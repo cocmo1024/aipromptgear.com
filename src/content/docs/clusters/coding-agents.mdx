@@ -33,12 +33,11 @@ updateTriggers:
   - Public coding-agent incident reports or quality postmortems
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-13
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# Coding Agents Cluster
 
 Coding-agent content should not be organized around vendor excitement alone. The durable problem is operational: engineering teams need to know where agents can safely create leverage, how reviewer capacity changes, what boundaries protect repositories, and how quality regressions are detected before trust collapses.
 
@@ -51,7 +50,9 @@ Coding-agent adoption usually fails in one of four places:
 | Problem | Better starting point | Decision it supports |
 | --- | --- | --- |
 | Engineers are experimenting but leadership lacks rollout policy | [AI coding agents for engineering teams](/use-cases/ai-coding-agents-for-engineering-teams/) | Which workflows deserve agent support first |
+| Background agent work is being assigned randomly | [Cloud coding-agent task routing](/workflows/cloud-coding-agent-task-routing-model/) | Which tasks belong in cloud worktrees, local interactive sessions, read-only exploration, or human-owned work |
 | Reviewers are overwhelmed by generated diffs | [Reviewer queues and approval capacity](/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/) | How much agent output the human review system can safely absorb |
+| Budget pressure is rising | [Coding-agent cost per accepted PR](/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/) | How to budget premium requests, reviewer time, failed runs, and accepted engineering outcomes |
 | Agents need write access | [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/) | Which repository actions require stronger boundaries |
 | Quality complaints are anecdotal | [Coding-agent quality regression playbook](/evaluation/coding-agent-quality-regression-playbook/) | How to turn failures into eval cases, gates, and rollback rules |
 
@@ -88,6 +89,11 @@ If a page treats all of those as one generic "agent permission" topic, it is too
 		description="Budget high-agency terminal workflows around accepted engineering outcomes."
 	/>
 	<LinkCard
+		title="Coding-agent cost per accepted PR"
+		href="/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/"
+		description="Calculate coding-agent economics across premium requests, runtime, reviewer effort, failed runs, rework, and accepted PRs."
+	/>
+	<LinkCard
 		title="OpenAI Codex desktop"
 		href="/clusters/openai-codex-desktop/"
 		description="A complete Codex desktop cluster for app workflows, worktrees, automations, plugins, MCP, security, and PR review."
@@ -101,6 +107,11 @@ If a page treats all of those as one generic "agent permission" topic, it is too
 		title="Read-only vs write-enabled coding agents"
 		href="/workflows/read-only-vs-write-enabled-coding-agents/"
 		description="Separate exploratory coding agents from agents that can create repository changes."
+	/>
+	<LinkCard
+		title="Cloud coding-agent task routing"
+		href="/workflows/cloud-coding-agent-task-routing-model/"
+		description="Route work by coupling, risk, verification, and review burden before sending tasks to cloud or local agents."
 	/>
 	<LinkCard
 		title="Approval systems for coding agents"

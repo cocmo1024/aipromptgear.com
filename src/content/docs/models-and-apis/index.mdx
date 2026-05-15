@@ -21,14 +21,13 @@ lifecycle: hub
 refreshPriority: medium
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-15
 problemSolved: Helps readers solve the practical question behind Models and APIs instead of stopping at a generic definition or feature list.
 readerTakeaway: "You should leave with a clearer decision model, implementation boundary, or next-step checklist for Models and APIs."
 ---
 
 import { LinkCard, Steps } from '@astrojs/starlight/components';
 
-# Models and APIs
 
 Model choice is only valuable when connected to task shape, risk tolerance, and operating cost. This section frames APIs and models as components in a production system, not as abstract benchmark winners.
 
@@ -49,6 +48,11 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		title="AI compute capacity planning"
 		href="/models-and-apis/ai-compute-capacity-planning-for-frontier-model-products/"
 		description="Translate compute headlines into hosted API, batch, flex, rented GPU, utilization, and margin decisions."
+	/>
+	<LinkCard
+		title="Agentic inference capacity planning"
+		href="/models-and-apis/agentic-inference-capacity-planning-for-ai-products/"
+		description="Plan capacity for reasoning-heavy workflows, tool loops, queues, cache pressure, retries, and cost per successful workflow."
 	/>
 	<LinkCard
 		title="How much does an AI agent cost in production?"
@@ -101,6 +105,11 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		description="Use this page when enterprise data-control rules decide whether background mode is allowed for a workload."
 	/>
 	<LinkCard
+		title="Private and sovereign AI architecture"
+		href="/models-and-apis/private-and-sovereign-ai-architecture-for-enterprise-agents/"
+		description="Use this page when data residency, regional inference, trace controls, model locality, and vendor evidence decide whether an agent can ship."
+	/>
+	<LinkCard
 		title="Reasoning models vs fast models"
 		href="/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/"
 		description="Use this page when the team needs a concrete rule for which steps deserve premium reasoning and which belong on cheaper high-throughput lanes."
@@ -134,6 +143,26 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		title="AI browser search readiness"
 		href="/models-and-apis/ai-browser-search-and-product-discovery-readiness/"
 		description="Use this page when AI browsers, ChatGPT search, and conversational product discovery require stronger page structure, evidence, comparison logic, and measurement."
+	/>
+	<LinkCard
+		title="Generative search source links"
+		href="/models-and-apis/generative-search-source-link-readiness-for-publishers-and-product-teams/"
+		description="Use this page when publisher, product, or comparison pages need to be clearer source material for AI Mode, AI Overviews, AI browsers, and link previews."
+	/>
+	<LinkCard
+		title="Product comparison page structure"
+		href="/models-and-apis/product-comparison-page-structure-for-ai-assisted-discovery/"
+		description="Use this page when comparison and alternatives pages need stronger buyer-fit logic, proof, pricing boundaries, poor-fit cases, and next-step verification."
+	/>
+	<LinkCard
+		title="AI crawler referral measurement"
+		href="/models-and-apis/ai-crawler-referral-and-conversion-measurement-for-product-sites/"
+		description="Use this page when AI-assisted discovery needs log, referral, landing-page, and conversion measurement without confusing crawler activity for buyer demand."
+	/>
+	<LinkCard
+		title="B2B SaaS product discovery case"
+		href="/use-cases/b2b-saas-ai-product-discovery-readiness-case-study/"
+		description="Use this case study when a SaaS team needs to turn AI-assisted buyer research into clearer comparison pages, evidence, measurement, and sales handoff."
 	/>
 	<LinkCard
 		title="Web search vs RAG"
@@ -181,6 +210,11 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		description="Use this page when the product needs workflow-level economics instead of call-level spend snapshots."
 	/>
 	<LinkCard
+		title="Coding-agent cost per accepted PR"
+		href="/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/"
+		description="Use this page when coding-agent budgets need accepted PRs, premium requests, reviewer effort, failed runs, and quality outcomes in one model."
+	/>
+	<LinkCard
 		title="Hosted tools vs self-managed tooling"
 		href="/models-and-apis/hosted-tools-vs-self-managed-tooling-for-ai-products/"
 		description="Use this page when the team needs a cleaner boundary between hosted convenience and infrastructure it genuinely needs to own."
@@ -226,6 +260,11 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		description="A high-value infrastructure economics page for teams deciding whether demand justifies async lanes, rented compute, or continued hosted APIs."
 	/>
 	<LinkCard
+		title="Agentic inference capacity planning"
+		href="/models-and-apis/agentic-inference-capacity-planning-for-ai-products/"
+		description="A deeper cost model for agentic workflows where step count, tool loops, context growth, retries, and concurrency drive real capacity demand."
+	/>
+	<LinkCard
 		title="Model routing for support operations"
 		href="/models-and-apis/model-routing/"
 		description="Use the current multi-provider pricing and capability spread to design cleaner queue boundaries instead of paying premium-model economics for every support task."
@@ -261,6 +300,11 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		description="A high-intent enterprise page around background mode, Zero Data Retention, store=true, polling state, and workload policy."
 	/>
 	<LinkCard
+		title="Private and sovereign AI architecture"
+		href="/models-and-apis/private-and-sovereign-ai-architecture-for-enterprise-agents/"
+		description="A current enterprise architecture page for privacy, data residency, regional control, vendor evidence, and agent workload classification."
+	/>
+	<LinkCard
 		title="Reasoning vs fast-model economics"
 		href="/models-and-apis/reasoning-models-vs-fast-models-for-production-ai-workflows/"
 		description="A durable high-intent page for teams deciding whether premium reasoning is solving an expensive problem or simply inflating runtime cost."
@@ -294,6 +338,21 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		title="AI browser and product discovery readiness"
 		href="/models-and-apis/ai-browser-search-and-product-discovery-readiness/"
 		description="A current-to-evergreen page for teams preparing content, product data, and comparison pages for AI-assisted browsing and conversational discovery."
+	/>
+	<LinkCard
+		title="Generative search source-link readiness"
+		href="/models-and-apis/generative-search-source-link-readiness-for-publishers-and-product-teams/"
+		description="A current implementation page for teams preparing pages to be understood, previewed, linked, and reused as source material in generative search surfaces."
+	/>
+	<LinkCard
+		title="Product comparison page structure"
+		href="/models-and-apis/product-comparison-page-structure-for-ai-assisted-discovery/"
+		description="A practical page architecture for comparison, alternatives, pricing, integration, evidence, and procurement-ready buyer support."
+	/>
+	<LinkCard
+		title="AI crawler and referral measurement"
+		href="/models-and-apis/ai-crawler-referral-and-conversion-measurement-for-product-sites/"
+		description="A practical measurement page for separating AI crawler access, visible referrals, landing-page behavior, and conversion quality."
 	/>
 	<LinkCard
 		title="Web search versus RAG boundary"
@@ -334,6 +393,11 @@ Model choice is only valuable when connected to task shape, risk tolerance, and 
 		title="Cost per success"
 		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
 		description="A stronger economics page for teams that need to judge search, retrieval, and execution by completed outcomes instead of line-item API cost."
+	/>
+	<LinkCard
+		title="Coding-agent unit economics"
+		href="/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/"
+		description="A high-intent engineering economics page for teams deciding whether premium coding-agent usage is producing accepted reviewed work."
 	/>
 	<LinkCard
 		title="LLM cost allocation and showback"

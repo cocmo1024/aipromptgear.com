@@ -1,0 +1,198 @@
+---
+title: Agentic Commerce Payment Approval Workflow for Product Teams
+description: Design agentic commerce approvals for product discovery, checkout, delegated payments, buyer intent, merchant handoff, fraud review, and audit evidence.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: agentic commerce payment approval workflow
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Product leaders
+  - Commerce platform teams
+  - Payments risk teams
+  - Security reviewers
+  - AI product engineers
+contentStatus: growing
+contentCluster: workflows
+canonicalCluster: workflows
+pageType: workflow
+lifecycle: evergreen
+refreshPriority: high
+datePublished: 2026-05-15
+lastReviewed: 2026-05-15
+problemSolved: How to let AI agents help with product discovery, checkout, and delegated payments without losing buyer intent, spending control, fraud review, or audit evidence.
+readerTakeaway: You should leave with a practical approval model for agentic commerce actions from recommendation through checkout and post-purchase handoff.
+keyQuestions:
+  - When may an AI agent move from recommendation to checkout?
+  - What proof is needed before an agent spends money?
+  - How should payment, refund, merchant handoff, and audit evidence be controlled?
+notFor:
+  - Simple product recommendation pages with no purchase or checkout action
+  - Teams that do not control the checkout or payment-risk workflow
+  - Consumer trend readers looking for agentic commerce news only
+updateTriggers:
+  - Changes to Agentic Commerce Protocol, UCP, AP2, or payment-token standards
+  - New checkout integrations in ChatGPT, Gemini, AI Mode, Copilot, or merchant platforms
+  - New fraud, prompt-injection, or delegated-payment failure patterns
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Agentic commerce becomes risky the moment an AI agent can do more than recommend products. Browsing and comparison are low-risk. Placing an order, using a payment credential, applying a promotion, choosing shipping, or initiating a refund are different classes of action. They need explicit approval, durable evidence, and a clear line between the agent, the buyer, the merchant, and the payment provider.
+
+## Quick answer
+
+Use a four-lane workflow:
+
+| Lane | Agent may do | Approval requirement |
+| --- | --- | --- |
+| Discovery | Find products, compare attributes, summarize reviews, explain tradeoffs | No payment approval; cite product data and uncertainty |
+| Cart preparation | Build a cart, choose variants, estimate shipping, apply preferences | User confirmation before cart is treated as intent |
+| Purchase execution | Submit order, use delegated payment, apply stored credentials | Explicit buyer approval with amount, merchant, items, return terms, and payment method |
+| Post-purchase action | Track, return, exchange, refund, subscribe, reorder | Separate approval if money, identity, or customer obligation changes |
+
+The product should never treat a conversational preference as permission to spend money. A payment action needs a stronger proof object than a recommendation.
+
+## Why this matters now
+
+Agentic commerce is becoming a platform layer. OpenAI is extending Agentic Commerce Protocol into product discovery and merchant feeds. Google launched Universal Commerce Protocol for discovery, buying, and post-purchase support, tied to AP2, A2A, and MCP. Mastercard and Visa are pushing verifiable identity, secure credentials, and agent-initiated transaction standards.
+
+That creates a new product boundary. The checkout system must know whether the agent is:
+
+- answering a shopping question;
+- preparing a recommendation;
+- acting as a buyer delegate;
+- handing the user to a merchant;
+- or completing a payment.
+
+Those states cannot share one generic "continue" button.
+
+## Minimum approval object
+
+Before an agent spends money, the system should capture:
+
+| Field | Why it matters |
+| --- | --- |
+| Buyer identity | Confirms the human or account on whose behalf the agent acts |
+| Agent identity | Separates a platform agent, merchant agent, and third-party assistant |
+| Merchant identity | Prevents spoofed or substituted sellers |
+| Item list | Makes variants, quantities, warranties, subscriptions, and bundles explicit |
+| Total amount | Includes taxes, fees, shipping, discounts, and currency |
+| Payment method | Shows whether the agent is using stored credentials, a token, wallet, or manual entry |
+| Return and cancellation terms | Avoids buyer surprise after the agent completes checkout |
+| Delegated authority window | Defines whether approval is one-time, session-bound, or recurring |
+| Evidence snapshot | Preserves product facts, offers, and user confirmation shown at approval time |
+
+If the product cannot store this object, it is not ready for delegated payment.
+
+## Approval thresholds
+
+Not every commerce action deserves the same friction.
+
+| Action | Default control |
+| --- | --- |
+| Show similar products | No approval; disclose uncertainty and sources |
+| Build a comparison table | No approval; prefer current price and availability markers |
+| Add items to a draft cart | Lightweight confirmation |
+| Reserve inventory | Explicit confirmation if the reservation affects availability or price |
+| Submit payment | Strong approval with amount, merchant, item list, and payment method |
+| Buy under a recurring rule | Pre-approved policy with per-transaction and period limits |
+| Change delivery address | Strong approval; verify account and fraud signals |
+| Start a return or refund | Confirmation plus merchant policy display |
+| Subscribe or auto-renew | Separate approval from one-time purchase |
+
+The dangerous pattern is bundling recommendation, cart, and purchase under one vague action such as "looks good."
+
+## Workflow design
+
+Use this sequence for agentic checkout:
+
+1. Capture buyer goal and constraints.
+2. Retrieve product data from approved sources or merchant feeds.
+3. Separate recommendation text from purchasable offer data.
+4. Present the cart as a draft, not an order.
+5. Ask for explicit purchase approval with the minimum approval object.
+6. Execute payment through the approved protocol or provider.
+7. Store the confirmation, order ID, and evidence snapshot.
+8. Hand post-purchase changes to a separate workflow.
+
+This design keeps discovery fluid while making payment accountable.
+
+## Failure modes to test
+
+| Failure | Test case |
+| --- | --- |
+| Prompt injection changes the cart | Product page or review text tells the agent to add a different item |
+| Price changes before checkout | Agent recommends one price but checkout returns another |
+| Merchant substitution | Agent swaps seller because a feed entry looks similar |
+| Subscription hidden in bundle | One-time purchase flow includes recurring billing |
+| Address or identity drift | Agent uses stale account data or the wrong profile |
+| Refund policy mismatch | Agent promises return terms that checkout does not support |
+| Payment token overreach | Delegated token can be reused outside the approved scope |
+| Post-purchase confusion | User thinks the agent canceled but merchant has already shipped |
+
+These are not only UX bugs. They are trust, payments, and compliance problems.
+
+## Evidence and logging
+
+Agentic commerce logs should include:
+
+- prompt and user goal summary;
+- product data source and timestamp;
+- recommendation rationale;
+- cart diff before and after user edits;
+- approval object;
+- payment provider response;
+- merchant order ID;
+- exception or fraud review status;
+- post-purchase actions.
+
+Do not rely on conversation transcripts alone. The approval object should be structured enough for support, risk, security, and dispute teams to inspect later.
+
+## When not to automate checkout
+
+Keep the agent in recommendation mode when:
+
+- prices or availability are unstable;
+- the product is regulated or age-restricted;
+- the user account has weak authentication;
+- the merchant identity is uncertain;
+- returns are complex;
+- the cart includes subscriptions, warranties, or financing;
+- the buyer is acting on behalf of a company budget without policy limits.
+
+In these cases, the best agentic commerce experience may be a clear handoff, not automatic payment.
+
+## Source notes checked May 15, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [OpenAI product discovery in ChatGPT](https://openai.com/index/powering-product-discovery-in-chatgpt/) | ACP is being used for richer product discovery, merchant feeds, visual comparison, and merchant handoff. |
+| [OpenAI Instant Checkout and ACP](https://openai.com/index/buy-it-in-chatgpt/) | Instant Checkout introduced ACP as a protocol for people, AI agents, and businesses to shop together. |
+| [Google UCP and agentic shopping tools](https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/) | UCP covers discovery, buying, and post-purchase support, and is compatible with AP2, A2A, and MCP. |
+| [Mastercard agentic commerce protocols](https://www.mastercard.com/content/mccom/global/en/news-and-trends/stories/2026/agentic-commerce-rules-of-the-road.html) | Mastercard emphasizes clear user intent, secure credentials, and verifiable agent identity. |
+| [Visa secure AI transactions](https://visa.gcs-web.com/news-releases/news-release-details/visa-and-partners-complete-secure-ai-transactions-setting-stage) | Visa reports agent-initiated transaction pilots and frames 2026 as a mainstream adoption year. |
+
+## Related pages
+
+<div class="portal-links">
+	<LinkCard
+		title="AI browser search and product discovery readiness"
+		href="/models-and-apis/ai-browser-search-and-product-discovery-readiness/"
+		description="Prepare product and comparison pages for conversational discovery before checkout is even considered."
+	/>
+	<LinkCard
+		title="When should an AI agent ask for confirmation before acting?"
+		href="/workflows/when-should-an-ai-agent-ask-for-confirmation-before-acting/"
+		description="Use this page to separate low-risk continuation from actions that need explicit confirmation."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Define evidence for review, disputes, support, compliance, and incident investigation."
+	/>
+</div>

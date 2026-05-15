@@ -41,7 +41,6 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# OpenAI Batch API limits, expiration, and output files
 
 The Batch API looks simple from a pricing angle: send deferred work, get lower cost, wait for completion. Production use is more demanding. The team has to design around input files, per-batch limits, queued-token limits, `custom_id` mapping, output files, error files, partial completion, and expired requests.
 

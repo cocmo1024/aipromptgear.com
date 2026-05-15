@@ -1,0 +1,231 @@
+---
+title: Agentic Inference Capacity Planning for AI Products
+description: A practical cost and capacity model for agentic inference, long-running workflows, reasoning tokens, tool loops, cache pressure, queues, and dedicated capacity decisions.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: agentic inference capacity planning
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI infrastructure leads
+  - Product engineering leaders
+  - AI platform teams
+  - Engineering finance owners
+  - SRE teams
+contentStatus: growing
+datePublished: 2026-05-14
+lastReviewed: 2026-05-14
+problemSolved: How to plan inference capacity when agentic workflows create long reasoning traces, variable tool loops, bursty concurrency, cache pressure, retries, and mixed latency classes.
+readerTakeaway: You should leave with a capacity model that explains agentic inference demand by workflow attempts, steps, model calls, tokens, concurrency, retries, and service tier.
+keyQuestions:
+  - Why do agentic AI products need a different inference capacity model?
+  - Which metrics show whether agentic workloads should stay on hosted APIs, async lanes, or dedicated capacity?
+  - How can teams reduce capacity pressure without lowering useful output quality?
+notFor:
+  - Hardware market speculation
+  - Prototype teams with no stable production volume
+  - Token-price comparisons that ignore workflow success and retries
+updateTriggers:
+  - Major inference platform announcements
+  - New hosted API, Batch, Flex, priority, or dedicated capacity options
+  - Significant changes in agent runtime patterns, context size, or tool-loop behavior
+contentCluster: ai-cost-and-compute
+canonicalCluster: ai-cost-and-compute
+pageType: cost-model
+lifecycle: evergreen
+refreshPriority: high
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+
+Agentic inference is not ordinary chat completion at larger scale. Agentic products plan, call tools, inspect results, retry, summarize state, and sometimes run in the background for minutes. That changes the capacity problem.
+
+The practical unit is no longer a single request. The practical unit is:
+
+**How much inference capacity does one successful workflow consume?**
+
+NVIDIA's 2026 Dynamo and AI factory announcements make the infrastructure direction visible: reasoning-heavy and agentic workloads require orchestration across GPU, memory, cache, queue, and serving layers. Product teams do not need to become hardware companies to learn the lesson. They do need a better capacity model.
+
+## Quick answer
+
+Plan agentic inference capacity from workflow shape:
+
+```text
+agentic demand =
+  workflow attempts
+  x average agent steps
+  x model calls per step
+  x generated tokens per call
+  x retry factor
+  x concurrency multiplier
+```
+
+Then adjust for:
+
+- context size and cache behavior;
+- tool wait time and parallel tool calls;
+- latency class;
+- priority class;
+- fallback behavior;
+- human review loops;
+- eval and replay volume;
+- failed or abandoned workflows.
+
+If the team only watches average tokens per request, it will miss the real capacity driver.
+
+## Why agentic workloads are different
+
+Classic LLM usage often looks like one prompt and one response. Agentic usage looks like a workflow:
+
+1. interpret task;
+2. plan;
+3. retrieve context;
+4. call tools;
+5. inspect tool output;
+6. revise plan;
+7. call more tools;
+8. draft result;
+9. validate;
+10. request approval or continue.
+
+Each step can add model calls, context growth, tool latency, generated tokens, and retries. A small increase in average steps can have a larger cost impact than a small increase in per-token price.
+
+## Workload classes to separate first
+
+Do not pool all AI product demand together.
+
+| Workload class | Capacity pattern | Better lane |
+| --- | --- | --- |
+| Interactive chat | User-visible latency, short bursts, high abandonment risk | Hosted real-time or priority lane |
+| Background research | Long runtime, source gathering, user can wait | Background mode, queue, or deferred lane |
+| Coding-agent tasks | Long context, repo tools, patch attempts, review loops | Routed premium lane with strict budgets |
+| Document processing | Batchable, often repeatable, source-bound | Batch or low-priority lane |
+| Eval replays | High volume, non-user-facing, predictable cases | Batch, scheduled lane, or cheaper model tier |
+| Internal automation | Mixed urgency, lower user-facing risk | Flex or scheduled lane where possible |
+
+Each class should have its own budget, service expectation, and failure policy.
+
+## Metrics that matter
+
+Track these before talking about rented GPUs or dedicated capacity:
+
+- cost per successful workflow;
+- average and p95 agent steps;
+- average and p95 model calls per workflow;
+- generated tokens per successful workflow;
+- context size at each step;
+- retry rate by failure class;
+- tool-call failure rate;
+- workflow abandonment rate;
+- queue delay by workload class;
+- cache hit rate;
+- human review rate and reviewer time;
+- fallback rate and fallback success.
+
+Capacity planning becomes clearer when the team can say which workflow class is consuming capacity and whether it is producing useful outcomes.
+
+## Capacity pressure patterns
+
+The common pressure patterns are:
+
+| Pattern | Symptom | Likely fix |
+| --- | --- | --- |
+| Tool-loop growth | Agent keeps calling tools after enough evidence exists | Add stop rules, evidence thresholds, and step budgets |
+| Context inflation | Each step carries too much history | Summarize state, retrieve selectively, and prune irrelevant context |
+| Premium model overuse | Expensive models handle routine steps | Route planning or final judgment to premium lanes, routine extraction to cheaper lanes |
+| Retry storms | Failures trigger repeated expensive attempts | Classify failures and cap retries by class |
+| Eval contention | Regression tests compete with user-facing capacity | Move evals to scheduled, batch, or lower-priority lanes |
+| Burst concurrency | Many long workflows start at once | Add admission control, queueing, and user-visible status |
+
+The first fix is usually workflow design, not new infrastructure.
+
+## When hosted APIs still win
+
+Hosted APIs remain attractive when:
+
+- workload volume is variable;
+- model choice is still changing;
+- the team benefits from provider-side model updates;
+- reliability and safety operations are not mature enough for self-hosting;
+- the product needs access to frontier models or hosted tools;
+- utilization would be low or bursty on rented capacity;
+- engineering time is better spent on product quality.
+
+Agentic workflows do not automatically justify dedicated capacity. They justify better segmentation and budgets.
+
+## When dedicated capacity becomes credible
+
+Dedicated capacity, rented GPUs, or self-managed serving may become credible when:
+
+- volume is stable and concentrated in a few workload classes;
+- the team can keep capacity utilized across peaks and troughs;
+- the model can be self-hosted with acceptable quality;
+- context and output sizes are predictable;
+- the team has serving, security, SRE, and eval ownership;
+- latency and reliability requirements are hard to meet through shared service tiers;
+- hosted total cost remains higher after routing, batching, caching, and retry controls.
+
+The decision should include staff time, incidents, underutilization, model upgrades, security controls, and fallback planning.
+
+## Practical control levers
+
+Use these before escalating to infrastructure ownership:
+
+- route high-reasoning steps separately from routine extraction;
+- set step budgets by workflow class;
+- cap tool fan-out;
+- use async lanes for non-urgent work;
+- batch evals and enrichment jobs;
+- summarize state instead of carrying full history;
+- cache stable context;
+- cache deterministic intermediate results;
+- separate user-visible and internal workloads;
+- require human approval before expensive continuation;
+- stop workflows when evidence is insufficient rather than retrying blindly.
+
+Capacity discipline is a product feature when users depend on the workflow completing predictably.
+
+## Capacity review cadence
+
+<Steps>
+	1. Segment workloads by latency, value, and failure cost.
+	2. Measure cost per successful workflow, not only per request.
+	3. Identify step count, tool loops, context growth, retries, and eval contention.
+	4. Move non-urgent workloads to async, batch, or flexible lanes.
+	5. Add routing, cache, and stop rules before renting capacity.
+	6. Revisit dedicated capacity only after utilization and operations maturity are proven.
+</Steps>
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI compute capacity planning"
+		href="/models-and-apis/ai-compute-capacity-planning-for-frontier-model-products/"
+		description="Use the broader capacity-planning model before deciding between hosted APIs, async lanes, or rented GPUs."
+	/>
+	<LinkCard
+		title="Tool-use latency and cost budgets"
+		href="/models-and-apis/tool-use-latency-and-cost-budgets/"
+		description="Set budgets for search, retrieval, tools, execution, and retries before tool loops damage product economics."
+	/>
+	<LinkCard
+		title="Cost per success"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Judge agentic workflows by useful completed outcomes instead of raw calls."
+	/>
+	<LinkCard
+		title="When Batch and Flex are cheaper than rented GPUs"
+		href="/models-and-apis/when-batch-and-flex-are-cheaper-than-rented-gpus/"
+		description="Check cheaper hosted service tiers before accepting compute ownership burden."
+	/>
+</div>
+
+## Source note
+
+This page responds to NVIDIA's March 2026 announcement that [Dynamo 1.0 entered production as inference software for AI factories](https://nvidianews.nvidia.com/news/nvidia-enters-production-with-dynamo-the-broadly-adopted-inference-operating-system-for-ai-factories), including its framing of generative and agentic inference at scale. The page translates the infrastructure signal into a product-team capacity model.

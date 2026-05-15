@@ -1,0 +1,226 @@
+---
+title: Frontier AI Cyber Defense Readiness Checklist
+description: A defensive readiness checklist for teams evaluating frontier AI cyber models, trusted-access programs, vulnerability research workflows, and secure remediation.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: frontier AI cyber defense readiness checklist
+searchIntent: deploy
+decisionStage: operations
+targetRoles:
+  - Security leaders
+  - AppSec teams
+  - AI platform teams
+  - DevSecOps teams
+  - Incident commanders
+contentStatus: growing
+datePublished: 2026-05-14
+lastReviewed: 2026-05-14
+problemSolved: How to prepare governance, scope control, evidence capture, and incident handling before advanced AI cyber capabilities enter defensive security workflows.
+readerTakeaway: You should leave with a defensible checklist for controlled access, approved use cases, target scope, review gates, audit evidence, and rollback around AI-assisted cyber defense.
+keyQuestions:
+  - How should security teams govern access to frontier AI cyber capabilities?
+  - Which defensive workflows are safe enough to pilot first?
+  - What evidence and approval controls should exist before AI-assisted vulnerability research touches real systems?
+notFor:
+  - Offensive tradecraft instructions
+  - Unsanctioned vulnerability discovery
+  - Teams without legal authority to test the systems in scope
+updateTriggers:
+  - New trusted-access cyber programs from frontier model providers
+  - New AI vulnerability research model releases or safety framework changes
+  - Major security incidents involving AI-assisted code, tools, or remediation
+contentCluster: mcp-security
+canonicalCluster: mcp-security
+pageType: security-checklist
+lifecycle: market-signal
+refreshPriority: high
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+
+Frontier AI cyber capability is moving from abstract benchmark discussion into controlled defensive programs. OpenAI's trusted-access cyber work around GPT-5.5 and GPT-5.5-Cyber, and Anthropic's Project Glasswing around Claude Mythos Preview, point to the same operating reality:
+
+**Security teams need a readiness model before advanced AI is allowed to analyze code, reason about vulnerabilities, or propose remediation in real environments.**
+
+This checklist is intentionally defensive. It is for security leaders, AppSec teams, AI platform owners, and incident commanders who need governance before capability expands.
+
+## Quick answer
+
+Do not start with "which model is strongest?" Start with these seven controls:
+
+| Control | Decision to make before access |
+| --- | --- |
+| Eligibility | Which users, teams, and systems are approved for frontier cyber workflows? |
+| Scope | Which repositories, assets, environments, and vulnerability classes are in bounds? |
+| Authority | Can the AI only analyze, or can it draft patches, open tickets, create PRs, or trigger scans? |
+| Review | Which outputs require human security review before action? |
+| Evidence | What run IDs, prompts, tool calls, findings, diffs, and approvals are retained? |
+| Containment | How can access, tools, connectors, and workflows be paused quickly? |
+| Learning loop | Which findings become eval cases, secure-coding rules, or incident lessons? |
+
+Capability without those controls creates risk faster than it creates defense.
+
+## Start with approved defensive workflows
+
+The safest first use cases are bounded, reviewable, and connected to assets the team owns.
+
+| Workflow | Safer first version | Higher-risk version |
+| --- | --- | --- |
+| Dependency review | Analyze owned repos and known advisories, then draft human-reviewed issues | Autonomous broad scanning with unclear asset ownership |
+| Code review | Flag risky patterns in a pull request and cite code locations | Blocking releases based on opaque model judgment |
+| Patch drafting | Propose minimal diffs for known issues and require maintainer review | Applying patches directly to production branches |
+| Security backlog triage | Cluster known findings, deduplicate, and suggest priority | Reclassifying severity without AppSec sign-off |
+| Incident support | Summarize evidence and propose investigation questions | Executing containment actions without incident command approval |
+
+Do not allow a pilot to drift from analysis into action just because the model can do more.
+
+## Access and identity checklist
+
+Frontier cyber workflows should have stricter access than ordinary chat tools.
+
+- Require named users, not shared accounts.
+- Use managed identity and single sign-on where possible.
+- Restrict access to approved security, platform, and engineering owners.
+- Keep separate policies for analysis, patch drafting, ticket creation, and tool execution.
+- Log user identity, workspace, asset, model lane, and approval path.
+- Review access after role changes, incidents, and pilot completion.
+- Disable personal account use for company security work.
+
+If the organization cannot identify who ran a workflow and which assets were in scope, the workflow is not ready.
+
+## Target scope checklist
+
+Every run should have an explicit target boundary:
+
+- repository, service, package, or asset group;
+- business owner and security owner;
+- environment classification;
+- data sensitivity;
+- allowed tools;
+- excluded systems;
+- expected output format;
+- review owner;
+- retention requirement.
+
+The model should not be asked to "find anything" across unclear assets. Defensive work still needs authorization, even when the tool is an AI model.
+
+## Evidence that should be retained
+
+Retain enough evidence for security review and incident reconstruction:
+
+- run ID and timestamp;
+- user and approval context;
+- model and tool versions;
+- target assets and declared scope;
+- prompt or task summary;
+- tool calls and retrieved sources;
+- findings and confidence notes;
+- generated patches or tickets;
+- reviewer decisions;
+- final disposition.
+
+Evidence is not bureaucracy. It is how a team separates a real finding from a plausible but wrong recommendation.
+
+## Human review gates
+
+Human security review should be mandatory when an AI-generated output:
+
+- claims a severe vulnerability;
+- proposes a patch to authentication, authorization, cryptography, payment, deployment, or data-access code;
+- recommends disabling a control;
+- suggests a production configuration change;
+- affects customer data or regulated workflows;
+- conflicts with existing severity policy;
+- requires disclosure, escalation, or external communication.
+
+Reviewers should see the evidence packet, not only the final prose.
+
+## Evaluation before expansion
+
+Before expanding access, build evals from known internal cases:
+
+- previously fixed vulnerabilities;
+- false positives the team wants to avoid;
+- code review examples with expected labels;
+- patch diffs that were accepted or rejected;
+- incident evidence packets;
+- secure-coding policy examples;
+- tool-use boundary tests.
+
+Measure whether the workflow improves security outcomes without increasing noisy review burden. A model that finds more issues but doubles triage time may still be a poor rollout candidate.
+
+## Incident and containment plan
+
+The team should be able to quickly:
+
+- pause the cyber workflow;
+- revoke model or connector access;
+- disable write-capable tools;
+- narrow target scope;
+- preserve run evidence;
+- notify security leadership;
+- roll back generated patches if needed;
+- add new evals or controls before reactivation.
+
+Containment should be designed before the first high-capability pilot. Waiting until an incident occurs usually means the access model is already too loose.
+
+## Vendor and program questions
+
+Ask providers and internal platform owners:
+
+- What capability tier is the model treated as for cybersecurity risk?
+- What access controls are required?
+- What safeguards differ between ordinary and cyber-specific model access?
+- How are outputs logged, retained, or excluded from training?
+- Which tools can the model call?
+- Which actions require explicit human approval?
+- What misuse monitoring exists?
+- How are customer findings, patches, and sensitive code protected?
+- What happens if the model or policy changes during the pilot?
+
+The buying question is not only capability. It is whether the operating model matches the organization's risk profile.
+
+## Rollout sequence
+
+<Steps>
+	1. Approve defensive use cases and excluded activities.
+	2. Limit access to named security and engineering owners.
+	3. Define target scope for each pilot workflow.
+	4. Require evidence packets and human review for high-impact outputs.
+	5. Evaluate on known internal cases before broad deployment.
+	6. Add containment, audit, and incident procedures before write-capable actions.
+</Steps>
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI agent incident response runbook"
+		href="/tooling/ai-agent-incident-response-runbook/"
+		description="Use this when a production AI workflow needs containment, evidence capture, communication, and post-incident eval updates."
+	/>
+	<LinkCard
+		title="MCP server security audit checklist"
+		href="/agent-systems/mcp-server-security-audit-checklist-for-ai-agents/"
+		description="Audit shared tool servers, credentials, browser/network access, prompt injection boundaries, and kill switches."
+	/>
+	<LinkCard
+		title="Tool outputs are untrusted"
+		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
+		description="Separate retrieved content and tool output from authority when agents reason across external inputs."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Define the evidence needed for governance-grade review of AI-assisted actions."
+	/>
+</div>
+
+## Source note
+
+This checklist responds to current defensive-cyber signals from [OpenAI's trusted-access work with GPT-5.5 and GPT-5.5-Cyber](https://openai.com/index/gpt-5-5-with-trusted-access-for-cyber/) and Anthropic's [Project Glasswing](https://www.anthropic.com/project/glasswing), both of which frame advanced AI cyber capability as controlled, defensive, and access-governed rather than a general-purpose open workflow.

@@ -1,6 +1,6 @@
 ---
-title: OpenAI Batch API pricing and when Batch is worth it
-description: How OpenAI Batch API pricing works, when the 50 percent discount matters, and which AI workloads should use Batch instead of live or long-running product lanes.
+title: "OpenAI Batch API Pricing: When the 50% Discount Is Worth It"
+description: How OpenAI Batch API pricing works, when the 50% input and output discount matters, and which AI workloads should use Batch instead of live or background lanes.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -8,7 +8,7 @@ reviewCadence: Monthly review
 contentStatus: growing
 problemSolved: Helps teams decide when OpenAI Batch API is actually cheaper and healthier than live requests, background-mode jobs, or rented compute for the workload they have.
 readerTakeaway: You should leave with a clearer rule for when Batch is worth using, which job shapes benefit from the discount, and when cheaper throughput still damages the product.
-primaryKeyword: openai batch api
+primaryKeyword: openai batch api pricing
 searchIntent: compare
 decisionStage: implementation
 targetRoles:
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-22
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-15
 contentCluster: ai-cost-and-compute
 canonicalCluster: ai-cost-and-compute
 pageType: decision-guide
@@ -41,7 +41,6 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# OpenAI Batch API pricing and when Batch is worth it
 
 The easiest way to misuse OpenAI Batch API is to focus on the discount and ignore the workload shape. Batch is cheaper because it trades urgency for throughput. If the product still needs a user-visible answer, approval-aware follow-up, or one tracked long-running task, the discount can become a distraction. Batch is worth it when the cheaper lane matches the work, not when the team is merely chasing lower token cost.
 
@@ -57,13 +56,24 @@ OpenAI publicly positions Batch as **50 percent lower cost on inputs and outputs
 
 If the task still behaves like a product job rather than a backlog job, cheaper processing can still be the wrong lane.
 
-## Current public price signal checked April 22, 2026
+## Current public price signal checked May 15, 2026
 
 The relevant official anchor is simple:
 
-- [OpenAI API pricing](https://openai.com/api/pricing/) says the Batch API lets teams "save 50% on inputs and outputs" and run tasks asynchronously over 24 hours.
+- [OpenAI API pricing](https://openai.com/api/pricing/) positions Batch API as a service tier that saves 50 percent on inputs and outputs for eligible asynchronous work.
+- [OpenAI Batch API documentation](https://platform.openai.com/docs/guides/batch) describes Batch as a way to process asynchronous groups of requests with a 24-hour completion window and separate batch limits.
 
 That matters because the economics are not subtle. If the workload fits Batch, the discount can be material. If the workload does not fit Batch, the discount often gets erased by product friction, duplicated orchestration, or delayed downstream work.
+
+## Pricing decision table
+
+| Workload question | Batch pricing is probably worth it | Batch pricing is probably a distraction |
+| --- | --- | --- |
+| Can the work wait? | Yes, the result can arrive later without hurting the product | No, the user or workflow needs timely completion |
+| Is the work independent? | Yes, each request can succeed or fail on its own | No, the job is one long workflow with shared state |
+| Does the product need status? | Batch-level progress is enough | A user needs job-level status, cancellation, and retrieval |
+| Is review required? | Review can happen after a file or batch output lands | Each job needs approval-aware completion |
+| What is the economic unit? | Cost per accepted record or eval case | Cost per completed product job |
 
 ## When Batch is genuinely worth it
 

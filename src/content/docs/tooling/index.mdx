@@ -21,14 +21,13 @@ lifecycle: hub
 refreshPriority: medium
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-14
 problemSolved: Helps readers solve the practical question behind Tooling instead of stopping at a generic definition or feature list.
 readerTakeaway: "You should leave with a clearer decision model, implementation boundary, or next-step checklist for Tooling."
 ---
 
 import { LinkCard, Steps } from '@astrojs/starlight/components';
 
-# Tooling
 
 Tooling is where prompt systems become maintainable. The goal is not to collect every possible platform, but to choose the minimum stack that supports visibility, review, versioning, and reliable rollout.
 
@@ -56,6 +55,16 @@ Tooling is where prompt systems become maintainable. The goal is not to collect 
 		description="Govern agent inventory, identity, permissions, tools, approvals, audit trails, budgets, evals, and rollback across the enterprise."
 	/>
 	<LinkCard
+		title="Workspace agent connector governance"
+		href="/tooling/workspace-agent-connector-governance-checklist/"
+		description="Govern workspace AI connectors across inventory, identity, OAuth scopes, data owners, approvals, audit trails, and deprovisioning."
+	/>
+	<LinkCard
+		title="Workspace agent admin analytics"
+		href="/tooling/workspace-agent-admin-analytics-checklist/"
+		description="Track workspace-agent adoption, connector use, permissions, quality, review burden, cost, incidents, and department rollout."
+	/>
+	<LinkCard
 		title="What alerts should AI agent monitoring trigger?"
 		href="/tooling/what-alerts-should-ai-agent-monitoring-trigger/"
 		description="A practical alert taxonomy for quality drift, approval failures, cost spikes, retry storms, tool failures, and rollback thresholds."
@@ -64,6 +73,11 @@ Tooling is where prompt systems become maintainable. The goal is not to collect 
 		title="AI agent incident response runbook"
 		href="/tooling/ai-agent-incident-response-runbook/"
 		description="Triage, containment, evidence capture, rollback, communication, and post-incident learning for production agent failures."
+	/>
+	<LinkCard
+		title="Frontier AI cyber defense readiness"
+		href="/tooling/frontier-ai-cyber-defense-readiness-checklist/"
+		description="Prepare controlled access, scope, review gates, audit evidence, and containment before advanced AI cyber capabilities enter defensive workflows."
 	/>
 	<LinkCard
 		title="Change management and release policies"

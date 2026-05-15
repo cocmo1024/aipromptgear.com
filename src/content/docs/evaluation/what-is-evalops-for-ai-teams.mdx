@@ -1,6 +1,6 @@
 ---
-title: What is EvalOps for AI teams?
-description: What EvalOps means in practice, when AI teams need it, and how traces, datasets, graders, release gates, and score ownership fit together.
+title: What Is EvalOps? Definition, Workflow, and Release Gates for AI Teams
+description: A practical EvalOps definition for AI teams, with datasets, traces, graders, scorecards, release gates, ownership, monitoring, and rollback rules.
 referenceType: evaluation
 adProfile: evaluation
 commercialIntent: high
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-22
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-15
 contentCluster: evalops
 canonicalCluster: evalops
 pageType: evaluation
@@ -41,9 +41,24 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# What is EvalOps for AI teams?
 
 EvalOps is the operating discipline that keeps AI quality from collapsing into anecdote, heroic reviewers, and stale benchmark theater. It is not a synonym for "we ran some evals." EvalOps starts when evaluation becomes part of release control: named owners, explicit scorecards, known datasets, repeatable graders, live monitoring, and rollback rules that people will actually use.
+
+## Quick definition
+
+EvalOps is the practice of operating AI evaluation as a release and reliability system. It connects:
+
+| EvalOps layer | What it controls |
+| --- | --- |
+| Datasets | The examples and edge cases that define expected behavior |
+| Traces | The run-level evidence that shows what the agent or model actually did |
+| Graders and reviewers | The scoring process for quality, policy, tool use, and task success |
+| Scorecards | The decision surface that makes quality visible |
+| Release gates | The rules that block, narrow, or approve rollout |
+| Monitoring | The live signals that show whether production behavior is drifting |
+| Rollback rules | The action taken when quality, cost, or safety gets worse |
+
+If failed evaluation does not change release behavior, the team has metrics. It does not yet have EvalOps.
 
 ## What matters first
 

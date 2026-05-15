@@ -1,0 +1,171 @@
+---
+title: Benchmark vs Production Evals for AI Agents
+description: Use AI benchmarks for screening, then release agents with workflow-specific evals covering tools, approvals, traces, costs, and failure recovery.
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: benchmark vs production evals for AI agents
+searchIntent: compare
+decisionStage: implementation
+targetRoles:
+  - EvalOps owners
+  - AI platform teams
+  - Engineering managers
+  - Product leaders
+  - Security reviewers
+contentStatus: growing
+contentCluster: evalops
+canonicalCluster: evalops
+pageType: evaluation
+lifecycle: evergreen
+refreshPriority: high
+datePublished: 2026-05-15
+lastReviewed: 2026-05-15
+problemSolved: How to use public AI benchmarks without confusing them for production readiness in tool-using, approval-gated, or business-critical agent workflows.
+readerTakeaway: You should leave with a practical rule for when benchmarks help, when production evals decide release, and which evidence belongs in an agent scorecard.
+keyQuestions:
+  - Are benchmark scores enough to choose an AI agent?
+  - What should production evals measure that benchmarks miss?
+  - How should teams compare model upgrades, agent harness changes, and workflow releases?
+notFor:
+  - Academic benchmark methodology only
+  - Teams shipping simple one-turn text generation with no tools or side effects
+  - Vendor marketing comparisons with no internal workflow data
+updateTriggers:
+  - Major model benchmark releases
+  - Coding-agent or enterprise-agent adoption reports
+  - New agent failures, postmortems, or quality-regression incidents
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Benchmarks are useful for screening. They are not a release gate. A model or coding agent can look strong on public tests and still fail inside a real workflow because the production problem includes tools, data access, user authority, approval timing, cost, latency, recovery, and audit evidence.
+
+## Quick answer
+
+Use public benchmarks to narrow the field. Use production evals to decide whether an agent can ship.
+
+| Question | Benchmark | Production eval |
+| --- | --- | --- |
+| Which model or agent deserves a first look? | Useful | Useful |
+| Will it work on our repo, tools, policy, and data? | Weak | Required |
+| Can it respect approvals and stop rules? | Usually weak | Required |
+| Can it recover from partial tool failure? | Usually weak | Required |
+| Is the cost acceptable per successful workflow? | Weak | Required |
+| Can reviewers reconstruct what happened? | Weak | Required |
+
+For agent systems, the release question is not "did it answer correctly once?" It is "did it complete the workflow correctly, safely, and economically under the constraints this team actually has?"
+
+## Why this matters now
+
+Enterprise agent adoption is moving from prototypes into multi-stage work. Anthropic reports that many organizations are deploying agents for multi-stage workflows, with coding leading adoption and broader use cases such as research, reporting, data analysis, and internal automation expanding. McKinsey notes that agent scaling is most advanced in technology functions such as software engineering and IT.
+
+That makes benchmark-only evaluation weaker. As agents move into workstreams, the failure modes become local:
+
+- repository conventions;
+- source freshness;
+- tool permissions;
+- approval policy;
+- customer data boundaries;
+- cost per completed workflow;
+- reviewer capacity;
+- rollback and incident evidence.
+
+## What benchmarks are good for
+
+Benchmarks help when the team needs:
+
+- a rough capability screen;
+- a regression signal across model versions;
+- a way to detect obvious weakness;
+- a public reference point for procurement;
+- a starting shortlist before internal testing.
+
+They are especially helpful when the task is close to the benchmark's actual measurement. They become less helpful when the production workflow includes long context, tool calls, side effects, domain-specific policy, or human review.
+
+## What production evals must add
+
+| Eval layer | What it measures |
+| --- | --- |
+| Task success | Did the agent produce the intended business or engineering outcome? |
+| Tool choice | Did it choose the right tool, at the right time, with the right arguments? |
+| Approval behavior | Did it stop before actions that require confirmation or human review? |
+| Evidence quality | Did it preserve enough trace, source, and decision evidence for review? |
+| Cost and latency | Did the successful workflow fit the budget and SLA? |
+| Recovery | Did it retry, stop, or escalate correctly after failure? |
+| Security boundary | Did it avoid leaking data or exceeding permissions? |
+| Reviewer burden | Did it reduce work, or merely move work into review queues? |
+
+An agent eval that ignores tools and approvals is usually just a chatbot eval with a more ambitious name.
+
+## Scorecard template
+
+| Category | Pass rule | Fail example |
+| --- | --- | --- |
+| Objective fit | Output directly solves the assigned workflow | Produces plausible but irrelevant work |
+| Source use | Cites or uses approved sources only | Invents facts or uses stale evidence |
+| Tool execution | Calls tools only when needed and with valid arguments | Repeats failed calls without changing state |
+| Permission boundary | Stops before write, purchase, deploy, send, or delete actions when required | Acts without approval |
+| Trace completeness | Reviewer can reconstruct plan, tool calls, evidence, and final state | Final answer exists but evidence is missing |
+| Cost fit | Meets cost per successful workflow target | Uses premium model/tool loops for low-value steps |
+| Recovery | Escalates ambiguous failures | Hides uncertainty behind a confident answer |
+
+Scorecards should be strict where the workflow has side effects and looser where the output is reversible.
+
+## Benchmark-to-production workflow
+
+1. Use public benchmarks and vendor demos to select candidates.
+2. Build an internal eval set from real tasks, failures, and reviewer notes.
+3. Include easy, medium, hard, and adversarial cases.
+4. Test the full agent harness, not only the base model.
+5. Compare cost, latency, reviewer burden, and rollback behavior.
+6. Run canaries before broad release.
+7. Convert production failures into new eval cases.
+
+The eval set should age with the workflow. A static benchmark cannot capture a changing repository, policy, product catalog, support queue, or compliance requirement.
+
+## When a benchmark win should not trigger rollout
+
+Do not roll out only because a public benchmark improved when:
+
+- the workflow uses private data;
+- the agent can mutate systems;
+- the task requires approvals;
+- hallucinated certainty is expensive;
+- the team lacks trace review;
+- the benchmark does not cover your domain;
+- the new model changes cost or latency materially;
+- the product harness, prompt, or tool layer changed at the same time.
+
+In those cases, treat the benchmark as a reason to test, not as permission to ship.
+
+## Source notes checked May 15, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [Anthropic enterprise agents 2026 survey](https://claude.com/blog/how-enterprises-are-building-ai-agents-in-2026) | Enterprise agents are moving into multi-stage workflows, coding, research, reporting, data analysis, and internal automation. |
+| [McKinsey agentic AI advances](https://www.mckinsey.com/featured-insights/week-in-charts/agentic-ai-advances) | Agent scaling is most advanced in technology functions including software engineering and IT. |
+| [Deloitte State of AI in the Enterprise 2026](https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html) | Enterprise AI success depends on moving from ambition to activation, workforce readiness, and workflow redesign. |
+
+## Related pages
+
+<div class="portal-links">
+	<LinkCard
+		title="What is EvalOps for AI teams?"
+		href="/evaluation/what-is-evalops-for-ai-teams/"
+		description="Use this page for the operating model behind eval ownership, release gates, and regression management."
+	/>
+	<LinkCard
+		title="Agent evals for tool-using AI systems"
+		href="/evaluation/agent-evals-for-tool-using-ai-systems/"
+		description="Go deeper on evals that measure planning, tool choice, tool arguments, approvals, and traces."
+	/>
+	<LinkCard
+		title="Coding-agent quality regression playbook"
+		href="/evaluation/coding-agent-quality-regression-playbook/"
+		description="Use when a coding-agent model, prompt, harness, or product layer appears to have regressed."
+	/>
+</div>

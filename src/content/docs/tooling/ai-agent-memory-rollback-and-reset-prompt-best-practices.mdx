@@ -1,6 +1,6 @@
 ---
-title: AI agent memory rollback and reset prompt best practices
-description: How to design reset prompts, memory rollback rules, quarantine workflows, and release controls for AI agents without confusing session cleanup with true production rollback.
+title: Best Practices for AI Agent Memory Rollback and Reset Prompts
+description: How to create reset prompts and memory rollback workflows for AI agents, including session cleanup, durable memory, retrieval state, quarantine, and release controls.
 referenceType: tooling
 adProfile: tooling
 commercialIntent: high
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-29
-lastReviewed: 2026-04-29
+lastReviewed: 2026-05-15
 contentCluster: tooling
 canonicalCluster: tooling
 pageType: tool-guide
@@ -41,7 +41,6 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# AI agent memory rollback and reset prompt best practices
 
 The common search query is "best practices for creating a reset prompt for AI agent memory rollback." That wording is useful because it exposes the real confusion: a **reset prompt** and a **memory rollback system** are not the same thing.
 
@@ -62,6 +61,18 @@ A credible memory rollback design separates five layers:
 | Tool or workflow state | A side effect already happened or a workflow version changed | Operational rollback, approval gate, or compensating action |
 
 If a reset prompt only touches the first layer, it is not memory rollback. It is session hygiene.
+
+## Prompt reset vs system rollback
+
+| Problem | Reset prompt is enough? | What else is needed |
+| --- | --- | --- |
+| Agent carried a bad assumption inside one run | Often yes | Start a clean run and require evidence reconstruction |
+| Agent saved the wrong durable memory | No | Quarantine, delete, or supersede the memory record |
+| Retrieval keeps returning an obsolete source | No | Fix the source, re-index, or block the document |
+| A prompt release changed memory-writing behavior | No | Roll back the workflow or prompt version and add regression tests |
+| A tool action already happened | No | Use operational rollback, compensating action, or incident response |
+
+The reset prompt is the fastest containment tool. The rollback workflow is what actually repairs persistent state.
 
 ## What a reset prompt should do
 

@@ -41,7 +41,6 @@ refreshPriority: high
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# OpenAI background mode polling, webhooks, and job status for long-running tasks
 
 Most teams understand why a long-running task should not sit inside a live request. Fewer teams design what happens after the task is handed off. That is where background mode usually breaks down in practice. The hard part is not creating the job. The hard part is deciding how the product will track it, surface it, retry it, and stop it from doing something consequential without review.
 

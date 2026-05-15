@@ -1,6 +1,6 @@
 ---
 title: AI Agent Trace Retention, Sampling, and Privacy Policy
-description: How production AI teams should decide which agent traces to keep, sample, redact, escalate, and convert into eval evidence without turning observability into privacy or cost debt.
+description: Decide which AI agent traces to keep, sample, redact, escalate, and turn into eval evidence without creating privacy, storage, or cost debt.
 referenceType: evaluation
 adProfile: evaluation
 commercialIntent: high
@@ -41,7 +41,6 @@ editorKey: review-desk
 
 import { LinkCard, Steps } from '@astrojs/starlight/components';
 
-# AI Agent Trace Retention, Sampling, and Privacy Policy
 
 Agent teams usually discover trace policy late. The product starts with a few runs, then grows into tool calls, retrieval, browser actions, code edits, support-ticket changes, approvals, and human handoffs. At that point, traces are no longer just debugging artifacts. They may contain user input, retrieved documents, tool arguments, tool outputs, secrets-adjacent data, policy decisions, customer context, reviewer notes, and failure evidence.
 

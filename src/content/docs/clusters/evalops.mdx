@@ -33,12 +33,11 @@ updateTriggers:
   - Major model, prompt, retrieval, or tool changes
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-15
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-# EvalOps Cluster
 
 EvalOps is the operating discipline that keeps AI systems from relying on vibes. This cluster groups pages that turn examples, traces, labels, scorecards, incidents, and release gates into a maintainable quality system.
 
@@ -49,6 +48,7 @@ Use this hub by the failure mode you are trying to prevent:
 | Failure mode | Start here | What the page should help you decide |
 | --- | --- | --- |
 | The team has demos but no release standard | [What is EvalOps for AI teams?](/evaluation/what-is-evalops-for-ai-teams/) | Whether evaluation is owned by product, QA, platform, or engineering |
+| Leadership wants benchmark proof before rollout | [Benchmark vs production evals](/evaluation/benchmark-vs-production-evals-for-ai-agents/) | Which benchmark signals are useful for screening and which production gates still need workflow-specific evidence |
 | Agent runs look good until a tool call fails | [Trace grading for tool-using agents](/evaluation/trace-grading-for-tool-using-ai-agents/) | Whether the whole run is being evaluated, not only the final answer |
 | Scorecards are subjective | [What should an agent eval scorecard measure?](/evaluation/what-should-an-agent-eval-scorecard-actually-measure/) | Which outcome, policy, tool, and review metrics belong in the gate |
 | Production quality drifts after launch | [Live traffic sampling](/evaluation/how-should-ai-teams-sample-live-traffic-for-agent-evals/) | How to sample real traffic without overwhelming reviewers |
@@ -79,6 +79,11 @@ If a page cannot answer those questions, it is probably too shallow for this clu
 		title="EvalOps implementation roadmap"
 		href="/evaluation/evalops-implementation-roadmap-for-production-ai-teams/"
 		description="Move from ad hoc evals into traces, datasets, scorecards, owners, and release gates."
+	/>
+	<LinkCard
+		title="Benchmark vs production evals"
+		href="/evaluation/benchmark-vs-production-evals-for-ai-agents/"
+		description="Turn public benchmark confidence into production scorecards, traces, release gates, and review decisions."
 	/>
 	<LinkCard
 		title="What should an agent eval scorecard measure?"

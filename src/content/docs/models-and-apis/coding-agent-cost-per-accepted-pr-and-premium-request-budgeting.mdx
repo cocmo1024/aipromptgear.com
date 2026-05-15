@@ -1,0 +1,249 @@
+---
+title: "Coding Agent Cost per Accepted PR and Premium Request Budgeting"
+description: "A practical cost model for engineering teams budgeting coding agents by accepted PRs, reviewer effort, premium requests, failed runs, and quality outcomes."
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+contentCluster: coding-agents
+canonicalCluster: coding-agents
+pageType: cost-model
+lifecycle: evergreen
+refreshPriority: high
+problemSolved: Helps engineering leaders budget coding-agent usage around accepted engineering outcomes instead of seats, generated lines, or raw request volume.
+readerTakeaway: You should leave with a cost-per-accepted-PR model that includes premium requests, agent runtime, human review, failed runs, rework, and post-merge quality.
+primaryKeyword: coding agent cost per accepted PR
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering leaders
+  - Developer productivity teams
+  - Platform teams
+  - Finance partners
+  - Staff engineers
+keyQuestions:
+  - How should teams calculate coding-agent cost per accepted PR?
+  - How should premium request budgets be allocated across engineering teams?
+  - What coding-agent economics show whether adoption should expand or pause?
+notFor:
+  - Teams measuring coding agents only by generated lines or prompt count
+  - Repositories without review, CI, or accepted-change tracking
+  - Personal coding-tool usage with no team budget accountability
+updateTriggers:
+  - Major pricing, premium request, seat packaging, or model-routing changes
+  - Evidence that review burden or failed agent runs are distorting the budget
+  - New coding-agent workflows that move from local assistance to cloud or background execution
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-05-13
+lastReviewed: 2026-05-13
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+Coding-agent budgets fail when teams measure the wrong unit. Seats are easy to count. Premium requests are easy to count. Generated lines are easy to count. None of those prove that engineering work improved.
+
+The useful unit is accepted engineering outcome. For many teams, the practical denominator is an accepted PR or accepted change set.
+
+## Quick answer
+
+Calculate coding-agent cost per accepted PR by adding seat cost, premium requests, model or runtime cost, tool calls, CI runs, human review time, failed runs, rework, and post-merge defects, then dividing by PRs or change sets accepted after normal review.
+
+The formula should look like this:
+
+```text
+cost per accepted PR =
+(seat cost + premium request cost + runtime/tool cost + CI cost + reviewer cost + rework cost + defect cost)
+/ accepted agent-assisted PRs
+```
+
+If the denominator includes generated branches, abandoned diffs, or unmerged code, the metric will make the program look healthier than it is.
+
+## What belongs in the numerator
+
+| Cost component | Include when | Why it matters |
+| --- | --- | --- |
+| Seat cost | The team buys per-user coding tools | Seat rollout creates fixed monthly pressure |
+| Premium requests | Higher-capability model calls, agent tasks, or premium interactions are metered | Heavy users can change economics quickly |
+| Agent runtime | Cloud agents, background tasks, or long-running sessions consume paid capacity | Runtime can hide inside convenience workflows |
+| Tool calls | Search, code execution, browser use, external tools, or retrieval add cost | Tool-heavy tasks may be expensive even with cheap model calls |
+| CI and test runs | Agent branches trigger repeated builds | Failed or noisy runs consume shared engineering infrastructure |
+| Reviewer time | Human review is required before merge | Review burden is often the largest real cost |
+| Rework | Humans rewrite or repair agent output | Rework reveals weak routing or task framing |
+| Defects | Agent-assisted PRs cause incidents, rollbacks, or follow-up fixes | Post-merge failures should count against the program |
+
+The model does not need perfect accounting on day one. It needs enough realism to stop seat spend from being mistaken for productivity.
+
+## What belongs in the denominator
+
+Use accepted outcomes:
+
+- merged PRs with agent assistance;
+- accepted change sets in repos without PR workflow;
+- accepted test-only changes;
+- accepted documentation changes when they were part of engineering work;
+- accepted CI fixes;
+- accepted migration slices.
+
+Do not count:
+
+- generated branches that were abandoned;
+- PRs closed without merge;
+- diffs that reviewers rewrote from scratch;
+- experiment outputs;
+- code suggestions copied into unrelated human work without tracking;
+- local autocomplete usage with no accepted-change record.
+
+The denominator should reflect work that passed the team's normal quality gate.
+
+## Segment by task class
+
+A single blended metric hides too much. Track cost by task class:
+
+| Task class | Expected economics | Warning sign |
+| --- | --- | --- |
+| Test expansion | Low risk, usually strong fit | Reviewer edits most assertions |
+| Small bug fix | Good when failing case is clear | Agent needs repeated broad exploration |
+| CI repair | Good when logs are clear | Fix masks the real failure |
+| Documentation update | Good for bounded changes | Agent invents behavior or stale facts |
+| Refactor slice | Good with narrow ownership | Diff grows across modules |
+| Migration task | Good only when split into slices | Reviewers cannot verify blast radius |
+| Security-sensitive change | Usually human-owned with agent assistance | Agent changes auth, secrets, or policy without specialist review |
+
+Budget expansion should favor task classes where accepted outcomes are repeatable and review burden stays low.
+
+## Premium requests need allocation rules
+
+Premium requests should not be treated as a shared mystery pool. Allocate them by:
+
+- team;
+- repository;
+- workflow;
+- task class;
+- model or capability tier;
+- accepted outcome;
+- reviewer owner;
+- month or sprint.
+
+The goal is to answer which teams deserve more premium capacity because they turn it into accepted work, and which teams need better task routing before they spend more.
+
+## A practical monthly budget view
+
+| Metric | Why to track it |
+| --- | --- |
+| Premium requests per accepted PR | Shows whether high-capability usage is efficient |
+| Agent runs per accepted PR | Reveals repeated failed attempts |
+| Reviewer minutes per accepted PR | Captures the human cost of generated work |
+| Abandoned agent branches | Shows wasted runtime and weak task framing |
+| Rework rate | Shows whether reviewers are accepting or rebuilding |
+| Post-merge defect rate | Protects quality from being traded for speed |
+| Cost by task class | Shows which workflows deserve expansion |
+| Cost by team | Supports fair budget ownership |
+
+This view helps engineering leaders decide whether to expand seats, adjust routing, or cap expensive lanes.
+
+## Reviewer time is not free
+
+Coding-agent economics often look good until reviewer time is priced. A PR that costs little in tool usage can still be expensive if a senior engineer spends an hour reconstructing intent, checking broad diffs, or fixing subtle regressions.
+
+Track reviewer effort in coarse bands:
+
+- under 10 minutes;
+- 10 to 30 minutes;
+- 30 to 60 minutes;
+- over 60 minutes;
+- reviewer rewrote the change.
+
+This is usually enough to identify whether the agent is saving time or shifting work downstream.
+
+## Failed runs should stay visible
+
+Failed agent attempts are part of cost:
+
+- task abandoned;
+- branch discarded;
+- tests never passed;
+- agent exceeded scope;
+- reviewer rejected the approach;
+- duplicate work was created;
+- output was correct but too hard to review.
+
+If failed runs disappear from the metric, teams will keep assigning bad tasks to agents because the budget report only sees successes.
+
+## When cost per accepted PR is healthy
+
+The metric is healthy when:
+
+- accepted PRs rise in suitable task classes;
+- reviewer time per accepted PR stays stable or falls;
+- post-merge defects do not increase;
+- abandoned branches are low;
+- premium requests concentrate in complex but valuable work;
+- low-risk tasks use cheaper or faster lanes;
+- teams can explain why spend changed.
+
+This is the signal to expand carefully.
+
+## When to pause expansion
+
+Pause or narrow rollout when:
+
+- premium request use rises but accepted PRs do not;
+- reviewers rewrite a large share of agent output;
+- cost per accepted PR rises without quality improvement;
+- agents repeatedly touch broad or risky files;
+- CI spend rises because agent branches fail repeatedly;
+- post-merge regressions increase;
+- teams cannot explain which workflows are worth the spend.
+
+These are routing and governance problems, not only budget problems.
+
+## Budgeting rule by task class
+
+Use a simple allocation model:
+
+| Lane | Budget posture |
+| --- | --- |
+| Read-only exploration | Low-cost, broad availability if no sensitive data issue |
+| Small fixes and tests | Moderate budget with normal review |
+| Cloud background tasks | Budgeted by accepted PR and failed-run rate |
+| Large migrations | Budgeted as human-led programs with agent subtask slices |
+| Security or deployment work | Specialist-owned, not open-ended agent budget |
+| Premium reasoning lanes | Reserved for complex tasks with clear review owners |
+
+The point is not to starve agents. It is to avoid using expensive capability on work that should have been scoped better.
+
+## Bottom line
+
+Coding-agent budgeting should answer:
+
+**How much did accepted, reviewed engineering work cost after tool usage, premium requests, runtime, reviewer effort, failed runs, and quality outcomes were counted?**
+
+That metric is harder than counting seats. It is also much harder to fool.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Coding-agent adoption metrics that matter"
+		href="/evaluation/coding-agent-adoption-metrics-that-matter/"
+		description="Use this page to connect cost per accepted PR to adoption, review, quality, and engineering outcome metrics."
+	/>
+	<LinkCard
+		title="Cloud coding-agent task routing"
+		href="/workflows/cloud-coding-agent-task-routing-model/"
+		description="Use this page when high cost is caused by poor task routing between cloud agents, local agents, and human-owned work."
+	/>
+	<LinkCard
+		title="Coding-agent reviewer queues and approval capacity"
+		href="/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/"
+		description="Use this page when reviewer time is the hidden cost behind agent-generated diffs."
+	/>
+	<LinkCard
+		title="Claude Code premium seats and usage budgets"
+		href="/tool-comparisons/claude-code-premium-seats-and-usage-budgets/"
+		description="Use this page when premium coding-seat economics need vendor-specific budgeting context."
+	/>
+</div>
