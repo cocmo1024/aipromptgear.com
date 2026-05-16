@@ -1,6 +1,6 @@
 ---
-title: "OpenAI Batch API Pricing: When the 50% Discount Is Worth It"
-description: How OpenAI Batch API pricing works, when the 50% input and output discount matters, and which AI workloads should use Batch instead of live or background lanes.
+title: "OpenAI Batch API Pricing: 50% Discount and Workload Fit"
+description: How OpenAI Batch API pricing works, when the 50% input and output discount matters, and which workloads should use Batch instead of live, flex, or background lanes.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-22
-lastReviewed: 2026-05-15
+lastReviewed: 2026-05-16
 contentCluster: ai-cost-and-compute
 canonicalCluster: ai-cost-and-compute
 pageType: decision-guide
@@ -64,6 +64,21 @@ The relevant official anchor is simple:
 - [OpenAI Batch API documentation](https://platform.openai.com/docs/guides/batch) describes Batch as a way to process asynchronous groups of requests with a 24-hour completion window and separate batch limits.
 
 That matters because the economics are not subtle. If the workload fits Batch, the discount can be material. If the workload does not fit Batch, the discount often gets erased by product friction, duplicated orchestration, or delayed downstream work.
+
+## Simple break-even model
+
+Use this before changing the architecture:
+
+| Factor | What to estimate | Why it changes the answer |
+| --- | --- | --- |
+| Standard request cost | Current model, input, cached input, output, and tool cost | Establishes the baseline |
+| Batch request cost | Same workload under the Batch service tier | Shows the direct discount only |
+| Invalid or failed records | Inputs that fail validation, expire, or need replay | Reduces realized savings |
+| Review labor | Human checks required after batch output lands | Can dominate token savings |
+| Delay cost | Business cost of waiting for deferred completion | Makes Batch weaker for time-sensitive work |
+| Engineering overhead | File creation, status polling, output parsing, retry, and reconciliation | Determines whether savings survive implementation |
+
+The useful comparison is not "standard price versus Batch price." It is **standard workflow cost versus accepted Batch output cost**.
 
 ## Pricing decision table
 

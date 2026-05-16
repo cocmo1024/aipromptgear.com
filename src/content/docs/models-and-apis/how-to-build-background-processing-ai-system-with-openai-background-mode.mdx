@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-24
-lastReviewed: 2026-05-15
+lastReviewed: 2026-05-16
 contentCluster: models-and-apis
 canonicalCluster: models-and-apis
 pageType: decision-guide
@@ -60,6 +60,25 @@ Build the system as a durable job workflow:
 | Control actions | Cancel, retry, escalate, approve, archive, and expire jobs under explicit rules |
 
 The OpenAI API can run the long task. Your product still owns the lifecycle.
+
+## Minimal data model
+
+Start with a small table or collection before adding queues, dashboards, or automations:
+
+| Field | Required? | Notes |
+| --- | --- | --- |
+| `id` | Yes | Internal job ID controlled by your application |
+| `workspace_id` or `user_id` | Yes | Controls visibility, permissions, billing, and support lookup |
+| `provider_response_id` | Yes | Links the job to the OpenAI background response |
+| `job_type` | Yes | Separates research, extraction, enrichment, coding, support, and review jobs |
+| `status` | Yes | Product status such as queued, running, needs_review, completed, failed, canceled, or expired |
+| `input_summary` | Usually | Short support-safe description of what was requested |
+| `result_pointer` | When complete | Link to stored output, file, structured JSON, report, patch, or artifact |
+| `review_state` | For consequential work | pending, approved, rejected, or not_required |
+| `cost_metadata` | Recommended | Model, token, tool, retry, and timing fields for cost-per-completed-job analysis |
+| `failure_class` | On failure | timeout, provider_error, tool_error, policy_block, validation_error, canceled, or unknown |
+
+This data model keeps the provider response ID as one field inside your workflow rather than making it the workflow itself.
 
 ## The smallest useful architecture
 

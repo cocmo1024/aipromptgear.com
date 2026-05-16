@@ -1,6 +1,6 @@
 ---
 title: "OpenAI Batch API vs Background Mode: Which Async Pattern Fits?"
-description: Choose OpenAI Batch for bulk offline requests or background mode for tracked product jobs. Compare cost, status, review, and cancellation needs.
+description: Choose OpenAI Batch for bulk offline requests or background mode for one tracked product job. Compare cost, status, review, cancellation, and UX.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-11
-lastReviewed: 2026-05-15
+lastReviewed: 2026-05-16
 contentCluster: ai-cost-and-compute
 canonicalCluster: ai-cost-and-compute
 pageType: decision-guide
@@ -54,6 +54,10 @@ Those are not the same operating pattern. Treating them as interchangeable leads
 Use **Batch API** when you have large numbers of independent, non-urgent requests that can be processed asynchronously on a deferred SLA. Use **background mode** when one job may take longer than a normal response cycle but still belongs to a live product workflow that should be created, tracked, and later retrieved.
 
 Batch is a **bulk throughput tool**. Background mode is a **long-running task tool**.
+
+## One-sentence answer
+
+Use **OpenAI Batch API** when the work is a file or backlog of many independent requests; use **OpenAI background mode** when one user, operator, or workflow needs to track a specific long-running job after the live request ends.
 
 ## Quick comparison
 
@@ -100,6 +104,18 @@ If it is ten thousand independent jobs that can be completed later, you are clos
 | Draft a customer-facing reply that must be approved | Background mode plus approval lane | Completion is not the same as permission to send |
 
 If the workload seems to fit both, split it by unit of work. Use Batch for the offline backlog and background mode for the user-triggered item that someone must track.
+
+## Batch vs background vs flex
+
+Some teams also compare Flex processing in the same meeting. Keep the boundary clean:
+
+| Pattern | Best question | Poor fit |
+| --- | --- | --- |
+| Batch API | Can many independent requests wait for a deferred completion window? | One user-facing job that needs progress, cancellation, and later retrieval |
+| Background mode | Can one meaningful product job finish after the live request? | Large backfills where per-record status is enough |
+| Flex processing | Can a lower-priority request tolerate slower response or occasional unavailability? | Paid, urgent, or SLA-bound interactions |
+
+Batch and background mode are async patterns. Flex is a service-tier decision. Do not use service-tier language to hide an unclear unit of work.
 
 ## When Batch is the right answer
 
