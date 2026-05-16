@@ -1,0 +1,184 @@
+---
+title: AI Accelerator Procurement Scorecard for Inference Teams
+description: A vendor-neutral scorecard for choosing GPUs, TPUs, Trainium, Inferentia, hosted APIs, or dedicated capacity for production AI inference workloads.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI accelerator procurement scorecard
+searchIntent: compare
+decisionStage: shortlist
+targetRoles:
+  - AI infrastructure leads
+  - Platform engineering leaders
+  - Procurement teams
+  - Finance partners
+contentStatus: growing
+contentCluster: ai-cost-and-compute
+canonicalCluster: ai-cost-and-compute
+pageType: decision-guide
+lifecycle: evergreen
+refreshPriority: high
+datePublished: 2026-05-16
+lastReviewed: 2026-05-16
+problemSolved: How to compare AI accelerators and hosted inference options by workload fit, software maturity, memory, utilization, supply risk, operating burden, and cost per accepted outcome.
+readerTakeaway: You should leave with a practical procurement scorecard that prevents accelerator decisions from being driven by peak benchmark claims alone.
+keyQuestions:
+  - How should inference teams compare GPUs, TPUs, Trainium, Inferentia, and hosted APIs?
+  - Which procurement criteria matter beyond headline performance?
+  - When is a custom accelerator worth the ecosystem and lock-in tradeoff?
+notFor:
+  - Raw benchmark ranking pages
+  - Teams choosing hardware for a one-off prototype
+updateTriggers:
+  - Major NVIDIA, AMD, Google, AWS, or cloud accelerator launches
+  - Framework support changes for PyTorch, JAX, vLLM, Kubernetes, or model-serving stacks
+  - Material price, availability, memory, or power-efficiency changes
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+AI accelerator procurement is no longer a simple "which GPU is fastest?" question. Inference teams now compare rack-scale NVIDIA platforms, AMD Instinct systems, Google Cloud TPUs, AWS Trainium and Inferentia, hosted model APIs, and dedicated capacity from cloud providers. The right answer depends on workload shape, model support, memory, software maturity, utilization, operating burden, region, and exit options.
+
+The procurement goal is not to buy the most impressive chip. The goal is to serve useful AI workflows at acceptable latency, quality, reliability, and margin.
+
+## Quick answer
+
+Stay on hosted APIs while model choice, demand, and product quality are still changing. Consider accelerator procurement only when workload volume is stable, utilization is high, latency or data-control needs justify capacity ownership, and the serving team can operate the software stack. Score accelerators by production fit, not peak theoretical performance.
+
+## The scorecard
+
+| Criterion | What to inspect | Strong signal | Weak signal |
+| --- | --- | --- | --- |
+| Workload fit | Model size, context length, batch shape, modality, KV cache pressure | The accelerator matches the dominant workload class | The team is buying for a future workload that is not validated |
+| Memory and bandwidth | HBM, interconnect, cache behavior, multi-device scaling | Target models fit with room for batching and growth | Model sharding is fragile or destroys latency |
+| Software ecosystem | PyTorch, JAX, vLLM, serving, profiling, Kubernetes, observability | The team can deploy without unusual rewrites | Every model update needs vendor-specific engineering |
+| Availability | Cloud region, quota, lead time, reservation terms | Capacity is available where users and data policy require it | The plan depends on scarce regions or unclear allocation |
+| Utilization | Peak-to-average demand, queue design, batch fill rate | Workloads can keep capacity busy | Idle time turns hardware savings into waste |
+| Reliability | Fallback, rollback, incident response, provider SLA | The product can fail over or degrade gracefully | One accelerator path becomes a single point of failure |
+| Cost model | Cost per successful workflow, staffing, power, support, idle capacity | Savings survive after operations are included | Savings exist only in raw chip-hour comparisons |
+| Lock-in | Model portability, compiler maturity, data movement, contract terms | Exit path is clear enough for the risk level | Migration would require redesigning the product |
+
+Use the scorecard before vendor demos, not after. It turns the conversation from "what is fastest?" into "what fits our product?"
+
+## Hosted APIs remain the default for changing products
+
+Hosted model APIs are still hard to beat when:
+
+- product-market fit is not settled;
+- model quality changes often;
+- demand is bursty or seasonal;
+- the team needs access to multiple frontier providers;
+- safety, policy, and tool features are provider-managed;
+- operations headcount is limited.
+
+Hosted APIs convert infrastructure risk into usage cost. That can be the right tradeoff when the product is still learning.
+
+## When accelerator ownership becomes serious
+
+Procurement should move forward only after the team can answer:
+
+1. Which exact workflows will run on this capacity?
+2. What model families, context sizes, and modalities must be supported?
+3. What latency classes are required?
+4. What utilization can be maintained across the week?
+5. Which regions are allowed by data policy and customer contracts?
+6. What happens when the accelerator path is unavailable?
+7. Who owns model serving, observability, security, upgrades, and incident response?
+8. How will the team compare cost per successful workflow before and after migration?
+
+If those answers are vague, the procurement process is early.
+
+## Vendor-specific questions that matter
+
+Do not ask only for benchmark slides. Ask questions tied to production work.
+
+| Option | Useful questions |
+| --- | --- |
+| NVIDIA GPU platforms | Which rack, interconnect, networking, and serving choices are required for our target workload? Which software features are production-ready for our model path? |
+| AMD Instinct systems | Which models and frameworks are supported well on ROCm today? What migration work is required from existing CUDA-heavy operations? |
+| Google Cloud TPUs | Does the workload fit TPU-supported frameworks, serving patterns, and Google Cloud regional requirements? |
+| AWS Trainium or Inferentia | Does the team accept Neuron SDK requirements and AWS-native deployment patterns for the target models? |
+| Hosted APIs | Which workloads can remain provider-managed while the team focuses on routing, evals, and user experience? |
+| Dedicated capacity | Does the contract solve a real bottleneck, or does it lock the team into immature demand assumptions? |
+
+This is where procurement, platform engineering, product, and finance need one shared scorecard.
+
+## Evaluation before migration
+
+Run a migration trial on real workflow traces, not synthetic prompts only.
+
+Include:
+
+- short and long context cases;
+- common and edge-case tools;
+- expected concurrency levels;
+- retry behavior;
+- model output quality checks;
+- latency percentiles;
+- cost per completed workflow;
+- failure and fallback drills;
+- operator review of degraded outputs;
+- security and data-retention checks.
+
+An accelerator that wins a benchmark but breaks workflow reliability is not cheaper.
+
+## Cost model
+
+Compare options with this structure:
+
+| Cost category | Hosted API | Accelerator path |
+| --- | --- | --- |
+| Model runtime | Usage-based provider pricing | Hardware, reserved capacity, or instance pricing |
+| Idle capacity | Usually hidden in provider price | Directly owned by the team |
+| Engineering | Lower serving burden | Serving, profiling, scaling, upgrades, security |
+| Quality drift | Provider model changes require evals | Self-hosted or pinned model changes require evals |
+| Reliability | Provider SLA and fallback options | Team-owned incident response and failover |
+| Lock-in | API and tool surface | Hardware, compiler, region, and serving stack |
+
+The accelerator path wins only if its savings survive the full table.
+
+## Red flags
+
+Pause procurement when:
+
+- the team has not separated realtime, background, eval, and batch workloads;
+- demand cannot keep capacity busy;
+- the target model changes every few weeks;
+- one engineer is expected to own serving, observability, and incident response;
+- the cost comparison excludes idle time and staffing;
+- data residency rules make fallback impossible;
+- the model quality eval is weaker than the vendor benchmark.
+
+The biggest procurement mistake is buying permanence before the workload is stable.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI data center power capacity planning"
+		href="/models-and-apis/ai-data-center-power-capacity-planning-for-ai-products/"
+		description="Use this page when physical capacity, region choice, cooling, or power availability is becoming part of the AI roadmap."
+	/>
+	<LinkCard
+		title="GPU cloud vs hosted model APIs"
+		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"
+		description="Decide when infrastructure ownership beats hosted API economics."
+	/>
+	<LinkCard
+		title="A100 vs H100 economics"
+		href="/models-and-apis/a100-vs-h100-economics-for-inference-products/"
+		description="Use this page after rented GPU capacity is already justified and the question is GPU class."
+	/>
+	<LinkCard
+		title="Cost per success"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Tie accelerator decisions to completed outcomes instead of raw runtime cost."
+	/>
+</div>
+
+## Source note
+
+This page was checked on May 16, 2026 against current official accelerator signals from [NVIDIA Vera Rubin](https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Vera-Rubin-Opens-Agentic-AI-Frontier/default.aspx), [AMD Instinct MI350](https://www.amd.com/en/products/accelerators/instinct/mi350.html), [AMD and Meta's AI infrastructure agreement](https://www.amd.com/en/newsroom/press-releases/2026-2-24-amd-and-meta-announce-expanded-strategic-partnersh.html), [Google Cloud TPUs](https://cloud.google.com/tpu), [AWS Trainium](https://aws.amazon.com/ai/machine-learning/trainium/), and [AWS Inferentia](https://aws.amazon.com/ai/machine-learning/inferentia/).

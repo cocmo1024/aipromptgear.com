@@ -21,7 +21,7 @@ pageType: market-signal
 lifecycle: market-signal
 refreshPriority: high
 datePublished: 2026-05-15
-lastReviewed: 2026-05-15
+lastReviewed: 2026-05-16
 problemSolved: How to turn current AI industry headlines into durable implementation, governance, procurement, and evaluation topics instead of short-lived commentary.
 readerTakeaway: You should leave with a prioritized map of May 2026 AI hotspots and the next decision page to read or build for each one.
 keyQuestions:
@@ -44,7 +44,7 @@ editorKey: review-desk
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-This page was checked on May 15, 2026. The useful question is not which AI headline is loudest. The useful question is which signal creates a durable decision for product teams, enterprise buyers, security reviewers, and operations leaders.
+This page was checked on May 16, 2026. The useful question is not which AI headline is loudest. The useful question is which signal creates a durable decision for product teams, enterprise buyers, security reviewers, and operations leaders.
 
 The current pattern is clear: AI is moving from model access into delegated action. Agents are buying, coding, researching, operating across enterprise systems, and beginning to touch physical environments. That shift changes the page types that matter. The best content opportunities are no longer generic "what is AI" explainers; they are decision guides around authority, data location, payment, physical safety, evaluation, and operating cost.
 
@@ -61,6 +61,7 @@ The strongest May 2026 hotspots are:
 | AI product discovery | OpenAI product discovery in ChatGPT, Google Business Agent, Merchant Center attributes, AI Mode shopping | Product data completeness, comparison pages, conversational buying paths, and handoff measurement |
 | Enterprise agent platforms | OpenAI, Anthropic, Google, Microsoft, Salesforce, ServiceNow, and vertical-agent platforms | Agent inventory, connectors, identity, approvals, audit trails, and RFP evidence |
 | Inference operations | AI inference moving into core enterprise operations, hybrid deployment, cost pressure, queue design | Capacity planning, runtime lanes, cache strategy, retry budgets, and cost per successful workflow |
+| AI infrastructure power and accelerators | IEA energy analysis, NVIDIA Vera Rubin, AMD Instinct, Google TPUs, AWS Trainium and Inferentia | Power capacity, region choice, accelerator procurement, utilization, and software-stack risk |
 | AI workforce redesign | Deloitte and Anthropic signals around multi-step workflows and AI fluency | Role design, human oversight, escalation boundaries, and EvalOps ownership |
 
 ## What to build now
@@ -74,14 +75,34 @@ These four additions are the highest-leverage gaps for this site because they co
 		description="Design delegated payment, checkout, buyer intent, merchant handoff, fraud review, and audit evidence before agents can spend money."
 	/>
 	<LinkCard
+		title="Agentic commerce product feed readiness"
+		href="/models-and-apis/agentic-commerce-product-feed-readiness-checklist/"
+		description="Prepare product feeds, catalog data, availability, policy URLs, and merchant-owned checkout handoff for AI-assisted shopping."
+	/>
+	<LinkCard
 		title="Private and sovereign AI architecture"
 		href="/models-and-apis/private-and-sovereign-ai-architecture-for-enterprise-agents/"
 		description="Separate private AI, sovereign AI, data jurisdiction, cloud posture, and model locality for enterprise agent products."
 	/>
 	<LinkCard
+		title="AI data center power capacity planning"
+		href="/models-and-apis/ai-data-center-power-capacity-planning-for-ai-products/"
+		description="Turn AI infrastructure pressure into product decisions around power, cooling, region choice, queueing, and workload design."
+	/>
+	<LinkCard
+		title="AI accelerator procurement scorecard"
+		href="/models-and-apis/ai-accelerator-procurement-scorecard-for-inference-teams/"
+		description="Compare GPUs, TPUs, Trainium, Inferentia, hosted APIs, and dedicated capacity by production fit."
+	/>
+	<LinkCard
 		title="Physical AI robotics readiness"
 		href="/use-cases/physical-ai-robotics-readiness-for-operations-teams/"
 		description="Turn robotics model launches into an operations checklist for inspection, safety, simulation, human supervision, and incident review."
+	/>
+	<LinkCard
+		title="AI workforce redesign operating model"
+		href="/use-cases/ai-workforce-redesign-operating-model-for-agentic-teams/"
+		description="Define roles, review capacity, skills, metrics, and governance when agents become part of everyday team execution."
 	/>
 	<LinkCard
 		title="Benchmarks vs production evals"
@@ -156,12 +177,18 @@ Benchmarks help shortlist. Production evals decide release.
 
 | Source | Signal used |
 | --- | --- |
-| [OpenAI product discovery in ChatGPT](https://openai.com/index/powering-product-discovery-in-chatgpt/) | ACP is extending into product discovery, visual comparison, product feeds, and merchant integration. |
+| [Agentic Commerce Protocol product feed specification](https://agentic-commerce-protocol.com/docs/commerce/specs/feed) | Merchant feeds are becoming structured source material for product matching, indexing, ranking, price, availability, and fulfillment facts. |
 | [Google agentic shopping tools and UCP](https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/) | UCP is positioned as an open standard for discovery, buying, and post-purchase support. |
 | [Mastercard agentic commerce protocols](https://www.mastercard.com/content/mccom/global/en/news-and-trends/stories/2026/agentic-commerce-rules-of-the-road.html) | Mastercard connects agentic commerce to clear user intent, credentials, and verifiable agent identity. |
 | [Visa secure AI transactions](https://visa.gcs-web.com/news-releases/news-release-details/visa-and-partners-complete-secure-ai-transactions-setting-stage) | Visa reports secure, agent-initiated transaction pilots and frames 2026 as mainstream adoption. |
+| [IEA Energy and AI](https://www.iea.org/reports/energy-and-ai/) | AI infrastructure planning is now tied to electricity demand, data center growth, energy supply, and regional capacity. |
+| [NVIDIA Vera Rubin](https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Vera-Rubin-Opens-Agentic-AI-Frontier/default.aspx) | Rack-scale AI infrastructure is being positioned around agentic inference, networking, CPUs, GPUs, and system efficiency. |
+| [AMD Instinct MI350](https://www.amd.com/en/products/accelerators/instinct/mi350.html) | Accelerator procurement is moving toward memory, bandwidth, software stack, power efficiency, and platform-level deployment. |
+| [Google Cloud TPUs](https://cloud.google.com/tpu) | Custom accelerators are being positioned for large-scale inference, agents, multimodal models, and cloud-specific architecture. |
+| [AWS Trainium](https://aws.amazon.com/ai/machine-learning/trainium/) and [AWS Inferentia](https://aws.amazon.com/ai/machine-learning/inferentia/) | Cloud-native AI chips require procurement teams to consider framework support, SDKs, deployment pattern, and provider ecosystem. |
 | [NTT DATA private and sovereign AI report release](https://us.nttdata.com/en/news/press-release/2026/may/enterprise-ai-hits-the-wall-ntt-data-research-reveals-growing-privacy-and-sovereignty-barriers) | Privacy, sovereignty, cross-border restrictions, and cloud security posture are now enterprise AI blockers. |
 | [Deloitte State of AI in the Enterprise 2026](https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html) | Enterprise AI readiness now includes agentic AI, physical AI, sovereign AI, skills, and workflow redesign. |
+| [McKinsey technology workforce redesign](https://www.mckinsey.com/capabilities/mckinsey-technology/our-insights/designing-an-end-to-end-technology-workforce-for-the-ai-first-era) | Hiring alone is not enough when agents take on more execution work; teams need explicit human-agent workforce design. |
 | [Google DeepMind Gemini Robotics-ER 1.6](https://deepmind.google/blog/gemini-robotics-er-1-6/) | Embodied reasoning, success detection, instrument reading, and physical safety are advancing. |
 | [NVIDIA physical AI ecosystem release](https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Global-Robotics-Leaders-Take-Physical-AI-to-the-Real-World/) | Cosmos, Isaac, GR00T, and robotics ecosystem partnerships signal production-scale physical AI. |
 | [Anthropic enterprise agents 2026 survey](https://claude.com/blog/how-enterprises-are-building-ai-agents-in-2026) | Multi-stage workflows, coding adoption, research/reporting, and economic return are central enterprise agent themes. |

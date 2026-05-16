@@ -1,0 +1,172 @@
+---
+title: Agentic Commerce Product Feed Readiness Checklist
+description: A practical checklist for preparing merchant product feeds, catalog data, offer freshness, checkout handoff, and evidence pages for ChatGPT and agentic commerce discovery.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: agentic commerce product feed readiness
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - Ecommerce leaders
+  - Product marketers
+  - Marketplace operators
+  - Web platform teams
+contentStatus: growing
+contentCluster: models-and-apis
+canonicalCluster: models-and-apis
+pageType: implementation-guide
+lifecycle: evergreen
+refreshPriority: high
+datePublished: 2026-05-16
+lastReviewed: 2026-05-16
+problemSolved: How merchants should prepare product feed data, catalog pages, availability, pricing, policies, and checkout handoff for AI-assisted product discovery and agentic commerce.
+readerTakeaway: You should leave with a feed readiness model that connects structured product data, page evidence, merchant-owned checkout, and operational freshness.
+keyQuestions:
+  - What should a merchant fix before submitting a product feed for agentic commerce?
+  - How should product feed data align with product detail pages and comparison pages?
+  - Which operational checks reduce price, availability, and fulfillment mismatch risk?
+notFor:
+  - Merchants looking for tricks to manipulate recommendations
+  - Generic ecommerce SEO checklists with no product-feed operations
+updateTriggers:
+  - OpenAI, Stripe, Google, or commerce-platform changes to agentic commerce feed specs
+  - New merchant portal, checkout, payment, or product discovery requirements
+  - Material changes to shopping availability by region
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Agentic commerce makes product data operational. A merchant can no longer treat the product detail page, product feed, inventory system, checkout flow, and policy pages as separate surfaces. AI assistants compare products, answer buyer constraints, and hand users toward merchant-owned checkout. If the catalog data is stale, incomplete, or inconsistent with the site, the assistant has weaker source material and the buyer has less trust.
+
+This checklist is for merchants and product teams preparing for AI-assisted product discovery through feeds, structured catalog data, and stronger product pages.
+
+## Quick answer
+
+Start with feed accuracy, not promotional copy. A useful agentic commerce feed needs stable product identifiers, accurate price and availability, complete variants, clean titles, current images, shipping and return facts, merchant attribution, policy URLs, and fast refresh operations. Then make sure product detail pages and comparison pages support the same facts in human-readable form.
+
+## Feed readiness checklist
+
+| Area | Readiness question | Why it matters |
+| --- | --- | --- |
+| Product identity | Does each item have a stable SKU, offer ID, variant grouping, and canonical URL? | Assistants need to match products without mixing variants or sellers |
+| Title and description | Are titles specific without keyword stuffing or all-caps formatting? | Clean titles improve matching and reduce buyer confusion |
+| Variant data | Are color, size, material, bundle, region, and compatibility fields explicit? | Many buyer requests depend on constraints hidden in variants |
+| Price | Is current price, currency, sale status, and effective date accurate? | Price mismatch breaks trust and increases support burden |
+| Availability | Is stock status updated quickly enough for real buying decisions? | Out-of-stock recommendations damage the experience |
+| Images | Are images current, product-specific, and variant-aware where needed? | Visual comparison is becoming part of assistant shopping |
+| Fulfillment | Are shipping method, delivery estimate, pickup, and region rules clear? | Buyers ask practical availability questions, not only product-fit questions |
+| Policies | Are return, warranty, privacy, and terms URLs stable and crawlable? | Agents need policy evidence before recommending higher-risk purchases |
+| Merchant identity | Is seller name, seller URL, and brand ownership clear? | Attribution and trust matter when assistants mediate discovery |
+| Freshness operations | Can the feed update when price, inventory, or product data changes? | Stale feeds create avoidable mismatches |
+
+The feed should become a source of truth, not a marketing export produced once a month.
+
+## Product pages still matter
+
+Feeds help assistants index and match products, but product pages still carry evidence. A strong product page should answer:
+
+- who the product is for;
+- who should not buy it;
+- compatibility and sizing boundaries;
+- included and excluded items;
+- warranty, return, and support terms;
+- current price and availability;
+- shipping or pickup limitations;
+- comparison with adjacent products;
+- proof such as certifications, manuals, reviews, or test data.
+
+If the feed says one thing and the page says another, the page should not be considered ready.
+
+## Feed-to-page alignment
+
+Use this alignment model before submitting or refreshing a feed:
+
+| Feed field | Page evidence to match |
+| --- | --- |
+| Product title | H1, product name, variant name |
+| Offer ID or SKU | Visible SKU or structured product metadata |
+| Price | Page price, sale conditions, currency |
+| Availability | Stock status, pickup/shipping availability |
+| Variant attributes | Selector labels, variant images, sizing or compatibility tables |
+| Seller name and URL | Merchant profile, brand attribution, marketplace seller page |
+| Shipping | Shipping calculator, delivery estimate, regional restrictions |
+| Return policy | Product-specific return or warranty notes |
+
+This alignment is not only technical hygiene. It reduces buyer confusion and post-purchase disputes.
+
+## What to fix before feed submission
+
+Prioritize these repairs:
+
+1. Remove duplicate product records that represent the same offer.
+2. Normalize variant names and attributes.
+3. Add missing availability, fulfillment, and policy data.
+4. Make product URLs stable and canonical.
+5. Separate product description from promotional campaign text.
+6. Add comparison evidence for products that are commonly cross-shopped.
+7. Validate images against the exact product or variant.
+8. Establish a feed refresh process tied to inventory and pricing systems.
+
+A feed that is technically accepted but operationally stale is still weak.
+
+## Agentic commerce operating checks
+
+Merchants should define ownership for:
+
+- feed generation;
+- schema validation;
+- price and availability reconciliation;
+- product-page evidence quality;
+- checkout handoff;
+- returns and support escalation;
+- measurement of assisted sessions;
+- incident review for wrong price, wrong item, or unavailable product.
+
+This becomes a cross-functional operation across ecommerce, merchandising, web platform, support, legal, and analytics.
+
+## Poor-fit patterns
+
+Do not rush feed submission when:
+
+- product data is copied from suppliers without verification;
+- marketplace seller identity is unclear;
+- stock levels change frequently but feed updates are slow;
+- product pages lack compatibility, policy, or fulfillment details;
+- titles are overloaded with promotional keywords;
+- checkout depends on region, account, or loyalty rules that are not explained;
+- the support team cannot trace which product data a buyer saw.
+
+The assistant may surface the product, but the merchant still owns the buyer relationship and post-purchase experience.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI browser search and product discovery readiness"
+		href="/models-and-apis/ai-browser-search-and-product-discovery-readiness/"
+		description="Prepare product and comparison pages for AI-assisted browsing, conversational discovery, and buyer handoff."
+	/>
+	<LinkCard
+		title="Product comparison page structure"
+		href="/models-and-apis/product-comparison-page-structure-for-ai-assisted-discovery/"
+		description="Design comparison pages with buyer-fit logic, evidence, pricing boundaries, and poor-fit cases."
+	/>
+	<LinkCard
+		title="AI crawler referral measurement"
+		href="/models-and-apis/ai-crawler-referral-and-conversion-measurement-for-product-sites/"
+		description="Separate crawler access, visible referrals, landing behavior, and conversion quality."
+	/>
+	<LinkCard
+		title="Agentic commerce payment approvals"
+		href="/workflows/agentic-commerce-payment-approval-workflow/"
+		description="Design buyer intent, delegated payment, fraud review, merchant handoff, and audit evidence."
+	/>
+</div>
+
+## Source note
+
+This page was checked on May 16, 2026 against the [Agentic Commerce Protocol product feed specification](https://agentic-commerce-protocol.com/docs/commerce/specs/feed), the [Agentic Commerce Protocol get-started guide](https://agentic-commerce-protocol.com/docs/commerce/guides/get-started), the [ChatGPT merchant page](https://chatgpt.com/merchants/), and Mastercard's [agentic commerce protocol update](https://www.mastercard.com/us/en/news-and-trends/stories/2026/agentic-commerce-rules-of-the-road.html).

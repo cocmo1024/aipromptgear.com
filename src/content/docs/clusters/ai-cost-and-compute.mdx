@@ -50,6 +50,8 @@ Start with the economic unit, not the vendor invoice:
 | The bill is growing but no one owns it | [LLM cost allocation and showback](/models-and-apis/llm-cost-allocation-showback-and-budget-ownership-for-ai-products/) | Spend needs owners before optimization is credible |
 | A product team wants to turn on premium models everywhere | [Model routing](/models-and-apis/model-routing/) | Premium models should be reserved for tasks that change outcome quality |
 | Agentic workloads create bursty inference demand | [Agentic inference capacity planning](/models-and-apis/agentic-inference-capacity-planning-for-ai-products/) | Step count, tool loops, context growth, retries, and concurrency drive the real capacity need |
+| Data center capacity is becoming a roadmap constraint | [AI data center power capacity planning](/models-and-apis/ai-data-center-power-capacity-planning-for-ai-products/) | Power, cooling, grid access, region choice, and queueing can become product constraints |
+| The team is comparing accelerators or dedicated capacity | [AI accelerator procurement scorecard](/models-and-apis/ai-accelerator-procurement-scorecard-for-inference-teams/) | Hardware choice should be scored by workload fit, software maturity, utilization, and operating burden |
 | A workflow is slow but does not need realtime response | [OpenAI Batch vs background mode](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/) | Async processing can reduce cost pressure without lowering quality |
 | The team is considering rented GPUs | [GPU cloud vs hosted model APIs](/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/) | Infrastructure ownership should be justified by utilization and control needs |
 | Search, tools, and retries make cost hard to explain | [Cost per success and tool economics](/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/) | Successful outcomes are a better unit than raw calls |
@@ -117,6 +119,16 @@ Pages that ignore those categories tend to create false savings. A cheaper model
 ## Infrastructure ownership
 
 <div class="portal-links">
+	<LinkCard
+		title="AI data center power capacity planning"
+		href="/models-and-apis/ai-data-center-power-capacity-planning-for-ai-products/"
+		description="Plan for power, cooling, region, grid, queueing, and physical capacity limits when AI demand becomes sustained."
+	/>
+	<LinkCard
+		title="AI accelerator procurement scorecard"
+		href="/models-and-apis/ai-accelerator-procurement-scorecard-for-inference-teams/"
+		description="Compare accelerator options by workload fit, ecosystem maturity, availability, utilization, and full operating cost."
+	/>
 	<LinkCard
 		title="GPU cloud vs hosted model APIs"
 		href="/models-and-apis/gpu-cloud-vs-hosted-model-apis-for-ai-product-teams/"

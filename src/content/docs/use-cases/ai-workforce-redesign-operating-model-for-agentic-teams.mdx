@@ -1,0 +1,189 @@
+---
+title: AI Workforce Redesign Operating Model for Agentic Teams
+description: A practical operating model for redesigning roles, workflows, review capacity, governance, and skills when AI agents become part of everyday team execution.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Quarterly review
+primaryKeyword: AI workforce redesign operating model
+searchIntent: design
+decisionStage: problem-aware
+targetRoles:
+  - Operations leaders
+  - AI transformation leaders
+  - Engineering managers
+  - People leaders
+contentStatus: growing
+contentCluster: enterprise-agent-platforms
+canonicalCluster: enterprise-agent-platforms
+pageType: playbook
+lifecycle: evergreen
+refreshPriority: high
+datePublished: 2026-05-16
+lastReviewed: 2026-05-16
+problemSolved: How organizations should redesign work around human-agent teams without mistaking tool access, training sessions, or headcount changes for real operating capability.
+readerTakeaway: You should leave with a role and workflow redesign model that defines agent scope, human accountability, review capacity, skills, metrics, and governance ownership.
+keyQuestions:
+  - How should teams redesign roles when AI agents take on execution work?
+  - Which human responsibilities should remain explicit in agentic workflows?
+  - What operating model turns AI access into durable team capability?
+notFor:
+  - Generic AI productivity enthusiasm
+  - Workforce reduction plans without workflow evidence
+  - One-time training programs with no operating change
+updateTriggers:
+  - Major enterprise AI workforce, agent governance, or productivity research updates
+  - Material changes in agent adoption patterns across business functions
+  - New platform capabilities that shift human review or approval boundaries
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Giving employees AI tools is not workforce redesign. A real redesign changes which work is automated, which work is reviewed, which decisions remain human-owned, and which skills become part of the job. Agentic AI raises the stakes because agents can plan, call tools, move across systems, and produce operational side effects.
+
+The organization needs a human-agent operating model, not a slogan.
+
+## Quick answer
+
+Redesign work around tasks, not roles. Identify repeatable workflows where agents can draft, retrieve, analyze, route, or prepare work. Keep humans accountable for judgment, exceptions, approvals, relationship-sensitive moments, and risk-bearing decisions. Then build review capacity, metrics, training, and governance around the new unit of work.
+
+## The operating model
+
+| Layer | What to define | Failure if skipped |
+| --- | --- | --- |
+| Work unit | Which recurring task changes when an agent is added? | Tool usage grows but the workflow does not improve |
+| Agent scope | What can the agent see, decide, draft, or execute? | Agents operate beyond policy or user trust |
+| Human role | Who reviews, approves, escalates, or owns the outcome? | Accountability becomes vague |
+| Review capacity | How much output can humans inspect without bottlenecks? | Automation creates more queue pressure |
+| Skills | What must people learn to direct, inspect, and correct agents? | Training stays generic and does not transfer to work |
+| Metrics | What proves useful output, fewer errors, or faster handoff? | The program counts prompts instead of outcomes |
+| Governance | Who owns permissions, logs, evals, incidents, and rollout? | Teams scale unsafe patterns independently |
+
+This model keeps redesign grounded in work, not software adoption.
+
+## Start with task decomposition
+
+Break each role into work units:
+
+- information gathering;
+- drafting;
+- data cleanup;
+- summarization;
+- routing;
+- research;
+- comparison;
+- scheduling;
+- quality checks;
+- customer communication;
+- approvals;
+- exception handling;
+- final decision-making.
+
+Agents are usually strongest in the middle of this list and weakest where authority, judgment, customer trust, or physical consequence is high.
+
+## Human responsibilities that should stay explicit
+
+Do not let "agentic" mean "accountability moved into the system." Keep these responsibilities named:
+
+| Responsibility | Human owner should decide |
+| --- | --- |
+| Goal setting | What outcome matters and what tradeoffs are acceptable |
+| Approval | Which actions need review before execution |
+| Exception handling | When uncertainty, conflict, or policy ambiguity requires escalation |
+| Relationship judgment | When tone, negotiation, or trust changes the answer |
+| Risk acceptance | Whether legal, financial, security, or operational risk is tolerable |
+| Quality standard | Which outputs are good enough to ship or send |
+| Incident response | What happens when an agent creates a bad outcome |
+
+The human role may change, but it should not disappear from the workflow map.
+
+## Redesign sequence
+
+1. Pick one department workflow with visible volume and clear review standards.
+2. Map current inputs, steps, outputs, owners, and handoffs.
+3. Identify where agents can help without taking final authority.
+4. Define permission, data, and tool boundaries.
+5. Write the review rule before expanding volume.
+6. Measure accepted output, rework, cycle time, escalation, and incidents.
+7. Train people on the actual workflow, not generic prompting.
+8. Expand only after the scorecard shows durable improvement.
+
+This sequence avoids the common pattern where a company buys access first and invents the operating model later.
+
+## Metrics that matter
+
+Measure work outcomes:
+
+- accepted output rate;
+- reviewer edit rate;
+- cycle time by workflow class;
+- escalation rate;
+- reopened or corrected work;
+- customer or stakeholder satisfaction;
+- cost per completed workflow;
+- evidence quality;
+- incident frequency;
+- time spent supervising agents.
+
+Avoid using raw prompt counts, seat activation, or generated words as primary success metrics. Those are usage signals, not workforce redesign signals.
+
+## Role changes to expect
+
+Agentic teams usually need more of these responsibilities:
+
+- workflow owner;
+- agent operator or queue manager;
+- reviewer;
+- source owner;
+- eval owner;
+- prompt and policy maintainer;
+- connector or permissions admin;
+- incident reviewer;
+- training lead tied to the workflow.
+
+These may not be new job titles. They may be explicit duties inside existing roles. The key is that they are owned.
+
+## Poor-fit patterns
+
+Pause the rollout when:
+
+- leaders expect headcount reduction before workflow evidence exists;
+- reviewers are already overloaded;
+- the team cannot describe acceptable output;
+- agents need broad system access to produce a small gain;
+- training is disconnected from daily work;
+- no one owns permission changes or incidents;
+- metrics reward volume over quality.
+
+The workforce risk is not only displacement. It is building a process where nobody knows who is accountable for agent-produced work.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Vertical AI agent template rollout"
+		href="/use-cases/vertical-ai-agent-template-rollout-model-for-business-teams/"
+		description="Use this page when departments need template agents with scope, approvals, owners, and measurable outcomes."
+	/>
+	<LinkCard
+		title="Workspace AI agents"
+		href="/use-cases/workspace-ai-agents-for-enterprise-knowledge-work/"
+		description="Evaluate agents that work across email, documents, meetings, and enterprise knowledge."
+	/>
+	<LinkCard
+		title="What is the best first use case for an AI agent?"
+		href="/use-cases/what-is-the-best-first-use-case-for-an-ai-agent/"
+		description="Choose the first workflow where agent assistance can prove value safely."
+	/>
+	<LinkCard
+		title="EvalOps release gates"
+		href="/evaluation/eval-ops-release-gates-and-scorecard-ownership/"
+		description="Tie workforce redesign to scorecards, release gates, and ownership."
+	/>
+</div>
+
+## Source note
+
+This page was checked on May 16, 2026 against [Deloitte State of AI in the Enterprise 2026](https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html), McKinsey's [technology workforce redesign for the AI-first era](https://www.mckinsey.com/capabilities/mckinsey-technology/our-insights/designing-an-end-to-end-technology-workforce-for-the-ai-first-era), and McKinsey's [human-AI workforce research](https://www.mckinsey.com/mgi/our-research/agents-robots-and-us-skill-partnerships-in-the-age-of-ai).
