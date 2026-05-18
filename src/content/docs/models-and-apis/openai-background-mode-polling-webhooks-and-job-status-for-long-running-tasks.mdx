@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-22
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-18
 contentCluster: models-and-apis
 canonicalCluster: models-and-apis
 pageType: decision-guide
@@ -55,6 +55,21 @@ Treat OpenAI background mode as a tracked job system, not as fire-and-forget asy
 - and an approval boundary if completion is not the same thing as permission to act.
 
 Without those, background mode just hides failure behind delay.
+
+## What the API docs give you
+
+OpenAI's background-mode documentation gives developers the runtime primitives: create a background response, poll the response object, cancel an in-flight response, and resume streaming only when the response was created with streaming enabled. That is enough to make a long model task survive a dropped client connection. It is not enough to make a production job trustworthy.
+
+| API primitive | Product layer you still need |
+| --- | --- |
+| Background response ID | Internal job ID tied to user, workspace, billing, and support lookup |
+| Queued or in-progress status | User-facing status copy, timeout expectations, and operator visibility |
+| Retrieve response | Durable result storage, evidence bundle, and partial-failure handling |
+| Cancel response | Product cancellation state, idempotent UI behavior, and downstream cleanup |
+| Stream cursor | Reconnect behavior, event replay rules, and audit logs |
+| Terminal response state | Review state, delivery state, retry rule, and business completion status |
+
+The practical build question is not "where is the documentation?" It is "which product states wrap the provider response so users and operators know what happened?"
 
 ## Polling versus webhooks
 
@@ -182,3 +197,7 @@ Either way, keep the product state model consistent. The transport mechanism is 
 		description="Use this page when background-mode work expands into tool orchestration and retry behavior becomes a control problem."
 	/>
 </div>
+
+## Source note
+
+This page was refreshed against OpenAI's [background mode guide](https://platform.openai.com/docs/guides/background), including background response creation, polling, cancellation, streaming, and stored response-state limits. The page focuses on the product job lifecycle that should surround those API primitives.

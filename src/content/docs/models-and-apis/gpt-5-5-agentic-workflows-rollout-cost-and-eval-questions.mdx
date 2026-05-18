@@ -1,6 +1,6 @@
 ---
-title: GPT-5.5 Agentic Workflows, Rollout Cost, and Eval Questions
-description: A practical rollout guide for teams evaluating GPT-5.5 in agentic workflows, coding systems, research tasks, and tool-connected AI products.
+title: GPT-5.5 API Rollout, Agentic Workflows, and Cost Control
+description: A practical rollout guide for teams evaluating GPT-5.5 in agentic workflows, coding systems, research tasks, service tiers, and cost control.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -15,7 +15,7 @@ targetRoles:
   - AI operations teams
 contentStatus: growing
 datePublished: 2026-04-24
-lastReviewed: 2026-04-24
+lastReviewed: 2026-05-18
 problemSolved: How to evaluate a new frontier model release for real agentic workflows without routing every task to the most expensive or newest model by default.
 readerTakeaway: You should leave with a rollout checklist for GPT-5.5 covering task fit, routing, cost per success, eval traces, safety gates, and fallback design.
 keyQuestions:
@@ -48,6 +48,25 @@ For serious teams, "try the newest model" is not a strategy. GPT-5.5 should ente
 ## Quick answer
 
 Test GPT-5.5 first where extra reasoning, tool use, long-horizon planning, coding accuracy, or deep research quality can change the outcome. Do not route every request to the frontier lane. Define a premium-model budget around successful completions, not raw calls. Keep cheaper, faster, or specialized models in the system for low-risk steps, drafting, classification, extraction, and background work that does not benefit from frontier reasoning.
+
+## May 2026 API routing update
+
+OpenAI's April 24 update made GPT-5.5 and GPT-5.5 Pro available in the API, and the public pricing page now exposes GPT-5.5 standard pricing alongside Batch, Flex, Priority, and data-residency service options. That changes the rollout question from "should we test the new model?" to a sharper architecture question:
+
+**Which GPT-5.5 work deserves standard or priority execution, which work can move to Batch or Flex, and which long-running job needs background-mode product state?**
+
+Use this service-tier map before expanding volume:
+
+| Workload shape | Better starting lane | Why |
+| --- | --- | --- |
+| User is waiting and quality matters | Standard GPT-5.5 route | Keep latency and reliability predictable while measuring value |
+| Paid, urgent, or SLA-bound task | Priority route if the business case supports it | Speed and reliability may matter more than lower unit cost |
+| Many independent offline records | Batch API | The workload can wait and be reconciled as a bulk output file |
+| Lower-priority request that can tolerate variability | Flex processing | Cost can fall when slower response and occasional unavailability are acceptable |
+| One tracked job that outlasts the request | Background mode plus product job state | The user or operator needs status, cancellation, retrieval, and review |
+| Sensitive workload requiring strict data-control review | Separate policy lane before runtime choice | Service tier cannot fix a data-governance mismatch |
+
+This page should be read with the Batch, Flex, and background-mode pages because GPT-5.5 cost control is now mostly a routing problem.
 
 ## The best first workloads
 
@@ -150,8 +169,18 @@ Use this checklist before making GPT-5.5 a production default:
 		href="/models-and-apis/model-routing/"
 		description="Design fallback and tiered routes before the frontier model becomes a single point of cost or reliability risk."
 	/>
+	<LinkCard
+		title="OpenAI Batch vs Flex vs Priority"
+		href="/models-and-apis/flex-processing-vs-priority-and-batch-for-ai-cost-control/"
+		description="Route GPT-5.5 work by latency, reliability, urgency, and cost tolerance instead of treating every request the same."
+	/>
+	<LinkCard
+		title="OpenAI Batch vs background mode"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="Separate bulk deferred work from one tracked long-running job before selecting the service tier."
+	/>
 </div>
 
 ## Source note
 
-This page was created after OpenAI's [GPT-5.5 announcement](https://openai.com/index/introducing-gpt-5-5/) on April 23, 2026. It focuses on durable rollout questions rather than launch-week model commentary.
+This page was updated after OpenAI's [GPT-5.5 announcement](https://openai.com/index/introducing-gpt-5-5/) and current [API pricing](https://openai.com/api/pricing/) page showed GPT-5.5 API availability and service-tier options. It focuses on durable rollout, routing, and cost-control questions rather than launch-week model commentary.

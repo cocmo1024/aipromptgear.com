@@ -1,6 +1,6 @@
 ---
 title: "OpenAI Codex App vs CLI vs IDE vs Web: Which Should You Use?"
-description: "Compare Codex app, CLI, IDE extension, and Codex web by task fit: local control, cloud delegation, worktrees, reviews, and team rollout."
+description: "Compare Codex desktop app, CLI, IDE extension, and Codex web by task fit: local control, cloud delegation, worktrees, reviews, and team rollout."
 referenceType: tool-comparison
 adProfile: tool-comparison
 commercialIntent: high
@@ -33,7 +33,7 @@ updateTriggers:
   - Major changes in cloud delegation or GitHub integration
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-15
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -52,6 +52,20 @@ The short rule: use the desktop app to supervise multiple agent threads, the CLI
 | Pair while reading and editing code in the editor | Codex IDE extension | The file, symbols, and local editor context are already in front of the developer |
 | Delegate a repository task away from your machine | Codex web | The task can run in a cloud environment and come back as reviewed work or a PR |
 | Compare surfaces for a team rollout | Start with desktop plus web, then allow CLI/IDE by task class | Teams need routing rules, not one universal surface |
+
+## Codex CLI vs desktop app
+
+If the question is only **Codex CLI vs desktop app**, use this rule:
+
+| Question | Use Codex CLI | Use Codex desktop app |
+| --- | --- | --- |
+| Where is the work happening? | In one terminal session, one repo, one task | Across multiple threads, worktrees, projects, or review states |
+| What does the human need to supervise? | Commands, files, tests, and Git in the shell | Several agents, diffs, context, automations, plugins, and task history |
+| How long will the task run? | Short or bounded command loop | Longer work where returning to the thread later matters |
+| What is the review artifact? | Local diff plus command output | Thread context, worktree diff, screenshots, browser evidence, or linked artifacts |
+| What breaks the workflow? | Needing a visual control plane or parallel agent coordination | Needing only a fast terminal-native edit |
+
+The CLI is not a lighter version of the desktop app. It is the better surface when the shell is the workflow. The desktop app is the better surface when supervision, parallelism, and review context are the workflow.
 
 ## Comparison table
 
