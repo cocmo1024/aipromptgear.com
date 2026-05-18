@@ -1,4 +1,5 @@
 import { siteMeta } from './site-meta.mjs';
+import { getImageMimeType, getSearchPreviewImages } from './search-preview-images.mjs';
 
 const SITE_PAGE_IDS = new Set([
 	'about',
@@ -190,23 +191,11 @@ function getAuthorship(route, pageKind) {
 	return { author, editor };
 }
 
-function getRichResultImages() {
-	const fallback = [
-		{
-			path: siteMeta.ogImagePath,
-			width: 1200,
-			height: 630,
-			alt: siteMeta.ogImageAlt,
-		},
-	];
-
-	return Array.isArray(siteMeta.richResultImages) && siteMeta.richResultImages.length
-		? siteMeta.richResultImages
-		: fallback;
-}
-
-function buildImageObjects(canonicalUrl) {
-	return getRichResultImages().map((image, index) => ({
+function buildImageObjects(route, canonicalUrl) {
+	return getSearchPreviewImages({
+		routeId: route.id,
+		data: route.entry?.data,
+	}).map((image, index) => ({
 		'@context': 'https://schema.org',
 		'@type': 'ImageObject',
 		'@id': `${canonicalUrl}#primaryimage-${index + 1}`,
@@ -351,7 +340,7 @@ export function buildSeo(route, currentUrl) {
 	const articleTags = pageTopics
 		.filter((topic) => topic !== title)
 		.slice(0, 8);
-	const imageObjects = buildImageObjects(canonicalUrl);
+	const imageObjects = buildImageObjects(route, canonicalUrl);
 	const primaryImage = imageObjects[0];
 	const webpageId = `${canonicalUrl}#webpage`;
 	const breadcrumbId = `${canonicalUrl}#breadcrumb`;
@@ -452,7 +441,7 @@ export function buildSeo(route, currentUrl) {
 		imageAlt: primaryImage.caption,
 		imageWidth: primaryImage.width,
 		imageHeight: primaryImage.height,
-		imageType: primaryImage.url.endsWith('.svg') ? 'image/svg+xml' : 'image/png',
+		imageType: getImageMimeType(primaryImage.url),
 		publishedTime,
 		modifiedTime,
 		articleSection,

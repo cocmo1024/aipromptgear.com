@@ -101,6 +101,15 @@ export const collections = {
 				keyQuestions: z.array(z.string()).optional(),
 				notFor: z.array(z.string()).optional(),
 				updateTriggers: z.array(z.string()).optional(),
+				searchPreview: z
+					.object({
+						key: z.string().optional(),
+						image: z.string().optional(),
+						image4x3: z.string().optional(),
+						image1x1: z.string().optional(),
+						alt: z.string().optional(),
+					})
+					.optional(),
 			}),
 		}),
 	}),

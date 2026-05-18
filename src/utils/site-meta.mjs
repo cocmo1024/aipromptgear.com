@@ -30,24 +30,299 @@ export const siteMeta = {
 	publishingPrinciplesPath: '/editorial-policy/',
 	richResultImages: [
 		{
-			path: '/social-card.png',
+			path: '/search-previews/default-16x9.webp',
 			width: 1200,
-			height: 630,
-			alt: 'AI Prompt Gear social share card for production prompting, agent workflows, and model decisions.',
+			height: 675,
+			alt: 'Abstract AI workflow map for production prompting, agent workflows, and model decisions.',
 		},
 		{
-			path: '/search-preview-4x3.svg',
+			path: '/search-previews/default-4x3.webp',
 			width: 1200,
 			height: 900,
-			alt: 'AI Prompt Gear reference map for prompting systems, agent workflows, and evaluation.',
+			alt: 'Abstract AI workflow map for production prompting, agent workflows, and model decisions.',
 		},
 		{
-			path: '/search-preview-1x1.svg',
+			path: '/search-previews/default-1x1.webp',
 			width: 1200,
 			height: 1200,
-			alt: 'AI Prompt Gear square preview for production prompting and agent operations.',
+			alt: 'Abstract AI workflow map for production prompting, agent workflows, and model decisions.',
 		},
 	],
+	richResultImageAliases: {
+		'ai-cost-and-compute': 'models-and-apis',
+		coding: 'agent-systems',
+		'coding-agents': 'agent-systems',
+		'deep-research': 'use-cases',
+		evalops: 'evaluation',
+		'enterprise-agent-platforms': 'tool-comparisons',
+		'mcp-security': 'agent-systems',
+		'openai-codex-desktop': 'tool-comparisons',
+		'site-foundation': 'clusters',
+		'site-policy': 'clusters',
+		'support-ai': 'use-cases',
+	},
+	richResultImageSets: {
+		default: [
+			{
+				path: '/search-previews/default-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Abstract AI workflow map for production prompting, agent workflows, and model decisions.',
+			},
+			{
+				path: '/search-previews/default-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Abstract AI workflow map for production prompting, agent workflows, and model decisions.',
+			},
+			{
+				path: '/search-previews/default-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Abstract AI workflow map for production prompting, agent workflows, and model decisions.',
+			},
+		],
+		'agent-systems': [
+			{
+				path: '/search-previews/agent-systems-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Agent runtime diagram with connected tools, permissions, and review gates.',
+			},
+			{
+				path: '/search-previews/agent-systems-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Agent runtime diagram with connected tools, permissions, and review gates.',
+			},
+			{
+				path: '/search-previews/agent-systems-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Agent runtime diagram with connected tools, permissions, and review gates.',
+			},
+		],
+		clusters: [
+			{
+				path: '/search-previews/clusters-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Topic cluster map with connected AI operations reference nodes.',
+			},
+			{
+				path: '/search-previews/clusters-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Topic cluster map with connected AI operations reference nodes.',
+			},
+			{
+				path: '/search-previews/clusters-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Topic cluster map with connected AI operations reference nodes.',
+			},
+		],
+		evaluation: [
+			{
+				path: '/search-previews/evaluation-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Evaluation scorecard dashboard with trace checks and release gates.',
+			},
+			{
+				path: '/search-previews/evaluation-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Evaluation scorecard dashboard with trace checks and release gates.',
+			},
+			{
+				path: '/search-previews/evaluation-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Evaluation scorecard dashboard with trace checks and release gates.',
+			},
+		],
+		'image-prompts': [
+			{
+				path: '/search-previews/image-prompts-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Creative image prompt board with frames, reference panels, and comparison marks.',
+			},
+			{
+				path: '/search-previews/image-prompts-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Creative image prompt board with frames, reference panels, and comparison marks.',
+			},
+			{
+				path: '/search-previews/image-prompts-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Creative image prompt board with frames, reference panels, and comparison marks.',
+			},
+		],
+		'market-signals': [
+			{
+				path: '/search-previews/market-signals-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'AI market signal radar with trend arcs and decision nodes.',
+			},
+			{
+				path: '/search-previews/market-signals-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'AI market signal radar with trend arcs and decision nodes.',
+			},
+			{
+				path: '/search-previews/market-signals-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'AI market signal radar with trend arcs and decision nodes.',
+			},
+		],
+		'models-and-apis': [
+			{
+				path: '/search-previews/models-and-apis-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Model routing and API cost lane diagram for production AI systems.',
+			},
+			{
+				path: '/search-previews/models-and-apis-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Model routing and API cost lane diagram for production AI systems.',
+			},
+			{
+				path: '/search-previews/models-and-apis-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Model routing and API cost lane diagram for production AI systems.',
+			},
+		],
+		'prompt-library': [
+			{
+				path: '/search-previews/prompt-library-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Prompt library cards with versioned templates and quality checks.',
+			},
+			{
+				path: '/search-previews/prompt-library-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Prompt library cards with versioned templates and quality checks.',
+			},
+			{
+				path: '/search-previews/prompt-library-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Prompt library cards with versioned templates and quality checks.',
+			},
+		],
+		prompts: [
+			{
+				path: '/search-previews/prompts-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Prompt radar board with signal cards, ranking marks, and reusable templates.',
+			},
+			{
+				path: '/search-previews/prompts-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Prompt radar board with signal cards, ranking marks, and reusable templates.',
+			},
+			{
+				path: '/search-previews/prompts-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Prompt radar board with signal cards, ranking marks, and reusable templates.',
+			},
+		],
+		'tool-comparisons': [
+			{
+				path: '/search-previews/tool-comparisons-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'AI tool comparison matrix with decision columns and evidence checks.',
+			},
+			{
+				path: '/search-previews/tool-comparisons-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'AI tool comparison matrix with decision columns and evidence checks.',
+			},
+			{
+				path: '/search-previews/tool-comparisons-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'AI tool comparison matrix with decision columns and evidence checks.',
+			},
+		],
+		tooling: [
+			{
+				path: '/search-previews/tooling-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'AI operations tooling control panel with logs, alerts, and governance checks.',
+			},
+			{
+				path: '/search-previews/tooling-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'AI operations tooling control panel with logs, alerts, and governance checks.',
+			},
+			{
+				path: '/search-previews/tooling-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'AI operations tooling control panel with logs, alerts, and governance checks.',
+			},
+		],
+		'use-cases': [
+			{
+				path: '/search-previews/use-cases-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'AI use case rollout board with teams, workflows, approvals, and outcome metrics.',
+			},
+			{
+				path: '/search-previews/use-cases-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'AI use case rollout board with teams, workflows, approvals, and outcome metrics.',
+			},
+			{
+				path: '/search-previews/use-cases-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'AI use case rollout board with teams, workflows, approvals, and outcome metrics.',
+			},
+		],
+		workflows: [
+			{
+				path: '/search-previews/workflows-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Workflow routing board with handoffs, review gates, and automation steps.',
+			},
+			{
+				path: '/search-previews/workflows-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Workflow routing board with handoffs, review gates, and automation steps.',
+			},
+			{
+				path: '/search-previews/workflows-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Workflow routing board with handoffs, review gates, and automation steps.',
+			},
+		],
+	},
 	editorialEntities: {
 		'editorial-desk': {
 			name: 'AI Prompt Gear Editorial Desk',

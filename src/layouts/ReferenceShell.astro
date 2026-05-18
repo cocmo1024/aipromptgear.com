@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { siteMeta } from '../utils/site-meta.mjs';
+import { getImageMimeType, getSearchPreviewImages } from '../utils/search-preview-images.mjs';
 
 interface Breadcrumb {
 	label: string;
@@ -25,20 +26,15 @@ const {
 
 const canonicalUrl = new URL(canonicalPath, `${siteMeta.siteUrl}/`).toString();
 const pageTitle = `${title} | ${siteMeta.name}`;
-const imageVariants =
-	Array.isArray(siteMeta.richResultImages) && siteMeta.richResultImages.length
-		? siteMeta.richResultImages
-		: [
-				{
-					path: siteMeta.ogImagePath,
-					width: 1200,
-					height: 630,
-					alt: siteMeta.ogImageAlt,
-				},
-			];
-const primaryImage = imageVariants[0];
+const imageVariants = getSearchPreviewImages({ pathname: canonicalPath });
+const primaryImage = imageVariants[0] ?? {
+	path: siteMeta.ogImagePath,
+	width: 1200,
+	height: 675,
+	alt: siteMeta.ogImageAlt,
+};
 const imageUrl = new URL(primaryImage.path, `${siteMeta.siteUrl}/`).toString();
-const imageType = imageUrl.endsWith('.svg') ? 'image/svg+xml' : 'image/png';
+const imageType = getImageMimeType(imageUrl);
 const twitterSite = siteMeta.xUrl ? `@${new URL(siteMeta.xUrl).pathname.replace(/^\/+/, '').split('/')[0]}` : undefined;
 const logoUrl = new URL(siteMeta.icon512Path, `${siteMeta.siteUrl}/`).toString();
 const webpageId = `${canonicalUrl}#webpage`;
