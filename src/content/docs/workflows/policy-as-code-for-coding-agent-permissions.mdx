@@ -16,6 +16,18 @@ targetRoles:
   - Security owners
   - Engineering leaders
   - Developer productivity teams
+keyQuestions:
+  - Which coding-agent permissions should be expressed as policy?
+  - How should teams separate read, write, PR, merge, and deploy authority?
+  - What should policy block automatically instead of relying on reviewer memory?
+notFor:
+  - Teams using coding agents only for read-only explanation
+  - Repositories with no clear owner, CI, or approval process
+  - Readers looking for a specific policy engine implementation tutorial
+updateTriggers:
+  - New coding-agent permission models or repository automation patterns
+  - Changes to sensitive file classes, CI, deployment, or security policy
+  - Any incident where an agent touched a boundary that should have been encoded
 contentCluster: coding-agents
 canonicalCluster: coding-agents
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -85,6 +98,20 @@ Healthy policy typically encodes:
 
 That gives teams a durable contract they can explain and review.
 
+## Policy rule table
+
+| Policy area | Example rule | Why it belongs in policy |
+| --- | --- | --- |
+| Repository access | Agent may read only repos or paths attached to the approved task | Prevents cross-repo exploration by convenience |
+| Write scope | Agent may edit docs, tests, or named paths only after task approval | Stops quiet scope expansion |
+| Sensitive files | CI, infra, auth, billing, secrets, and dependency files require stronger approval | Protects high-blast-radius changes |
+| Tool and command use | Network, package install, migration, deploy, and destructive commands require explicit permission | Prevents risky side effects hidden inside implementation |
+| PR creation | Agent may open PRs only with summary, tests run, and limitations | Keeps review evidence consistent |
+| Merge and deploy | Agent cannot merge or deploy unless a narrow pre-approved class exists | Separates authoring authority from release authority |
+| Escalation | Ambiguous scope, missing tests, or policy conflict must stop and ask | Makes safe stopping behavior testable |
+
+The visitor should leave with a policy surface, not only an abstract governance principle.
+
 ## The practical rule
 
 Policy should block categories of risk, not only named commands.
@@ -102,6 +129,18 @@ Policy should define boundaries, not replace code review. Its job is to answer:
 - and what it must never do without explicit human action.
 
 That is enough to create real leverage without pretending policy can solve architecture quality.
+
+## Policy should not replace review
+
+| Review question | Why policy alone is not enough |
+| --- | --- |
+| Is the design the right one? | Policy can block unsafe paths but cannot judge architecture quality fully |
+| Is the change maintainable? | Maintainability needs domain ownership and code review |
+| Is the test meaningful? | A policy can require tests, but reviewers must judge whether the test covers the risk |
+| Is the user impact acceptable? | Product and support owners still need context |
+| Should this ship now? | Release timing is an operational decision, not only a permission rule |
+
+Policy creates the guardrails. Review still owns judgment inside those guardrails.
 
 ## A simple permission ladder
 

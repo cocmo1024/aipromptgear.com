@@ -16,6 +16,18 @@ targetRoles:
   - Research operations teams
   - Product owners
   - Knowledge managers
+keyQuestions:
+  - What source-quality rules should deep research systems use?
+  - Which sources should be preferred, down-weighted, or excluded?
+  - How should citation policy handle missing evidence and conflicting claims?
+notFor:
+  - Simple retrieval workflows that only use approved internal documents
+  - Readers looking for general academic citation style rules
+  - Teams that cannot inspect or preserve the source log behind reports
+updateTriggers:
+  - New source classes, source-quality failures, or citation review expectations
+  - Changes in web search, retrieval, or deep research tool behavior
+  - Incidents where a polished report relied on weak, duplicate, or unsupported sources
 contentCluster: deep-research
 canonicalCluster: deep-research
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -62,6 +75,18 @@ For most production research systems, define at least four source classes:
    Scraped duplicates, AI-generated summaries without provenance, pages with no identifiable publisher, and any source the team cannot defend in review.
 
 The system should prefer class 1, selectively use class 2, heavily constrain class 3, and reject class 4.
+
+## Source class table
+
+| Source class | Examples | Default policy |
+| --- | --- | --- |
+| Primary | Official docs, filings, standards, transcripts, original datasets, vendor security docs | Prefer for material claims whenever available |
+| High-quality secondary | Reputable journalism, named analyst reports, technical publications with clear sourcing | Use to contextualize or corroborate primary material |
+| Low-confidence secondary | Thin listicles, affiliate summaries, anonymous rewrites, unsourced aggregators | Use only for discovery, not as claim anchors |
+| Duplicate or derivative | Pages repeating the same original claim without new evidence | Collapse into one evidence chain instead of counting as independent support |
+| Disallowed | AI-generated summaries without provenance, scraped pages, pages with no identifiable publisher | Exclude from final evidence |
+
+The visitor should leave with a policy they can encode into research prompts, source filters, and reviewer checklists.
 
 ## The citation rule that prevents fake depth
 

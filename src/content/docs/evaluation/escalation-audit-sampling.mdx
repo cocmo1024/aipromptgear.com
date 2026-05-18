@@ -16,6 +16,18 @@ targetRoles:
 contentStatus: seed
 problemSolved: Helps support AI teams sample escalation decisions so missed handoffs, over-escalation, and category-specific routing drift are found before they become customer-impact incidents.
 readerTakeaway: You should leave with a practical sampling model for checking whether AI support workflows escalate the right cases at the right time.
+keyQuestions:
+  - Which support AI cases should be sampled for escalation review?
+  - How can teams catch missed handoffs and over-escalation before they damage trust?
+  - What labels should reviewers use when auditing escalation decisions?
+notFor:
+  - Teams with no AI-assisted routing, triage, or support deflection workflow
+  - Readers looking only for generic customer service QA templates
+  - Organizations that cannot access case outcomes or reviewer labels
+updateTriggers:
+  - Changes to escalation policy, refund rules, outage handling, or customer-risk categories
+  - New prompt, retrieval, routing, or model changes in support automation
+  - Any customer-impact incident involving missed escalation or unnecessary queue load
 contentCluster: evalops
 canonicalCluster: evalops
 pageType: evaluation
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -53,6 +66,19 @@ A practical sample usually includes:
 
 The point is not to review everything. It is to inspect the areas where trust can erode fastest.
 
+## Sampling plan
+
+| Sample slice | Why it belongs | Minimum label |
+| --- | --- | --- |
+| Auto-resolved cases | Finds missed handoffs hidden inside apparent deflection success | Should have stayed automated, should have escalated, uncertain |
+| Immediately escalated cases | Finds unnecessary queue drag and weak automation confidence | Correct escalation, over-escalated, missing context |
+| Borderline intents | Tests ambiguous billing, outage, policy, account, or safety cases | Escalate sooner, escalate later, keep automated |
+| Recent policy-change cases | Catches drift after refund, cancellation, outage, or entitlement rules change | Policy applied correctly, outdated source, unsupported rationale |
+| High-value or high-risk accounts | Protects trust where the downside of a missed handoff is larger | Correct, missed risk, needs manager review |
+| Known failure categories | Confirms whether past defects are actually fixed | Fixed, repeated, new variant |
+
+Random sampling alone is not enough. The sample should include where the workflow is most likely to be confidently wrong.
+
 ## Common failure patterns
 
 Audit sampling often reveals:
@@ -78,6 +104,19 @@ Strong samples usually preserve:
 
 That structure turns sampling into a feedback system instead of a vague quality exercise.
 
+## Reviewer label set
+
+| Label | Meaning | Follow-up action |
+| --- | --- | --- |
+| Correct automation | The case was safe to keep in AI or self-service | Keep as positive example |
+| Missed escalation | A human should have entered earlier | Add to regression set and inspect routing trigger |
+| Over-escalated | The case could have stayed automated | Refine confidence threshold or source requirement |
+| Wrong destination | Escalation happened but went to the wrong queue or role | Update queue routing rules |
+| Missing context | The handoff lacked source, rationale, account, or prior-action detail | Fix handoff payload requirements |
+| Policy drift | The decision used outdated or unsupported policy context | Update knowledge source and rerun affected cases |
+
+These labels make the page useful for operators because they can be copied into a review sheet or QA tool immediately.
+
 ## Review cadence and triggers
 
 Sampling should intensify when:
@@ -88,6 +127,19 @@ Sampling should intensify when:
 - a notable customer-impact incident raises trust concerns.
 
 If the workflow is stable, a monthly cadence is often enough to keep the system honest.
+
+## Metrics to watch after sampling
+
+| Metric | What it reveals |
+| --- | --- |
+| Missed-escalation rate by category | Which issue classes create hidden customer risk |
+| Over-escalation rate by queue | Where automation is creating avoidable human load |
+| Wrong-destination rate | Whether routing logic is failing after escalation is triggered |
+| Reviewer disagreement rate | Which categories need clearer policy or examples |
+| Time to human ownership | Whether escalated cases actually reach the right person quickly |
+| Repeat failure rate | Whether prior sampling findings are turning into durable fixes |
+
+The goal is not a pretty audit score. The goal is fewer missed handoffs and less unnecessary queue drag.
 
 ## Related paths
 

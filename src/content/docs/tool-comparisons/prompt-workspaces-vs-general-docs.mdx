@@ -16,6 +16,18 @@ targetRoles:
 contentStatus: cornerstone
 problemSolved: Helps teams decide when general documentation is still sufficient for prompt operations and when a dedicated workspace becomes justified.
 readerTakeaway: You should leave with practical buying criteria for comparing prompt workspaces against existing documentation systems without overbuying too early.
+keyQuestions:
+  - When are general docs enough for prompt operations?
+  - What signals justify buying a dedicated prompt workspace?
+  - Which prompt workspace capabilities matter more than interface polish?
+notFor:
+  - Solo prompt users with no review or release process
+  - Teams that have not yet stabilized a repeatable AI workflow
+  - Buyers looking for a vendor ranking rather than a category decision
+updateTriggers:
+  - New prompt workspace products or collaboration features
+  - Changes in prompt evaluation, approval, or release-management workflows
+  - Evidence that general documentation is no longer supporting the team's PromptOps needs
 contentCluster: tool-comparisons
 canonicalCluster: tool-comparisons
 pageType: tool-comparison
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -63,6 +76,19 @@ The strongest buying criteria are usually:
 - whether non-experts can still understand the workflow after the tooling layer is added.
 
 Teams often overvalue interface polish and undervalue operational fit. A beautiful workspace that does not support how the team approves changes or investigates failures will become shelfware.
+
+## Decision table
+
+| Need | General docs are usually enough when... | Dedicated workspace starts to matter when... |
+| --- | --- | --- |
+| Version control | Prompt changes are rare and owners are obvious | Multiple versions, environments, or releases need tracking |
+| Review | Changes are reviewed informally by a small team | Approval state, reviewer notes, and release history must be visible |
+| Testing | A few manual samples catch most regressions | Prompt changes need structured eval cases and score history |
+| Collaboration | One team owns the workflow | Product, ops, support, legal, and engineering all touch the same prompts |
+| Production separation | Docs describe the current prompt | Experiment, staging, and production prompts must stay separate |
+| Incident review | Failures are easy to trace manually | Teams need to know exactly which prompt, source, and approval changed |
+
+The visitor should be able to use this table to avoid both mistakes: buying too early and staying in docs after the process has outgrown them.
 
 ## A useful decision rule
 

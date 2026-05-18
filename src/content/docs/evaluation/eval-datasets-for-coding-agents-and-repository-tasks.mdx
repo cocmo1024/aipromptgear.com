@@ -16,6 +16,18 @@ targetRoles:
   - Platform teams
   - Developer productivity teams
   - Engineering leads
+keyQuestions:
+  - What should a coding-agent eval dataset include?
+  - How can repository tasks test scope control, approval boundaries, and verification behavior?
+  - Which negative examples are needed to evaluate safe coding-agent behavior?
+notFor:
+  - Generic algorithm benchmark design
+  - Teams evaluating only chat answers without repository access
+  - Organizations with no defined repository policy or test expectations
+updateTriggers:
+  - New coding-agent workflows, write scopes, or repository policies
+  - Changes to CI, code review, test coverage, or sensitive path rules
+  - Production incidents caused by agent-generated code or missed approval boundaries
 contentCluster: coding-agents
 canonicalCluster: coding-agents
 pageType: evaluation
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -61,6 +74,20 @@ Each example should usually define:
 5. and the acceptable end state.
 
 Without those, the eval mostly measures coding fluency rather than operational discipline.
+
+## Dataset example schema
+
+| Field | What to capture | Why it matters |
+| --- | --- | --- |
+| Task request | The real user or ticket-style instruction | Preserves ambiguity and intent shape |
+| Repository context | Relevant files, entry points, tests, and ownership | Tests navigation, not just code writing |
+| Allowed scope | Paths, commands, and operations the agent may use | Measures scope discipline |
+| Forbidden scope | Sensitive paths, tools, secrets, infra, or merge actions | Tests approval and refusal behavior |
+| Expected checks | Unit tests, lint, type check, screenshot, build, or domain validation | Measures verification behavior |
+| Expected outcome | Patch, explanation, PR, refusal, escalation, or clarification | Prevents every task from being judged as "produce code" |
+| Failure labels | Wrong file, wrong tool, missing test, scope expansion, approval miss, bad patch | Routes failures to the right owner |
+
+This schema is the practical value of the page: it gives eval owners a repeatable format for turning repository work into measurement data.
 
 ## The most valuable example classes
 

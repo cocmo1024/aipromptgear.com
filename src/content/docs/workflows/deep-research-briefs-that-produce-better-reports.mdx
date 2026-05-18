@@ -16,6 +16,18 @@ targetRoles:
   - Product strategists
   - Market intelligence teams
   - AI workflow owners
+keyQuestions:
+  - What should a deep research brief include?
+  - How can teams improve report quality before increasing runtime?
+  - Which source, scope, and output constraints should be defined up front?
+notFor:
+  - One-line search prompts with no decision or source requirements
+  - Teams that only need deterministic extraction from known internal data
+  - Readers looking for generic prompt-writing tips without research operations
+updateTriggers:
+  - New deep research product capabilities or source-collection workflows
+  - Changes in source policy, citation expectations, or report consumers
+  - Repeated weak reports caused by vague scope or unclear evidence requirements
 contentCluster: deep-research
 canonicalCluster: deep-research
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -137,6 +150,19 @@ Use this structure:
 7. **What counts as sufficient evidence**
 
 This is usually more valuable than tuning prompt style.
+
+## Brief quality table
+
+| Brief field | Weak version | Strong version |
+| --- | --- | --- |
+| Decision to support | "Research this market" | "Support a build-vs-buy decision for a mid-market SaaS team" |
+| Core question | "What are the best tools?" | "Which three vendors fit our security, cost, and integration constraints?" |
+| Source policy | "Use good sources" | "Prefer official docs, pricing pages, security docs, filings, and named analyst sources" |
+| Scope boundary | "Include everything relevant" | "North America and EU only; exclude consumer tools and pre-2025 claims unless historical context is needed" |
+| Output format | "Write a report" | "Executive summary, comparison table, evidence map, risks, and open questions" |
+| Stop condition | "Be thorough" | "Stop after primary sources cover each vendor or after missing evidence is named clearly" |
+
+The practical reader value is immediate: the table shows why a stronger brief produces a better report before any model or runtime change.
 
 ## When deep research is the wrong tool
 

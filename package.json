@@ -8,6 +8,7 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "audit:search-quality": "node ./scripts/search-quality-audit.mjs",
+    "audit:content-value": "node ./scripts/content-value-audit.mjs",
     "assets:search-previews": "node ./scripts/generate-search-preview-images.mjs",
     "preview": "astro preview",
     "astro": "astro",

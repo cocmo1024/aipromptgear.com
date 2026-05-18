@@ -34,7 +34,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -99,6 +100,18 @@ Each layer should have:
 - different audit expectations,
 - and different rollout confidence requirements.
 
+## Capability-scope table
+
+| Capability layer | Example scopes | Default control |
+| --- | --- | --- |
+| Read-only context | Search docs, read ticket metadata, inspect repository files, fetch CRM summary | Allow within user/workspace permissions; log access for sensitive systems |
+| Draft or propose | Draft reply, propose ticket update, generate patch, prepare refund note | Allow creation of non-final artifacts; require human action to publish or apply |
+| Narrow reversible write | Add internal note, tag ticket, update non-critical field, open PR | Allow only for approved workflow classes with audit trail and undo |
+| High-risk write | Send customer message, change billing, deploy, delete, close account, modify permissions | Require explicit approval, step-up authorization, or human handoff |
+| External automation | Trigger webhook, purchase, refund, notify external party, run production job | Treat as side effect; require policy gate and rollback or compensation plan |
+
+The visitor should leave with a scope vocabulary they can use with security and product teams. "Access to Salesforce" or "access to GitHub" is too broad; the useful question is which capability inside that tool is actually needed.
+
 ## What should stay read-only longer
 
 Many teams should keep these read-only much longer than instinct suggests:
@@ -111,6 +124,22 @@ Many teams should keep these read-only much longer than instinct suggests:
 - and customer-facing messaging tools.
 
 Read-only access still creates risk, but it is easier to audit and contain than write power.
+
+## Tool-scope review questions
+
+Before granting a new scope, ask:
+
+| Question | Why it matters |
+| --- | --- |
+| What exact workflow requires this scope? | Prevents broad access granted for vague future use |
+| Can the same outcome be reached with draft-only authority? | Keeps useful automation without immediate side effects |
+| Is the action reversible? | Reversibility changes approval and rollback expectations |
+| Does the user or a service account hold the authority? | User-scoped actions and service-account actions create different audit trails |
+| What data can the tool return to the model? | Read scope can still expose sensitive context |
+| What should stop the action? | Defines policy, confidence, approval, and escalation boundaries |
+| Who reviews scope expansion? | Makes privilege growth a named governance decision |
+
+If the team cannot answer these questions, the tool scope is probably being granted for implementation convenience rather than workflow necessity.
 
 ## Where approvals should enter
 
@@ -145,6 +174,18 @@ For most teams, the safer path is:
 4. reserve broad or irreversible actions for explicit approval flows.
 
 That gives the team operational evidence before it expands authority.
+
+## Signs the agent is over-scoped
+
+| Signal | What it usually means | Safer adjustment |
+| --- | --- | --- |
+| The same integration can read and write every record type | Tool access is app-level instead of capability-level | Split read, draft, low-risk write, and high-risk write scopes |
+| The agent can act across users, workspaces, or customers without context | Authorization is too broad for the workflow | Bind actions to user or workspace scope |
+| Reviewers cannot tell which tool action changed state | Audit events are too coarse | Log capability, target, actor, approval, and result |
+| The agent needs frequent human cleanup | Scope expanded before quality evidence was strong | Move back to draft-only or approval-gated writes |
+| Approval prompts appear after the action already happened | The control is cosmetic | Move approval before the side effect |
+
+Least privilege is successful when useful automation still works, but the failure blast radius is small enough to explain.
 
 ## Compare next
 

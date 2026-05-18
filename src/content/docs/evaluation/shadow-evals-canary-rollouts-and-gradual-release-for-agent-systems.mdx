@@ -30,7 +30,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-14
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-18
 contentCluster: evalops
 canonicalCluster: evalops
 pageType: evaluation
@@ -77,6 +77,18 @@ A shadow run should answer:
 
 The system is not yet acting for users. It is proving that it deserves the chance.
 
+## Release-stage decision table
+
+| Stage | Traffic exposure | What the team should learn | Exit condition |
+| --- | --- | --- | --- |
+| Offline eval | No live traffic | Whether the change beats the baseline on known cases | Scorecard passes required task, policy, and tool-use gates |
+| Shadow eval | Real or realistic inputs, no user-facing action | Whether traces remain healthy against current traffic patterns | No critical policy, auth, or tool-selection failures in sampled traces |
+| Canary | Small controlled live slice | Whether real users and operators can absorb the change | Live gates stay within budget for quality, latency, cost, and manual rescue |
+| Gradual release | Wider slices by workspace, use case, or risk class | Whether the system stays stable as diversity increases | No unresolved regression in high-value workflows |
+| Full release | General availability for approved scope | Whether operations can sustain the system | Monitoring, rollback, and ownership are active, not ad hoc |
+
+This table gives the visitor the actual operating model: staged release is a sequence of evidence thresholds, not a ceremonial rollout label.
+
 ## What a canary slice should include
 
 A canary should not be random traffic only. It should deliberately include:
@@ -87,6 +99,18 @@ A canary should not be random traffic only. It should deliberately include:
 - and a small amount of higher-risk work if approvals and containment are ready.
 
 If the canary only contains easy traffic, it proves very little.
+
+## Canary-slice design
+
+| Slice dimension | Include | Avoid |
+| --- | --- | --- |
+| Task type | Common tasks, high-value tasks, and known brittle tasks | Only easy tasks that already pass offline evals |
+| User or workspace | Friendly early adopters plus representative operators | Only internal demos with unusually patient users |
+| Tool path | Read-only, draft, and narrow write flows if controls are ready | Broad write scopes before approval and rollback are tested |
+| Risk class | A small, contained sample of higher-risk cases | High-risk work with no human owner or kill switch |
+| Time window | Enough hours or days to see queue and support behavior | A short demo window that misses real operational load |
+
+A good canary is small, but it is not artificial.
 
 ## What should be monitored live
 
@@ -101,6 +125,17 @@ For agent systems, live rollout should watch at least:
 
 These are the signals that expose whether the new system is operationally better, not merely more novel.
 
+## Live rollout gate thresholds
+
+| Gate | Healthy signal | Halt or rollback signal |
+| --- | --- | --- |
+| Task success | Accepted-result rate holds steady or improves | Accepted-result rate drops on high-value workflows |
+| Tool use | Correct tool and argument selection in sampled traces | Repeated wrong-tool calls, malformed arguments, or unsafe retries |
+| Policy compliance | Approval and permission boundaries are respected | Any critical approval bypass or auth-boundary drift |
+| Cost | Cost per accepted result stays inside budget | Token, tool, retry, or reviewer cost erases expected gain |
+| Latency | Jobs complete inside the workflow's promised window | Delay creates abandonment, support load, or missed SLA |
+| Human rescue | Operators intervene less or for clearer reasons | Cleanup volume rises enough to offset automation value |
+
 ## When a rollout should halt
 
 Good halt conditions usually include:
@@ -112,6 +147,19 @@ Good halt conditions usually include:
 - or rising manual cleanup that wipes out any apparent automation gain.
 
 The halt rule should be written before the rollout starts.
+
+## Artifacts to save from each stage
+
+| Artifact | Why it matters later |
+| --- | --- |
+| Baseline eval scorecard | Shows what the release was expected to improve |
+| Shadow trace sample | Reveals tool, policy, and reasoning behavior before live exposure |
+| Canary decision log | Explains why the team widened, paused, or rolled back |
+| Failure taxonomy | Prevents each release from rediscovering the same defects |
+| Rollback trigger list | Gives incident owners authority to stop expansion quickly |
+| Post-release review | Turns rollout evidence into the next eval dataset |
+
+The goal is not paperwork. The goal is to make the next release safer and faster because this release produced reusable evidence.
 
 ## The common failure pattern
 

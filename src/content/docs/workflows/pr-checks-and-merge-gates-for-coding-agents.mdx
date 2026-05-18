@@ -16,6 +16,18 @@ targetRoles:
   - Platform teams
   - Developer productivity teams
   - Security owners
+keyQuestions:
+  - Which PR checks should coding-agent changes pass before review?
+  - When should a coding-agent PR be blocked from merge even if tests pass?
+  - How should teams separate PR creation, review, merge, and release authority?
+notFor:
+  - Teams looking for generic CI setup unrelated to coding agents
+  - Repositories with no automated tests or owner review process
+  - Organizations that want agents to merge production changes without human accountability
+updateTriggers:
+  - New coding-agent repository workflow patterns
+  - Changes in CI, code review, or repository policy automation
+  - New internal rules around sensitive files, generated code, or merge authority
 contentCluster: coding-agents
 canonicalCluster: coding-agents
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -84,6 +97,19 @@ Even when the diff is acceptable, the owner of the affected area should remain a
 
 Merge is not the same as deploy. If the coding agent can open or update PRs, that does not imply it should control release.
 
+## Merge-gate matrix
+
+| Gate | What it checks | Blocks merge when... |
+| --- | --- | --- |
+| Scope gate | Files changed, directories touched, prompt/task boundary, generated artifact count | The agent edited outside the approved task or touched protected paths |
+| Build gate | Lint, type check, unit tests, formatting, generated-code checks | Required checks fail or were skipped without explanation |
+| Risk gate | Auth, payments, infra, deployment, secrets, data migrations, customer-facing paths | The diff crosses a sensitive area without stronger approval |
+| Evidence gate | Agent summary, tests run, limitations, screenshots, logs, reviewer notes | Reviewers cannot tell how the change was produced or verified |
+| Ownership gate | Codeowners, domain owners, security owners, release owners | The affected area lacks accountable human review |
+| Release gate | Deploy timing, rollback path, feature flag, monitoring, incident owner | Merge would push an uncontained production risk |
+
+The page is useful when it helps a visitor turn "the agent opened a PR" into "this repository knows how to evaluate that PR."
+
 ## The agent-specific gate many teams forget
 
 Require evidence that the agent actually followed the intended path.
@@ -96,6 +122,21 @@ Examples:
 - and whether the change crossed any approval boundaries during generation.
 
 This is the difference between reviewing a diff and reviewing a process.
+
+## Evidence packet for every agent PR
+
+Require a compact evidence packet before review. It does not need to be long, but it should be consistent:
+
+| Evidence item | Why reviewers need it |
+| --- | --- |
+| Task boundary | Shows what the agent was asked to change and what it should not have touched |
+| Changed-file summary | Helps reviewers spot scope expansion quickly |
+| Tests and checks run | Separates verified work from plausible-looking diffs |
+| Known limitations | Prevents the agent from hiding incomplete work behind a confident summary |
+| Approval crossings | Shows whether the agent needed permission for file writes, network access, secrets, or generated artifacts |
+| Rollback note | Explains how to revert or disable the change if it creates production risk |
+
+This packet is the practical reader value: it gives reviewers a concrete operating artifact, not just advice.
 
 ## When automatic merge may be reasonable
 
@@ -117,6 +158,17 @@ Your coding-agent merge system is probably under-controlled if:
 - the agent can widen scope without being blocked,
 - reviewers cannot see what checks were actually run,
 - or merge authority quietly expands because "the agent has been fine so far."
+
+## Risk classes for coding-agent PRs
+
+| Risk class | Examples | Default gate |
+| --- | --- | --- |
+| Low | Docs, tests, local fixtures, typo fixes, non-runtime examples | Normal CI plus owner review |
+| Medium | Application code, API behavior, shared utilities, user-visible UI | Required tests, codeowner review, and rollback note |
+| High | Auth, billing, data deletion, migrations, infra, CI, deployment, secrets | Security or platform owner review, feature flag or rollout plan, no auto-merge |
+| Unknown | Large diff, mixed concerns, unclear task, generated changes across many areas | Split the PR or force manual review before any merge path |
+
+The goal is not to block agents. It is to make the repository resilient enough to accept their work without weakening engineering control.
 
 ## Implementation checklist
 

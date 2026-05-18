@@ -16,6 +16,18 @@ targetRoles:
 contentStatus: cornerstone
 problemSolved: Helps teams turn isolated prompts into auditable operating runbooks with triggers, source boundaries, review checkpoints, and escalation rules.
 readerTakeaway: You should leave with a clear structure for deciding what a prompt-assisted workflow must define before it can be trusted in production.
+keyQuestions:
+  - What should an AI operator runbook include before a workflow goes live?
+  - How do teams turn prompts into repeatable operating procedures?
+  - Where should review, escalation, evidence, and rollback appear in a prompt-assisted runbook?
+notFor:
+  - One-off personal prompts with no repeated operating workflow
+  - Teams that do not need review, audit, or escalation
+  - Readers looking only for generic SOP documentation templates
+updateTriggers:
+  - New AI-assisted operating workflows, queues, or approval paths
+  - Changes in source policy, escalation expectations, or review ownership
+  - Repeated failures that show the runbook is underspecified
 contentCluster: workflows
 canonicalCluster: workflows
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -55,6 +68,21 @@ Most effective runbooks include:
 
 This structure is what separates a prompt experiment from an operating process.
 
+## Runbook template
+
+| Runbook field | What to define | Why it matters |
+| --- | --- | --- |
+| Trigger | The event that starts the workflow and the conditions that exclude it | Prevents the prompt from being used on the wrong cases |
+| Required inputs | Source systems, fields, files, user context, and freshness expectations | Stops the agent from filling missing context with guesses |
+| Allowed sources | Which knowledge, records, tools, and policies are authoritative | Keeps output grounded in approved material |
+| Steps | The workflow sequence, not only the final prompt | Makes review and failure diagnosis possible |
+| Output standard | Format, tone, citations, fields, and evidence requirements | Gives reviewers a stable expectation |
+| Review checkpoint | Who approves, edits, samples, or rejects the output | Separates generation from trusted use |
+| Escalation rule | When the workflow must stop and hand off | Prevents the agent from treating every case as solvable |
+| Failure handling | Retry, partial output, fallback, and rollback behavior | Makes incidents operational instead of improvised |
+
+The visitor should be able to copy this template into a real operating document and start filling it out.
+
 ## Where teams usually go wrong
 
 Runbooks become fragile when:
@@ -65,6 +93,19 @@ Runbooks become fragile when:
 - escalation is treated as failure instead of a normal safety mechanism.
 
 The cost of weak runbooks usually appears later. Quality drifts, teams stop trusting outputs, and nobody can explain whether the workflow is improving.
+
+## Weak runbook symptoms
+
+| Symptom | What is probably missing |
+| --- | --- |
+| Different operators use the prompt differently | Trigger, input, or step definitions are too vague |
+| Reviewers spend too long checking each output | Evidence and output standards are not explicit enough |
+| The system answers with outdated policy | Source hierarchy and refresh rules are missing |
+| Escalations happen late or inconsistently | Handoff triggers are not written as operating rules |
+| Incidents are hard to reconstruct | Logging, versioning, and reviewer notes are absent |
+| Improvements do not stick | Findings are not converted into regression cases |
+
+These symptoms are valuable because they tell the team which runbook field to strengthen first.
 
 ## What a scalable runbook looks like
 
@@ -88,6 +129,19 @@ If a team is early, the first operational layer should usually be:
 - a repeatable set of sample cases that can be re-run after changes.
 
 Those pieces create enough discipline to expand later into routing, evaluation, or deeper tooling.
+
+## Minimum viable runbook before production
+
+| Requirement | Minimum acceptable version |
+| --- | --- |
+| Named owner | One person or team owns review, updates, and rollback decisions |
+| Versioned instructions | Prompt, policy notes, and source references are tracked together |
+| Sample cases | At least a small set of normal, edge, and should-escalate cases |
+| Review checklist | A short list humans use to approve or reject output |
+| Escalation path | The workflow names when and where humans take over |
+| Change log | Material changes record why they happened and what evidence supported them |
+
+This is enough to start operating responsibly without waiting for a large governance platform.
 
 ## Compare next
 

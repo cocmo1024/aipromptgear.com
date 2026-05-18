@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-11
-lastReviewed: 2026-05-16
+lastReviewed: 2026-05-18
 contentCluster: ai-cost-and-compute
 canonicalCluster: ai-cost-and-compute
 pageType: decision-guide
@@ -72,15 +72,29 @@ Use **OpenAI Batch API** when the work is a file or backlog of many independent 
 
 If the workload is "many rows," start with Batch. If the workload is "one user's job," start with background mode.
 
-## Official signals checked May 15, 2026
+## Official signals checked May 18, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
-| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous request sets, separate batch rate limits, and completion within a 24-hour window | It is built for backlog processing, not live user waiting loops |
-| [OpenAI API pricing](https://openai.com/api/pricing/) | OpenAI publicly positions Batch as a lower-cost lane for eligible asynchronous workloads | Deferred bulk jobs can have very different economics from live requests |
-| [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode is framed around long-running tasks that are created, polled, and completed asynchronously | It fits product flows where one task may outlast a normal synchronous response |
+| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous request sets, separate batch rate limits, up to 50,000 requests per batch, and input files up to 200 MB | It is built for backlog processing, not live user waiting loops |
+| [OpenAI Batch guide](https://platform.openai.com/docs/guides/batch/) | Batch is positioned for asynchronous groups of requests with lower cost and a clear 24-hour turnaround model | Deferred bulk jobs can have very different economics from live requests |
+| [OpenAI API pricing](https://platform.openai.com/docs/pricing) | OpenAI pricing guidance points teams to Batch for large numbers of API requests that are not time-sensitive | Cost optimization belongs to the workload lane, not just the model choice |
+| [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode is framed around long-running tasks that are created, polled, canceled, streamed, or completed asynchronously | It fits product flows where one task may outlast a normal synchronous response |
 
 The important economic distinction is not "async is cheaper." Batch can be cheaper because it trades urgency for deferred processing. Background mode is not primarily a discount mechanism; it is a product continuity mechanism for long-running jobs that still need status, retrieval, review, and cancellation.
+
+## What the visitor should be able to decide
+
+This page should answer the buyer or builder's real question: **which async lane prevents the wrong operating model?**
+
+| If the visitor arrived with... | The page should help them conclude... | What to do next |
+| --- | --- | --- |
+| A backlog, export, eval suite, or enrichment run | Start with Batch because the unit of work is many independent records | Design file generation, result mapping, and expired-request handling |
+| A user-triggered report, file analysis, or research task | Start with background mode because one person or workflow cares about one job | Build job state, user-visible status, cancellation, and review |
+| A lower-priority live request | Compare service tiers separately; Flex is not the same question as Batch or background mode | Decide latency tolerance before changing execution architecture |
+| A workflow that mixes backfills and user jobs | Split the lanes instead of forcing one universal async abstraction | Use Batch for the backlog and background mode for tracked product jobs |
+
+If a reader leaves still thinking "async is async," the page has failed. The useful value is a cleaner unit-of-work decision.
 
 ## The easiest way to separate the two
 

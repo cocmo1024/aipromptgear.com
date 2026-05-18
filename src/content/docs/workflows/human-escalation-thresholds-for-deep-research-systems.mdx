@@ -16,6 +16,18 @@ targetRoles:
   - Research operations teams
   - Product managers
   - Governance owners
+keyQuestions:
+  - When should a deep research system escalate to a human?
+  - Which evidence, risk, or budget signals should stop autonomous research?
+  - What should the system hand to the human reviewer when it escalates?
+notFor:
+  - Lightweight search summarization with no high-stakes decisions
+  - Teams that do not preserve source logs or research traces
+  - Readers looking for a generic customer-support escalation article
+updateTriggers:
+  - New deep research workflow patterns or source-quality requirements
+  - Changes in legal, financial, policy, or governance expectations for research outputs
+  - Incidents where a polished report hid weak evidence or unresolved uncertainty
 contentCluster: deep-research
 canonicalCluster: deep-research
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -65,6 +78,19 @@ The question materially affects legal, financial, policy, or other high-risk cho
 The system has consumed the allocated search/runtime budget but still lacks a defensible conclusion.
 
 These are not the same situation and should not all produce the same fallback message.
+
+## Escalation threshold table
+
+| Trigger | Escalate when... | Human should receive... |
+| --- | --- | --- |
+| Clarification required | The request lacks decision context, scope, geography, or timeframe | The ambiguous fields and the best clarifying question |
+| Evidence quality failure | Sources are thin, low-authority, outdated, or mostly duplicates | Source log, missing source type, and unsupported claims |
+| Source conflict | Credible sources disagree on a material claim | Conflicting claims, source links, and confidence note |
+| High-stakes boundary | The answer could affect legal, financial, policy, hiring, medical, or security decisions | Risk category, evidence basis, and recommended human owner |
+| Budget exhaustion | Runtime or cost ceiling is reached before defensible confidence | Work completed, remaining gaps, and estimated value of continuing |
+| Tool or access limitation | The system cannot reach the needed source or system | Blocked source/tool, fallback tried, and next manual step |
+
+Escalation is successful when it preserves momentum: the human should know exactly what decision is needed next.
 
 ## The wrong escalation rule
 

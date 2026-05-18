@@ -16,6 +16,18 @@ targetRoles:
   - Product owners
   - Research operations teams
   - Finance-conscious engineering teams
+keyQuestions:
+  - How should deep research systems control runtime and cost?
+  - Which budget dimensions matter beyond token spend?
+  - When should a deep research run stop instead of searching more?
+notFor:
+  - Simple internal knowledge-base answers that do not require research
+  - Teams with no visibility into runtime, search breadth, or model spend
+  - Readers looking only for generic cloud cost management
+updateTriggers:
+  - New model pricing, search-tool pricing, or background processing behavior
+  - Changes in deep research product tiers or promised turnaround times
+  - Repeated incidents where research runs exceeded useful cost or latency
 contentCluster: deep-research
 canonicalCluster: deep-research
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -95,6 +108,17 @@ Most teams benefit from defining at least three research tiers:
 
 That prevents every task from accidentally running as the most expensive tier.
 
+## Budget tier table
+
+| Tier | Runtime expectation | Evidence expectation | Best use |
+| --- | --- | --- | --- |
+| Fast answer | Seconds to a few minutes | Small source set or known internal context | Directional checks, quick summaries, lightweight comparisons |
+| Standard research | Longer run with bounded source breadth | Multiple credible sources for major claims | Market briefs, product comparisons, recurring research requests |
+| Premium research | Longest approved runtime and stricter evidence rules | Primary sources, conflict checks, and reviewer-ready citation map | High-value strategy, due diligence, procurement, or board-facing work |
+| Stop or escalate | Budget reached without confidence | Missing evidence, source conflict, or blocked access is explicit | Cases where more autonomous work is unlikely to improve the answer |
+
+This table helps the visitor design product tiers instead of letting every research run behave like the most expensive one.
+
 ## Where cost usually leaks
 
 Deep research spend often leaks through:
@@ -105,6 +129,19 @@ Deep research spend often leaks through:
 - and prompts that encourage exhaustive exploration even when the decision does not require it.
 
 The answer is usually not "use a cheaper model first." The answer is often "reduce waste in the workflow."
+
+## Cost leak checklist
+
+| Leak | Control |
+| --- | --- |
+| Repeated searches with the same source results | Track search-branch novelty and stop when evidence stops improving |
+| Large low-quality pages in context | Filter source class before adding content to the working context |
+| Report length expands without decision value | Tie output length to the decision and audience |
+| Tool retries hide weak planning | Count retries and classify the failure, not only final success |
+| Premium model used for low-value synthesis | Route only high-uncertainty or high-stakes steps to premium reasoning |
+| No cost per accepted report | Measure cost after rejected, incomplete, and escalated runs |
+
+Runtime control becomes credible when the team can explain where cost went and what value it bought.
 
 ## The stop-condition rule
 

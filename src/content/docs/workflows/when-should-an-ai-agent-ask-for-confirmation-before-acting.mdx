@@ -35,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -74,6 +75,20 @@ Confirmation usually belongs before:
 
 These are the moments where a short pause can protect trust cheaply.
 
+## Confirmation decision matrix
+
+| Situation | Confirmation? | Better control if confirmation is not enough |
+| --- | --- | --- |
+| User asks the agent to summarize, search, draft, or classify | Usually no | Normal logging and undo where useful |
+| User asks for an external message to be sent | Yes | Approval if the message is regulated, legal, financial, or high-impact |
+| Agent wants to edit a customer, billing, CRM, ticket, or production record | Usually yes | Approval or role-based authorization for sensitive fields |
+| Agent wants to delete, refund, purchase, deploy, close, or cancel | Yes, but confirmation alone may be too weak | Formal approval, step-up auth, or escalation |
+| Intent is ambiguous but the action is low-risk | Ask a clarifying question, not a heavy approval | Better intent capture or preview |
+| Intent is clear but the action is high-risk | Confirmation plus policy gate | Approval, audit trail, and rollback path |
+| Action is reversible and invisible outside the product | Usually no | Undo, activity log, or sampled review |
+
+This matrix is the practical value for the visitor: it separates low-friction autonomy from moments where user trust can be damaged by one wrong action.
+
 ## When confirmation is usually noise
 
 Confirmation is often waste when the agent is:
@@ -85,6 +100,20 @@ Confirmation is often waste when the agent is:
 - or doing low-risk preparation that creates no side effect by itself.
 
 If the step can be undone cheaply or never leaves the system, mandatory confirmation often slows the workflow without improving safety.
+
+## Anatomy of a useful confirmation prompt
+
+A confirmation prompt should make the next action legible. A good prompt includes:
+
+| Element | What it should say |
+| --- | --- |
+| Action verb | The exact action the agent will take, such as send, update, delete, refund, merge, or publish |
+| Target | The customer, ticket, file, record, account, branch, or workspace affected |
+| Consequence | What changes after confirmation and whether it is reversible |
+| Evidence | The reason the agent thinks this action matches the user's intent |
+| Escape path | Cancel, edit, send to review, or escalate to a human |
+
+Weak confirmations ask "Are you sure?" without context. Strong confirmations make the risk and the next step obvious.
 
 ## The strongest confirmation trigger
 
@@ -117,6 +146,20 @@ Ask for confirmation when:
 3. the downside of acting incorrectly is materially larger than the cost of one extra click or review.
 
 If those are false, the system probably does not need confirmation at that step.
+
+## How to measure whether confirmations help
+
+Confirmation is only useful if it reduces meaningful mistakes without burying the workflow in friction.
+
+| Metric | What it reveals |
+| --- | --- |
+| Confirmation acceptance rate | Whether prompts are appearing at reasonable moments |
+| Cancel or edit rate | Whether users are catching real intent mismatches |
+| Post-confirmation complaint rate | Whether the prompt explained the action well enough |
+| Time added per successful task | Whether the safety control is too heavy for the workflow |
+| Escalation after confirmation | Whether confirmation is being used where approval or human handoff was actually needed |
+
+If users almost always accept a prompt without reading, the system may be creating ritual friction instead of safety.
 
 ## Implementation checklist
 

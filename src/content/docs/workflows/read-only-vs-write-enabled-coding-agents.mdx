@@ -16,6 +16,18 @@ targetRoles:
   - Platform teams
   - Developer productivity teams
   - Security owners
+keyQuestions:
+  - When should coding agents stay read-only?
+  - What must be true before a coding agent can edit repository files?
+  - How should teams gate PR creation, merge authority, and production writes?
+notFor:
+  - Teams looking for a consumer coding assistant overview
+  - Repositories with no review, test, or ownership model
+  - Organizations that want write-enabled agents without explicit approval boundaries
+updateTriggers:
+  - New coding-agent write-access patterns
+  - Changes in repository permission, review, or CI automation practices
+  - New incidents or case studies around autonomous code changes
 contentCluster: coding-agents
 canonicalCluster: coding-agents
 pageType: workflow
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-15
+datePublished: 2026-05-15
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -44,6 +57,19 @@ Keep coding agents read-only for exploration, explanation, impact analysis, and 
 | Apply a patch | Require bounded scope and human diff review |
 | Open a PR | Allow only with tests, summary, and normal review gates |
 | Merge, deploy, or change production systems | Require explicit approval and strong rollback controls |
+
+## Visitor decision this page should support
+
+A visitor is usually not asking whether coding agents are good or bad. They are deciding which authority level is justified for their repository today.
+
+| Visitor situation | Better default | Reason |
+| --- | --- | --- |
+| New team, weak tests, unclear ownership | Read-only | The team can still get investigation value without increasing change risk |
+| Strong tests, clear codeowners, narrow task class | Bounded write-enabled | The repository can absorb small edits under review |
+| Mature CI, feature flags, rollback, and policy-as-code | PR-authoring agent | The agent can produce changes while humans retain merge accountability |
+| Sensitive systems, regulated data, infra, auth, billing | Read-only or draft-only until stronger gates exist | One wrong edit can create business or security impact |
+
+The page earns its value when the reader can place their own team in one of these rows and choose a safer next mode.
 
 ## Why this distinction matters
 
@@ -111,6 +137,19 @@ This is a workable default:
 
 The point is not to slow everything down equally. The point is to align speed with risk.
 
+## Readiness scorecard for write-enabled mode
+
+| Readiness factor | Green signal | Red signal |
+| --- | --- | --- |
+| Test coverage | Required checks catch common regressions quickly | Reviewers rely mostly on manual inspection |
+| Ownership | Codeowners or equivalent reviewers are clear | No one knows who owns affected paths |
+| Scope control | The agent can be constrained to approved files and commands | The task can expand silently across the repository |
+| Evidence | The PR includes changed files, tests run, limitations, and approval crossings | Reviewers get only a confident natural-language summary |
+| Rollback | The team can revert or disable the change quickly | Rollback depends on memory or heroic debugging |
+| Sensitive paths | Auth, infra, CI, secrets, billing, and migrations are gated | Sensitive files are treated like normal code |
+
+If two or more red signals are present, read-only or draft-only mode is usually the better near-term rollout.
+
 ## Signals that a team should stay read-only longer
 
 Stay read-only longer when:
@@ -134,6 +173,19 @@ Write-enabled agents are becoming more defensible when:
 - and rollback is cheap.
 
 That means the process can handle agent edits as a governed change source, not as magic.
+
+## Permission ladder
+
+| Level | Agent authority | Human control |
+| --- | --- | --- |
+| 1. Read-only | Search, explain, summarize, diagnose | Human decides whether to act |
+| 2. Patch suggestion | Propose a diff without applying it | Human applies or rejects |
+| 3. Bounded write | Edit approved file classes in a narrow task | Human reviews the diff |
+| 4. PR author | Open or update a PR with evidence and tests | Human owns review and merge |
+| 5. Controlled merge | Merge only low-risk, pre-approved classes after checks | Repository owners define and audit the class |
+| 6. Production action | Deploy, migrate, delete, or change live systems | Explicit approval and rollback controls |
+
+Most teams should spend more time at levels 2-4 than they expect. That is where leverage appears without pretending the agent is a release owner.
 
 ## Compare next
 

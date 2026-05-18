@@ -16,6 +16,18 @@ targetRoles:
 contentStatus: cornerstone
 problemSolved: Helps image-generation users move from one-off prompt examples into reusable prompt patterns with attribution, controls, and failure-mode analysis.
 readerTakeaway: You should leave knowing how the image prompt archive is organized, why examples are rewritten, and how to use patterns without treating prompts as magic strings.
+keyQuestions:
+  - How are public image prompt examples adapted into reusable prompt patterns?
+  - What does attribution mean inside the image prompt archive?
+  - Which controls and failure modes should readers inspect before reusing a pattern?
+notFor:
+  - Readers looking for raw copied prompt dumps without attribution
+  - Teams that want to mirror public prompt text verbatim
+  - Users who need model-specific legal advice about training data or image rights
+updateTriggers:
+  - New image prompt families or attribution conventions in the archive
+  - Changes in image-generation model behavior around text, references, or layout control
+  - New public source collections that require clearer adaptation policy
 contentCluster: site-foundation
 canonicalCluster: site-foundation
 pageType: decision-guide
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
@@ -107,6 +120,19 @@ This archive fixes that by converting public prompt examples into attributed der
 This archive should not become a raw prompt warehouse. A page is useful only when it explains why the pattern works, which variables are safe to change, which details are fragile, and what a reader should inspect when the first output fails. That is why the archive favors controls, failure modes, attribution, and adaptation notes over isolated prompt strings.
 
 The goal is also to keep the examples reusable across tools and model revisions. A good image prompt page should help a creator reason about subject control, lighting, camera distance, text placement, composition density, and reference handling. If a page only says "use this prompt" without explaining those choices, it is not strong enough for the archive.
+
+## Pattern quality checklist
+
+| Requirement | What a useful page should include | Why it matters |
+| --- | --- | --- |
+| Attribution | Source repo, creator link, and adaptation note where available | Keeps the reader connected to the public source context |
+| Reusable frame | A rewritten prompt structure with variables the reader can swap | Prevents the page from becoming a one-off prompt copy |
+| Control notes | Subject, style, camera, layout, text, lighting, and reference controls | Helps users adapt the pattern across models and subjects |
+| Failure modes | Common ways the image can break and what to inspect first | Gives value after the first generation attempt fails |
+| Output intent | Whether the pattern is for portrait, poster, UI mockup, character sheet, or benchmark | Matches the page to the visitor's actual creative task |
+| Change boundaries | Which details are safe to alter and which are fragile | Makes the pattern practical instead of decorative |
+
+This foundation page is valuable only if it explains how the archive should be used. Visitors should leave with a method, not just a list of links.
 
 ## What makes these pages higher value
 

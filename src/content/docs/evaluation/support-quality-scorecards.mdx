@@ -16,6 +16,18 @@ targetRoles:
 contentStatus: seed
 problemSolved: Helps support teams build scorecards that measure grounding, escalation discipline, review effort, and customer usefulness instead of only response fluency.
 readerTakeaway: You should leave with a practical support AI scorecard model that can guide rollout, regression review, and knowledge-base cleanup.
+keyQuestions:
+  - What should an AI support quality scorecard measure?
+  - How should teams separate fluent answers from operationally useful support outcomes?
+  - Which scorecard dimensions should trigger knowledge, routing, prompt, or policy fixes?
+notFor:
+  - Generic call-center QA programs with no AI-assisted workflow
+  - Teams that only need a customer satisfaction survey
+  - Readers looking for benchmark scores rather than production support review
+updateTriggers:
+  - Changes to support policy, escalation rules, knowledge base, or model routing
+  - New support AI failure patterns in production review
+  - Any queue expansion from draft-only support AI into customer-facing automation
 contentCluster: evalops
 canonicalCluster: evalops
 pageType: evaluation
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -54,6 +67,19 @@ A practical support scorecard usually includes:
 
 These dimensions keep the review focused on what a support team actually buys and operates.
 
+## Scorecard dimensions
+
+| Dimension | Good evidence | Fix when it fails |
+| --- | --- | --- |
+| Grounding quality | The answer uses approved and current support sources | Knowledge cleanup, retrieval tuning, or source priority changes |
+| Policy compliance | The response follows refund, cancellation, outage, account, and safety rules | Policy examples, stronger prompt constraints, or approval gates |
+| Escalation correctness | The case is kept, routed, or escalated at the right moment | Routing thresholds, escalation rules, or category-specific tests |
+| Customer usefulness | The response resolves the issue or clearly moves it forward | Better answer structure, action checklist, or missing source coverage |
+| Review efficiency | Human reviewers can approve or edit quickly | Shorter drafts, clearer evidence, or structured output |
+| Tone and trust | The reply is clear, accurate, and not overconfident | Tone rules, uncertainty handling, or human handoff |
+
+This is the concrete value of the page: a support leader can turn these dimensions into a weekly review form without inventing the framework from scratch.
+
 ## Common failure patterns
 
 The most useful scorecards are good at surfacing repeatable failures, such as:
@@ -64,6 +90,19 @@ The most useful scorecards are good at surfacing repeatable failures, such as:
 - inconsistent tone or incomplete action steps in account-sensitive workflows.
 
 Once those patterns are visible, the team can decide whether the fix belongs in retrieval, prompt design, knowledge cleanup, or routing logic.
+
+## Failure-to-fix map
+
+| Failure pattern | Likely root cause | Better next action |
+| --- | --- | --- |
+| Fluent but unsupported answer | Retrieval did not surface the right source or the prompt allowed unsupported claims | Add citation requirement and improve source priority |
+| Correct answer, wrong customer action | Policy logic or account-state handling is weak | Add policy-specific cases and approval for sensitive actions |
+| Escalation missed | Routing threshold is too aggressive or risk cues are hidden | Add escalation labels and update intake features |
+| Over-escalation | The system lacks confidence rules for safe automation | Add negative examples and confidence thresholds |
+| Reviewer edits every draft | Output format or verbosity does not match team workflow | Add draft templates and review-time targets |
+| Same defect repeats after fixes | Findings are not entering regression loops | Add cases to eval set before the next release |
+
+The scorecard should tell the team where to fix the workflow, not merely whether the answer sounded good.
 
 ## Lightweight versus structured review
 
@@ -80,6 +119,17 @@ A more structured review system becomes necessary when:
 - the team wants to compare prompt versions or model-routing changes over time.
 
 The key is to make the scorecard strong enough to guide decisions without turning every weekly review into a research project.
+
+## Review cadence by rollout stage
+
+| Stage | Review style | Why |
+| --- | --- | --- |
+| Pilot | Small structured review after every meaningful change | Early failures teach the team which dimensions matter |
+| Limited production | Weekly sample by queue and issue class | Catches drift while changes are still easy to reverse |
+| Scaled production | Monthly trend review plus incident-triggered sampling | Keeps the system healthy without reviewing every ticket |
+| Post-incident | Focused review of the affected category | Turns failures into tests, source fixes, or escalation changes |
+
+Scorecards should become lighter as the workflow stabilizes, not disappear.
 
 ## Review cadence and update triggers
 

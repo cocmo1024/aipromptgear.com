@@ -35,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -84,6 +85,21 @@ Before a high-value agent release goes live, the team should know:
 
 If those answers are missing, the team does not really have rollback.
 
+## Rollback scope map
+
+Rollback only works when the team knows which layer failed. Use this map before launch and during incident review:
+
+| Layer | What can go wrong | Rollback or fallback action |
+| --- | --- | --- |
+| Prompt or instruction set | The agent follows a worse operating rule, over-refuses, or acts too aggressively | Restore the last approved prompt version and rerun the affected eval cases |
+| Model lane | A model change shifts latency, cost, tool use, or reasoning behavior | Route the workflow back to the previous model lane or a safer fast lane |
+| Tool scope | The agent gains too much write power or calls the wrong capability | Disable the risky scope, move to draft-only, or force approval |
+| Retrieval or memory | The agent uses stale, missing, or unsafe context | revert the retrieval index, clear unsafe memory, or disable context source |
+| Workflow logic | Branching, retries, escalation, or handoff changed behavior | Roll back the workflow version, not only the prompt |
+| Release policy | A change bypassed review, sampling, or approval gates | Freeze expansion and restore the previous gate configuration |
+
+The visitor value of this page is practical: it should make rollback concrete enough that an incident owner can name the fallback before an incident happens.
+
 ## The best fallback pattern
 
 Healthy rollback often means moving to a safer lane, not only moving to an older lane.
@@ -110,6 +126,19 @@ Rollback becomes rational when:
 
 The trigger should be tied to business risk and workflow quality, not only to vague discomfort.
 
+## Rollback trigger table
+
+| Signal | Example threshold | First response |
+| --- | --- | --- |
+| High-severity failure class rises | Policy breach, customer-impacting wrong action, unsafe tool call | Stop expansion and move affected workflow to approval-gated mode |
+| Accepted-result rate drops | Reviewers reject more outputs than the previous stable release | Roll back prompt/model/workflow bundle and inspect changed traces |
+| Tool misuse appears | Wrong tool, wrong argument, repeated retry loop, or unauthorized scope attempt | Disable the tool scope or require human confirmation before the call |
+| Latency or cost breaches budget | A new release makes jobs miss SLA or cost-per-success targets | Route to previous model lane or reduce autonomy until measured again |
+| Manual rescue load spikes | Operators spend more time cleaning up than the automation saves | Pause rollout and move jobs to draft-only mode |
+| User trust signal declines | Increased complaints, abandonments, or support tickets tied to the agent | Revert the release and add clearer confirmation or handoff controls |
+
+Written triggers prevent the team from debating rollback authority while the incident is active.
+
 ## The evidence you need before deciding
 
 A rollback decision is much faster when the team can see:
@@ -121,6 +150,19 @@ A rollback decision is much faster when the team can see:
 - and whether a narrower fallback can contain it.
 
 That is why logging and release metadata matter so much.
+
+## Minimum rollback runbook
+
+| Runbook step | Owner | Evidence needed |
+| --- | --- | --- |
+| Declare affected workflow | Incident owner | Agent name, version, user segment, job class, and release time |
+| Freeze expansion | Release owner | Current rollout percentage or enabled workspace list |
+| Choose rollback scope | Engineering owner | Diff between last stable and current prompt, model, tool, retrieval, and workflow config |
+| Execute fallback | Platform owner | Feature flag, routing rule, tool-scope change, or prior deployment artifact |
+| Verify containment | Evaluation owner | Trace sample, failure class count, accepted-result rate, latency, and cost |
+| Communicate status | Operations owner | User-facing impact, support notes, and when the next review happens |
+
+This runbook keeps rollback from becoming a Slack debate about who remembers which prompt used to work.
 
 ## The practical rule
 

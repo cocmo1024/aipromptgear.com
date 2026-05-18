@@ -16,6 +16,18 @@ targetRoles:
   - AI platform teams
   - Application engineers
   - Product leads
+keyQuestions:
+  - How should teams evaluate AI agent tool selection?
+  - Which failure classes explain wrong tool use, missing tool use, and approval misses?
+  - How can tool-selection evals route failures to the right owner?
+notFor:
+  - Chatbot answer-quality evals with no tool calls
+  - Teams with no trace capture or tool-call logging
+  - Readers looking only for generic benchmark accuracy metrics
+updateTriggers:
+  - New tool types, tool schemas, approval patterns, or trace-grading practices
+  - Production incidents involving wrong tool calls or missed approval boundaries
+  - Model or orchestration changes that alter tool-selection behavior
 contentCluster: evalops
 canonicalCluster: evalops
 pageType: evaluation
@@ -23,7 +35,8 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+datePublished: 2026-05-09
+lastReviewed: 2026-05-18
 ---
 
 ## What matters first
@@ -79,6 +92,19 @@ The agent took action when it should have paused, escalated, or asked for permis
 ### 6. Final synthesis failure
 
 The tool trace was mostly acceptable, but the final answer misrepresented the evidence or outcome.
+
+## Failure taxonomy table
+
+| Failure class | Trace symptom | Likely owner |
+| --- | --- | --- |
+| Missing tool use | Agent answers without searching, retrieving, validating, or executing when required | Prompt, planner, or tool-availability design |
+| Wrong tool choice | Agent chooses an irrelevant or lower-authority tool | Tool descriptions, routing, or orchestration |
+| Wrong arguments | Tool is correct but parameters are too broad, malformed, or unsafe | Schema design, input validation, or planner behavior |
+| Wrong sequence | Agent calls tools in an order that loses context or repeats work | Workflow design or orchestration policy |
+| Approval miss | Agent acts when it should pause, ask, or escalate | Governance, permission, or approval policy |
+| Synthesis failure | Trace is acceptable but final answer distorts the evidence | Model behavior, output format, or citation policy |
+
+This table is what makes the page operational: each failure class points to a different fix path.
 
 ## What the eval should actually score
 
