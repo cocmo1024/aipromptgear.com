@@ -115,6 +115,59 @@ body {
 	letter-spacing: -0.03em;
 }
 
+.home-visual-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	gap: 1rem;
+	margin: 2rem 0 2.25rem;
+}
+
+.home-visual-card {
+	display: grid;
+	gap: 0.65rem;
+	align-content: start;
+	overflow: hidden;
+	text-decoration: none;
+	border-radius: 0.75rem;
+	border: 1px solid color-mix(in srgb, var(--sl-color-accent) 16%, var(--sl-color-hairline));
+	background: color-mix(in srgb, var(--site-panel) 88%, transparent);
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+	transition:
+		transform 160ms ease,
+		border-color 160ms ease;
+}
+
+.home-visual-card:hover {
+	transform: translateY(-2px);
+	border-color: color-mix(in srgb, var(--sl-color-accent) 34%, var(--sl-color-hairline));
+}
+
+.home-visual-card img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+	border-bottom: 1px solid color-mix(in srgb, var(--sl-color-accent) 10%, var(--sl-color-hairline));
+}
+
+.home-visual-card strong,
+.home-visual-card span {
+	padding-inline: 0.95rem;
+}
+
+.home-visual-card strong {
+	color: var(--sl-color-white);
+	font-size: 1rem;
+	letter-spacing: -0.02em;
+}
+
+.home-visual-card span {
+	padding-bottom: 1rem;
+	color: var(--sl-color-gray-2);
+	font-size: 0.92rem;
+	line-height: 1.55;
+}
+
 .portal-links {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
