@@ -33,7 +33,7 @@ updateTriggers:
   - Public coding-agent incident reports or quality postmortems
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-13
+lastReviewed: 2026-05-20
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -51,6 +51,7 @@ Coding-agent adoption usually fails in one of four places:
 | --- | --- | --- |
 | Engineers are experimenting but leadership lacks rollout policy | [AI coding agents for engineering teams](/use-cases/ai-coding-agents-for-engineering-teams/) | Which workflows deserve agent support first |
 | Background agent work is being assigned randomly | [Cloud coding-agent task routing](/workflows/cloud-coding-agent-task-routing-model/) | Which tasks belong in cloud worktrees, local interactive sessions, read-only exploration, or human-owned work |
+| Long-running Codex work needs approval while reviewers are away from their desks | [Codex mobile remote approvals](/workflows/codex-mobile-remote-approval-workflows-for-coding-agents/) | Which decisions can be made from mobile and which must stay in PR or release gates |
 | Reviewers are overwhelmed by generated diffs | [Reviewer queues and approval capacity](/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/) | How much agent output the human review system can safely absorb |
 | Budget pressure is rising | [Coding-agent cost per accepted PR](/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/) | How to budget premium requests, reviewer time, failed runs, and accepted engineering outcomes |
 | Agents need write access | [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/) | Which repository actions require stronger boundaries |
@@ -117,6 +118,11 @@ If a page treats all of those as one generic "agent permission" topic, it is too
 		title="Approval systems for coding agents"
 		href="/workflows/approval-systems-for-coding-agents/"
 		description="Design risk-based approval for repo read, write, merge, and deploy boundaries."
+	/>
+	<LinkCard
+		title="Codex mobile remote approvals"
+		href="/workflows/codex-mobile-remote-approval-workflows-for-coding-agents/"
+		description="Define which Codex decisions can be approved from mobile and what evidence must be visible first."
 	/>
 	<LinkCard
 		title="PR checks and merge gates"

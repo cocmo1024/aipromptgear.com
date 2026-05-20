@@ -33,7 +33,7 @@ updateTriggers:
   - New remote MCP or connector deployment patterns
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-14
+lastReviewed: 2026-05-20
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -53,6 +53,7 @@ MCP security decisions should start with tool authority:
 | Write actions are possible | [MCP security and approval boundaries](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/) | Which actions need approval, scopes, and audit trails |
 | Frontier cyber capability enters defensive workflows | [Frontier AI cyber defense readiness](/tooling/frontier-ai-cyber-defense-readiness-checklist/) | Which access, target scope, evidence, review, and containment controls must exist first |
 | The team is choosing MCP versus direct integrations | [Remote MCP servers vs direct tool integrations](/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/) | Whether a shared server or app-owned tool wiring creates less risk |
+| Generated SDKs, CLIs, or MCP servers are proposed | [MCP server tooling and SDK generation](/agent-systems/mcp-server-tooling-and-sdk-generation-for-agent-connectors/) | Whether the connector lifecycle has ownership, versioning, tests, scopes, and approval policy |
 
 This keeps the cluster practical. MCP is not inherently safe or unsafe; the risk depends on what the server can read, write, call, fetch, and impersonate.
 
@@ -82,6 +83,11 @@ If those distinctions are missing, an MCP page is too shallow for production tea
 		title="Remote MCP servers vs direct tool integrations"
 		href="/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/"
 		description="Choose between shared MCP infrastructure and simpler app-owned tool wiring."
+	/>
+	<LinkCard
+		title="MCP server tooling and SDK generation"
+		href="/agent-systems/mcp-server-tooling-and-sdk-generation-for-agent-connectors/"
+		description="Review generated SDKs, CLIs, and MCP servers before connector tooling becomes shared agent infrastructure."
 	/>
 	<LinkCard
 		title="A2A vs MCP"

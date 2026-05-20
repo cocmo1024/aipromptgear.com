@@ -35,7 +35,7 @@ updateTriggers:
   - New official OpenAI guidance on Codex skills, MCP, subagents, or security
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-20
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -72,6 +72,11 @@ This cluster is built for that second question. It organizes Codex desktop conte
 		title="Worktrees and parallel agents"
 		href="/workflows/openai-codex-worktrees-and-parallel-agents-playbook/"
 		description="Use worktrees to keep multiple Codex threads isolated while preserving reviewable Git state."
+	/>
+	<LinkCard
+		title="Codex mobile remote approvals"
+		href="/workflows/codex-mobile-remote-approval-workflows-for-coding-agents/"
+		description="Keep long-running Codex work moving from mobile without turning phone approvals into a weak review gate."
 	/>
 	<LinkCard
 		title="Codex automations playbook"
@@ -125,10 +130,10 @@ This cluster is grounded in current OpenAI materials, including:
 - [Codex approvals and security](https://developers.openai.com/codex/agent-approvals-security)
 - [Codex app for Windows](https://developers.openai.com/codex/app/windows)
 - [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-chatgpt)
+- [Work with Codex from anywhere](https://openai.com/index/work-with-codex-from-anywhere/)
 
 ## How to use this cluster
 
 If you are new to Codex, start with the engineering team guide and the surface comparison. If you are already using Codex casually, go straight to worktrees, automations, and the prompt playbook. If you are rolling it out to a team, start with sandboxing, approvals, plugins, and PR gates before encouraging broad write-enabled use.
 
 The correct operating model is simple: give Codex more context and tools only after the review boundary is clear. Powerful desktop agents create leverage when they are tied to Git, tests, approvals, and durable instructions. Without those boundaries, they create review debt faster than they create production value.
-

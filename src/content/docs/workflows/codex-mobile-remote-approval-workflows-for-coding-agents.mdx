@@ -1,0 +1,194 @@
+---
+title: Codex Mobile Remote Approval Workflows for Coding Agents
+description: How engineering teams should use Codex mobile remote access to approve, redirect, and review long-running coding-agent work without weakening repository control.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: Codex mobile approval workflow
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Engineering managers
+  - Staff engineers
+  - Developer productivity teams
+  - Release managers
+contentStatus: growing
+datePublished: 2026-05-20
+lastReviewed: 2026-05-20
+problemSolved: How to decide which Codex coding-agent decisions can safely be made from mobile remote access, and which still need desktop review, CI evidence, or repository-owner approval.
+readerTakeaway: You should leave with a practical remote-approval model for Codex threads, including action classes, evidence requirements, mobile review limits, and escalation rules.
+keyQuestions:
+  - Which Codex actions are safe to approve from a phone?
+  - How should teams supervise long-running Codex work when reviewers are away from their desks?
+  - What evidence should Codex show before a mobile approval is acceptable?
+notFor:
+  - Teams trying to replace code review with quick mobile taps
+  - Repositories without tests, PR gates, or clear ownership
+  - Production deployment approvals that require formal release control
+updateTriggers:
+  - Major changes to Codex mobile remote access
+  - New OpenAI guidance on Codex approvals, hooks, SSH, or remote environments
+  - Internal incidents where remote approval caused a bad merge, secret exposure, or production-adjacent action
+contentCluster: OpenAI Codex Desktop
+canonicalCluster: OpenAI Codex Desktop
+pageType: workflow
+lifecycle: market-signal
+refreshPriority: high
+authorKey: editorial-desk
+editorKey: review-desk
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+Codex mobile remote access changes the operating model for coding agents. A reviewer no longer has to sit at the same desktop session to keep a long-running thread moving. That is useful, but it also creates a new failure mode: teams may start approving actions from a phone without enough context to understand the repository risk.
+
+The right model is not "approve anything from anywhere." The right model is a tiered remote-approval workflow that separates low-risk steering from repository-changing decisions.
+
+## Quick answer
+
+Use Codex mobile remote access for lightweight steering, clarification, queue management, and evidence review. Do not use it as a shortcut around code review, merge policy, deployment gates, or secret-bearing commands.
+
+| Mobile decision | Good fit? | Required evidence |
+| --- | --- | --- |
+| Clarify requirements or narrow scope | Strong | Thread summary, current plan, affected files |
+| Choose between two low-risk implementation paths | Good | Tradeoff note, files likely to change, test plan |
+| Approve a harmless local command | Good | Exact command, working directory, no network or secrets |
+| Let Codex continue after a test failure | Moderate | Failure output, proposed fix, changed files |
+| Approve network access or dependency install | Risky | Reason, package/source, lockfile impact, reviewer ownership |
+| Approve merge, release, or production-adjacent action | Poor | Use normal PR and release gates instead |
+
+Mobile remote access is strongest when it reduces idle time in a controlled workflow. It is weakest when it compresses serious review into a small screen and a fast decision.
+
+## Why this matters now
+
+OpenAI's May 14, 2026 Codex update introduced mobile access from the ChatGPT app so users can start or continue threads, answer questions, redirect work, approve actions, review outputs, and move across connected hosts while Codex keeps running. The same announcement also described remote SSH, hooks, programmatic access tokens, and broader management patterns for Codex at scale.
+
+Those signals point to a durable operating shift: coding agents are becoming supervised background workers. The scarce resource is no longer only developer typing time. It is review attention at the moment when an agent needs authority to continue.
+
+That makes remote approval design part of engineering governance.
+
+## The approval ladder
+
+Separate Codex decisions into four levels.
+
+| Level | Example | Mobile posture |
+| --- | --- | --- |
+| Steer | "Use the existing billing helper instead of adding a new abstraction" | Safe from mobile when the thread context is visible |
+| Continue | "Rerun the focused test after the fix" | Usually acceptable if the command is narrow |
+| Expand | "Install a package, fetch the network, or edit more modules" | Needs stronger evidence and often desktop review |
+| Commit to shared state | "Open a PR, merge, deploy, rotate secrets, update infrastructure" | Keep behind normal repository or release controls |
+
+This ladder prevents one mobile approval button from covering very different risk classes.
+
+## What Codex should show before mobile approval
+
+A remote reviewer needs enough context to make a real decision. For coding-agent work, the approval surface should include:
+
+- the exact action Codex wants to take;
+- the reason the action is needed now;
+- the repository path or host involved;
+- changed files so far;
+- tests or checks already run;
+- expected side effects;
+- whether the action uses network, credentials, external tools, or write access;
+- the next decision Codex will make after approval.
+
+If the reviewer cannot explain the decision in one sentence, the action should wait.
+
+## Mobile-safe use cases
+
+Mobile approval works best for keeping bounded work moving.
+
+| Use case | Why it works |
+| --- | --- |
+| Answering a requirement question | The reviewer adds product or codebase judgment without editing files directly |
+| Redirecting scope | The reviewer can stop a broad approach before it creates a large diff |
+| Choosing a test target | The decision is reversible and evidence-based |
+| Reviewing a concise failure summary | The reviewer can decide whether the agent should debug or stop |
+| Archiving or pausing stale threads | Queue hygiene does not usually touch code |
+
+These decisions reduce waiting time without replacing the actual review system.
+
+## Decisions that should stay out of mobile approval
+
+Some work deserves a larger screen, a fresh local checkout, CI evidence, or a named repository owner.
+
+Avoid mobile-only approval for:
+
+- large diffs across unfamiliar modules;
+- dependency upgrades with transitive risk;
+- authentication, authorization, payment, or data-retention code;
+- infrastructure, secrets, or environment changes;
+- production deployment;
+- merge conflict resolution;
+- changes that failed tests and require judgment about risk acceptance.
+
+The phone is a steering surface, not a release desk.
+
+## Hooks and policy should carry routine decisions
+
+Remote approval should not become a stream of repetitive prompts. If a task is routine and low risk, use policy and automation to reduce unnecessary interruption.
+
+Examples:
+
+- allow focused read-only repository commands by default;
+- permit project-local test commands that do not reach the network;
+- use hooks to scan prompts for secrets or enforce repository-specific checks;
+- require explicit approval for network, install, or cross-repository actions;
+- keep merge and deployment outside the mobile approval path.
+
+The best approval workflow is one where humans see fewer but more meaningful questions.
+
+## Rollout checklist
+
+<Steps>
+	1. Define which Codex actions are steer, continue, expand, and commit decisions.
+	2. Write a short rule for which levels may be approved from mobile.
+	3. Require changed-file, command, test, and side-effect evidence before approval.
+	4. Keep merge and deployment decisions in the existing PR and release path.
+	5. Review approval logs after the first two weeks and remove noisy prompts.
+	6. Add incidents or near misses to the coding-agent evaluation set.
+</Steps>
+
+## Metrics to watch
+
+| Metric | What it reveals |
+| --- | --- |
+| Idle time before reviewer response | Whether remote access is reducing wasted agent time |
+| Approval volume per thread | Whether Codex is asking too often or policy is too vague |
+| Approved command failure rate | Whether reviewers are approving weak next steps |
+| Rework after mobile-approved actions | Whether mobile decisions are producing poor diffs |
+| PR rejection rate | Whether remote steering is masking quality problems |
+| Incidents involving approved actions | Whether risk classes need tighter gates |
+
+Remote access is valuable only if it improves the path to reviewable work.
+
+## Related paths
+
+<div class="portal-links">
+	<LinkCard
+		title="Approval systems for coding agents"
+		href="/workflows/approval-systems-for-coding-agents/"
+		description="Use the broader approval model when coding agents need repo read, write, merge, or deploy boundaries."
+	/>
+	<LinkCard
+		title="Approval latency and risk budgets"
+		href="/workflows/approval-latency-and-risk-budgets-for-coding-agents/"
+		description="Use this page to decide when approval delay is worth the risk reduction."
+	/>
+	<LinkCard
+		title="Codex sandboxing and approvals"
+		href="/agent-systems/openai-codex-sandboxing-approvals-and-network-access-policy/"
+		description="Tie mobile decisions back to sandboxing, network access, secrets, and command policy."
+	/>
+	<LinkCard
+		title="Codex worktrees and parallel agents"
+		href="/workflows/openai-codex-worktrees-and-parallel-agents-playbook/"
+		description="Remote approval is most useful when each agent thread leaves a reviewable isolated diff."
+	/>
+</div>
+
+## Source notes
+
+This page was checked on May 20, 2026. It responds to OpenAI's [Work with Codex from anywhere](https://openai.com/index/work-with-codex-from-anywhere/) announcement, which described Codex access through the ChatGPT mobile app, remote SSH, hooks, programmatic access tokens, and team-scale management surfaces. The guidance here is an operating model for engineering teams, not a claim that mobile approval is appropriate for every repository action.

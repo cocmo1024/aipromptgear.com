@@ -21,7 +21,7 @@ pageType: market-signal
 lifecycle: market-signal
 refreshPriority: high
 datePublished: 2026-05-15
-lastReviewed: 2026-05-18
+lastReviewed: 2026-05-20
 problemSolved: How to turn current AI industry headlines into durable implementation, governance, procurement, and evaluation topics instead of short-lived commentary.
 readerTakeaway: You should leave with a prioritized map of May 2026 AI hotspots and the next decision page to read or build for each one.
 keyQuestions:
@@ -44,7 +44,7 @@ editorKey: review-desk
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-This page was checked on May 16, 2026. The useful question is not which AI headline is loudest. The useful question is which signal creates a durable decision for product teams, enterprise buyers, security reviewers, and operations leaders.
+This page was checked on May 20, 2026. The useful question is not which AI headline is loudest. The useful question is which signal creates a durable decision for product teams, enterprise buyers, security reviewers, and operations leaders.
 
 The current pattern is clear: AI is moving from model access into delegated action. Agents are buying, coding, researching, operating across enterprise systems, and beginning to touch physical environments. That shift changes the page types that matter. The best content opportunities are no longer generic "what is AI" explainers; they are decision guides around authority, data location, payment, physical safety, evaluation, and operating cost.
 
@@ -58,6 +58,9 @@ The strongest May 2026 hotspots are:
 | Private and sovereign AI | NTT DATA sovereign AI report, Deloitte enterprise AI readiness, regulated industry rollout pressure | Data jurisdiction, model locality, cloud posture, retention, tenant isolation, and vendor evidence |
 | Physical AI and robotics | NVIDIA Cosmos, Isaac, GR00T, Google DeepMind Gemini Robotics-ER 1.6, Boston Dynamics facility inspection examples | Operations readiness, robot supervision, physical safety, simulation, and incident review |
 | Coding agents as a mainstream work layer | Anthropic enterprise-agent survey, Codex, Claude Code, Copilot, Cursor, GitHub agent workflows | Reviewer capacity, quality regression, repository permissions, accepted PR economics, and task routing |
+| Remote coding-agent supervision | OpenAI Codex mobile remote access, remote SSH, hooks, programmatic access tokens | Mobile approval, command policy, reviewer capacity, logs, and PR gate discipline |
+| Agent connector tooling | Anthropic acquiring Stainless, generated SDKs, CLIs, and MCP servers | API specs, connector lifecycle, permission scopes, tests, versioning, and incident review |
+| Search agents and AI Mode task surfaces | Google AI Mode, intelligent Search box, Search agents, Antigravity mini apps, AI Overviews links | Source clarity, product facts, task handoff, entity evidence, and measurement |
 | AI product discovery | OpenAI product discovery in ChatGPT, Google Business Agent, Merchant Center attributes, AI Mode shopping | Product data completeness, comparison pages, conversational buying paths, and handoff measurement |
 | Enterprise agent platforms | OpenAI, Anthropic, Google, Microsoft, Salesforce, ServiceNow, and vertical-agent platforms | Agent inventory, connectors, identity, approvals, audit trails, and RFP evidence |
 | Professional services AI agents | Anthropic and PwC, Claude Code, Claude Cowork, firm-wide finance and deal workflows | Source controls, client-data boundaries, reviewer capacity, evidence packages, and professional accountability |
@@ -99,6 +102,21 @@ These additions are the highest-leverage gaps for this site because they connect
 		title="Physical AI robotics readiness"
 		href="/use-cases/physical-ai-robotics-readiness-for-operations-teams/"
 		description="Turn robotics model launches into an operations checklist for inspection, safety, simulation, human supervision, and incident review."
+	/>
+	<LinkCard
+		title="Codex mobile remote approvals"
+		href="/workflows/codex-mobile-remote-approval-workflows-for-coding-agents/"
+		description="Define which long-running Codex decisions can be handled from mobile and which require desktop, PR, or release review."
+	/>
+	<LinkCard
+		title="MCP server tooling and SDK generation"
+		href="/agent-systems/mcp-server-tooling-and-sdk-generation-for-agent-connectors/"
+		description="Evaluate generated SDKs, CLIs, and MCP servers as connector infrastructure with versioning, scopes, tests, and ownership."
+	/>
+	<LinkCard
+		title="Generative search source-link readiness"
+		href="/models-and-apis/generative-search-source-link-readiness-for-publishers-and-product-teams/"
+		description="Repair source purpose, evidence, link previews, entity clarity, freshness, and next paths for AI Mode and AI Overviews."
 	/>
 	<LinkCard
 		title="AI workforce redesign operating model"
@@ -179,7 +197,28 @@ Agent adoption is strongest in software engineering and IT, but the production q
 
 Benchmarks help shortlist. Production evals decide release.
 
-## Source notes checked May 15, 2026
+## Hotspot 5: connectors become agent infrastructure
+
+Anthropic's Stainless acquisition is a useful signal because it connects SDK generation, CLIs, MCP servers, and agent connectivity. As agents become more capable, the bottleneck shifts to whether they can reach business systems through stable, governed connectors.
+
+The durable topic is connector lifecycle:
+
+- which API operations should become agent tools;
+- whether the API spec is stable enough to generate from;
+- who owns versioning and deprecation;
+- which tools require approval;
+- how prompt-injection, idempotency, and audit tests run before release;
+- how a broken connector is rolled back.
+
+Generated tooling can reduce duplicated wrappers, but it can also scale a weak permission model. Treat connectors as maintained infrastructure.
+
+## Hotspot 6: AI Search becomes a task surface
+
+Google's May 19, 2026 Search update pushes AI Mode beyond answer generation toward agents, personal context, custom dashboards, and task-oriented experiences. Its May 6 source-link update also emphasized inline links, previews, public perspectives, and query fan-out.
+
+The durable topic is not only ranking. It is whether a page can serve as reliable source material when AI Search is helping a user compare, decide, plan, or build a follow-up task. Pages need clearer answers, entities, evidence, fit boundaries, dates, and next-step links.
+
+## Source notes checked May 20, 2026
 
 | Source | Signal used |
 | --- | --- |
@@ -199,4 +238,8 @@ Benchmarks help shortlist. Production evals decide release.
 | [NVIDIA physical AI ecosystem release](https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Global-Robotics-Leaders-Take-Physical-AI-to-the-Real-World/) | Cosmos, Isaac, GR00T, and robotics ecosystem partnerships signal production-scale physical AI. |
 | [Anthropic enterprise agents 2026 survey](https://claude.com/blog/how-enterprises-are-building-ai-agents-in-2026) | Multi-stage workflows, coding adoption, research/reporting, and economic return are central enterprise agent themes. |
 | [Anthropic and PwC expanded partnership](https://www.anthropic.com/news/pwc-expanded-partnership) | Professional services agent deployment is moving into finance, deal work, Claude Code, Claude Cowork, training, and firm-wide operating redesign. |
+| [OpenAI Work with Codex from anywhere](https://openai.com/index/work-with-codex-from-anywhere/) | Codex mobile remote access, remote SSH, hooks, and programmatic access tokens make coding-agent supervision a workflow design topic. |
+| [Anthropic acquires Stainless](https://www.anthropic.com/news/anthropic-acquires-stainless?pubDate=20250818) | SDK generation, CLIs, and MCP server tooling are becoming part of the agent connectivity layer. |
+| [Google Search I/O 2026 update](https://blog.google/products-and-platforms/products/search/search-io-2026/) | AI Mode, Search agents, an intelligent Search box, and Antigravity task surfaces push Search toward action-oriented workflows. |
+| [Google generative AI Search link update](https://blog.google/products-and-platforms/products/search/explore-web-generative-ai-search/) | Inline links, previews, public perspectives, subscription signals, and query fan-out make source clarity more important. |
 | [McKinsey agentic AI advances](https://www.mckinsey.com/featured-insights/week-in-charts/agentic-ai-advances) | Agent scaling is most advanced in technology functions such as software engineering and IT. |
