@@ -28,6 +28,13 @@ refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
 lastReviewed: 2026-05-09
+notFor:
+  - Readers looking for generic AI definitions without an implementation decision
+  - Teams that cannot yet name the workflow owner, review path, or success measure
+updateTriggers:
+  - Major platform, model, pricing, or product behavior changes that affect the decision
+  - New incidents, benchmarks, audit findings, or production examples that change the risk model
+  - Internal analytics showing that readers need a clearer checklist, comparison, or implementation path
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -119,3 +126,20 @@ The cost model is weak if:
 		description="Cost allocation only works when traces, logs, metrics, and workflow ownership are visible."
 	/>
 </div>
+
+## Reader value check
+
+This page should help a reader decide whether the cost, latency, capacity, or infrastructure tradeoff improves successful workflow outcomes. For LLM cost allocation, showback, and budget ownership for AI products, the page is not finished if it only explains vocabulary. It should change what the team approves, measures, routes, buys, logs, or refuses to automate.
+
+Before applying the guidance, bring token usage, runtime, queue delay, cache hit rate, retry rate, accepted outputs, and human review cost. Those inputs keep the decision anchored in real operating conditions instead of a generic best-practice list.
+
+| Check | What the reader should be able to answer |
+| --- | --- |
+| Cost driver | Does the page identify the actual driver: tokens, tools, retries, queueing, hardware, or review time? |
+| Workload fit | Does it separate interactive, batch, background, and peak-capacity workloads? |
+| Failure cost | Does it include rework, escalations, abandoned runs, and false savings? |
+| Ownership | Can finance, product, and engineering agree who owns the budget decision? |
+
+Use the page as a working review artifact: compare the current workflow against the table, mark the missing evidence, and assign an owner for the next change. If the page exposes a gap but no one owns that gap, the correct next step is not broader rollout; it is a smaller pilot, a clearer gate, or a better measurement loop.
+
+For cost and compute pages, the reader should leave with a decision model rather than a cheaper-is-better slogan. A lower unit price is only useful when the completed workflow is still reliable.

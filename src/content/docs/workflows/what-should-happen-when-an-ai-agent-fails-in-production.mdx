@@ -175,3 +175,20 @@ Your production failure plan is probably healthy when:
 		description="Use this page when the real failure question is which runs deserve retries at all."
 	/>
 </div>
+
+## Reader value check
+
+This page should help a reader decide where responsibility, approval, escalation, and handoff should sit in the operating flow. For What should happen when an AI agent fails in production?, the page is not finished if it only explains vocabulary. It should change what the team approves, measures, routes, buys, logs, or refuses to automate.
+
+Before applying the guidance, bring real tickets, runbooks, escalation examples, review delays, and failure cases from the workflow. Those inputs keep the decision anchored in real operating conditions instead of a generic best-practice list.
+
+| Check | What the reader should be able to answer |
+| --- | --- |
+| Trigger | Is the event that starts the workflow explicit enough for a team to recognize it? |
+| Owner | Does each step have a human or system owner instead of a vague shared responsibility? |
+| Stop rule | Does the page say when the workflow should pause, escalate, or roll back? |
+| Evidence | Can a reviewer reconstruct what happened from logs, traces, tickets, or approvals? |
+
+Use the page as a working review artifact: compare the current workflow against the table, mark the missing evidence, and assign an owner for the next change. If the page exposes a gap but no one owns that gap, the correct next step is not broader rollout; it is a smaller pilot, a clearer gate, or a better measurement loop.
+
+For workflow pages, the value is operational clarity. The page should help a team remove ambiguity before the agent acts, not after an incident has already exposed the gap.

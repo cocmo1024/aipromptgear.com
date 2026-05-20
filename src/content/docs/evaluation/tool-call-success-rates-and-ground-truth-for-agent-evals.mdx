@@ -99,3 +99,20 @@ If the eval set only covers happy-path calls, the team is measuring demo quality
   <LinkCard title="Trace grading for tool-using agents" href="/evaluation/trace-grading-for-tool-using-ai-agents/" description="Use this page when the team needs to inspect the full run instead of only the final answer." />
   <LinkCard title="Tool selection evals and failure taxonomy" href="/evaluation/tool-selection-evals-and-failure-taxonomy-for-ai-agents/" description="Use this page when the main problem is separating tool-choice mistakes from other agent failures." />
 </div>
+
+## Reader value check
+
+This page should help a reader decide whether the eval, trace, scorecard, or monitoring signal is strong enough to support a release decision. For Tool-call success rates and ground truth for agent evals, the page is not finished if it only explains vocabulary. It should change what the team approves, measures, routes, buys, logs, or refuses to automate.
+
+Before applying the guidance, bring production traces, labeled failure examples, reviewer notes, and the exact workflow step being evaluated. Those inputs keep the decision anchored in real operating conditions instead of a generic best-practice list.
+
+| Check | What the reader should be able to answer |
+| --- | --- |
+| Signal quality | Can the team explain what behavior the signal proves, and what it does not prove? |
+| Release use | Does the page help decide whether to ship, hold, roll back, or collect more evidence? |
+| Failure learning | Does each miss become a reusable eval case instead of a one-off complaint? |
+| Owner | Is there a named person or team responsible for maintaining the scorecard or review loop? |
+
+Use the page as a working review artifact: compare the current workflow against the table, mark the missing evidence, and assign an owner for the next change. If the page exposes a gap but no one owns that gap, the correct next step is not broader rollout; it is a smaller pilot, a clearer gate, or a better measurement loop.
+
+For EvalOps pages, the useful outcome is a sharper release conversation. A reader should leave knowing which evidence belongs in the gate, which evidence belongs in incident review, and which metric is too vague to trust.

@@ -122,3 +122,19 @@ The SDK can accelerate implementation. It does not remove system ownership.
 - [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
 - [Tool timeouts, retries, and idempotency for AI agents](/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/)
 
+## Reader value check
+
+This page should help a reader decide which authority, data access, tool scope, and runtime boundary the agent system should receive. For Agents SDK vs app-owned orchestration for production agents, the page is not finished if it only explains vocabulary. It should change what the team approves, measures, routes, buys, logs, or refuses to automate.
+
+Before applying the guidance, bring tool lists, auth scopes, sandbox limits, customer data classes, audit trails, and examples of unsafe tool output. Those inputs keep the decision anchored in real operating conditions instead of a generic best-practice list.
+
+| Check | What the reader should be able to answer |
+| --- | --- |
+| Authority | Does the page distinguish advice, draft, write, delete, payment, and permission-changing actions? |
+| Identity | Is it clear whether the agent acts as a user, service account, or constrained system role? |
+| Runtime boundary | Are tools, network access, files, and secrets scoped to the smallest practical surface? |
+| Auditability | Can the team explain after the fact what the agent saw, decided, and changed? |
+
+Use the page as a working review artifact: compare the current workflow against the table, mark the missing evidence, and assign an owner for the next change. If the page exposes a gap but no one owns that gap, the correct next step is not broader rollout; it is a smaller pilot, a clearer gate, or a better measurement loop.
+
+For agent-system pages, the value is a safer architecture decision. The page should help readers reduce hidden authority before they add more tools or autonomy.

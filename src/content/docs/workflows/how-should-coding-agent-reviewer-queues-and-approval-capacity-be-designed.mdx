@@ -165,3 +165,20 @@ That rule protects the rollout from collapsing under its own internal demand.
 		description="Use this page when the queue design exists on paper and now needs to be validated under realistic repository tasks."
 	/>
 </div>
+
+## Reader value check
+
+This page should help a reader decide which repository actions a coding agent should be allowed to take and which gates must protect shared code. For Coding-Agent Reviewer Queues and Approval Capacity, the page is not finished if it only explains vocabulary. It should change what the team approves, measures, routes, buys, logs, or refuses to automate.
+
+Before applying the guidance, bring changed files, test results, reviewer queue data, PR outcomes, and examples of bad or reverted agent changes. Those inputs keep the decision anchored in real operating conditions instead of a generic best-practice list.
+
+| Check | What the reader should be able to answer |
+| --- | --- |
+| Repository boundary | Does the page separate read, write, review, merge, and deploy risk? |
+| Reviewer load | Does it account for the human time needed to inspect generated work? |
+| Verification | Are tests, static checks, and PR gates tied to the action being approved? |
+| Rollback | Can the team undo or contain the change if the agent is wrong? |
+
+Use the page as a working review artifact: compare the current workflow against the table, mark the missing evidence, and assign an owner for the next change. If the page exposes a gap but no one owns that gap, the correct next step is not broader rollout; it is a smaller pilot, a clearer gate, or a better measurement loop.
+
+For coding-agent pages, the reader should be able to turn the guidance into a repo policy, PR checklist, or reviewer queue rule. Broad enthusiasm is not enough when the output enters shared code.
