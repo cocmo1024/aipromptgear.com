@@ -53,6 +53,7 @@ Coding-agent adoption usually fails in one of four places:
 | Background agent work is being assigned randomly | [Cloud coding-agent task routing](/workflows/cloud-coding-agent-task-routing-model/) | Which tasks belong in cloud worktrees, local interactive sessions, read-only exploration, or human-owned work |
 | Long-running Codex work needs approval while reviewers are away from their desks | [Codex mobile remote approvals](/workflows/codex-mobile-remote-approval-workflows-for-coding-agents/) | Which decisions can be made from mobile and which must stay in PR or release gates |
 | Reviewers are overwhelmed by generated diffs | [Reviewer queues and approval capacity](/workflows/how-should-coding-agent-reviewer-queues-and-approval-capacity-be-designed/) | How much agent output the human review system can safely absorb |
+| Copilot rollout metrics need team ownership | [GitHub Copilot team-level metrics dashboard](/evaluation/github-copilot-team-level-metrics-dashboard-for-coding-agent-rollouts/) | Which teams deserve expansion, enablement, tighter policy, or a pause |
 | Budget pressure is rising | [Coding-agent cost per accepted PR](/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/) | How to budget premium requests, reviewer time, failed runs, and accepted engineering outcomes |
 | Agents need write access | [Read-only vs write-enabled coding agents](/workflows/read-only-vs-write-enabled-coding-agents/) | Which repository actions require stronger boundaries |
 | Quality complaints are anecdotal | [Coding-agent quality regression playbook](/evaluation/coding-agent-quality-regression-playbook/) | How to turn failures into eval cases, gates, and rollback rules |
@@ -93,6 +94,11 @@ If a page treats all of those as one generic "agent permission" topic, it is too
 		title="Coding-agent cost per accepted PR"
 		href="/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/"
 		description="Calculate coding-agent economics across premium requests, runtime, reviewer effort, failed runs, rework, and accepted PRs."
+	/>
+	<LinkCard
+		title="GitHub Copilot team-level metrics"
+		href="/evaluation/github-copilot-team-level-metrics-dashboard-for-coding-agent-rollouts/"
+		description="Turn Copilot usage reports into team-level rollout, enablement, review, quality, and cost decisions."
 	/>
 	<LinkCard
 		title="OpenAI Codex desktop"

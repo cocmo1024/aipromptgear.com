@@ -1,0 +1,293 @@
+---
+title: "GitHub Copilot Team-Level Metrics Dashboard for Coding-Agent Rollouts"
+description: "How enterprise engineering teams should turn GitHub Copilot team-level usage metrics into rollout, enablement, review, quality, and cost decisions."
+referenceType: evaluation
+adProfile: evaluation
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+contentCluster: coding-agents
+canonicalCluster: coding-agents
+pageType: evaluation
+lifecycle: market-signal
+refreshPriority: high
+problemSolved: Helps engineering leaders use GitHub Copilot team-level usage metrics without confusing adoption telemetry for coding-agent impact.
+readerTakeaway: You should leave with a practical dashboard model for team-level Copilot adoption, cloud-agent activity, review burden, quality, and cost decisions.
+primaryKeyword: GitHub Copilot team-level metrics
+searchIntent: deploy
+decisionStage: operations
+targetRoles:
+  - Engineering managers
+  - Developer productivity teams
+  - Platform engineering teams
+  - Enterprise Copilot administrators
+  - IT procurement teams
+keyQuestions:
+  - How should teams use GitHub Copilot team-level usage metrics?
+  - What should a Copilot adoption dashboard show beyond active users?
+  - How do team-level Copilot metrics connect to coding-agent rollout decisions?
+notFor:
+  - Personal Copilot usage tracking
+  - Teams without GitHub organization or enterprise access to Copilot usage reports
+  - Dashboards that only need enterprise-level license utilization
+updateTriggers:
+  - GitHub Copilot usage metrics API changes
+  - New Copilot cloud agent, CLI, code review, or premium request reporting fields
+  - Changes in GitHub team attribution, privacy thresholds, or dashboard availability
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-05-22
+lastReviewed: 2026-05-22
+searchPreview:
+  key: github-copilot-team-level-metrics
+  image: /search-previews/evaluation-16x9.webp
+  image4x3: /search-previews/evaluation-4x3.webp
+  image1x1: /search-previews/evaluation-1x1.webp
+  alt: Team-level GitHub Copilot metrics dashboard for coding-agent rollout decisions.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+GitHub Copilot usage reporting is moving from broad adoption counts toward team-level operating data. That matters because coding-agent rollout decisions are no longer only about whether developers are using an AI tool. The real question is which teams are turning Copilot surfaces into accepted engineering work without raising review, quality, security, or cost risk.
+
+On May 14, 2026, GitHub announced team-level Copilot usage metrics via API. The new reporting path lets administrators join a daily user-to-team membership report with daily per-user Copilot activity to construct team-level metrics. The practical opportunity is not another dashboard. It is a better way to decide where enablement, agent access, premium request budget, review capacity, and governance should go next.
+
+## Quick answer
+
+Use GitHub Copilot team-level metrics as an attribution layer, not as the final success metric.
+
+The dashboard should answer five questions:
+
+1. Which teams are actively using Copilot?
+2. Which Copilot surfaces are they using: IDE completions, chat, CLI, code review, or cloud agent?
+3. Which teams convert usage into accepted engineering outcomes?
+4. Which teams create extra review, rework, or quality burden?
+5. Which teams deserve expansion, enablement, tighter policy, or a pause?
+
+If the dashboard stops at active users, chats, completions, or lines of code, it will overstate impact. Team-level usage is useful only when it is joined to repository outcomes, review signals, quality gates, and budget ownership.
+
+## Official signals checked May 22, 2026
+
+| Source | Current signal | Why it matters |
+| --- | --- | --- |
+| [GitHub changelog: team-level Copilot usage metrics](https://github.blog/changelog/2026-05-14-team-level-copilot-usage-metrics-now-available-via-api/) | GitHub added a user-teams report that can be joined with per-user usage reports to produce team-level metrics across active users, completions, chats, language, IDE, feature, model, code review, CLI, and cloud-agent activity | Team attribution is now an API-level operating concern, not only a manual spreadsheet exercise |
+| [GitHub Docs: team-level Copilot usage metrics](https://docs.github.com/en/enterprise-cloud@latest/copilot/reference/copilot-usage-metrics/team-level-metrics) | Team-level metrics are built by joining daily user-teams reports with daily per-user usage metrics, then aggregating by team | The correct implementation is a daily join and rollup, not a one-time static team map |
+| [GitHub Docs: Copilot usage metrics API](https://docs.github.com/en/enterprise-cloud@latest/rest/copilot/copilot-usage-metrics?apiVersion=2022-11-28) | Usage reports expose signed download links for enterprise, organization, user, and user-team reports, with separate daily and rolling report patterns | Dashboard pipelines should treat Copilot metrics as downloaded report files with expiration, permissions, and refresh cadence |
+| [GitHub Docs: legacy Copilot metrics endpoints](https://docs.github.com/en/enterprise-cloud@latest/rest/copilot/copilot-metrics?apiVersion=2022-11-28) | Legacy Copilot metrics endpoints are marked closed as of April 2, 2026, with guidance to use Copilot usage metrics endpoints instead | Teams should not build new dashboards on retired endpoint families |
+
+## Why this is a high-value rollout topic
+
+Enterprise Copilot decisions usually start as seat management. That is too shallow once Copilot spans coding completions, chat, cloud agents, code review, CLI work, model choice, premium requests, and agentic pull-request flows.
+
+Team-level attribution creates sharper decisions:
+
+| Decision | What team-level metrics can reveal | What still needs external evidence |
+| --- | --- | --- |
+| Seat expansion | Which teams have active, engaged usage | Whether output improves accepted work |
+| Enablement | Which teams are underusing high-value surfaces | Whether they need training, clearer tasks, or policy changes |
+| Cloud-agent rollout | Which teams are already doing agentic work | Whether repositories have review and merge gates |
+| Premium request budgeting | Which teams consume advanced capability | Whether spend maps to accepted outcomes |
+| Governance tightening | Which teams touch sensitive repos or risky workflows | Whether agent behavior crossed policy or quality boundaries |
+| Tool consolidation | Which teams duplicate functionality across AI tools | Whether Copilot should replace, complement, or be capped |
+
+This is why the page belongs in the coding-agent cluster. Team-level Copilot metrics are not only analytics. They are a management surface for agent rollout.
+
+## The minimum dashboard model
+
+Start with a dashboard that separates usage, outcome, quality, and economics.
+
+| Layer | Minimum metric | Better operating question |
+| --- | --- | --- |
+| Team reach | seated users, active users, engaged users | Is the team using the tool enough to evaluate impact? |
+| Surface mix | IDE, chat, CLI, code review, cloud agent, model, feature | Is usage still autocomplete, or has it become agentic work? |
+| Work produced | PR summaries, agent sessions, code generation, accepted lines | Is activity producing reviewable engineering artifacts? |
+| Work accepted | merged PRs, accepted patches, resolved tickets, durable changes | Did output survive normal engineering review? |
+| Review burden | review cycles, requested changes, reviewer minutes, abandoned branches | Did the tool save time or move work downstream? |
+| Quality | test pass rate, security findings, reverts, incidents, post-merge defects | Did quality stay stable as usage rose? |
+| Cost | seats, premium requests, runtime, CI, reviewer time | Which teams deserve more capacity? |
+
+The important design choice is to keep Copilot telemetry separate from engineering outcome data until the join is explicit. Usage data says what happened inside Copilot. Outcome data says what the organization accepted.
+
+## Data pipeline shape
+
+Use this as the conceptual pipeline:
+
+<Steps>
+	1. Fetch daily user-team membership reports for the organization or enterprise.
+	2. Fetch daily per-user usage reports for the same day and same entity.
+	3. Join on user, day, and organization or enterprise identifier.
+	4. Aggregate by team, feature, model, language, IDE, or surface as needed.
+	5. Build rolling windows by repeating the daily join for each day before aggregating.
+	6. Join team rollups to engineering outcome data from pull requests, issues, CI, security scans, and incident records.
+	7. Publish a dashboard that separates usage signals from outcome, review, quality, and cost signals.
+</Steps>
+
+The daily join matters. Team membership changes. Joining a rolling usage report to one day of team membership can attribute work to the wrong team.
+
+## What to show by team
+
+### Adoption
+
+Show:
+
+- seated Copilot users;
+- active users;
+- engaged users;
+- usage by surface;
+- usage by model or feature;
+- language and IDE distribution;
+- active users as a share of eligible engineers.
+
+Do not rank teams only by usage. A platform team may have lower volume but higher impact if it uses Copilot for high-leverage migration, test, or review work.
+
+### Agentic activity
+
+Separate ordinary assistance from agentic work.
+
+Track:
+
+- cloud-agent activity;
+- CLI agent sessions;
+- code review assistance;
+- PR or issue task flows;
+- model use for complex work;
+- recurring tasks delegated to agents;
+- tasks abandoned before review.
+
+This distinction matters because the governance burden changes. Autocomplete adoption and cloud-agent adoption are different operating problems.
+
+### Review and acceptance
+
+Add engineering-system metrics beside Copilot usage:
+
+| Metric | Why it matters |
+| --- | --- |
+| Agent-assisted PRs opened | Shows whether usage produces reviewable artifacts |
+| Agent-assisted PRs merged | Measures accepted output instead of generated output |
+| Review cycles per accepted PR | Reveals hidden reviewer burden |
+| Abandoned agent branches | Shows failed routing or weak task framing |
+| Reviewer rewrite rate | Shows whether output is being accepted or rebuilt |
+| Time to first reviewable artifact | Helps compare agentic workflows with normal implementation |
+
+If the team cannot identify agent-assisted PRs, add a tagging convention before drawing conclusions from the dashboard.
+
+### Quality and risk
+
+Team-level adoption should be paired with quality gates:
+
+- test pass rate before review;
+- CI failure rate on agent-authored branches;
+- security findings;
+- post-merge defects;
+- reverts;
+- incidents;
+- policy violations;
+- sensitive repository access.
+
+Rising usage with rising rework is not a success story. It is a routing, training, or governance problem.
+
+### Economics
+
+Copilot metrics should feed budget discussions only after outcome metrics exist.
+
+Track:
+
+- seats by team;
+- premium request usage where available;
+- cloud-agent or agentic work volume;
+- CI and runner cost caused by agent branches;
+- reviewer time;
+- cost per accepted PR or accepted change set;
+- cost per resolved ticket for suitable task classes.
+
+The budget question is not which team uses Copilot most. It is which team converts paid capability into accepted work with tolerable review and quality cost.
+
+## Team-level caveats that matter
+
+There are several traps to avoid.
+
+| Caveat | Practical rule |
+| --- | --- |
+| Team-level metrics are constructed, not a single pre-aggregated dashboard | Own the join logic and document it |
+| User-team reports are daily | Join daily membership to daily activity before creating rolling windows |
+| Sub-threshold teams may be absent | Do not treat missing team rows as proof of zero usage |
+| Users can belong to multiple teams | Do not sum team totals back into an org total |
+| Some activity counters span multiple Copilot surfaces | Re-baseline instead of comparing blindly to older completion-only metrics |
+| Team usage does not prove accepted work | Join to PR, issue, review, and quality systems |
+
+These caveats are not edge cases. They decide whether the dashboard is trusted.
+
+## A practical scorecard
+
+Use this scorecard for a monthly rollout review.
+
+| Scorecard area | Healthy signal | Expansion warning |
+| --- | --- | --- |
+| Adoption | Active usage in teams with relevant work | Seats assigned but little engaged usage |
+| Surface mix | Agentic surfaces used where review gates exist | Cloud-agent activity in repos without clear owners |
+| Acceptance | Agent-assisted work merges after normal review | Many generated branches are abandoned |
+| Review | Reviewer time stays stable or falls | Senior reviewers report cleanup burden |
+| Quality | CI, security, and defect signals stay stable | Reverts or post-merge defects rise |
+| Cost | Premium usage maps to accepted outcomes | Spend rises faster than accepted work |
+| Governance | Sensitive work has policy and audit evidence | Agents touch risky areas without explicit boundaries |
+
+Expansion should require a healthy scorecard, not only high usage.
+
+## What the dashboard should decide
+
+A useful dashboard supports decisions such as:
+
+- expand seats for teams with strong accepted-outcome signals;
+- run enablement for teams with high seats but low engaged usage;
+- cap agentic workflows where review burden is rising;
+- move suitable work to cloud agents only after PR gates are ready;
+- reserve premium capacity for teams with high accepted-output leverage;
+- investigate teams with high usage and weak quality signals;
+- retire or consolidate overlapping AI tools where Copilot covers the workflow well enough.
+
+If the dashboard does not change rollout decisions, it is reporting theater.
+
+## When to pause expansion
+
+Pause or narrow rollout when:
+
+- active usage rises but accepted PRs do not;
+- cloud-agent activity grows without repository owner review;
+- teams cannot separate IDE help from agentic task execution;
+- multiple-team attribution is being summed incorrectly;
+- quality or security signals worsen;
+- reviewer queues become the hidden cost center;
+- premium request spend rises with no accepted-outcome denominator.
+
+The right response is usually better routing and better measurement, not a blanket rollback.
+
+## Bottom line
+
+GitHub Copilot team-level metrics make adoption visible at the level where engineering work is managed. That is valuable only if teams treat the metrics as the first join in a larger operating model.
+
+Use the API data to attribute usage. Use engineering systems to measure accepted work. Use review, quality, and cost signals to decide whether the rollout should expand, change shape, or slow down.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Coding-agent adoption metrics"
+		href="/evaluation/coding-agent-adoption-metrics-that-matter/"
+		description="Use this broader model to separate seats, surfaces, accepted work, review burden, quality, and cost across coding-agent tools."
+	/>
+	<LinkCard
+		title="Coding-agent cost per accepted PR"
+		href="/models-and-apis/coding-agent-cost-per-accepted-pr-and-premium-request-budgeting/"
+		description="Turn team-level usage into a cost model based on accepted engineering outcomes."
+	/>
+	<LinkCard
+		title="Cloud coding-agent task routing"
+		href="/workflows/cloud-coding-agent-task-routing-model/"
+		description="Use this when high Copilot activity needs clearer routing between local, cloud, read-only, and human-owned work."
+	/>
+	<LinkCard
+		title="PR checks and merge gates"
+		href="/workflows/pr-checks-and-merge-gates-for-coding-agents/"
+		description="Add repository gates before expanding agentic work into more teams."
+	/>
+</div>
