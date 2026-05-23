@@ -44,6 +44,19 @@ This section prevents hot topics from polluting the main information architectur
 
 Market-signal pages should not become a news feed. Each page should point readers toward stable cluster pages that will remain useful after the current release cycle.
 
+## What this hub is for
+
+Use this hub when a current AI topic is important enough to investigate, but not mature enough to become a permanent buying guide or implementation manual on its own. The editorial job is to separate noise from operational consequence. A model launch, platform announcement, security incident, or funding wave matters here only if it changes a decision that a product, engineering, security, research, or operations team has to make.
+
+That means each report is expected to answer four practical questions:
+
+- What changed in the market, product landscape, or public evidence?
+- Which teams should care, and which teams can ignore it for now?
+- What implementation, governance, cost, or evaluation problem does the signal create?
+- Which stable reference page should the reader use after the short-term attention fades?
+
+This keeps the section useful for readers who arrive weeks after the headline. They should not have to reconstruct a news cycle. They should be able to see why the signal mattered, what decision it affects, and where to continue if they are responsible for rollout, procurement, or risk review.
+
 ## Signal reports
 
 <div class="portal-links">
@@ -53,7 +66,7 @@ Market-signal pages should not become a news feed. Each page should point reader
 		description="A decision map for agentic commerce, private AI, physical AI, coding agents, AI infrastructure, AI product discovery, and workforce redesign."
 	/>
 	<LinkCard
-		title="AI hotspots May 2026 and long-term search map"
+		title="AI hotspots May 2026 and long-term decision map"
 		href="/use-cases/ai-hotspots-may-2026-long-term-search-map/"
 		description="Current signals around GPT-5.5, Claude Code quality reports, MCP security, Gemini Enterprise, deep research, and coding-agent economics."
 	/>
@@ -63,6 +76,20 @@ Market-signal pages should not become a news feed. Each page should point reader
 		description="Earlier signal map around agentic workflow rollout, managed-agent architecture, workspace AI, safety, and compute capacity."
 	/>
 </div>
+
+## Editorial threshold for a signal
+
+A topic is strong enough for this hub when it has at least one of these properties:
+
+| Signal type | Why it matters | Where it should lead |
+| --- | --- | --- |
+| Model or API change | It may change routing, latency, cost, capability, safety, or migration planning. | Models and APIs, EvalOps, cost, and workflow pages. |
+| Agent-platform launch | It may change how teams buy, govern, inventory, or operate agent systems. | Enterprise agent platform and governance clusters. |
+| Security or reliability incident | It exposes a failure mode that teams can test, monitor, or prevent. | MCP security, approval boundaries, incident response, and release-gate pages. |
+| Workflow adoption signal | It shows a repeatable business function moving from experimentation to operations. | Use-case, workflow, and admin analytics pages. |
+| Compute or infrastructure pressure | It changes the economics of tool loops, background jobs, queues, or inference capacity. | AI cost, compute, and product architecture pages. |
+
+Topics that are only celebrity commentary, ranking speculation, or recycled press releases should be skipped. If a reader cannot turn the signal into a clearer decision, the page has not earned its place.
 
 ## How signal reports should age
 

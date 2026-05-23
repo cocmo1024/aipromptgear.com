@@ -30,7 +30,7 @@ export const promptRadarLastUpdated = '2026-05-02';
 export const promptRadarMethod = [
 	'Track public prompt-library and creator-community signals where prompts are being copied, remixed, benchmarked, or reused.',
 	'Rebuild each prompt as an original operating template with source attribution, variables, quality checks, and failure modes.',
-	'Favor patterns that can produce durable search demand: image editing, video storyboards, web generation, model comparisons, and prompt evaluation.',
+	'Favor patterns with clear reuse value: image editing, video storyboards, web generation, model comparisons, and prompt evaluation.',
 	'Do not republish creator prompts verbatim. The value is the adapted template, explanation, and reuse boundary.',
 ] as const;
 

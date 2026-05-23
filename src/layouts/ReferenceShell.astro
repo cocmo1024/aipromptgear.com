@@ -238,5 +238,28 @@ const structuredData = [
 				<slot />
 			</div>
 		</main>
+		<footer class="reference-shell__footer" data-nosnippet>
+			<div class="reference-shell__footer-inner">
+				<div>
+					<strong>{siteMeta.name}</strong>
+					<p>
+						Original AI workflow references, prompt templates, evaluation notes, and source-attributed
+						pattern libraries maintained by {siteMeta.editorialTeamName}.
+					</p>
+					<p>
+						Contact: <a href={`mailto:${siteMeta.email}`}>{siteMeta.email}</a>
+					</p>
+				</div>
+				<nav aria-label="Site policies">
+					<a href="/about/">About</a>
+					<a href="/contact/">Contact</a>
+					<a href="/editorial-policy/">Editorial Policy</a>
+					<a href="/privacy/">Privacy</a>
+					<a href="/terms-of-use/">Terms</a>
+					<a href="/advertising/">Advertising</a>
+					<a href="/affiliate-disclosure/">Affiliate Disclosure</a>
+				</nav>
+			</div>
+		</footer>
 	</body>
 </html>

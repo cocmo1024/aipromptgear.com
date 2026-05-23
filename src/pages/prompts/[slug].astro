@@ -93,6 +93,46 @@ const creativeWork = {
 	</section>
 
 	<section class="reference-section">
+		<h2>How to use this template responsibly</h2>
+		<p>
+			This prompt is meant to be adapted into a brief for a real task, not copied into a model without
+			context. Start with the use case, then fill in the variables, run the quality checks, and keep the
+			source signal separate from your final prompt variant.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Decision</th>
+					<th>Use this page for</th>
+					<th>Do not skip</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Task fit</td>
+					<td>{entry.useCase}</td>
+					<td>Confirm the output will be reviewed by a person before reuse.</td>
+				</tr>
+				<tr>
+					<td>Variables</td>
+					<td>{entry.variables.slice(0, 3).join(', ')}</td>
+					<td>Replace placeholders with concrete details from your own brief.</td>
+				</tr>
+				<tr>
+					<td>Quality bar</td>
+					<td>{entry.qualityChecks[0]}</td>
+					<td>Compare the result against the checklist, not only against taste.</td>
+				</tr>
+				<tr>
+					<td>Failure prevention</td>
+					<td>{entry.failureModes[0]}</td>
+					<td>Rewrite the prompt if the first run exposes this failure.</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section class="reference-section">
 		<h2>Why this prompt works</h2>
 		<p>{entry.whyItWorks}</p>
 	</section>
@@ -112,6 +152,22 @@ const creativeWork = {
 			{entry.failureModes.map((failure) => (
 				<li>{failure}</li>
 			))}
+		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Originality and reuse boundary</h2>
+		<p>
+			The source signal explains why this pattern is worth watching, but the value of this page is the
+			rewritten structure, variables, quality checks, and failure analysis. Treat the final prompt as your
+			own working brief only after you have changed the subject, constraints, review criteria, and output
+			context for your own task.
+		</p>
+		<ul>
+			<li>Do not republish source creator text as if it were your own prompt.</li>
+			<li>Keep a record of the final prompt variant and the model used.</li>
+			<li>Use the failure modes to decide whether another model, reference image, or manual edit is needed.</li>
+			<li>For commercial work, review rights, brand claims, likenesses, and policy-sensitive content before publishing.</li>
 		</ul>
 	</section>
 

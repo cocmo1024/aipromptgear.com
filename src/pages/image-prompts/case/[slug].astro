@@ -63,11 +63,66 @@ const related = entry.relatedSlugs
 	</section>
 
 	<section class="reference-section">
+		<h2>How to apply this pattern</h2>
+		<p>
+			Use this page as a working prompt brief, not as a one-click style copy. Start by deciding whether
+			{` ${entry.bestFor.toLowerCase()} `}is actually the task, then rewrite the subject, scene, camera,
+			composition, and review rules so the output fits your own use case.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Step</th>
+					<th>What to decide</th>
+					<th>Why it improves the result</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1. Define the job</td>
+					<td>{entry.bestFor}</td>
+					<td>Prevents the prompt from becoming a vague style request.</td>
+				</tr>
+				<tr>
+					<td>2. Pick the strongest controls</td>
+					<td>{entry.controls.slice(0, 3).join(', ')}</td>
+					<td>Gives the model concrete constraints instead of decorative adjectives.</td>
+				</tr>
+				<tr>
+					<td>3. Preserve the source boundary</td>
+					<td>Use the source as inspiration, not as text to republish.</td>
+					<td>Keeps the page useful while respecting creator attribution.</td>
+				</tr>
+				<tr>
+					<td>4. Review known failures</td>
+					<td>{entry.failureModes[0]}</td>
+					<td>Turns the most likely mistake into a pre-flight check.</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section class="reference-section">
 		<h2>Common failure modes</h2>
 		<ul>
 			{entry.failureModes.map((failure) => (
 				<li>{failure}</li>
 			))}
+		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Originality and review checklist</h2>
+		<p>
+			The original value of this page is the reusable control model: {entry.whyItWorks} Before publishing
+			or sharing an output, check whether the final image can stand on its own without depending on the
+			source post, creator identity, or a hidden reference that the viewer cannot inspect.
+		</p>
+		<ul>
+			<li>Replace placeholders with your own subject, scene, product, or visual brief.</li>
+			<li>Keep any visible brand, person, or copyrighted character use inside your own permission rules.</li>
+			<li>Compare the output against the failure modes before using it in a client, product, or campaign workflow.</li>
+			<li>Record the final prompt variant so future iterations can be reviewed instead of guessed.</li>
 		</ul>
 	</section>
 

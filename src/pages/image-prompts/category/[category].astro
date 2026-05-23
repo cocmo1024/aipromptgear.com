@@ -44,6 +44,11 @@ const entries = getImagePromptsByCategory(category.slug);
 
 	<section>
 		<h2>{category.label} pages</h2>
+		<p>
+			Use this category as a comparison set before opening an individual prompt page. The goal is to
+			choose the pattern whose controls match the output you need, then adapt the prompt with your own
+			subject, constraints, and review criteria instead of copying a visual style blindly.
+		</p>
 		<div class="portal-links">
 			{entries.map((entry) => (
 				<a class="sl-link-card" href={`/image-prompts/case/${entry.slug}/`}>
@@ -53,6 +58,59 @@ const entries = getImagePromptsByCategory(category.slug);
 				</a>
 			))}
 		</div>
+	</section>
+
+	<section class="reference-section">
+		<h2>How to choose within this category</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Review question</th>
+					<th>What to compare</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>What is the real output job?</td>
+					<td>Compare the best-for notes before choosing a page.</td>
+				</tr>
+				<tr>
+					<td>Which controls matter most?</td>
+					<td>Open the page whose controls match the scene, subject, layout, or review problem.</td>
+				</tr>
+				<tr>
+					<td>What usually fails?</td>
+					<td>Use failure modes to decide whether the pattern is safe for the intended workflow.</td>
+				</tr>
+				<tr>
+					<td>Can the output stand alone?</td>
+					<td>Prefer patterns that can be adapted into your own brief without leaning on copied source text.</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+
+	<section class="reference-section">
+		<h2>Category review notes</h2>
+		<p>
+			A useful image-prompt category page should help a reader make a better choice before opening a
+			case study. The pages below are grouped together because they share an output family, but they
+			are not interchangeable. Some patterns are better for testing model behavior, some are better
+			for production briefs, and some are best used as inspiration for a controlled internal workflow.
+		</p>
+		<p>
+			Before reusing a pattern, check whether the original source is a public prompt example, a model
+			comparison, a community screenshot, or an adaptation from a workflow idea. Then rewrite the
+			brief around your own subject, audience, acceptance criteria, and rights context. The safest
+			way to use these pages is to copy the structure of the controls, not the identity of the
+			source image, character, brand, or creator.
+		</p>
+		<ul>
+			<li>Use comparison-style pages when you need to evaluate two model outputs with the same brief.</li>
+			<li>Use character or portrait pages when identity, consistency, and reference boundaries matter.</li>
+			<li>Use poster, UI, and social-layout pages when composition, hierarchy, text placement, or platform framing is the main risk.</li>
+			<li>Document the prompt, model, edits, and rejection reasons if the output will enter a public or commercial workflow.</li>
+		</ul>
 	</section>
 
 	<section>

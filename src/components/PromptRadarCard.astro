@@ -13,7 +13,7 @@ const { entry, compact = false } = Astro.props;
 	<div class="prompt-radar-card__head">
 		<div>
 			<p class="prompt-radar-card__eyebrow">
-				#{entry.rank} · {entry.media} · {entry.heat}
+				#{entry.rank} / {entry.media} / {entry.heat}
 			</p>
 			<h2>
 				<a href={`/prompts/${entry.slug}/`}>{entry.title}</a>
