@@ -18,11 +18,59 @@ const { entry } = Astro.props;
 const related = entry.relatedSlugs
 	.map((slug) => imagePromptEntryMap.get(slug))
 	.filter((candidate): candidate is ImagePromptEntry => Boolean(candidate));
+const promptOpening = entry.adaptedPrompt.split(/\r?\n/).find((line) => line.trim())?.trim() ?? entry.title;
+const bestForSentence = /[.!?]$/.test(entry.bestFor.trim()) ? entry.bestFor.trim() : `${entry.bestFor.trim()}.`;
+const primaryControls = entry.controls.slice(0, 4);
+const relatedLabels = related.map((candidate) => candidate.title).slice(0, 3);
+const pageDescription = `${entry.title} prompt pattern with controls, failure modes, attribution, and a case-specific rewrite checklist for ${entry.categoryLabel.toLowerCase()}.`;
+const sourceHandle = entry.sourceAuthor.startsWith('@') ? entry.sourceAuthor : `@${entry.sourceAuthor}`;
+const titleSignals = entry.title
+	.toLowerCase()
+	.replace(/[^a-z0-9\s-]/g, ' ')
+	.split(/\s+/)
+	.filter((term) => term.length > 2 && !['prompt', 'image', 'showcase', 'style', 'test'].includes(term))
+	.slice(0, 5);
+const titleSignalLabel = titleSignals.length > 0 ? titleSignals.join(', ') : entry.title.toLowerCase();
+const caseRewriteMemo = [
+	`Start the ${entry.title} rewrite by naming ${titleSignalLabel}, not by pasting the original sample. The ${sourceHandle} source should remain a credit line while the working brief uses your own subject, output owner, and review standard.`,
+	`For ${entry.searchKeyword}, define one acceptance condition before generating: the result must match the stated fit (${entry.bestFor}) without triggering "${entry.failureModes[0]}".`,
+	`Use ${primaryControls[0]} as the first editable field for ${entry.title}. If that control is still vague, the prompt is not ready for a useful model run.`,
+	`Keep ${primaryControls[1] ?? primaryControls[0]} separate from mood words. This prevents ${entry.title} from becoming a generic ${entry.categoryLabel.toLowerCase()} request with no measurable constraint.`,
+	`When comparing related cases, ask whether ${relatedLabels[0] ?? 'the next pattern'} has a closer failure mode than ${entry.title}. Choose the case with the stricter review rule, not the prettier example.`,
+	`Record the final ${entry.title} variant with model name, source link, changed variables, and rejection notes. That record is the part future users can trust.`,
+	`Do not scale generation volume for ${entry.searchKeyword} until one result passes the first failure check and one result is rejected for a documented reason.`,
+];
+const caseWorksheetRows = [
+	{
+		label: `${entry.title} task boundary`,
+		inspect: entry.bestFor,
+		rewrite: `Replace the borrowed subject with the real owner, setting, and output context for ${entry.searchKeyword}.`,
+		reject: entry.failureModes[0],
+	},
+	{
+		label: `${primaryControls[0]} control`,
+		inspect: promptOpening,
+		rewrite: `Turn the opening line into a concrete ${primaryControls[0].toLowerCase()} decision before changing style words.`,
+		reject: entry.failureModes[1] ?? entry.failureModes[0],
+	},
+	{
+		label: `${primaryControls[1] ?? primaryControls[0]} evidence`,
+		inspect: entry.whyItWorks,
+		rewrite: `Keep the review tied to ${titleSignalLabel}; remove any generated detail that cannot be checked against that signal.`,
+		reject: entry.failureModes[2] ?? entry.failureModes[0],
+	},
+	{
+		label: `${sourceHandle} reuse boundary`,
+		inspect: `${entry.sourceLabel}; ${entry.license}`,
+		rewrite: `Credit the source case, then document the changed variables and final prompt variant for ${entry.title}.`,
+		reject: entry.failureModes[3] ?? entry.failureModes[0],
+	},
+];
 ---
 
 <ReferenceShell
 	title={entry.title}
-	description={entry.description}
+	description={pageDescription}
 	eyebrow={entry.categoryLabel}
 	breadcrumbs={[
 		{ label: 'Home', href: '/' },
@@ -65,9 +113,9 @@ const related = entry.relatedSlugs
 	<section class="reference-section">
 		<h2>How to apply this pattern</h2>
 		<p>
-			Use this page as a working prompt brief, not as a one-click style copy. Start by deciding whether
-			{` ${entry.bestFor.toLowerCase()} `}is actually the task, then rewrite the subject, scene, camera,
-			composition, and review rules so the output fits your own use case.
+			Use this page as a working prompt brief, not as a one-click style copy. First confirm that the
+			page&apos;s stated fit matches your actual task: {bestForSentence} Then rewrite the subject, scene,
+			camera, composition, and review rules so the output fits your own use case.
 		</p>
 		<table>
 			<thead>
@@ -97,6 +145,139 @@ const related = entry.relatedSlugs
 					<td>4. Review known failures</td>
 					<td>{entry.failureModes[0]}</td>
 					<td>Turns the most likely mistake into a pre-flight check.</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>Rewrite memo</h3>
+		<ul>
+			{caseRewriteMemo.map((memo) => (
+				<li>{memo}</li>
+			))}
+		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Case-specific adaptation read</h2>
+		<p>
+			The useful part of {entry.title} is the specific production constraint behind the prompt opening:
+			{' '}<strong>{promptOpening}</strong> Treat that line as the case anchor. The rest of the brief
+			should be rewritten around your own subject, rights context, output size, and review standard.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Case signal</th>
+					<th>Use it to decide</th>
+					<th>Do not copy blindly</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{entry.sourceLabel}</td>
+					<td>Which visual problem made the original example worth studying.</td>
+					<td>The creator&apos;s subject, identity, brand context, or exact composition.</td>
+				</tr>
+				<tr>
+					<td>{primaryControls.join(', ')}</td>
+					<td>Which knobs should be changed before the prompt is useful for a new task.</td>
+					<td>Category-wide adjectives that do not change the acceptance criteria.</td>
+				</tr>
+				<tr>
+					<td>{entry.failureModes[0]}</td>
+					<td>The first rejection reason to check before saving or publishing an output.</td>
+					<td>A visually pleasing result that still fails the stated control.</td>
+				</tr>
+				<tr>
+					<td>{entry.tags.slice(0, 4).join(', ')}</td>
+					<td>Whether this belongs in a prompt test, campaign brief, mockup pass, or comparison set.</td>
+					<td>Using the same output in a commercial workflow without rights and policy review.</td>
+				</tr>
+			</tbody>
+		</table>
+		{relatedLabels.length > 0 && (
+			<p>
+				Compare this case against {relatedLabels.join(', ')} before choosing it as the working pattern.
+				If the nearby page has a closer failure mode or control set, start there instead.
+			</p>
+		)}
+		<h3>Rewrite worksheet</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Checkpoint</th>
+					<th>Inspect this case signal</th>
+					<th>Rewrite action</th>
+					<th>Reject when</th>
+				</tr>
+			</thead>
+			<tbody>
+				{caseWorksheetRows.map((row) => (
+					<tr>
+						<td>{row.label}</td>
+						<td>{row.inspect}</td>
+						<td>{row.rewrite}</td>
+						<td>{row.reject}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	</section>
+
+	<section class="reference-section">
+		<h2>Case fit notes for {entry.title}</h2>
+		<p>
+			Choose {entry.title} only when the brief needs the specific signal set {titleSignalLabel}.
+			If the task can be solved by any generic {entry.categoryLabel.toLowerCase()} prompt, use the category
+			page instead; this case is meant for a narrower rewrite decision tied to {entry.searchKeyword}.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Fit check</th>
+					<th>How to read this case</th>
+					<th>What would make it the wrong starting point</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{entry.title}</td>
+					<td>
+						Keep the {titleSignalLabel} signal visible while replacing the subject, setting, and output
+						context with your own brief.
+					</td>
+					<td>The final image depends on copying the original creator&apos;s exact subject or framing.</td>
+				</tr>
+				<tr>
+					<td>{sourceHandle}</td>
+					<td>
+						Use the source as evidence that the pattern is worth studying, then document your own rewrite
+						choices before publishing or reusing the result.
+					</td>
+					<td>The attribution is treated as permission to clone the original post.</td>
+				</tr>
+				<tr>
+					<td>{promptOpening}</td>
+					<td>
+						Translate the opening line into concrete scene, camera, layout, or evaluation requirements
+						instead of leaving it as an aesthetic slogan.
+					</td>
+					<td>The first generated output looks attractive but cannot be judged against a specific requirement.</td>
+				</tr>
+				<tr>
+					<td>{entry.searchKeyword}</td>
+					<td>
+						Match the page to a user who is trying to adapt this exact prompt pattern, not someone browsing
+						random inspiration.
+					</td>
+					<td>The visitor needs a broader tutorial, model review, or image gallery rather than a reusable brief.</td>
+				</tr>
+				<tr>
+					<td>{entry.failureModes[0]}</td>
+					<td>
+						Run this failure check before increasing generation volume; one corrected constraint is usually
+						more valuable than another batch of similar outputs.
+					</td>
+					<td>The review accepts visual polish while ignoring the first stated failure mode.</td>
 				</tr>
 			</tbody>
 		</table>
@@ -148,6 +329,37 @@ const related = entry.relatedSlugs
 			{' / '}
 			{entry.license}
 		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Source record</th>
+					<th>Case value</th>
+					<th>Review use</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{entry.slug}</td>
+					<td>{entry.title}</td>
+					<td>Use this slug to track revisions, redirects, and future consolidation decisions.</td>
+				</tr>
+				<tr>
+					<td>{sourceHandle}</td>
+					<td>{entry.sourceUrl}</td>
+					<td>Verify that attribution remains visible and that the page does not imply ownership of the source case.</td>
+				</tr>
+				<tr>
+					<td>{entry.searchKeyword}</td>
+					<td>{entry.categoryLabel}</td>
+					<td>Confirm that the page targets a specific adaptation task instead of a broad image gallery query.</td>
+				</tr>
+				<tr>
+					<td>{entry.license}</td>
+					<td>{entry.sourceLabel}</td>
+					<td>Keep the derivative prompt, notes, and rewrite memo separate from the original creator post.</td>
+				</tr>
+			</tbody>
+		</table>
 	</section>
 
 	{related.length > 0 && (

@@ -166,6 +166,16 @@ Do not use RAG when the problem is mainly one of:
 
 In those cases, retrieval adds cost and latency without solving the real bottleneck.
 
+## RAG decision table
+
+| Situation | Healthier default | Why |
+| --- | --- | --- |
+| The answer must quote or inspect a changing private document set | RAG or managed file search | The model needs a governed source boundary, not memory. |
+| The answer depends on a current order, ticket, balance, permission, or workflow state | Direct tool or API call | Structured current-state data should come from the system of record. |
+| The same stable instruction block appears in most requests | Prompt caching or fixed context | Retrieval adds moving parts without improving grounding. |
+| The user needs current public evidence outside the owned corpus | Web search or research workflow | RAG cannot discover external facts that were never indexed. |
+| The issue is inconsistent behavior rather than missing knowledge | Prompt design, evals, or fine-tuning | Retrieval does not fix unclear workflow boundaries. |
+
 ## Implementation checklist
 
 Your RAG decision is probably healthy when:

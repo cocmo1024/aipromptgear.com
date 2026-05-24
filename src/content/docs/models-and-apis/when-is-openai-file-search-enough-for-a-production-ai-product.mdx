@@ -130,6 +130,16 @@ Use OpenAI file search when you need retrieval to work and the business still be
 
 That sounds obvious, but it is the line many teams miss because they treat infrastructure ambition as product progress.
 
+## Managed versus owned retrieval table
+
+| Decision pressure | File search is usually enough | Custom retrieval starts to fit |
+| --- | --- | --- |
+| Corpus size and structure | Moderate documents with tolerable parsing assumptions | Large or unusual documents that need custom parsing and chunking |
+| Ranking control | Good-enough relevance with prompt-side review | Business-specific ranking, hybrid search, or detailed retrieval debugging |
+| Tenant and policy boundaries | Straightforward workspace or customer separation | Complex role, region, retention, or customer-specific retrieval rules |
+| Economics | Storage and tool calls are material but not dominant | Retrieval cost is high enough to justify active optimization ownership |
+| Team focus | Product behavior matters more than retrieval infrastructure | Retrieval behavior is becoming a product differentiator |
+
 ## Compare next
 
 <div class="portal-links">

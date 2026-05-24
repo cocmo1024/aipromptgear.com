@@ -73,6 +73,11 @@ function getStringArray(value) {
 	return Array.isArray(value) ? value.filter((item) => typeof item === 'string') : [];
 }
 
+function buildDocumentTitle(title) {
+	const brandedTitle = `${title} | ${siteMeta.name}`;
+	return brandedTitle.length <= 75 ? brandedTitle : title;
+}
+
 function getReferenceType(route) {
 	return getString(route.entry?.data?.referenceType);
 }
@@ -431,6 +436,7 @@ export function buildSeo(route, currentUrl) {
 
 	return {
 		title,
+		documentTitle: buildDocumentTitle(title),
 		description,
 		canonicalUrl,
 		siteName: siteMeta.name,

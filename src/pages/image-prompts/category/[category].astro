@@ -14,6 +14,12 @@ export function getStaticPaths() {
 
 const { category } = Astro.props;
 const entries = getImagePromptsByCategory(category.slug);
+const commonControls = [
+	...new Set(entries.flatMap((entry) => entry.controls.slice(0, 2))),
+].slice(0, 5);
+const commonFailureModes = [
+	...new Set(entries.map((entry) => entry.failureModes[0]).filter(Boolean)),
+].slice(0, 4);
 ---
 
 <ReferenceShell
@@ -111,6 +117,46 @@ const entries = getImagePromptsByCategory(category.slug);
 			<li>Use poster, UI, and social-layout pages when composition, hierarchy, text placement, or platform framing is the main risk.</li>
 			<li>Document the prompt, model, edits, and rejection reasons if the output will enter a public or commercial workflow.</li>
 		</ul>
+	</section>
+
+	<section class="reference-section">
+		<h2>Category quality gate</h2>
+		<p>
+			Before choosing a {category.label.toLowerCase()} prompt, decide which control will make or break
+			the result. A page in this category is useful only when it helps you reject weak outputs faster,
+			not merely when it gives a more decorative prompt.
+		</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Gate</th>
+					<th>What to inspect</th>
+					<th>When to choose another pattern</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Controls</td>
+					<td>{commonControls.join(', ')}</td>
+					<td>The required control is not visible in the prompt or checklist.</td>
+				</tr>
+				<tr>
+					<td>Failure mode</td>
+					<td>{commonFailureModes[0] ?? 'Known category-specific output failures'}</td>
+					<td>The first likely failure is unrelated to the asset you need.</td>
+				</tr>
+				<tr>
+					<td>Attribution</td>
+					<td>Source author, repository lineage, and adaptation boundary.</td>
+					<td>The output depends on copying a creator&apos;s identity, subject, or private context.</td>
+				</tr>
+				<tr>
+					<td>Review use</td>
+					<td>Prompt, model, rejection reason, and final approved variant.</td>
+					<td>The asset will be reused commercially without a review record.</td>
+				</tr>
+			</tbody>
+		</table>
 	</section>
 
 	<section>

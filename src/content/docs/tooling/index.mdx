@@ -37,6 +37,18 @@ Before buying or building another platform, check whether the current workflow c
 
 The practical stack usually starts with prompt version storage, release notes, example traces, evaluation cases, ownership rules, and rollback instructions. Observability becomes useful only after the team knows which failures require action. A cost spike, hallucinated answer, unsafe tool call, retrieval miss, stale knowledge hit, or approval bypass should land in a different review path.
 
+## Buy, build, or wait
+
+Tooling choices should be judged by the operational gap they close, not by how complete the product category sounds. If the team cannot reproduce a bad answer, start with trace capture and example storage. If reviewers disagree about quality, start with scorecards and labeled cases. If releases are chaotic, start with version control, approvals, and rollback. If all of those basics already work, then a larger platform may be worth evaluating.
+
+| Current gap | Better first move | Why |
+| --- | --- | --- |
+| No one can explain a bad output | Store prompt version, model version, retrieved context, tool calls, and reviewer notes together. | Debugging comes before dashboards. |
+| Prompt changes ship informally | Add release notes, ownership, approval gates, and rollback instructions. | The team needs a controlled change path before more automation. |
+| Quality debates are subjective | Build small eval sets with accepted, rejected, and borderline examples. | Tooling is more useful when reviewers agree on evidence. |
+| Costs rise without ownership | Add cost allocation, budget alerts, and task-level usage review. | Finance signals need an owner before they become useful controls. |
+| The stack is already observable | Compare platform options against integration burden, data retention, and reviewer workflow fit. | Buying makes sense only after the operating model is visible. |
+
 ## Core paths
 
 <div class="portal-links">

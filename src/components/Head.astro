@@ -43,6 +43,7 @@ const managedMetaNames = new Set([
 ]);
 
 const filteredHead = route.head.filter((entry) => {
+	if (entry.tag === 'title') return false;
 	if (entry.tag !== 'meta' || !entry.attrs) return true;
 	const property = typeof entry.attrs.property === 'string' ? entry.attrs.property : undefined;
 	const name = typeof entry.attrs.name === 'string' ? entry.attrs.name : undefined;
@@ -52,6 +53,7 @@ const filteredHead = route.head.filter((entry) => {
 ---
 
 {filteredHead.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+<title>{seo.documentTitle}</title>
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="alternate" type="application/rss+xml" title={`${seo.siteName} RSS Feed`} href="/rss.xml" />
 <link rel="apple-touch-icon" sizes="180x180" href={siteMeta.appleTouchIconPath} />

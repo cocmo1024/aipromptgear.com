@@ -130,6 +130,16 @@ The infrastructure bill rises because the workflow expanded, not because retriev
 
 That is why the most useful cost question is not "what does vector search cost?" It is "which workflows genuinely need owned retrieval, and which should stay on a simpler managed path?"
 
+## Spend pressure table
+
+| Cost pressure | Early warning sign | Control to add before buying more infrastructure |
+| --- | --- | --- |
+| Freshness | Re-indexing jobs run more often than the product actually needs | Define freshness tiers by workflow and document class |
+| Fan-out | One user answer triggers many retrieval passes or reranking calls | Cap chunk count, fallback searches, and retries per task class |
+| Multi-tenancy | Filters and permissions keep changing after launch | Separate policy requirements from ranking experiments |
+| Data hygiene | Duplicate or stale chunks keep winning retrieval | Clean source documents before tuning embeddings or storage |
+| Operations | Engineers spend more time debugging ingestion than improving product behavior | Assign retrieval ownership and backfill procedures explicitly |
+
 ## Compare next
 
 <div class="portal-links">

@@ -26,6 +26,10 @@ const {
 
 const canonicalUrl = new URL(canonicalPath, `${siteMeta.siteUrl}/`).toString();
 const pageTitle = `${title} | ${siteMeta.name}`;
+const metaDescription =
+	description.length <= 170
+		? description
+		: `${description.slice(0, 167).replace(/\s+\S*$/, '')}...`;
 const imageVariants = getSearchPreviewImages({ pathname: canonicalPath });
 const primaryImage = imageVariants[0] ?? {
 	path: siteMeta.ogImagePath,
@@ -127,7 +131,7 @@ const structuredData = [
 		'@type': 'WebPage',
 		'@id': webpageId,
 		name: title,
-		description,
+		description: metaDescription,
 		url: canonicalUrl,
 		inLanguage: siteMeta.languageTag,
 		isPartOf: { '@id': `${siteMeta.siteUrl}/#website` },
@@ -141,7 +145,7 @@ const structuredData = [
 		'@type': 'Article',
 		'@id': articleId,
 		headline: title,
-		description,
+		description: metaDescription,
 		url: canonicalUrl,
 		inLanguage: siteMeta.languageTag,
 		mainEntityOfPage: { '@id': webpageId },
@@ -179,7 +183,7 @@ const structuredData = [
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{pageTitle}</title>
-		<meta name="description" content={description} />
+		<meta name="description" content={metaDescription} />
 		<link rel="canonical" href={canonicalUrl} />
 		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="icon" type="image/svg+xml" href={siteMeta.faviconPath} />
@@ -193,7 +197,7 @@ const structuredData = [
 		<meta property="og:type" content="article" />
 		<meta property="og:site_name" content={siteMeta.name} />
 		<meta property="og:title" content={pageTitle} />
-		<meta property="og:description" content={description} />
+		<meta property="og:description" content={metaDescription} />
 		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:image" content={imageUrl} />
 		<meta property="og:image:secure_url" content={imageUrl} />
@@ -203,7 +207,7 @@ const structuredData = [
 		<meta property="og:image:alt" content={primaryImage.alt ?? siteMeta.ogImageAlt} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={pageTitle} />
-		<meta name="twitter:description" content={description} />
+		<meta name="twitter:description" content={metaDescription} />
 		<meta name="twitter:image" content={imageUrl} />
 		{twitterSite && <meta name="twitter:site" content={twitterSite} />}
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />

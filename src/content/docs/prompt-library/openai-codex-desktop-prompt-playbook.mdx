@@ -333,6 +333,17 @@ Before sending a Codex prompt, check:
 
 If the prompt lacks a verification path, it is usually not ready for write-enabled work.
 
+## Prompt selection table
+
+| Work mode | Start with this template | Extra control to add |
+| --- | --- | --- |
+| Unknown repository | Read-only codebase exploration | Require file references and no edits. |
+| Medium-sized implementation | Plan before patch | Ask for expected files, risks, and verification before edits. |
+| Narrow regression | Small bug fix with evidence | Name the failing test or exact behavior to restore. |
+| Visual frontend change | Frontend visual QA loop | Require desktop and mobile evidence after the patch. |
+| Repeated workflow | Turn a repeated workflow into a skill | Define trigger conditions and failure rules. |
+| Recurring unattended work | Draft an automation safely | Define stop conditions before creating the automation. |
+
 ## Related paths
 
 <div class="portal-links">

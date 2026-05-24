@@ -71,8 +71,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "convenience store neon portrait prompt",
     "description": "A reusable portraits & photography prompt pattern adapted from the source case \"Convenience Store Neon Portrait\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"Convenience Store Neon Portrait\" into a reusable portraits & photography pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "Photoreal portrait work, editorial fashion studies, cinematic lighting tests, selfie realism, and creator-grade image briefs.",
-    "whyItWorks": "Portrait prompts work best when they specify one coherent lighting recipe, one believable lens choice, a restrained styling brief, and enough environmental anchors to keep the image from looking synthetic.",
+    "bestFor": "Late-night convenience-store portraits where fluorescent shelves, cooler glow, counter clutter, and natural skin texture need to feel captured rather than staged.",
+    "whyItWorks": "This case should be judged by whether the retail environment explains the lighting. The neon and fluorescent spill need to support the subject instead of turning the frame into generic cyberpunk.",
     "adaptedPrompt": "Create a photorealistic late-night mixed fluorescent and neon portrait photography. Use one dominant light recipe, a believable lens choice, and a scene that feels captured rather than composited.\n\nSubject brief: {{subject_identity_and_styling}}\nEnvironment anchors: {{specific_location_details}}\nCamera and crop: {{lens_distance_and_aspect_ratio}}\nLighting: {{dominant_light_source_and_color_spill}}\nPose and expression: {{pose_body_language_and_expression}}\nWardrobe and props: {{wardrobe_props_and_surface_details}}\n\nQuality rules:\n- preserve pores, flyaway hair, fabric folds, and realistic reflections\n- keep skin natural instead of airbrushed\n- avoid extra fingers, melted jewelry, floating props, or fake bokeh halos\n- remove watermarks and stray text unless text is part of the creative goal",
     "controls": [
       "subject identity and styling",
@@ -83,10 +83,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "aspect ratio and crop"
     ],
     "failureModes": [
-      "stacking too many beauty adjectives until the subject turns plastic",
-      "mixing conflicting light sources without one dominant source",
-      "vague environments that make the portrait feel composited",
-      "overusing negative prompts instead of writing a cleaner main prompt"
+      "turning the store into vague neon scenery with no shelves, counter, or product detail",
+      "letting cooler glow, signs, and overhead panels fight without one dominant source",
+      "overpolishing skin until the subject stops looking like a candid night portrait",
+      "adding fake brand clutter or unreadable signage that distracts from the scene"
     ],
     "tags": [
       "image prompts",
@@ -116,8 +116,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "cinematic minimal portrait prompt",
     "description": "A reusable portraits & photography prompt pattern adapted from the source case \"Cinematic Minimal Portrait\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"Cinematic Minimal Portrait\" into a reusable portraits & photography pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "Photoreal portrait work, editorial fashion studies, cinematic lighting tests, selfie realism, and creator-grade image briefs.",
-    "whyItWorks": "Portrait prompts work best when they specify one coherent lighting recipe, one believable lens choice, a restrained styling brief, and enough environmental anchors to keep the image from looking synthetic.",
+    "bestFor": "Minimal cinematic portraits where silhouette, negative space, restrained styling, and one soft gradient field need to carry the whole composition.",
+    "whyItWorks": "This case works when the prompt removes decorative noise. The review should look for a clean subject edge, a single tonal direction, and enough restraint that the portrait still feels intentional.",
     "adaptedPrompt": "Create a photorealistic minimal silhouette portrait design with one dominant gradient light field. Use one dominant light recipe, a believable lens choice, and a scene that feels captured rather than composited.\n\nSubject brief: {{subject_identity_and_styling}}\nEnvironment anchors: {{specific_location_details}}\nCamera and crop: {{lens_distance_and_aspect_ratio}}\nLighting: {{dominant_light_source_and_color_spill}}\nPose and expression: {{pose_body_language_and_expression}}\nWardrobe and props: {{wardrobe_props_and_surface_details}}\n\nQuality rules:\n- preserve pores, flyaway hair, fabric folds, and realistic reflections\n- keep skin natural instead of airbrushed\n- avoid extra fingers, melted jewelry, floating props, or fake bokeh halos\n- remove watermarks and stray text unless text is part of the creative goal",
     "controls": [
       "subject identity and styling",
@@ -128,10 +128,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "aspect ratio and crop"
     ],
     "failureModes": [
-      "stacking too many beauty adjectives until the subject turns plastic",
-      "mixing conflicting light sources without one dominant source",
-      "vague environments that make the portrait feel composited",
-      "overusing negative prompts instead of writing a cleaner main prompt"
+      "adding props, backgrounds, or lighting accents that break the minimal composition",
+      "letting the silhouette collapse into a flat cutout with no believable depth",
+      "using beauty-retouch language that fights the restrained cinematic mood",
+      "filling negative space with decorative texture instead of preserving the frame"
     ],
     "tags": [
       "image prompts",
@@ -161,8 +161,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "japanese onsen ryokan portrait prompt",
     "description": "A reusable portraits & photography prompt pattern adapted from the source case \"Japanese Onsen Ryokan Portrait\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"Japanese Onsen Ryokan Portrait\" into a reusable portraits & photography pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "Photoreal portrait work, editorial fashion studies, cinematic lighting tests, selfie realism, and creator-grade image briefs.",
-    "whyItWorks": "Portrait prompts work best when they specify one coherent lighting recipe, one believable lens choice, a restrained styling brief, and enough environmental anchors to keep the image from looking synthetic.",
+    "bestFor": "Warm location portraits where the ryokan setting, practical light, cultural texture, and quiet pose must feel specific instead of generic travel glamour.",
+    "whyItWorks": "This case should be judged by whether the room materials, bathing-house cues, skin tone, and calm body language support one believable place rather than a vague Japan-inspired mood.",
     "adaptedPrompt": "Create a photorealistic warm ryokan portrait photography with gentle practical light and cultural texture. Use one dominant light recipe, a believable lens choice, and a scene that feels captured rather than composited.\n\nSubject brief: {{subject_identity_and_styling}}\nEnvironment anchors: {{specific_location_details}}\nCamera and crop: {{lens_distance_and_aspect_ratio}}\nLighting: {{dominant_light_source_and_color_spill}}\nPose and expression: {{pose_body_language_and_expression}}\nWardrobe and props: {{wardrobe_props_and_surface_details}}\n\nQuality rules:\n- preserve pores, flyaway hair, fabric folds, and realistic reflections\n- keep skin natural instead of airbrushed\n- avoid extra fingers, melted jewelry, floating props, or fake bokeh halos\n- remove watermarks and stray text unless text is part of the creative goal",
     "controls": [
       "subject identity and styling",
@@ -173,10 +173,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "aspect ratio and crop"
     ],
     "failureModes": [
-      "stacking too many beauty adjectives until the subject turns plastic",
-      "mixing conflicting light sources without one dominant source",
-      "vague environments that make the portrait feel composited",
-      "overusing negative prompts instead of writing a cleaner main prompt"
+      "turning the ryokan setting into generic spa decor with no material cues",
+      "mixing daylight, lantern glow, and beauty lighting without one practical source",
+      "flattening cultural texture into costume styling instead of environment detail",
+      "overpolishing skin until the warm room atmosphere disappears"
     ],
     "tags": [
       "image prompts",
@@ -206,8 +206,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "35mm flash editorial portrait prompt",
     "description": "A reusable portraits & photography prompt pattern adapted from the source case \"35mm Flash Editorial Portrait\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"35mm Flash Editorial Portrait\" into a reusable portraits & photography pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "Photoreal portrait work, editorial fashion studies, cinematic lighting tests, selfie realism, and creator-grade image briefs.",
-    "whyItWorks": "Portrait prompts work best when they specify one coherent lighting recipe, one believable lens choice, a restrained styling brief, and enough environmental anchors to keep the image from looking synthetic.",
+    "bestFor": "Direct-flash editorial portraits where hard light, fabric texture, pose, and lens distance need to feel like a deliberate magazine frame.",
+    "whyItWorks": "This case works when the prompt treats flash as the central constraint. The review should look for crisp specular highlights, real wardrobe folds, and a pose that survives the harsh lighting.",
     "adaptedPrompt": "Create a photorealistic direct-flash editorial fashion portrait work. Use one dominant light recipe, a believable lens choice, and a scene that feels captured rather than composited.\n\nSubject brief: {{subject_identity_and_styling}}\nEnvironment anchors: {{specific_location_details}}\nCamera and crop: {{lens_distance_and_aspect_ratio}}\nLighting: {{dominant_light_source_and_color_spill}}\nPose and expression: {{pose_body_language_and_expression}}\nWardrobe and props: {{wardrobe_props_and_surface_details}}\n\nQuality rules:\n- preserve pores, flyaway hair, fabric folds, and realistic reflections\n- keep skin natural instead of airbrushed\n- avoid extra fingers, melted jewelry, floating props, or fake bokeh halos\n- remove watermarks and stray text unless text is part of the creative goal",
     "controls": [
       "subject identity and styling",
@@ -218,10 +218,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "aspect ratio and crop"
     ],
     "failureModes": [
-      "stacking too many beauty adjectives until the subject turns plastic",
-      "mixing conflicting light sources without one dominant source",
-      "vague environments that make the portrait feel composited",
-      "overusing negative prompts instead of writing a cleaner main prompt"
+      "softening the direct flash until the portrait becomes generic studio beauty",
+      "adding neon, rim lights, or bokeh that fight the flash-led look",
+      "losing wardrobe and fabric detail under overexposed skin retouching",
+      "posing the subject like a clean catalog image instead of an editorial capture"
     ],
     "tags": [
       "image prompts",
@@ -521,22 +521,22 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "chinese minimalist s-shaped poster prompt",
     "description": "A reusable posters & illustration prompt pattern adapted from the source case \"Chinese Minimalist S-Shaped Poster\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"Chinese Minimalist S-Shaped Poster\" into a reusable posters & illustration pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "Travel posters, city campaigns, print-style illustration, concept art mood boards, calligraphy experiments, and stylized map graphics.",
-    "whyItWorks": "Poster prompts hold together when they have one dominant visual gesture, one disciplined palette, and a clear plan for where text belongs instead of treating typography as an afterthought.",
-    "adaptedPrompt": "Design a minimalist S-curve poster composition with calligraphic flow. Build the image around one clear compositional gesture, a limited but intentional palette, and typography that has a defined home instead of being bolted on late.\n\nHero subject: {{hero_subject_or_landmark}}\nComposition rule: {{dominant_shape_negative_space_or_camera_angle}}\nPalette: {{two_to_four_anchor_colors}}\nTexture and finish: {{print_texture_paper_grain_or_brushwork}}\nTypography brief: {{headline_subline_and_placement}}\nOutput format: {{poster_ratio_or_print_size}}\n\nQuality rules:\n- keep the layout legible at thumbnail and poster size\n- avoid cluttering the center with too many landmarks or icons\n- keep style references coherent instead of mixing unrelated eras\n- only ask for dense readable text if text rendering is central to the goal",
+    "bestFor": "Minimal Chinese poster systems where a single S-shaped ink-flow path, white paper space, seal-like accents, and sparse vertical type must carry the message.",
+    "whyItWorks": "This case works when the S curve controls eye movement and the empty space remains active. The review should look for one calligraphic path, one restrained accent, and typography that follows the composition instead of fighting it.",
+    "adaptedPrompt": "Design a minimalist Chinese poster built around one S-shaped brush-flow composition. Keep the image quiet, paper-aware, and led by the curve rather than by landmark density or decorative pattern.\n\nHero motif: {{subject_or_symbol_inside_the_s_curve}}\nS-curve path: {{brush_flow_direction_weight_and_balance}}\nWhite-space ratio: {{empty_space_percentage_and_margin_rules}}\nInk and paper finish: {{ink_wash_texture_paper_grain_or_seal_accent}}\nTypography plan: {{vertical_title_small_caption_and_seal_position}}\nOutput format: {{poster_ratio_or_print_size}}\n\nQuality rules:\n- keep the S-shaped gesture readable at thumbnail size\n- preserve large blank areas instead of filling them with scenery\n- place type, seal marks, and captions so they support the curve\n- avoid turning the poster into a generic tourism collage",
     "controls": [
-      "hero subject and scene",
-      "composition and negative space",
-      "palette and texture",
-      "typography placement",
-      "print or illustration finish",
+      "S-curve gesture and eye path",
+      "white-space ratio and margin rules",
+      "ink wash and paper texture",
+      "seal or accent placement",
+      "vertical title and sparse caption",
       "poster ratio"
     ],
     "failureModes": [
-      "asking for too many landmarks with no hierarchy",
-      "leaving text rendering vague when the page needs readable type",
-      "mixing incompatible art directions in one shot",
-      "using generic style words instead of naming the layout behavior"
+      "turning the S curve into a random swirl with no readable path",
+      "filling the white space with scenery, icons, or extra pattern",
+      "placing title text where it cuts across the brush-flow hierarchy",
+      "adding travel-poster landmarks that break the minimal Chinese composition"
     ],
     "tags": [
       "image prompts",
@@ -566,22 +566,22 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "2026 spring guangzhou city poster prompt",
     "description": "A reusable posters & illustration prompt pattern adapted from the source case \"2026 Spring Guangzhou City Poster\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"2026 Spring Guangzhou City Poster\" into a reusable posters & illustration pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "Travel posters, city campaigns, print-style illustration, concept art mood boards, calligraphy experiments, and stylized map graphics.",
-    "whyItWorks": "Poster prompts hold together when they have one dominant visual gesture, one disciplined palette, and a clear plan for where text belongs instead of treating typography as an afterthought.",
-    "adaptedPrompt": "Design a seasonal city-poster design with restrained typography and atmospheric landmarks. Build the image around one clear compositional gesture, a limited but intentional palette, and typography that has a defined home instead of being bolted on late.\n\nHero subject: {{hero_subject_or_landmark}}\nComposition rule: {{dominant_shape_negative_space_or_camera_angle}}\nPalette: {{two_to_four_anchor_colors}}\nTexture and finish: {{print_texture_paper_grain_or_brushwork}}\nTypography brief: {{headline_subline_and_placement}}\nOutput format: {{poster_ratio_or_print_size}}\n\nQuality rules:\n- keep the layout legible at thumbnail and poster size\n- avoid cluttering the center with too many landmarks or icons\n- keep style references coherent instead of mixing unrelated eras\n- only ask for dense readable text if text rendering is central to the goal",
+    "bestFor": "Seasonal Guangzhou city campaign posters where spring atmosphere, Pearl River or skyline cues, landmark hierarchy, and 2026 date typography need to feel planned.",
+    "whyItWorks": "This case works when the seasonal message, Guangzhou identity, and title block reinforce each other. The review should look for a recognizable city anchor, a spring color system, and a date line that supports the poster instead of becoming the subject.",
+    "adaptedPrompt": "Design a 2026 spring Guangzhou city poster with atmospheric landmark hierarchy and restrained campaign typography. Make the composition feel like a city-season announcement, not a generic travel montage.\n\nCity anchor: {{guangzhou_landmark_river_or_skyline_cue}}\nSeasonal atmosphere: {{spring_weather_light_flower_or_haze_detail}}\nLandmark hierarchy: {{foreground_midground_background_plan}}\nTypography and date block: {{2026_title_subline_and_safe_text_area}}\nPalette and finish: {{seasonal_colors_print_texture_or_soft_gradient}}\nOutput format: {{poster_ratio_or_campaign_size}}\n\nQuality rules:\n- make at least one Guangzhou cue identifiable without crowding the frame\n- keep the 2026 date and title readable but secondary to the city composition\n- avoid stacking landmarks with no depth, route, or skyline logic\n- prevent spring colors from becoming decorative noise",
     "controls": [
-      "hero subject and scene",
-      "composition and negative space",
-      "palette and texture",
-      "typography placement",
-      "print or illustration finish",
+      "Guangzhou landmark hierarchy",
+      "spring atmosphere and date signal",
+      "river, skyline, or street-depth cue",
+      "campaign title block placement",
+      "seasonal palette and print finish",
       "poster ratio"
     ],
     "failureModes": [
-      "asking for too many landmarks with no hierarchy",
-      "leaving text rendering vague when the page needs readable type",
-      "mixing incompatible art directions in one shot",
-      "using generic style words instead of naming the layout behavior"
+      "producing a generic city poster with no Guangzhou-specific visual cue",
+      "letting the 2026 date or headline dominate the whole composition",
+      "stacking landmarks without foreground, midground, and background depth",
+      "using spring colors as decoration without connecting them to light or atmosphere"
     ],
     "tags": [
       "image prompts",
@@ -1423,8 +1423,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "gpt-image-2 launch showcase prompt pattern",
     "description": "A reusable comparison & community prompt pattern adapted from the source case \"GPT-Image-2 Launch Showcase\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"GPT-Image-2 Launch Showcase\" into a reusable comparison & community pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "A/B testing, reference-frame direction, model bake-offs, prompt refinement studies, and showcase boards built for evaluation rather than one-off art.",
-    "whyItWorks": "Comparison prompts create value when they hold all variables steady except the one being tested, preserve labels and layout, and explain the evaluation axes directly inside the brief.",
+    "bestFor": "Launch-style capability boards where a team needs to show breadth without pretending that one polished sample proves production readiness.",
+    "whyItWorks": "This page is useful when the showcase is treated as a release-readiness artifact: each panel needs a capability label, a fixed prompt baseline, and visible limits alongside the attractive output.",
     "adaptedPrompt": "Create a comparison or showcase board for launch showcase boards demonstrating multiple capabilities in one visual set.\n\nEvaluation target: {{what_is_being_tested}}\nShared constants: {{prompt_reference_layout_or_subject}}\nVariable under test: {{model_edit_strategy_or_rendering_goal}}\nPanel labels: {{captions_scores_or_legends}}\nBoard format: {{side_by_side_grid_or_showcase_strip}}\n\nQuality rules:\n- keep the comparison fair and readable\n- identify one main variable per board\n- label panels clearly so the result is usable in discussion or documentation",
     "controls": [
       "evaluation target",
@@ -1435,10 +1435,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "success criteria"
     ],
     "failureModes": [
-      "changing multiple variables between comparison panels",
-      "forgetting labels, legends, or captions",
-      "showcase boards with no evaluation axis",
-      "reference edits that do not specify what must stay fixed"
+      "turning a launch board into a collage with no capability labels",
+      "showing only the best output while hiding weak categories or failed panels",
+      "mixing prompt changes and model changes until the result cannot be explained",
+      "using launch excitement as a substitute for a repeatable evaluation axis"
     ],
     "tags": [
       "image prompts",
@@ -1513,8 +1513,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "gpt image 2 vs nano banana 2 showcase prompt pattern",
     "description": "A reusable comparison & community prompt pattern adapted from the source case \"GPT Image 2 vs Nano Banana 2 Showcase\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"GPT Image 2 vs Nano Banana 2 Showcase\" into a reusable comparison & community pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "A/B testing, reference-frame direction, model bake-offs, prompt refinement studies, and showcase boards built for evaluation rather than one-off art.",
-    "whyItWorks": "Comparison prompts create value when they hold all variables steady except the one being tested, preserve labels and layout, and explain the evaluation axes directly inside the brief.",
+    "bestFor": "Matched-prompt model showcases where GPT Image 2 and Nano Banana 2 outputs need side-by-side evidence instead of a winner picked by taste.",
+    "whyItWorks": "This case should keep the compared model names, prompt constants, output labels, and review criteria visible so the showcase can answer what changed between systems.",
     "adaptedPrompt": "Create a comparison or showcase board for model comparison showcase boards for matched prompt tests.\n\nEvaluation target: {{what_is_being_tested}}\nShared constants: {{prompt_reference_layout_or_subject}}\nVariable under test: {{model_edit_strategy_or_rendering_goal}}\nPanel labels: {{captions_scores_or_legends}}\nBoard format: {{side_by_side_grid_or_showcase_strip}}\n\nQuality rules:\n- keep the comparison fair and readable\n- identify one main variable per board\n- label panels clearly so the result is usable in discussion or documentation",
     "controls": [
       "evaluation target",
@@ -1525,10 +1525,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "success criteria"
     ],
     "failureModes": [
-      "changing multiple variables between comparison panels",
-      "forgetting labels, legends, or captions",
-      "showcase boards with no evaluation axis",
-      "reference edits that do not specify what must stay fixed"
+      "declaring a winner without showing the shared prompt and fixed variables",
+      "letting one model get a stronger prompt, cleaner reference, or easier crop",
+      "using unlabeled panels that make GPT Image 2 and Nano Banana 2 impossible to audit",
+      "judging visual polish while ignoring prompt adherence and failure notes"
     ],
     "tags": [
       "image prompts",
@@ -1648,8 +1648,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "gpt-image-2 detail showcase prompt pattern",
     "description": "A reusable comparison & community prompt pattern adapted from the source case \"GPT-Image-2 Detail Showcase\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"GPT-Image-2 Detail Showcase\" into a reusable comparison & community pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "A/B testing, reference-frame direction, model bake-offs, prompt refinement studies, and showcase boards built for evaluation rather than one-off art.",
-    "whyItWorks": "Comparison prompts create value when they hold all variables steady except the one being tested, preserve labels and layout, and explain the evaluation axes directly inside the brief.",
+    "bestFor": "Detail-fidelity reviews where small objects, surfaces, edges, labels, and close-up artifacts need to be inspected instead of praised at thumbnail size.",
+    "whyItWorks": "This case works when the board zooms into inspection zones. The prompt should say which details must hold up under close review and which artifacts should trigger rejection.",
     "adaptedPrompt": "Create a comparison or showcase board for detail-oriented capability showcase boards for close inspection.\n\nEvaluation target: {{what_is_being_tested}}\nShared constants: {{prompt_reference_layout_or_subject}}\nVariable under test: {{model_edit_strategy_or_rendering_goal}}\nPanel labels: {{captions_scores_or_legends}}\nBoard format: {{side_by_side_grid_or_showcase_strip}}\n\nQuality rules:\n- keep the comparison fair and readable\n- identify one main variable per board\n- label panels clearly so the result is usable in discussion or documentation",
     "controls": [
       "evaluation target",
@@ -1660,10 +1660,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "success criteria"
     ],
     "failureModes": [
-      "changing multiple variables between comparison panels",
-      "forgetting labels, legends, or captions",
-      "showcase boards with no evaluation axis",
-      "reference edits that do not specify what must stay fixed"
+      "showing a beautiful full frame but no crop or note for detail inspection",
+      "hiding small-object artifacts behind motion blur, glow, or heavy texture",
+      "changing scene complexity between panels so detail quality cannot be compared",
+      "accepting a showcase result before checking edges, labels, and surface continuity"
     ],
     "tags": [
       "image prompts",
@@ -1738,8 +1738,8 @@ export const imagePromptEntries: ImagePromptEntry[] = [
     "searchKeyword": "gpt-image-2 vs nano banana 2 layout test prompt pattern",
     "description": "A reusable comparison & community prompt pattern adapted from the source case \"GPT-Image-2 vs Nano Banana 2 Layout Test\", expanded with a stronger template, variable controls, failure modes, and attribution.",
     "summary": "This page turns the source case \"GPT-Image-2 vs Nano Banana 2 Layout Test\" into a reusable comparison & community pattern that can be adapted without copying the original prompt verbatim.",
-    "bestFor": "A/B testing, reference-frame direction, model bake-offs, prompt refinement studies, and showcase boards built for evaluation rather than one-off art.",
-    "whyItWorks": "Comparison prompts create value when they hold all variables steady except the one being tested, preserve labels and layout, and explain the evaluation axes directly inside the brief.",
+    "bestFor": "Layout-stability tests where GPT-Image-2 and Nano Banana 2 must preserve grids, panel spacing, labels, and composition under the same prompt.",
+    "whyItWorks": "This case is about spatial reliability rather than visual taste. The prompt needs fixed layout constraints, identical panel dimensions, and a pass/fail rule for label placement.",
     "adaptedPrompt": "Create a comparison or showcase board for layout stability testing across image models.\n\nEvaluation target: {{what_is_being_tested}}\nShared constants: {{prompt_reference_layout_or_subject}}\nVariable under test: {{model_edit_strategy_or_rendering_goal}}\nPanel labels: {{captions_scores_or_legends}}\nBoard format: {{side_by_side_grid_or_showcase_strip}}\n\nQuality rules:\n- keep the comparison fair and readable\n- identify one main variable per board\n- label panels clearly so the result is usable in discussion or documentation",
     "controls": [
       "evaluation target",
@@ -1750,10 +1750,10 @@ export const imagePromptEntries: ImagePromptEntry[] = [
       "success criteria"
     ],
     "failureModes": [
-      "changing multiple variables between comparison panels",
-      "forgetting labels, legends, or captions",
-      "showcase boards with no evaluation axis",
-      "reference edits that do not specify what must stay fixed"
+      "letting each model choose a different grid or camera crop",
+      "judging composition quality without checking label alignment and panel spacing",
+      "using an attractive showcase prompt when the task is a layout regression test",
+      "changing reference images between models and calling the result a fair layout test"
     ],
     "tags": [
       "image prompts",

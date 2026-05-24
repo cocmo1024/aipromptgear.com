@@ -23,6 +23,7 @@ const related = entry.relatedLinks
 		return candidate ? { label: candidate.title, href: `/prompts/${candidate.slug}/` } : link;
 	})
 	.filter((link) => link.href !== `/prompts/${entry.slug}/`);
+const pageDescription = `${entry.title} with a copyable prompt, variables, quality checks, failure modes, and source attribution.`;
 const canonicalUrl = new URL(`/prompts/${entry.slug}/`, `${siteMeta.siteUrl}/`).toString();
 const creativeWork = {
 	'@context': 'https://schema.org',
@@ -51,7 +52,7 @@ const creativeWork = {
 
 <ReferenceShell
 	title={entry.title}
-	description={`${entry.signalSummary} Includes a copyable prompt, variables, quality checks, failure modes, and source attribution.`}
+	description={pageDescription}
 	eyebrow={`${entry.media} prompt`}
 	breadcrumbs={[
 		{ label: 'Home', href: '/' },
@@ -152,6 +153,21 @@ const creativeWork = {
 			<li>If the first failure mode appears, rewrite the constraints before increasing generation volume.</li>
 			<li>Keep the best output and rejection notes together so future prompt changes can be compared fairly.</li>
 		</ol>
+	</section>
+
+	<section class="reference-section">
+		<h2>Rewrite record</h2>
+		<p>
+			Before saving this prompt as a team asset, write down what changed from the template and why. The
+			useful record is not only the final prompt text; it is the task, variables, model, source signal,
+			quality checks, failure notes, and rejected outputs that explain why this version is trusted.
+		</p>
+		<ul>
+			<li>Record which variables were changed from the public template.</li>
+			<li>Note whether the output is for exploration, internal review, or external publication.</li>
+			<li>Keep the first failed result if it reveals a useful constraint for the next version.</li>
+			<li>For client or brand work, keep rights, claims, likeness, and policy review separate from visual taste.</li>
+		</ul>
 	</section>
 
 	<section class="reference-section">
