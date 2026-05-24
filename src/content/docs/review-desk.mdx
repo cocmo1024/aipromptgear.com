@@ -24,7 +24,7 @@ canonicalCluster: site-foundation
 pageType: foundation
 lifecycle: evergreen
 refreshPriority: low
-lastReviewed: 2026-05-09
+lastReviewed: 2026-05-24
 ---
 
 The **AI Prompt Gear Review Desk** exists to keep high-intent pages from drifting into vendor summary, stale pricing, or shallow operational advice.
@@ -46,6 +46,18 @@ For major updates, the review desk focuses on:
 - whether the title, description, internal links, and structured data all describe the same reader task.
 - whether the page exists for a real decision rather than for phrase coverage.
 
+## Review gates
+
+The review desk uses a practical gate system instead of treating every page the same way. A broad foundation page, a policy page, a pricing-sensitive comparison, and an image prompt pattern need different checks.
+
+| Gate | Applied when | What can fail the page |
+| --- | --- | --- |
+| Content value | Any public page | The page is too thin, too generic, or does not explain the reader's next step. |
+| Source and freshness | Vendor, model, API, pricing, or policy claims | The claim cannot be traced to a current public source or the review date is stale. |
+| Workflow realism | Agent, support, research, coding, or governance guidance | The advice ignores owners, approvals, escalation, cost, or failure recovery. |
+| Commercial separation | Comparison, advertising, affiliate, or sponsor-adjacent content | Commercial framing quietly changes the editorial conclusion. |
+| Internal architecture | New hub or long-form reference page | The page duplicates an existing page or weakens cluster navigation. |
+
 ## What review does not mean
 
 Review is not a promise that every vendor behavior or price will stay unchanged after publication.
@@ -55,6 +67,18 @@ It means the page was checked for:
 - internal coherence,
 - practical fit,
 - and obvious mismatch between the advice and the current public information surface.
+
+## How reader feedback is handled
+
+Reader feedback is most useful when it identifies a specific page, claim, table, source, or missing boundary. The review desk does not need broad praise or broad disagreement to make a page better; it needs evidence that a reader could be misled or that the page does not answer the task it claims to answer.
+
+Feedback may lead to one of several outcomes:
+
+- a small correction to wording, links, or dates;
+- a material update to pricing, model behavior, or vendor positioning;
+- an added limitation note or not-for section;
+- a new internal link to a stronger page;
+- a decision to merge, redirect, or de-emphasize overlapping pages.
 
 ## When a page should be reviewed again
 

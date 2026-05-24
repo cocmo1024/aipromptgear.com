@@ -16,10 +16,22 @@ targetRoles:
   - Platform teams
   - Security owners
   - Developer productivity teams
+keyQuestions:
+  - Which coding-agent actions can run without human approval?
+  - Which repository, CI, security, or production changes should require sign-off?
+  - What evidence should a reviewer see before approving an agent-generated change?
+notFor:
+  - Teams looking only for a generic pull-request checklist
+  - Repositories with no coding-agent write access or planned rollout
+  - Fully manual code review programs with no automation boundary decisions
+updateTriggers:
+  - Changes in coding-agent approval, sandbox, or permission features
+  - New incidents involving autonomous code changes or unsafe tool execution
+  - Internal policy changes around merge gates, CI, secrets, or production access
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-09
-lastReviewed: 2026-04-22
+lastReviewed: 2026-05-24
 contentCluster: coding-agents
 canonicalCluster: coding-agents
 pageType: workflow

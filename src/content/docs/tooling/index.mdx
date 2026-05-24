@@ -21,7 +21,7 @@ lifecycle: hub
 refreshPriority: medium
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-14
+lastReviewed: 2026-05-24
 problemSolved: Helps readers solve the practical question behind Tooling instead of stopping at a generic definition or feature list.
 readerTakeaway: "You should leave with a clearer decision model, implementation boundary, or next-step checklist for Tooling."
 ---
@@ -30,6 +30,12 @@ import { LinkCard, Steps } from '@astrojs/starlight/components';
 
 
 Tooling is where prompt systems become maintainable. The goal is not to collect every possible platform, but to choose the minimum stack that supports visibility, review, versioning, and reliable rollout.
+
+## Minimum viable tooling test
+
+Before buying or building another platform, check whether the current workflow can answer a simple incident question: what changed, who approved it, what evidence supported the change, which users or tasks were affected, and how quickly the team can restore a known-good version. If that chain is missing, the next tooling decision should improve traceability before it adds more dashboards.
+
+The practical stack usually starts with prompt version storage, release notes, example traces, evaluation cases, ownership rules, and rollback instructions. Observability becomes useful only after the team knows which failures require action. A cost spike, hallucinated answer, unsafe tool call, retrieval miss, stale knowledge hit, or approval bypass should land in a different review path.
 
 ## Core paths
 

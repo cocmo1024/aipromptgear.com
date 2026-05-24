@@ -21,10 +21,18 @@ keyQuestions:
   - Which failures should be scored separately?
   - What should an agent eval dataset contain?
   - How should approval and side-effect behavior be measured?
+notFor:
+  - Teams evaluating only single-turn chatbot answers
+  - Readers looking for a leaderboard-style benchmark with no production traces
+  - Workflows where the model never calls tools, changes state, or asks for approval
+updateTriggers:
+  - New tool-use capabilities that change how traces or approvals should be scored
+  - Production incidents caused by wrong tool choice, bad arguments, or unsafe side effects
+  - Changes in evaluation ownership, release gates, or live-sampling policy
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-14
-lastReviewed: 2026-05-02
+lastReviewed: 2026-05-24
 contentCluster: evalops
 canonicalCluster: evalops
 pageType: evaluation

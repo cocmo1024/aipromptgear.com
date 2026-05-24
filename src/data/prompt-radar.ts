@@ -713,7 +713,7 @@ A clear board that shows whether the model can preserve exact text across multip
 		sourceLabel: 'AIPromptGear model comparison archive',
 		sourceUrl: '/image-prompts/category/comparison-community/',
 		signalSummary:
-			'Model-comparison prompts drive durable search because creators constantly compare new image and video systems with the same prompt.',
+			'Model-comparison prompts stay useful because creators constantly compare new image and video systems with the same controlled task.',
 		primaryKeyword: 'AI model comparison board prompt',
 		searchIntent: 'Create a prompt for a fair side-by-side comparison board across multiple image or video models.',
 		useCase:

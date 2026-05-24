@@ -36,7 +36,7 @@ refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-05-09
-lastReviewed: 2026-05-18
+lastReviewed: 2026-05-24
 ---
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
@@ -120,6 +120,19 @@ This archive fixes that by converting public prompt examples into attributed der
 This archive should not become a raw prompt warehouse. A page is useful only when it explains why the pattern works, which variables are safe to change, which details are fragile, and what a reader should inspect when the first output fails. That is why the archive favors controls, failure modes, attribution, and adaptation notes over isolated prompt strings.
 
 The goal is also to keep the examples reusable across tools and model revisions. A good image prompt page should help a creator reason about subject control, lighting, camera distance, text placement, composition density, and reference handling. If a page only says "use this prompt" without explaining those choices, it is not strong enough for the archive.
+
+## How to use a pattern responsibly
+
+Start with the output job, not the prompt text. A portrait prompt, product mockup prompt, character sheet prompt, and model-comparison prompt can all look similar in a gallery, but they have different risks. Portraits need identity and lighting control. Product mockups need text, layout, and rights review. Character sheets need consistency across poses. Comparison pages need a stable evaluation frame so the output can be judged fairly.
+
+Before adapting a pattern, rewrite four parts of the brief:
+
+- the subject or product, so the output belongs to your own task;
+- the scene and constraints, so the model has concrete context;
+- the acceptance criteria, so review is not based only on taste;
+- the reuse boundary, so attribution, likeness, brand, and rights questions are handled before publication.
+
+This is especially important for public or commercial outputs. The archive can show useful prompt structure, but it cannot grant rights to a person's likeness, a brand asset, a character design, or a creator's original example.
 
 ## Pattern quality checklist
 

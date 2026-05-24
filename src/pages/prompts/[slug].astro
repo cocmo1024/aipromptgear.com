@@ -64,11 +64,11 @@ const creativeWork = {
 
 	<section class="signal-strip">
 		<div>
-			<strong>Primary query</strong>
+			<strong>Task label</strong>
 			<p>{entry.primaryKeyword}</p>
 		</div>
 		<div>
-			<strong>Search intent</strong>
+			<strong>Reader goal</strong>
 			<p>{entry.searchIntent}</p>
 		</div>
 		<div>
@@ -135,6 +135,23 @@ const creativeWork = {
 	<section class="reference-section">
 		<h2>Why this prompt works</h2>
 		<p>{entry.whyItWorks}</p>
+	</section>
+
+	<section class="reference-section">
+		<h2>Evaluation workflow</h2>
+		<p>
+			Use this page as a repeatable prompt test, not a one-off prompt dump. Save the exact prompt
+			version, model name, input references, and output settings before comparing results. Then judge
+			the output against the checks below so the decision is based on observable behavior instead of
+			whether the first image, video, page, or workflow looks impressive at a glance.
+		</p>
+		<ol>
+			<li>Run the unchanged template once to establish a baseline for the model and task.</li>
+			<li>Replace the variables with concrete details from your brief, audience, product, or review case.</li>
+			<li>Score the result against the first quality check before judging style or novelty.</li>
+			<li>If the first failure mode appears, rewrite the constraints before increasing generation volume.</li>
+			<li>Keep the best output and rejection notes together so future prompt changes can be compared fairly.</li>
+		</ol>
 	</section>
 
 	<section class="reference-section">
