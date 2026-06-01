@@ -1,0 +1,264 @@
+---
+title: OpenAI Background Mode Research Report Generator Case Study
+description: A concrete case pattern for building a long-running AI research report generator with OpenAI background mode, durable job state, review, and recovery.
+referenceType: team-scenario
+adProfile: team-scenario
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI background mode research report generator
+searchIntent: deploy
+decisionStage: implementation
+targetRoles:
+  - AI product engineers
+  - Platform teams
+  - Research operations teams
+  - Technical founders
+  - Product managers
+contentStatus: growing
+contentCluster: models-and-apis
+canonicalCluster: models-and-apis
+pageType: case-study
+lifecycle: evergreen
+refreshPriority: high
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-06-01
+lastReviewed: 2026-06-01
+problemSolved: Helps teams turn the question of how to build a background processing AI system with OpenAI background mode into a concrete research-report generator architecture.
+readerTakeaway: You should leave with a reusable case pattern for job creation, status polling, source evidence, review gates, cancellation, retries, and report delivery.
+keyQuestions:
+  - How should a research report generator use OpenAI background mode without becoming fire-and-forget?
+  - What job state, progress UI, review, and recovery behavior should the product own?
+  - When should a long report workflow use background mode instead of Batch or a live request?
+notFor:
+  - Teams building only short single-turn summaries
+  - Bulk offline processing where no user tracks one specific report
+  - Products with no plan to store results, evidence, review state, or failure history
+updateTriggers:
+  - OpenAI changes background mode lifecycle, polling, streaming, cancellation, or retention behavior
+  - New product requirements around research citations, approval, report delivery, or user-visible progress
+  - Significant changes in cost, latency, or service-tier behavior for long-running reasoning jobs
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+This is a composite implementation case, not a claim about one customer. It answers a common builder question: **how do I build a background processing AI system using OpenAI background mode?**
+
+The example product is a research report generator. A user submits a topic, uploads or selects source material, asks for a structured report, and returns later to read or approve the result. The task can take minutes, may need citations, and should not fail just because the browser tab closes.
+
+## Quick answer
+
+Use OpenAI background mode for the long-running model response, but treat it as one execution step inside a product-owned job workflow:
+
+| Layer | What the product owns | Why it matters |
+| --- | --- | --- |
+| Job record | Internal job ID, user scope, report type, provider response ID, status, timestamps | The report needs a durable handle outside the API response |
+| Source package | Uploaded files, selected URLs, internal records, citation requirements | Research quality depends on source boundaries |
+| Status worker | Polling, terminal-state handling, retry classification, timeout policy | The job must continue after the client disconnects |
+| Result store | Report artifact, citations, source notes, structured JSON, reviewer comments | Completion must be recoverable and auditable |
+| Review gate | Ready for review, approved, rejected, returned for revision | A completed model response is not always a publishable report |
+| Control actions | Cancel, retry, revise, approve, archive, expire | Long-running work needs explicit user and operator controls |
+
+If those layers are missing, the product is not a background processing system. It is only a long API call with a delayed answer.
+
+## Case profile
+
+| Attribute | Case design |
+| --- | --- |
+| Product feature | User-triggered AI research report generator |
+| User | Analyst, founder, product marketer, sales engineer, or research operator |
+| Input | Topic, audience, source URLs, uploaded files, report template, deadline sensitivity |
+| Output | Structured report with executive summary, evidence table, recommendations, and citations |
+| Runtime lane | OpenAI background mode for one tracked report job |
+| Review boundary | Human review before publishing, sending, or using the report in customer-facing material |
+| Poor fit | Thousands of independent rows or records that do not need per-user job status |
+
+This is a good fit for background mode because one person cares about one report after the live request ends.
+
+## The wrong version
+
+The weak implementation looks like this:
+
+1. User submits a report request.
+2. Frontend starts a synchronous model call.
+3. The UI shows a spinner for several minutes.
+4. The browser tab closes or the connection drops.
+5. The product cannot tell whether the report finished, failed, or produced partial evidence.
+6. Support has no job ID to inspect.
+
+This is the failure mode that background mode can help avoid, but only if the product owns job state around it.
+
+## Target architecture
+
+The healthier flow is:
+
+| Step | System action | User-visible state |
+| --- | --- | --- |
+| 1. Submit | Create internal report job before calling the model | Report queued |
+| 2. Prepare | Validate sources, template, permissions, and report scope | Preparing sources |
+| 3. Execute | Start OpenAI background response and store provider response ID | Generating report |
+| 4. Poll | Worker retrieves status until terminal state | Still working, last checked time |
+| 5. Store | Save report, citations, source notes, model metadata, and cost fields | Ready for review |
+| 6. Review | Human approves, edits, rejects, or requests revision | Approved or needs revision |
+| 7. Deliver | Make the final report available in the product | Complete |
+
+The provider handles long-running response execution. The product handles trust, visibility, recovery, and business completion.
+
+## Minimal data model
+
+Start with one durable `report_jobs` table or collection:
+
+| Field | Purpose |
+| --- | --- |
+| `id` | Product-owned job identifier shown in dashboards and support tools |
+| `workspace_id` and `requested_by` | Scope, permissions, billing, and audit attribution |
+| `report_type` | Market scan, vendor comparison, technical brief, due diligence, or customer memo |
+| `input_summary` | Support-safe summary of the request |
+| `source_manifest_id` | Links to uploaded files, URLs, internal records, or retrieval set |
+| `provider_response_id` | Connects the job to the OpenAI background response |
+| `status` | queued, preparing, running, needs_review, completed, failed, canceled, expired |
+| `failure_class` | timeout, provider_error, source_error, policy_block, validation_error, unknown |
+| `result_pointer` | Location of report artifact, JSON, citations, and evidence bundle |
+| `review_state` | not_required, pending, approved, rejected, revision_requested |
+| `cost_metadata` | model, service tier, token use, tool use, retry count, total runtime |
+
+Keep provider state as one field inside your product workflow. Do not make provider state the workflow.
+
+## Progress UI contract
+
+The progress UI should not expose raw provider status alone. It should explain what the product is doing and what the user can do next.
+
+| Product state | User copy | Available actions |
+| --- | --- | --- |
+| Queued | Your report is queued. You can leave this page and return later. | Cancel |
+| Preparing sources | We are validating sources and report instructions. | Cancel, edit request if not locked |
+| Generating report | The report is running in the background. Last checked time is visible. | Cancel, view source list |
+| Needs review | A draft is ready and needs human review before use. | Review, approve, request revision |
+| Completed | The final report is ready. | Open, export, archive |
+| Failed | The job stopped before completion. The failure class is visible. | Retry if retryable, contact support, revise input |
+| Canceled | The job was stopped and will not continue. | Start a new report |
+| Expired | The job missed the useful window or result-retention boundary. | Re-run with current sources |
+
+Users trust long-running jobs more when they can see that the product still has a handle on the work.
+
+## Polling and cancellation behavior
+
+OpenAI's background mode documentation supports creating a background response, polling response status, canceling an in-flight response, and streaming with a cursor when the response was created with streaming enabled. The product should translate those primitives into rules:
+
+| Product rule | Implementation decision |
+| --- | --- |
+| Polling cadence | Poll frequently at first, then back off while showing last checked time |
+| Terminal state | Store final output or failure class before changing product status |
+| Cancellation | Make cancellation idempotent in the UI and clean up downstream artifacts |
+| Dropped client | Treat browser close as normal; the worker owns progress |
+| Partial evidence | Store source notes and partial artifacts only when they are safe to show |
+| Retry | Retry provider or transient source failures; do not blindly retry policy or validation failures |
+
+Cancellation deserves special care. If the user cancels twice, the UI should still show the same final canceled state. If downstream processing has already created draft files, decide whether they are deleted, retained for audit, or hidden from the user.
+
+## Source quality and review
+
+A research report generator should not treat "model completed" as "report is trusted." The review step should inspect:
+
+- whether the cited sources exist and support the claims;
+- whether source dates are appropriate for the topic;
+- whether the report distinguishes facts from recommendations;
+- whether the report used only authorized internal material;
+- whether the output includes unsupported legal, medical, financial, or security claims;
+- whether the report is safe for the intended audience.
+
+Use [deep research source quality and citation policy](/workflows/deep-research-source-quality-and-citation-policy/) for the source layer and [human escalation thresholds](/workflows/human-escalation-thresholds-for-deep-research-systems/) when the report needs expert review.
+
+## When Batch is the better answer
+
+Do not use this case pattern for every asynchronous workload.
+
+| Workload shape | Better lane |
+| --- | --- |
+| One user asks for one report and wants status | Background mode plus product job state |
+| Thousands of independent summaries or enrichments | Batch or another bulk processing lane |
+| Short summary that finishes while the user is actively steering it | Interactive request |
+| Report that can change records, send emails, or publish content | Background mode plus explicit approval gate |
+
+If the workload is many independent records, compare [OpenAI Batch API vs background mode](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/) before building a user-facing job system.
+
+## Cost and capacity checks
+
+Report generation can become expensive because it combines long context, retrieval, reasoning, retries, and review. Track:
+
+- cost per completed report;
+- p50 and p95 runtime;
+- queued time before execution;
+- model calls per report;
+- source count and source retrieval failures;
+- retry rate by failure class;
+- review time and rejection rate;
+- abandoned jobs;
+- export or downstream-use rate.
+
+These metrics show whether the feature is producing useful reports or only moving work into a hidden queue.
+
+## Failure modes to design out
+
+| Failure mode | Prevention |
+| --- | --- |
+| The user loses the report after leaving the page | Create the job before execution and make the report retrievable |
+| Support cannot inspect a failed job | Store internal job ID, provider response ID, timestamps, and failure class |
+| A draft is treated as final | Add needs_review before completed for consequential reports |
+| Retried jobs duplicate downstream artifacts | Make output writes idempotent and tied to job version |
+| The report cites weak or missing sources | Store citation evidence and require source review for sensitive topics |
+| A canceled job still appears active | Make product cancellation state authoritative and visible |
+
+The best background systems are boring to operate. Every job has a state, owner, history, and next action.
+
+## Launch checklist
+
+Before shipping this feature, answer:
+
+1. What internal job record is created before the OpenAI call?
+2. Which users can see, cancel, retry, or archive the job?
+3. What source material is allowed?
+4. What product states appear in the UI?
+5. How does polling continue after the browser closes?
+6. What failures are retryable?
+7. What counts as a completed report?
+8. Which reports require human review?
+9. How are citations, source notes, and artifacts stored?
+10. Which metrics prove the report was useful after completion?
+
+If the team cannot answer these, the implementation is not ready for production use.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Build a background processing AI system"
+		href="/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/"
+		description="Use the broader implementation blueprint for job records, status tracking, cancellation, review, and retries."
+	/>
+	<LinkCard
+		title="OpenAI background mode job lifecycle"
+		href="/models-and-apis/openai-background-mode-polling-webhooks-and-job-status-for-long-running-tasks/"
+		description="Go deeper on polling, webhooks, status transitions, retries, and approval-aware completion."
+	/>
+	<LinkCard
+		title="OpenAI Batch API vs background mode"
+		href="/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/"
+		description="Use this page when the report workload might actually be bulk deferred processing."
+	/>
+	<LinkCard
+		title="Deep research source quality"
+		href="/workflows/deep-research-source-quality-and-citation-policy/"
+		description="Use this page when report trust depends on citation policy, source selection, and evidence review."
+	/>
+	<LinkCard
+		title="Cost per success"
+		href="/models-and-apis/cost-per-success-and-tool-economics-for-agentic-products/"
+		description="Measure completed report value instead of only model-call spend."
+	/>
+</div>
+
+## Source note
+
+This case was checked on June 1, 2026 against OpenAI's [background mode guide](https://platform.openai.com/docs/guides/background) and [Responses API reference](https://platform.openai.com/docs/api-reference/responses). The page translates the API primitives into a product workflow for one tracked research report job.
