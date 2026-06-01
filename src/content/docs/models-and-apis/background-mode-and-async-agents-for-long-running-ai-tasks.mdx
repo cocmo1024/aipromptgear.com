@@ -1,11 +1,11 @@
 ---
-title: OpenAI Background Mode for Long-Running AI Tasks
-description: Decide when OpenAI background mode fits long-running AI tasks, how it differs from Batch, and what product job lifecycle teams still need to own.
+title: "OpenAI Background Mode: Build Background Processing AI Systems"
+description: Decide when OpenAI background mode fits long-running AI tasks and what job records, status, cancellation, review, and recovery the product still owns.
 referenceType: comparison
 adProfile: tool-comparison
 commercialIntent: high
 reviewCadence: Monthly review
-primaryKeyword: openai background mode
+primaryKeyword: openai background mode background processing system
 searchIntent: design
 decisionStage: implementation
 targetRoles:
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-11
-lastReviewed: 2026-05-24
+lastReviewed: 2026-06-01
 contentCluster: models-and-apis
 canonicalCluster: models-and-apis
 pageType: decision-guide
@@ -62,6 +62,17 @@ The minimum production shape is:
 6. expose retry, cancellation, escalation, and approval decisions.
 
 Without those pieces, background mode is only an async call. It is not yet a background processing system.
+
+## Which background-mode page should you use?
+
+This page is the decision boundary. Use it when you are still deciding whether a long task belongs in background mode, Batch, Flex, Priority, or an approval lane.
+
+| Reader problem | Best next page |
+| --- | --- |
+| "How do I build a background processing AI system?" | [Build a background processing AI system with OpenAI background mode](/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/) |
+| "How do polling, webhooks, status, and retries work?" | [OpenAI background mode polling, webhooks, and job status](/models-and-apis/openai-background-mode-polling-webhooks-and-job-status-for-long-running-tasks/) |
+| "Is this really Batch instead?" | [OpenAI Batch API vs background mode](/models-and-apis/batch-api-vs-background-mode-for-large-ai-jobs/) |
+| "What does this look like in a product?" | [OpenAI background mode research report generator case study](/use-cases/openai-background-mode-research-report-generator-case-study/) |
 
 ## Build blueprint for the exact background-mode question
 
@@ -113,11 +124,11 @@ For most production teams, the deciding question is: **does one user or workflow
 
 OpenAI now documents background mode and longer-running agent patterns explicitly instead of treating all model work as one synchronous surface. That matters because the product decision is no longer just "call the model." It is "which runtime lane fits the task?" Teams that answer that early build calmer products and cleaner support boundaries.
 
-## Official platform signals checked May 18, 2026
+## Official platform signals checked June 1, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
-| [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode runs long tasks asynchronously, lets developers poll response objects for status, supports cancellation, and requires stored response state for background sampling | The product needs a status, retrieval, retention, and cancellation model around the provider response |
+| [OpenAI background mode guide](https://platform.openai.com/docs/guides/background) | Background mode runs long tasks asynchronously, lets developers poll response objects for status, and exists to avoid timeouts and connectivity failures on multi-minute work | The product needs a status, retrieval, retention, and cancellation model around the provider response |
 | [OpenAI Responses API reference](https://platform.openai.com/docs/api-reference/responses) | The Responses API includes a `background` option for running a model response in the background | Background execution should be designed as a runtime lane, not a UI workaround |
 | [OpenAI webhooks guide](https://platform.openai.com/docs/webhooks) | Webhooks can notify systems when a background response completes | Teams can choose polling, webhooks, or both depending on reliability and operations needs |
 | [OpenAI built-in tools guide](https://platform.openai.com/docs/guides/tools) | Tool-connected workflows are central to the modern API surface | Longer tasks are often longer because tool orchestration, retrieval, or file work is involved |
@@ -281,6 +292,11 @@ That is when background mode becomes operating leverage instead of architectural
 		title="Build a background processing AI system"
 		href="/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/"
 		description="A direct implementation blueprint for durable jobs, status tracking, cancellation, review, and retry behavior around OpenAI background mode."
+	/>
+	<LinkCard
+		title="OpenAI background job lifecycle"
+		href="/models-and-apis/openai-background-mode-polling-webhooks-and-job-status-for-long-running-tasks/"
+		description="Use this page when polling, webhooks, status transitions, retries, and review-aware completion are now the implementation problem."
 	/>
 	<LinkCard
 		title="Background report generator case"

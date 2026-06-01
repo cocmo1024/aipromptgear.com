@@ -91,6 +91,17 @@ function getFirstPathSegment({ routeId, pathname }) {
 	return normalized.split('/')[0] || 'default';
 }
 
+function getRouteKey({ routeId, pathname }) {
+	const rawPath = routeId || pathname || '';
+	const normalized = rawPath
+		.replace(/^\/+/, '')
+		.replace(/\/+$/, '')
+		.replace(/\/index$/, '');
+
+	if (!normalized || normalized === 'index') return 'default';
+	return normalized;
+}
+
 function pickConfiguredSet(key) {
 	if (!key) return undefined;
 
@@ -117,12 +128,13 @@ export function getSearchPreviewImages({ routeId, pathname, data } = {}) {
 		isRecord(data?.searchPreview) && typeof data.searchPreview.key === 'string'
 			? data.searchPreview.key
 			: undefined;
+	const routeKey = getRouteKey({ routeId, pathname });
 	const firstSegment = getFirstPathSegment({ routeId, pathname });
 	const clusterCandidates = [data?.canonicalCluster, data?.contentCluster];
 	const candidates =
 		firstSegment === 'clusters'
-			? [explicitKey, ...clusterCandidates, firstSegment, 'default']
-			: [explicitKey, firstSegment, ...clusterCandidates, 'default'];
+			? [explicitKey, routeKey, ...clusterCandidates, firstSegment, 'default']
+			: [explicitKey, routeKey, firstSegment, ...clusterCandidates, 'default'];
 
 	for (const candidate of candidates) {
 		const images = pickConfiguredSet(candidate);

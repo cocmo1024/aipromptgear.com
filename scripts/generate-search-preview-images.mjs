@@ -37,6 +37,11 @@ const previews = [
 		motif: 'frames',
 	},
 	{
+		key: 'douyin-livestream-ui-screenshot',
+		palette: ['#dc2626', '#7c3aed', '#06b6d4', '#111827'],
+		motif: 'livestream-ui',
+	},
+	{
 		key: 'market-signals',
 		palette: ['#0891b2', '#dc2626', '#84cc16', '#111827'],
 		motif: 'radar',
@@ -202,6 +207,38 @@ function drawFrames(width, height, [a, b, c, ink]) {
 	}).join('');
 }
 
+function drawLivestreamUi(width, height, [a, b, c, ink]) {
+	const phoneW = Math.min(width * 0.28, height * 0.42);
+	const phoneH = phoneW * 1.75;
+	const phoneX = width * 0.36;
+	const phoneY = height * 0.16;
+	const sideX = width * 0.62;
+	const rowY = [0.28, 0.4, 0.52, 0.64].map((ratio) => height * ratio);
+	return [
+		rect({ x: phoneX, y: phoneY, width: phoneW, height: phoneH, fill: '#111827', stroke: ink, strokeWidth: 6, rx: 42 }),
+		rect({ x: phoneX + 18, y: phoneY + 22, width: phoneW - 36, height: phoneH - 44, fill: '#f8fafc', rx: 30 }),
+		rect({ x: phoneX + 34, y: phoneY + 44, width: phoneW - 68, height: phoneH * 0.48, fill: '#fee2e2', rx: 22 }),
+		circle({ cx: phoneX + phoneW * 0.5, cy: phoneY + phoneH * 0.28, r: phoneW * 0.13, fill: '#ffffff', stroke: a, strokeWidth: 7 }),
+		pathLine({ d: `M ${phoneX + phoneW * 0.3} ${phoneY + phoneH * 0.42} C ${phoneX + phoneW * 0.42} ${phoneY + phoneH * 0.35}, ${phoneX + phoneW * 0.58} ${phoneY + phoneH * 0.35}, ${phoneX + phoneW * 0.7} ${phoneY + phoneH * 0.42}`, stroke: a, strokeWidth: 8, opacity: 0.72 }),
+		rect({ x: phoneX + 34, y: phoneY + phoneH * 0.58, width: phoneW - 68, height: 24, fill: b, rx: 12, opacity: 0.82 }),
+		rect({ x: phoneX + 34, y: phoneY + phoneH * 0.66, width: phoneW * 0.52, height: 18, fill: '#94a3b8', rx: 9, opacity: 0.7 }),
+		rect({ x: phoneX + 34, y: phoneY + phoneH * 0.73, width: phoneW * 0.62, height: 18, fill: '#94a3b8', rx: 9, opacity: 0.55 }),
+		rect({ x: phoneX + 34, y: phoneY + phoneH * 0.82, width: phoneW - 68, height: 36, fill: '#e0f2fe', stroke: c, strokeWidth: 4, rx: 18 }),
+		circle({ cx: phoneX + phoneW - 54, cy: phoneY + phoneH * 0.82, r: 20, fill: a, opacity: 0.9 }),
+		circle({ cx: phoneX + phoneW - 54, cy: phoneY + phoneH * 0.9, r: 20, fill: b, opacity: 0.9 }),
+		rect({ x: width * 0.13, y: height * 0.25, width: width * 0.18, height: height * 0.13, fill: '#ffffff', stroke: a, strokeWidth: 6, rx: 22 }),
+		rect({ x: width * 0.15, y: height * 0.29, width: width * 0.12, height: 16, fill: a, rx: 8, opacity: 0.78 }),
+		rect({ x: width * 0.15, y: height * 0.34, width: width * 0.1, height: 12, fill: '#94a3b8', rx: 6, opacity: 0.55 }),
+		...rowY.map((y, index) =>
+			[
+				circle({ cx: sideX, cy: y, r: 18, fill: [a, b, c, ink][index], opacity: 0.86 }),
+				rect({ x: sideX + 36, y: y - 10, width: width * (0.18 - index * 0.018), height: 18, fill: '#94a3b8', rx: 9, opacity: 0.62 }),
+			].join('')
+		),
+		pathLine({ d: `M ${width * 0.18} ${height * 0.73} C ${width * 0.3} ${height * 0.64}, ${width * 0.34} ${height * 0.84}, ${width * 0.47} ${height * 0.75}`, stroke: c, strokeWidth: 10, opacity: 0.58 }),
+	].join('');
+}
+
 function drawRadar(width, height, [a, b, c, ink]) {
 	const cx = width * 0.5;
 	const cy = height * 0.52;
@@ -331,6 +368,7 @@ const motifDrawers = {
 	graph: drawGraph,
 	scorecard: drawScorecard,
 	frames: drawFrames,
+	'livestream-ui': drawLivestreamUi,
 	radar: drawRadar,
 	lanes: drawLanes,
 	cards: drawCards,

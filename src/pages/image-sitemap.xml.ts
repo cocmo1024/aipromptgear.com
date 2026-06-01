@@ -90,7 +90,7 @@ export async function GET() {
 	for (const entry of imagePromptEntries) {
 		entries.push({
 			url: `${siteMeta.siteUrl}/image-prompts/case/${entry.slug}/`,
-			images: getSearchPreviewImages({ pathname: '/image-prompts/' }),
+			images: getSearchPreviewImages({ pathname: `/image-prompts/case/${entry.slug}/` }),
 		});
 	}
 

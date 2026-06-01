@@ -162,6 +162,26 @@ export const siteMeta = {
 				alt: 'Creative image prompt board with frames, reference panels, and comparison marks.',
 			},
 		],
+		'image-prompts/case/liu-yifei-douyin-livestream-screenshot': [
+			{
+				path: '/search-previews/douyin-livestream-ui-screenshot-16x9.webp',
+				width: 1200,
+				height: 675,
+				alt: 'Vertical livestream UI mockup prompt board with phone frame, comments, controls, and screenshot review notes.',
+			},
+			{
+				path: '/search-previews/douyin-livestream-ui-screenshot-4x3.webp',
+				width: 1200,
+				height: 900,
+				alt: 'Vertical livestream UI mockup prompt board with phone frame, comments, controls, and screenshot review notes.',
+			},
+			{
+				path: '/search-previews/douyin-livestream-ui-screenshot-1x1.webp',
+				width: 1200,
+				height: 1200,
+				alt: 'Vertical livestream UI mockup prompt board with phone frame, comments, controls, and screenshot review notes.',
+			},
+		],
 		'market-signals': [
 			{
 				path: '/search-previews/market-signals-16x9.webp',

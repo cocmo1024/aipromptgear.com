@@ -1,6 +1,6 @@
 ---
-title: "Tool outputs are untrusted: prompt injection boundary for AI agents"
-description: Why tool outputs, retrieved chunks, files, screenshots, and web pages should be treated as untrusted data in tool-using AI agents.
+title: "OpenAI Model Spec: Tool Outputs Are Untrusted for Agents"
+description: Apply OpenAI Model Spec guidance on untrusted tool outputs, quoted text, files, screenshots, and retrieved data to prompt-injection controls for agents.
 referenceType: workflow
 adProfile: workflow
 commercialIntent: high
@@ -8,7 +8,7 @@ reviewCadence: Monthly review
 contentStatus: growing
 problemSolved: Helps AI teams convert the phrase tool outputs are untrusted into concrete runtime boundaries, approval gates, and tool design rules.
 readerTakeaway: You should leave with a practical authority model for separating instructions from data when agents read web pages, files, retrieved chunks, screenshots, or tool responses.
-primaryKeyword: tool outputs are untrusted
+primaryKeyword: OpenAI Model Spec tool outputs untrusted
 searchIntent: design
 decisionStage: implementation
 targetRoles:
@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-24
-lastReviewed: 2026-04-24
+lastReviewed: 2026-06-01
 contentCluster: agent-systems
 canonicalCluster: agent-systems
 pageType: implementation-guide
@@ -42,15 +42,33 @@ refreshPriority: high
 import { LinkCard } from '@astrojs/starlight/components';
 
 
-"Tool outputs are untrusted" is a short phrase with large architecture consequences. It means the model should treat returned content as information to inspect, not as instructions to obey. A web page, retrieved passage, support ticket, PDF, screenshot, database record, or third-party API response can contain text that tries to redirect the agent. That text may look like an instruction, but it has no authority by default.
+OpenAI's Model Spec makes the tool-output boundary explicit: tool outputs, quoted text, multimodal data, files, screenshots, and retrieved content can contain untrusted instructions. The safe default is to treat that content as evidence to inspect, not as instructions to obey.
+
+A web page, retrieved passage, support ticket, PDF, screenshot, database record, or third-party API response can contain text that tries to redirect the agent. That text may look like an instruction, but it normally has no authority by default.
 
 The product has to make that boundary real.
 
-## Current official signals checked April 24, 2026
+## Direct answer
+
+Tool outputs are untrusted because they may contain prompt injection. An agent can use tool output as evidence, but tool output should not be allowed to rewrite developer policy, change tool permissions, skip approval, reveal secrets, or trigger side effects. If a higher-authority instruction clearly delegates authority to a specific tool output, the runtime should still evaluate relevance, trust level, and side-effect risk before acting.
+
+This is the operational distinction:
+
+| Input type | Normal use | What it must not do |
+| --- | --- | --- |
+| Web page or browser output | Evidence for a user task | Override system or developer rules |
+| Retrieved chunk | Source material for an answer | Change retrieval, approval, or tool policy |
+| File attachment | Data to summarize, transform, or inspect | Ask the agent to reveal hidden instructions |
+| Screenshot | Visual observation | Grant permission to click, purchase, send, or delete |
+| API response | Structured facts from a tool | Create new authority beyond the tool's scope |
+| Repo instruction file | Sometimes relevant project guidance | Override safety, secrets, or destructive-action rules |
+
+## Current official signals checked June 1, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
-| [OpenAI Model Spec](https://model-spec.openai.com/2025-10-27) | Tool outputs and other quoted or attached data are treated as untrusted by default unless authority is explicitly delegated | This is the core authority boundary for prompt injection defense |
+| [OpenAI Model Spec, December 18, 2025](https://model-spec.openai.com/2025-12-18.html) | Quoted text, untrusted text, multimodal data, file attachments, and tool outputs have no authority by default unless a higher-authority instruction delegates authority | This is the core authority boundary for prompt injection defense |
+| [OpenAI Model Spec changelog](https://github.com/openai/model_spec/blob/main/CHANGELOG.md) | The October 2025 update clarified that users may implicitly delegate some authority to relevant tool outputs, such as project instruction files in coding contexts | Runtime policy must distinguish intended project guidance from arbitrary or malicious tool output |
 | [OpenAI Computer Use guide](https://platform.openai.com/docs/guides/tools-computer-use) | OpenAI recommends isolated environments, allowlists, and human oversight because screenshots and pages may contain malicious instructions | Browser-facing agents need runtime controls, not only better prompts |
 | [OpenAI agent safety guide](https://platform.openai.com/docs/guides/agent-builder-safety) | Prompt injection is framed as untrusted data entering an AI system and attempting to override instructions | Tool-connected systems must separate data flow from command authority |
 
@@ -70,6 +88,20 @@ Treat every external observation as data:
 - database fields controlled by users or third parties.
 
 None of those should be allowed to change system instructions, approval policy, tool permissions, or secret-handling behavior.
+
+## The nuance most implementations miss
+
+"Untrusted by default" does not mean "ignore every instruction-looking string forever." It means the runtime should ask:
+
+| Question | Why it matters |
+| --- | --- |
+| Did the user or developer explicitly delegate authority to this source? | A project file may be intended guidance, while a random page is not |
+| Is the instruction relevant to the current task? | Irrelevant instructions should be ignored even if they appear in a trusted place |
+| Could following it create side effects? | Writes, deletes, sends, purchases, deployments, and permission changes need stronger gates |
+| Can the source be controlled by an attacker or third party? | Public pages, tickets, comments, and user-uploaded files need stricter handling |
+| Can the action be audited afterward? | Prompt-injection incidents require trace evidence, not only final answers |
+
+That nuance prevents two bad extremes: blindly obeying tool output, or blocking useful project-level guidance that the user expected the agent to follow.
 
 ## What can go wrong
 
@@ -155,6 +187,11 @@ Before shipping a tool-using agent, confirm:
 		title="Prompt injection defenses for tool-using agents"
 		href="/agent-systems/prompt-injection-defenses-for-tool-using-agents/"
 		description="Use this page for the broader defense model across retrieval, browsing, tool use, and approvals."
+	/>
+	<LinkCard
+		title="Least-privilege tool scopes"
+		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
+		description="Use this page when untrusted outputs need to be separated from read, write, and side-effect authority."
 	/>
 	<LinkCard
 		title="Computer Use API safety checklist"
