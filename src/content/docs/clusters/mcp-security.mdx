@@ -33,7 +33,7 @@ updateTriggers:
   - New remote MCP or connector deployment patterns
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-20
+lastReviewed: 2026-06-24
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -52,6 +52,7 @@ MCP security decisions should start with tool authority:
 | Tool outputs may contain hostile instructions | [Tool outputs are untrusted](/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/) | How to keep retrieved content from becoming authority |
 | Write actions are possible | [MCP security and approval boundaries](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/) | Which actions need approval, scopes, and audit trails |
 | Frontier cyber capability enters defensive workflows | [Frontier AI cyber defense readiness](/tooling/frontier-ai-cyber-defense-readiness-checklist/) | Which access, target scope, evidence, review, and containment controls must exist first |
+| AI security agents generate findings and patches | [AI security agent vulnerability triage](/workflows/ai-security-agent-vulnerability-triage-and-patch-validation-workflow/) | How findings become validated fixes without bypassing authorization, PR review, or audit evidence |
 | The team is choosing MCP versus direct integrations | [Remote MCP servers vs direct tool integrations](/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/) | Whether a shared server or app-owned tool wiring creates less risk |
 | Generated SDKs, CLIs, or MCP servers are proposed | [MCP server tooling and SDK generation](/agent-systems/mcp-server-tooling-and-sdk-generation-for-agent-connectors/) | Whether the connector lifecycle has ownership, versioning, tests, scopes, and approval policy |
 
@@ -118,6 +119,11 @@ If those distinctions are missing, an MCP page is too shallow for production tea
 		title="Frontier AI cyber defense readiness"
 		href="/tooling/frontier-ai-cyber-defense-readiness-checklist/"
 		description="Prepare controlled access, approved targets, review gates, audit evidence, and containment around advanced defensive cyber workflows."
+	/>
+	<LinkCard
+		title="AI security agent vulnerability triage"
+		href="/workflows/ai-security-agent-vulnerability-triage-and-patch-validation-workflow/"
+		description="Route AI-assisted vulnerability findings through authorization, validation, patch review, evidence packets, and eval updates."
 	/>
 </div>
 
