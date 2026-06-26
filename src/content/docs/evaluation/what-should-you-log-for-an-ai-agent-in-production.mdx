@@ -35,7 +35,7 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-06-26
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -92,10 +92,28 @@ Teams often discover too late that they failed to log:
 - retry counts,
 - fallback path taken,
 - source or evidence set,
+- memory reads, writes, blocks, or deletes,
 - reviewer outcome,
 - and whether the run ended in silent abandonment instead of explicit failure.
 
 Those missing fields make postmortems slow and eval design weak.
+
+## Memory events belong in the log
+
+If the agent has saved memory, log memory as its own event class. A memory read can explain why an agent answered a certain way. A memory write can explain why later runs changed. A blocked or quarantined memory can explain why a safety rule fired.
+
+Useful memory fields include:
+
+| Field | Why it matters |
+| --- | --- |
+| Memory event type | Separate created, read, updated, blocked, quarantined, and deleted states |
+| Memory source | Show whether the record came from user instruction, workspace data, web content, email, file, or tool output |
+| Trust class | Distinguish approved internal context from external or suspect input |
+| Sensitivity class | Apply retention and redaction rules consistently |
+| Run and workflow version | Tie memory behavior to the prompt, model, and release that created or used it |
+| Downstream action | Show whether memory influenced a recommendation, approval request, or tool call |
+
+Memory should not be an invisible personalization layer when it affects production behavior.
 
 ## What not to log blindly
 
@@ -173,6 +191,11 @@ Your logging layer is probably healthy when:
 		title="Tool-call success rates and ground truth"
 		href="/evaluation/tool-call-success-rates-and-ground-truth-for-agent-evals/"
 		description="Use this page when the team needs to separate tool success, workflow success, and final-answer quality."
+	/>
+	<LinkCard
+		title="AI agent memory security controls"
+		href="/agent-systems/ai-agent-memory-security-controls-for-production-agents/"
+		description="Use this page when saved memory needs provenance, event logging, retrieval checks, rollback, and eval coverage."
 	/>
 	<LinkCard
 		title="What is a good success rate for an AI agent in production?"

@@ -15,7 +15,7 @@ targetRoles:
   - Agent product teams
 contentStatus: growing
 datePublished: 2026-04-24
-lastReviewed: 2026-04-24
+lastReviewed: 2026-06-26
 problemSolved: How to design managed agents as production systems instead of treating agent capability as only a prompt or model problem.
 readerTakeaway: You should leave with a practical model for separating reasoning, execution, session state, tool permissions, sandboxing, retries, traces, and human approval.
 keyQuestions:
@@ -54,6 +54,7 @@ A managed agent architecture should separate the reasoning loop from the executi
 | Component | Job | Failure if ignored |
 | --- | --- | --- |
 | Agent session | Holds task state, files, temporary context, and tool results | Work leaks across users, customers, or tasks |
+| Memory control | Governs saved facts, preferences, channel context, and durable state | Poisoned, stale, or cross-tenant memory steers future runs |
 | Sandbox | Isolates filesystem, network, process, browser, or code execution | Tools can touch systems outside the intended boundary |
 | Tool broker | Exposes allowed actions with typed inputs and outputs | Agents get broad, ambiguous, or unsafe capabilities |
 | Credential layer | Decides whose authority the action uses | Agents act with excessive service-account power |
@@ -117,6 +118,8 @@ At low volume, session leakage may look unlikely. At production scale, it become
 
 Each agent session should have a lifecycle: create, run, pause, approve, resume, complete, archive, and expire.
 
+Durable memory needs a separate lifecycle. It should have provenance, trust class, sensitivity class, owner, review window, retrieval policy, and rollback path. Session cleanup does not fix poisoned or stale saved memory.
+
 ## Managed agents need operational budgets
 
 An agent can spend money through model calls, tool calls, search, code execution, browser automation, retries, and human review. Give each run budgets:
@@ -162,6 +165,11 @@ Without trace review, evals, incident response, and governance all become guessw
 		title="Tool outputs are untrusted"
 		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
 		description="Preserve the authority boundary between retrieved content, tool results, and system policy."
+	/>
+	<LinkCard
+		title="AI agent memory security controls"
+		href="/agent-systems/ai-agent-memory-security-controls-for-production-agents/"
+		description="Control saved memory before it can steer future runs, recommendations, approvals, or tool calls."
 	/>
 	<LinkCard
 		title="Tool timeouts, retries, and idempotency"

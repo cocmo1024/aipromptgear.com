@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-24
-lastReviewed: 2026-06-24
+lastReviewed: 2026-06-26
 contentCluster: agent-systems
 canonicalCluster: agent-systems
 pageType: implementation-guide
@@ -129,6 +129,8 @@ Use a simple hierarchy:
 
 The model can use tool output to answer the task. It should not obey tool output as a new task.
 
+The same rule applies to memory. A page, file, email, support ticket, or tool result should not be allowed to create durable memory unless a separate memory write gate confirms source, intent, trust class, sensitivity, and reviewability.
+
 ## Runtime controls that matter
 
 ### 1. Narrow tools
@@ -192,6 +194,11 @@ Before shipping a tool-using agent, confirm:
 		title="Least-privilege tool scopes"
 		href="/agent-systems/least-privilege-tool-scopes-for-agent-systems/"
 		description="Use this page when untrusted outputs need to be separated from read, write, and side-effect authority."
+	/>
+	<LinkCard
+		title="AI agent memory security controls"
+		href="/agent-systems/ai-agent-memory-security-controls-for-production-agents/"
+		description="Use this page when untrusted content could become saved memory that influences later agent behavior."
 	/>
 	<LinkCard
 		title="Computer Use API safety checklist"

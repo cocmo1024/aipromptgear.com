@@ -35,7 +35,7 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-06-26
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -54,6 +54,7 @@ A useful stack usually connects:
 - workflow metrics,
 - approval and escalation records,
 - evaluation labels,
+- memory events,
 - cost attribution,
 - and incident notes.
 
@@ -116,6 +117,7 @@ The strongest fields are usually:
 - run ID,
 - workflow class,
 - tool name and outcome,
+- memory read or write event,
 - approval decision,
 - final status,
 - failure class,
@@ -125,6 +127,8 @@ The strongest fields are usually:
 - and reviewer label.
 
 The log layer should be compact enough to retain, query, and sample over time.
+
+Memory events deserve first-class treatment when agents can remember across runs. A memory write can become tomorrow's retrieval context; a memory read can explain why an agent trusted a source, changed a recommendation, or asked for a tool. If memory is stored only inside provider settings or opaque transcripts, observability will miss one of the most important state transitions in the system.
 
 ### 4. Metric layer
 
@@ -220,6 +224,11 @@ Your stack is probably healthy when:
 		title="What should you log for an AI agent in production?"
 		href="/evaluation/what-should-you-log-for-an-ai-agent-in-production/"
 		description="Use this page when the observability stack needs a concrete logging schema before metrics and alerts can work."
+	/>
+	<LinkCard
+		title="AI agent memory security controls"
+		href="/agent-systems/ai-agent-memory-security-controls-for-production-agents/"
+		description="Use this page when memory events, provenance, retrieval checks, and rollback need to become observable production signals."
 	/>
 	<LinkCard
 		title="How do you monitor AI agents in production?"

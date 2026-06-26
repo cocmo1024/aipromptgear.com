@@ -1,0 +1,279 @@
+---
+title: AI Agent Memory Security Controls for Production Agents
+description: How to secure AI agent memory with provenance, write gates, retrieval checks, audit events, rollback, and evals before memory starts steering tools or recommendations.
+referenceType: workflow
+adProfile: workflow
+commercialIntent: high
+reviewCadence: Monthly review
+contentStatus: growing
+problemSolved: Helps AI platform and security teams decide how saved agent memory should be created, retrieved, audited, blocked, corrected, and evaluated before it affects production workflows.
+readerTakeaway: You should leave with a practical memory security model covering provenance, write gates, tenant boundaries, retrieval risk, side-effect approval, incident review, and regression cases.
+primaryKeyword: AI agent memory security controls
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - AI platform teams
+  - Security engineers
+  - Enterprise architects
+  - Agent reliability owners
+keyQuestions:
+  - How should AI agent memory be secured in production?
+  - What controls prevent memory poisoning from steering future agent behavior?
+  - What should teams log when an AI agent creates, reads, updates, or deletes memory?
+notFor:
+  - Personal chat memory cleanup with no production workflow
+  - Teams with no persistent memory, retrieval, tools, or shared workspace context
+  - Offensive prompt-injection testing outside an authorized defensive program
+updateTriggers:
+  - New public research on AI memory poisoning or agent memory attacks
+  - Major vendor changes to workspace agents, channel agents, saved memories, or memory audit logs
+  - New incidents where saved memory influenced recommendations, tool calls, approvals, or customer-facing output
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-06-26
+lastReviewed: 2026-06-26
+contentCluster: agent-systems
+canonicalCluster: mcp-security
+pageType: security-checklist
+lifecycle: market-signal
+refreshPriority: high
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+
+AI agent memory is not just a convenience feature. Once a system can remember preferences, facts, channel context, prior work, or tool outcomes across sessions, memory becomes production state. It can personalize the experience, but it can also steer future reasoning, recommendations, retrieval, and tool calls after the original context is gone.
+
+That is the security shift. A prompt-injection failure can be transient. A memory failure can become persistent.
+
+This page is for teams building or approving production agents with saved memory, workspace context, channel participation, retrieval-backed memory, or tool-connected memory. The goal is to make memory useful without letting it become an invisible control plane.
+
+## Quick answer
+
+Secure AI agent memory by treating it as both **sensitive data** and **behavior-shaping input**.
+
+A production memory system needs six controls:
+
+| Control | What it prevents |
+| --- | --- |
+| Provenance on every memory record | Reviewers can see where the memory came from and which run created it |
+| Write gates | Untrusted content cannot silently become durable agent memory |
+| Deterministic isolation | Memory cannot leak across users, tenants, agents, or channels |
+| Retrieval risk checks | Stale, suspicious, or conflicting memories are not reused blindly |
+| Lifecycle audit events | Security teams can investigate creation, reads, updates, deletion, and blocking |
+| Rollback and eval loops | Bad memory can be quarantined, corrected, and tested against recurrence |
+
+If memory can influence a tool call, recommendation, account action, code change, or customer-facing decision, it should not be governed only by prompt wording.
+
+## Why this matters now
+
+Memory is moving from consumer chat into workspace agents, channel agents, coding agents, and enterprise assistants. Microsoft has now framed AI memory as a security surface where attackers can influence behavior over time. Microsoft also documented AI recommendation poisoning, where memory manipulation can bias future recommendations. OpenAI's workspace-agent direction makes files, code, tools, and memory part of longer-lived workspaces. Anthropic's Claude Tag brings a team agent into Slack channels with tool access, spend limits, and logs.
+
+The operational pattern is clear: agents are getting more persistent, more connected, and more present in shared workspaces. That makes memory security a core production control, not a late privacy setting.
+
+## The memory threat model
+
+Memory can fail in several ways:
+
+| Failure mode | Example risk | Required control |
+| --- | --- | --- |
+| Poisoned memory | A public page, email, shared document, or link causes the agent to remember a biased source or instruction | Write gate, source classification, suspicious-pattern detection |
+| Stale memory | The agent keeps using an old preference, policy, owner, or account fact | Freshness checks, expiration, user correction path |
+| Cross-tenant leakage | Memory from one customer, workspace, channel, or user appears in another context | Deterministic tenant and identity boundary |
+| Authority confusion | A remembered preference overrides policy, approval, or current user intent | Policy precedence and approval checks outside the model |
+| Hidden side effects | Memory causes a later tool call, send, update, purchase, or deployment | Side-effect gate and audit trail |
+| Forensic gap | Reviewers cannot tell why the agent remembered or used something | Memory event logging and trace linkage |
+
+The hard part is not storing memory. The hard part is knowing whether a memory should be trusted later.
+
+## Memory write gate
+
+Do not let every useful-looking sentence become durable memory. Before writing memory, require a gate that answers:
+
+| Gate question | Safe default |
+| --- | --- |
+| Did the user explicitly ask the agent to remember this? | Prefer explicit consent for durable user preferences |
+| Did the memory come from trusted workspace context or untrusted external content? | Treat external pages, files, emails, comments, and links as untrusted by default |
+| Is the memory factual, preference-like, policy-like, or action-triggering? | Block policy-like and action-triggering memories unless separately approved |
+| Does the memory include sensitive data? | Apply the same retention and access controls used for comparable business data |
+| Can the user or admin inspect and remove it? | Do not create opaque durable memory |
+| What workflow version created it? | Store run ID, prompt version, model version, source, and owner |
+
+A memory write should be a structured event, not an accidental side effect of summarization.
+
+## Memory retrieval gate
+
+Retrieving memory is also a risk decision. A stored memory may have been safe when created but unsafe later because the policy changed, the source aged out, the account changed, or the memory conflicts with current instructions.
+
+Use a retrieval gate before memory influences the answer:
+
+| Retrieval check | What to do |
+| --- | --- |
+| Relevance | Use only memories tied to the current user, tenant, task, and workflow |
+| Freshness | Expire or downgrade memories beyond their review window |
+| Provenance | Prefer memories created from explicit user confirmation or approved systems of record |
+| Conflict | If memory conflicts with current instructions or policy, current approved context wins |
+| Side-effect risk | Do not let memory alone trigger write actions, sends, payments, deletes, or deployments |
+| Sensitivity | Redact or block memories that should not enter the current context |
+
+This keeps memory from becoming a hidden prompt that follows the user across unrelated tasks.
+
+## Logging model
+
+Production memory should generate events that security, support, and reliability teams can inspect.
+
+At minimum, log:
+
+```text
+memory_event:
+  event_type: created | read | updated | blocked | quarantined | deleted
+  memory_id: mem_...
+  actor_type: user | agent | admin | workflow
+  user_id: ...
+  tenant_id: ...
+  agent_id: ...
+  run_id: ...
+  workflow_version: ...
+  source_type: user_instruction | workspace_doc | email | web_page | tool_output | admin_policy
+  source_uri_or_record: ...
+  trust_class: approved | internal | external | untrusted | suspect
+  sensitivity_class: public | internal | confidential | regulated
+  reason: ...
+  downstream_action_id: optional
+  reviewer_id: optional
+```
+
+The exact fields will vary, but the principle should not: reviewers need to reconstruct what changed, where it came from, why it was used, and whether it affected later actions.
+
+## Approval boundaries
+
+Memory should personalize low-risk behavior, not silently authorize consequential behavior.
+
+Use this rule:
+
+| Memory influence | Approval level |
+| --- | --- |
+| Tone, preferred format, recurring harmless context | Usually automatic if user-controlled |
+| Routing, prioritization, source selection, or recommendation | Log and make explainable |
+| Customer data, regulated facts, security findings, financial decisions | Require stronger provenance and review |
+| Tool calls that change external state | Require explicit approval or deterministic policy gate |
+| Policy, permission, or safety changes | Do not allow memory to override higher-authority controls |
+
+If an agent can say "I remembered this, so I acted," the system needs to answer who allowed that memory to become authority.
+
+## Incident workflow
+
+When memory is suspected of causing a bad answer or action:
+
+1. identify the affected user, tenant, agent, workflow, and time window;
+2. quarantine suspect memory records so they cannot be retrieved;
+3. preserve the records for investigation rather than deleting immediately;
+4. reconstruct source content, run traces, tool calls, approvals, and downstream effects;
+5. correct, supersede, or delete the memory after review;
+6. add regression cases so similar memory writes are blocked or flagged;
+7. notify affected owners if the memory influenced consequential output or action.
+
+This is where memory security connects directly to incident response. A reset prompt may contain the next run, but it does not repair the durable state by itself.
+
+## Evals for memory security
+
+Add memory-specific eval cases before enabling memory broadly:
+
+| Eval case | Pass condition |
+| --- | --- |
+| Untrusted content asks to be remembered | Agent refuses or routes to review |
+| User corrects a false memory | Old memory stops influencing later runs |
+| Memory conflicts with policy | Policy wins and the conflict is logged |
+| Memory suggests a write action | Agent asks for approval before acting |
+| Cross-tenant query attempts reuse | Memory remains isolated |
+| Stale memory appears relevant | Agent checks freshness or asks for confirmation |
+| Reviewer investigates a bad run | Trace shows memory source, use, and downstream effect |
+
+These cases should live alongside prompt-injection, tool-use, and approval-boundary tests. Memory is part of the agent runtime, so memory behavior belongs in release gates.
+
+## Metrics that matter
+
+Track:
+
+- percentage of runs that read durable memory;
+- memory writes per active user, channel, tenant, or workflow;
+- blocked or quarantined memory writes;
+- confirmed stale or incorrect memory records;
+- time to identify and quarantine suspect memory;
+- percentage of consequential actions influenced by memory;
+- audit completeness for memory-influenced incidents;
+- eval pass rate for memory poisoning, stale memory, and cross-boundary cases.
+
+Raw memory usage is not a success metric. Safer agents remember less than they technically could and explain more of what they do remember.
+
+## Rollout sequence
+
+1. Inventory every memory store: chat memory, workspace state, retrieval index, profile facts, channel summaries, tool outputs, and workflow state.
+2. Classify which memories can personalize, which can inform decisions, and which must never trigger action.
+3. Start with explicit user-confirmed memory only.
+4. Add provenance, trust class, sensitivity class, TTL, and owner fields.
+5. Log memory create, read, update, block, quarantine, and delete events.
+6. Add evals for memory write refusal, stale memory, conflict handling, and approval behavior.
+7. Canary memory in low-risk workflows before enabling it for write-enabled agents.
+8. Publish a rollback path for suspect memory and a user/admin review path for saved memories.
+
+Do not start with broad automatic memory across every channel or connector. That creates hidden state faster than the team can review it.
+
+## Poor-fit patterns
+
+Avoid these patterns:
+
+- treating a prompt instruction as the only memory security boundary;
+- allowing public pages, emails, or shared docs to write durable memory automatically;
+- letting remembered preferences override current user intent or policy;
+- storing memories without source, run ID, or workflow version;
+- using memory to trigger write actions without approval;
+- deleting suspect memory before preserving evidence for review;
+- enabling cross-channel or cross-tenant memory without deterministic isolation.
+
+The test is simple: if a security reviewer cannot explain why an agent remembered something and how that memory affected the run, the memory layer is not production-ready.
+
+## What to read next
+
+<div class="portal-links">
+	<LinkCard
+		title="Tool outputs are untrusted"
+		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
+		description="Use this page to keep web pages, files, screenshots, and tool outputs from becoming instructions."
+	/>
+	<LinkCard
+		title="Memory rollback and reset prompts"
+		href="/tooling/ai-agent-memory-rollback-and-reset-prompt-best-practices/"
+		description="Use this page when suspect memory needs containment, quarantine, correction, and regression tests."
+	/>
+	<LinkCard
+		title="AI agent incident response runbook"
+		href="/tooling/ai-agent-incident-response-runbook/"
+		description="Use this page when memory failures need containment, evidence capture, rollback, and post-incident learning."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Use this page when memory events need to become governance-grade evidence."
+	/>
+	<LinkCard
+		title="AI agent trace retention and sampling policy"
+		href="/evaluation/ai-agent-trace-retention-sampling-and-privacy-policy/"
+		description="Use this page when memory traces must support debugging, privacy, and audit without storing everything forever."
+	/>
+	<LinkCard
+		title="Production AI agent observability stack"
+		href="/tooling/production-ai-agent-observability-stack/"
+		description="Use this page when memory events need to sit beside traces, logs, metrics, eval labels, approvals, and alerts."
+	/>
+</div>
+
+## Source notes checked June 26, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [Microsoft Guarding AI memory](https://www.microsoft.com/en-us/security/blog/2026/06/22/guarding-ai-memory/) | Memory can turn transient threats into persistent influence, and memory security needs provenance, boundaries, lifecycle visibility, and user control. |
+| [Microsoft AI Recommendation Poisoning](https://www.microsoft.com/en-us/security/blog/2026/02/10/ai-recommendation-poisoning/) | Public patterns show memory manipulation attempts aimed at shaping future AI recommendations. |
+| [OpenAI workspace agents in ChatGPT](https://openai.com/index/introducing-workspace-agents-in-chatgpt/) | Workspace agents combine files, code, tools, and memory across multi-step work. |
+| [Anthropic Claude Tag](https://www.anthropic.com/news/introducing-claude-tag) | Channel agents with tool access, spend limits, private testing, and activity logs make workspace memory and accountability more important. |
+| [Microsoft agentic observability](https://blogs.microsoft.com/blog/2026/06/23/rethinking-cloud-operations-with-agentic-observability/) | Agentic operations require signals, interpretation, action, governance, auditability, guardrails, and human oversight across the lifecycle. |

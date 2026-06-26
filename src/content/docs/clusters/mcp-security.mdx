@@ -33,7 +33,7 @@ updateTriggers:
   - New remote MCP or connector deployment patterns
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-06-24
+lastReviewed: 2026-06-26
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -50,6 +50,7 @@ MCP security decisions should start with tool authority:
 | The team is not sure MCP belongs in the architecture | [Model Context Protocol for enterprise AI teams](/agent-systems/model-context-protocol-for-enterprise-ai-teams/) | Whether standardization is worth the shared-risk surface |
 | A shared MCP server is proposed | [MCP server security audit checklist](/agent-systems/mcp-server-security-audit-checklist-for-ai-agents/) | Which tools, credentials, network paths, and logs need review |
 | Tool outputs may contain hostile instructions | [Tool outputs are untrusted](/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/) | How to keep retrieved content from becoming authority |
+| Saved memory can steer future agent behavior | [AI agent memory security controls](/agent-systems/ai-agent-memory-security-controls-for-production-agents/) | How memory writes, retrieval, provenance, audit events, and rollback should work |
 | Write actions are possible | [MCP security and approval boundaries](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/) | Which actions need approval, scopes, and audit trails |
 | Frontier cyber capability enters defensive workflows | [Frontier AI cyber defense readiness](/tooling/frontier-ai-cyber-defense-readiness-checklist/) | Which access, target scope, evidence, review, and containment controls must exist first |
 | AI security agents generate findings and patches | [AI security agent vulnerability triage](/workflows/ai-security-agent-vulnerability-triage-and-patch-validation-workflow/) | How findings become validated fixes without bypassing authorization, PR review, or audit evidence |
@@ -114,6 +115,11 @@ If those distinctions are missing, an MCP page is too shallow for production tea
 		title="Tool outputs are untrusted"
 		href="/agent-systems/tool-outputs-are-untrusted-prompt-injection-boundary/"
 		description="Treat retrieved content, files, browser pages, and tool results as data, not authority."
+	/>
+	<LinkCard
+		title="AI agent memory security controls"
+		href="/agent-systems/ai-agent-memory-security-controls-for-production-agents/"
+		description="Secure saved memory with provenance, write gates, retrieval checks, audit events, rollback, and evals."
 	/>
 	<LinkCard
 		title="Frontier AI cyber defense readiness"
