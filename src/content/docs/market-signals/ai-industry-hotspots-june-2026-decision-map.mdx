@@ -21,7 +21,7 @@ pageType: market-signal
 lifecycle: market-signal
 refreshPriority: high
 datePublished: 2026-06-06
-lastReviewed: 2026-06-26
+lastReviewed: 2026-06-27
 problemSolved: How to turn June 2026 AI industry attention into durable implementation, measurement, security, procurement, and workflow decisions.
 readerTakeaway: You should leave with a prioritized map of June 2026 AI hotspots and the next internal decision page to use for each one.
 keyQuestions:
@@ -45,7 +45,7 @@ editorKey: review-desk
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-This page was checked on June 26, 2026. The useful question is not "what is trending in AI?" The useful question is which signal creates a durable decision that a product, engineering, growth, security, or operations team must make.
+This page was checked on June 27, 2026. The useful question is not "what is trending in AI?" The useful question is which signal creates a durable decision that a product, engineering, growth, security, or operations team must make.
 
 The June pattern is clear: AI is moving deeper into search, shopping, browsers, coding workbenches, connector infrastructure, and inference operations. That creates strong search demand, but generic trend summaries are not enough. The pages that can earn durable traffic are the pages that help a reader decide what to measure, approve, build, buy, or refuse to automate.
 
@@ -58,7 +58,7 @@ The highest-value June 2026 AI hotspots are:
 | AI Mode and task-oriented search | Google says AI Mode has passed a billion monthly active users globally, AI Mode queries have more than doubled every quarter since launch, and the average AI Mode search is triple the length of a traditional search query | Source quality, original value, source links, product facts, comparison pages, and AI-assisted discovery measurement |
 | Agentic commerce and product discovery | OpenAI expanded Agentic Commerce Protocol into product discovery, while Google launched Universal Commerce Protocol for discovery, buying, and post-purchase support | Product feed quality, merchant-owned checkout, policy URLs, payment approval, buyer intent, and referral measurement |
 | Browser agents and computer-use safety | ChatGPT Atlas agent mode and Claude browser/desktop workflows make web pages, screenshots, and logged-in sessions part of agent context | Prompt injection boundaries, least-privilege tools, allowlists, approval gates, and trace review |
-| AI memory security and channel agents | Microsoft published new AI memory security guidance, Microsoft research documented AI recommendation poisoning, and Anthropic introduced Claude Tag for Slack workspaces | Memory provenance, write gates, retrieval checks, tenant isolation, audit events, rollback, and evals |
+| AI memory security and channel agents | Microsoft published new AI memory security guidance, Microsoft research documented AI recommendation poisoning, and Anthropic introduced Claude Tag for Slack workspaces | Memory provenance, write gates, retrieval checks, channel scope, tool tiers, spend limits, audit events, rollback, and evals |
 | Coding agents as managed workbenches | OpenAI Codex app, Codex Automations, Claude Code desktop sessions, and team coding-agent tools keep moving from assistant to supervised work layer | Reviewer queues, background jobs, PR gates, sandbox policy, cost per accepted PR, and team metrics |
 | AI cyber defense and patch automation | OpenAI Daybreak, Patch the Planet, Anthropic Project Glasswing, and Microsoft MDASH all point toward AI-assisted vulnerability discovery moving into validation, patching, and review | Authorized targets, vulnerability triage, patch PRs, human security review, evidence packets, and eval cases |
 | MCP and connector infrastructure | OpenAI documents remote MCP servers for ChatGPT connectors, deep research, and API integrations; Google UCP explicitly aligns with A2A, AP2, and MCP | Connector lifecycle, OAuth, tool descriptions, read/write scopes, versioning, generated SDKs, and incident rollback |
@@ -108,6 +108,11 @@ These are the strongest internal paths because they connect current attention to
 		title="AI agent memory security controls"
 		href="/agent-systems/ai-agent-memory-security-controls-for-production-agents/"
 		description="Secure saved memory with provenance, write gates, retrieval checks, audit events, rollback, and eval cases."
+	/>
+	<LinkCard
+		title="Slack channel AI agent governance"
+		href="/tooling/slack-channel-ai-agent-governance-checklist/"
+		description="Govern Slack channel agents with channel scopes, memory boundaries, tool tiers, approvals, spend limits, logs, evals, and shutdown controls."
 	/>
 	<LinkCard
 		title="MCP server security audit checklist"
@@ -285,6 +290,7 @@ Strong candidates:
 | Agentic commerce checkout handoff measurement | Commerce journeys need clean attribution, payment confirmation, merchant ownership, and post-purchase review |
 | Browser-agent prompt-injection incident review | Browser agents expose untrusted webpages, logged-in context, and side effects |
 | AI agent memory security controls | Workspace agents and channel agents need provenance, write gates, retrieval checks, audit events, rollback, and evals before memory influences actions |
+| Slack channel AI agent governance checklist | Claude Tag, OpenAI workspace agents, Slack's agentic platform, and MCP-style app access make channel scope, memory, tools, approvals, spend, logs, and private pilots a concrete admin problem |
 | AI security agent vulnerability triage | Security teams need to convert AI-generated findings into authorized validation, patch evidence, PR review, and eval updates |
 | Coding-agent reviewer capacity dashboard | Coding agents create value only when review throughput keeps up |
 | MCP connector approval and rollback runbook | Enterprise agent systems need connector lifecycle control, not only integration demos |

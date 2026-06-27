@@ -32,7 +32,7 @@ updateTriggers:
   - New governance, connector, audit, identity, or marketplace features
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-15
+lastReviewed: 2026-06-27
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -51,6 +51,7 @@ Enterprise teams should enter the cluster by procurement risk:
 | Security review is blocking rollout | [AI agent vendor security questionnaire](/tool-comparisons/ai-agent-vendor-security-questionnaire-for-enterprise-procurement/) | Which vendor claims need evidence before tool/data access |
 | Privacy or sovereignty requirements are blocking procurement | [Private and sovereign AI architecture](/models-and-apis/private-and-sovereign-ai-architecture-for-enterprise-agents/) | Which workloads need regional inference, data residency, trace limits, or local controls |
 | Workspace connectors are spreading | [Workspace agent connector governance](/tooling/workspace-agent-connector-governance-checklist/) | Which connector scopes, identities, approvals, logs, and shutdown paths must exist |
+| Channel agents are entering Slack or team chat | [Slack channel AI agent governance](/tooling/slack-channel-ai-agent-governance-checklist/) | Which channel scopes, memory boundaries, tool tiers, spend limits, approvals, logs, and shutdown controls must exist |
 | Executives want rollout visibility | [Workspace agent admin analytics](/tooling/workspace-agent-admin-analytics-checklist/) | Which departments, workflows, connectors, permissions, costs, and incidents need admin reporting |
 | A professional services firm is moving beyond pilots | [Professional services AI agent rollout](/use-cases/professional-services-ai-agent-rollout-model/) | How to govern agents across finance, deals, client delivery, code, and firm knowledge |
 | Business teams want packaged vertical workflows | [Vertical AI agent template rollout](/use-cases/vertical-ai-agent-template-rollout-model-for-business-teams/) | How to map templates to workflow owners, connector scopes, approval classes, and outcome metrics |
@@ -122,6 +123,11 @@ If a vendor is strong in one layer and weak in another, the buyer should know wh
 		title="Workspace agent connector governance"
 		href="/tooling/workspace-agent-connector-governance-checklist/"
 		description="Review connector inventory, identity, OAuth scopes, data owners, approvals, audit evidence, and deprovisioning."
+	/>
+	<LinkCard
+		title="Slack channel AI agent governance"
+		href="/tooling/slack-channel-ai-agent-governance-checklist/"
+		description="Govern Slack channel agents with channel scopes, memory boundaries, tool tiers, approvals, spend limits, logs, evals, and shutdown controls."
 	/>
 	<LinkCard
 		title="Workspace agent admin analytics"
