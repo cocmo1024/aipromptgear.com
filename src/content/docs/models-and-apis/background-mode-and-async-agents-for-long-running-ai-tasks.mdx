@@ -31,7 +31,7 @@ updateTriggers:
 authorKey: editorial-desk
 editorKey: review-desk
 datePublished: 2026-04-11
-lastReviewed: 2026-06-01
+lastReviewed: 2026-06-30
 contentCluster: models-and-apis
 canonicalCluster: models-and-apis
 pageType: decision-guide
@@ -124,7 +124,7 @@ For most production teams, the deciding question is: **does one user or workflow
 
 OpenAI now documents background mode and longer-running agent patterns explicitly instead of treating all model work as one synchronous surface. That matters because the product decision is no longer just "call the model." It is "which runtime lane fits the task?" Teams that answer that early build calmer products and cleaner support boundaries.
 
-## Official platform signals checked June 1, 2026
+## Official platform signals checked June 30, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
@@ -133,6 +133,7 @@ OpenAI now documents background mode and longer-running agent patterns explicitl
 | [OpenAI webhooks guide](https://platform.openai.com/docs/webhooks) | Webhooks can notify systems when a background response completes | Teams can choose polling, webhooks, or both depending on reliability and operations needs |
 | [OpenAI built-in tools guide](https://platform.openai.com/docs/guides/tools) | Tool-connected workflows are central to the modern API surface | Longer tasks are often longer because tool orchestration, retrieval, or file work is involved |
 | [OpenAI Batch API guide](https://platform.openai.com/docs/guides/batch) | Batch is documented for large asynchronous groups of independent requests with a separate completion model | Batch should not be confused with one tracked product job |
+| [OpenAI Assistants migration guide](https://developers.openai.com/api/docs/assistants/migration) | Assistants API products should move to Responses API and Conversations before the August 26, 2026 shutdown | Legacy Runs and Threads often need a migration plan that separates live conversation state from long-running background work |
 
 The important constraint is that the official runtime capability does not remove product ownership. Your application still owns user-visible state, internal audit trails, approval policy, and what happens when a job fails after the original session is gone.
 
@@ -288,6 +289,11 @@ That is when background mode becomes operating leverage instead of architectural
 ## Compare next
 
 <div class="portal-links">
+	<LinkCard
+		title="OpenAI Assistants API migration"
+		href="/models-and-apis/openai-assistants-api-migration-to-responses-api-checklist/"
+		description="Use this when old Runs, Threads, tools, and files need to move onto Responses and Conversations before the Assistants API shutdown."
+	/>
 	<LinkCard
 		title="Build a background processing AI system"
 		href="/models-and-apis/how-to-build-background-processing-ai-system-with-openai-background-mode/"

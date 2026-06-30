@@ -33,7 +33,7 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-06-30
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -41,7 +41,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 This comparison matters because teams keep using the two acronyms as if they name the same layer. They do not. MCP is mainly about how an application provides tools and context to a model or agent. A2A is about how one agent communicates with another agent across system boundaries. If the team confuses those layers, it usually adds protocol complexity without solving the actual integration problem.
 
-Google's own launch language makes the relationship explicit: A2A complements MCP rather than replacing it【turn2view6†L134-L134】. Google's later update goes further and describes A2A as a common language for agents to discover each other's capabilities and coordinate complex tasks across systems【turn3view5†L125-L129】. That is a different problem from letting a model call tools.
+Google's A2A launch material frames A2A as complementary to MCP rather than a replacement. MCP helps expose tools and context to agents; A2A addresses coordination between independently deployed agents, especially in larger multi-agent systems.
 
 ## The shortest correct rule
 
@@ -74,7 +74,7 @@ A2A starts to matter when:
 - the application wants a concierge, planner, or coordinator to hand work to specialist agents that remain independently deployed;
 - agent-to-agent communication is part of the product boundary, not just an internal implementation detail.
 
-That is the boundary Google keeps highlighting in its A2A material, especially for large-scale multi-agent systems【turn2view6†L134-L134】【turn3view5†L125-L129】.
+That is the boundary Google highlights for large-scale multi-agent systems: A2A belongs where peer agents need to discover capabilities and coordinate work across boundaries.
 
 ## The most common design mistake
 
@@ -103,7 +103,14 @@ That order keeps the architecture honest.
 
 ## Where this intersects with current AI product strategy
 
-The reason this topic now matters more is that agent stacks are getting deeper. OpenAI's current SDK guidance clearly assumes richer orchestration, state, guardrails, and observability as workflows grow more complex【turn3view2†L640-L658】. At the same time, Google's A2A push is making remote agent interoperability more visible and more standardized【turn3view5†L125-L129】. Those trends are complementary, but they do not mean every product needs both layers immediately.
+This topic matters more as agent stacks deepen. OpenAI's current Agents SDK guidance points teams toward richer orchestration, state, guardrails, and observability as workflows grow more complex. Google's A2A material makes remote agent interoperability more visible. Those trends are complementary, but they do not mean every product needs both layers immediately.
+
+## Source notes checked June 30, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [Google A2A announcement](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/) | Google frames A2A as complementary to MCP and aimed at large-scale multi-agent interoperability across providers and platforms. |
+| [OpenAI Agents SDK guide](https://developers.openai.com/api/docs/guides/agents) | Agent systems need explicit ownership for orchestration, tool execution, approvals, state, tracing, and evaluation as workflows become more complex. |
 
 ## Compare next
 

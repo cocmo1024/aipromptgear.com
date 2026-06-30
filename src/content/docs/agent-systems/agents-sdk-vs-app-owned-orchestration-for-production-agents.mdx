@@ -34,8 +34,11 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-06-30
 ---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
 
 ## What matters first
 
@@ -64,10 +67,11 @@ The market conversation often treats agent SDKs like neutral accelerators. In pr
 
 That makes SDK adoption an architecture decision, not a convenience decision.
 
-## Official signals checked April 15, 2026
+## Official signals checked June 30, 2026
 
 | Official source | Current signal | Why it matters |
 | --- | --- | --- |
+| [OpenAI Agents SDK guide](https://developers.openai.com/api/docs/guides/agents) | OpenAI frames the Responses API as the right fit when one model call plus tools and app-owned logic is enough, and the Agents SDK as the path when the application owns orchestration, tool execution, approvals, and state | The SDK decision should start from ownership boundaries, not from framework novelty |
 | [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) | The SDK is positioned as a lightweight, production-ready agent framework with tools, handoffs, guardrails, tracing, and sessions | Teams now have a serious framework choice, not just code snippets |
 | [Agent orchestration](https://openai.github.io/openai-agents-python/multi_agent/) | The SDK explicitly distinguishes LLM-driven orchestration from code-driven orchestration | App-owned control flow is still a first-class pattern, not a failure to "go fully agentic" |
 | [Agents](https://openai.github.io/openai-agents-python/agents/) | Agent definitions expose models, tools, guardrails, handoffs, sessions, and runtime behavior | SDK adoption shapes how teams express core orchestration concepts |
@@ -118,9 +122,28 @@ The SDK can accelerate implementation. It does not remove system ownership.
 
 ## What to read next
 
-- [Agent workflows vs autonomous agents](/agent-systems/agent-workflows-vs-autonomous-agents/)
-- [Built-in tools vs external integrations for AI agents](/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/)
-- [Tool timeouts, retries, and idempotency for AI agents](/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/)
+<div class="portal-links">
+	<LinkCard
+		title="OpenAI Assistants API migration"
+		href="/models-and-apis/openai-assistants-api-migration-to-responses-api-checklist/"
+		description="Use this when old Assistants API orchestration has to move to Responses, Conversations, or an SDK-shaped agent path."
+	/>
+	<LinkCard
+		title="Agent workflows vs autonomous agents"
+		href="/agent-systems/agent-workflows-vs-autonomous-agents/"
+		description="Decide whether the system needs workflow automation, bounded agent behavior, or broader autonomy before choosing an SDK boundary."
+	/>
+	<LinkCard
+		title="Built-in tools vs external integrations"
+		href="/agent-systems/built-in-tools-vs-external-integrations-for-ai-agents/"
+		description="Use this when the tool layer, not the orchestration framework, is the real production decision."
+	/>
+	<LinkCard
+		title="Tool timeouts, retries, and idempotency"
+		href="/agent-systems/tool-timeouts-retries-and-idempotency-for-ai-agents/"
+		description="Connect SDK or app-owned orchestration to the operational behavior that keeps tool calls safe and recoverable."
+	/>
+</div>
 
 ## Reader value check
 

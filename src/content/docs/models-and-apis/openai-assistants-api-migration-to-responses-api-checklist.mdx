@@ -1,0 +1,310 @@
+---
+title: "OpenAI Assistants API Migration to Responses API Checklist"
+description: "A practical migration checklist for moving Assistants API apps to Responses API and Conversations before the August 26, 2026 shutdown."
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: OpenAI Assistants API migration to Responses API
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - Application engineers
+  - AI platform teams
+  - Product infrastructure leads
+  - Engineering managers
+contentStatus: growing
+problemSolved: Helps teams migrate Assistants API products to Responses API and Conversations without losing state, tools, eval coverage, support visibility, or rollout control.
+readerTakeaway: You should leave with a migration plan that maps Assistants, Threads, Messages, Runs, tools, files, evals, logs, and rollout gates onto the newer OpenAI API surface.
+keyQuestions:
+  - How should teams migrate from Assistants API to Responses API?
+  - What replaces Assistants, Threads, Messages, and Runs in a production app?
+  - What should be tested before the Assistants API shutdown on August 26, 2026?
+notFor:
+  - Teams building a brand-new simple chat app with no existing Assistants API usage
+  - One-off playground experiments with no production users, logs, or support burden
+  - Readers looking for a copy-paste SDK snippet instead of a migration operating plan
+updateTriggers:
+  - OpenAI changes the Assistants API shutdown date or migration guidance
+  - Responses API, Conversations, tools, file search, code interpreter, or Agents SDK behavior changes
+  - New data-retention, eval, or tool migration requirements appear in official OpenAI documentation
+contentCluster: models-and-apis
+canonicalCluster: models-and-apis
+pageType: implementation-guide
+lifecycle: market-signal
+refreshPriority: high
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-06-30
+lastReviewed: 2026-06-30
+searchPreview:
+  key: openai-assistants-api-migration
+  image: /search-previews/models-and-apis-16x9.webp
+  image4x3: /search-previews/models-and-apis-4x3.webp
+  image1x1: /search-previews/models-and-apis-1x1.webp
+  alt: OpenAI Assistants API migration checklist for Responses API and Conversations.
+---
+
+import { LinkCard, Steps } from '@astrojs/starlight/components';
+
+OpenAI has deprecated the Assistants API and says it will shut down on **August 26, 2026**. That turns the migration from a future architecture preference into a production deadline.
+
+The replacement is not a simple endpoint rename. Production apps usually have assistants, threads, messages, runs, tools, files, vector stores, logs, evals, user permissions, and support workflows wrapped around the API. A safe migration needs to move the product's operating model, not only the SDK calls.
+
+## Quick answer
+
+Migrate Assistants API apps to **Responses API plus Conversations** by workflow, not by rewriting the whole product at once.
+
+Use this migration sequence:
+
+1. inventory Assistants API objects, tools, files, vector stores, run states, and user-facing workflows;
+2. map Assistants to prompt/config records and application-owned workflow definitions;
+3. move new user conversations onto Conversations and Responses first;
+4. backfill old Threads only where history is still needed;
+5. migrate tool behavior and file access behind eval-covered adapters;
+6. dual-run high-value workflows before cutover;
+7. preserve audit logs, support lookup, and rollback options until the old path is retired.
+
+Do not treat Chat Completions as the default migration target for a tool-using Assistants app. If the product uses tools, files, long-running work, or stateful agent behavior, the durable path is usually Responses API with the right state and tool boundary.
+
+## What changed
+
+OpenAI's Assistants migration guide says the Assistants API is deprecated, will shut down on August 26, 2026, and should be migrated to the Responses API. The same guide also says Responses provides newer capabilities such as deep research, MCP, and computer use, and that teams can manage conversations instead of hand-passing `previous_response_id` chains.
+
+The most important operational detail: OpenAI says there is no automated tool for migrating Threads to Conversations. Teams need to move new user chats onto Conversations and backfill old Threads only where necessary.
+
+That means the migration plan needs product decisions:
+
+| Decision | Why it matters |
+| --- | --- |
+| Which assistants matter? | Many products have stale assistants that should not be migrated blindly |
+| Which Threads need history? | Backfilling everything can waste time and import low-value state |
+| Which tools need parity? | Tool behavior often creates the biggest regression risk |
+| Which evals prove parity? | Endpoint migration can change behavior even when the feature looks equivalent |
+| Which logs support incidents? | Support teams still need to explain old runs after cutover |
+
+## Object mapping
+
+Use this as the first migration map.
+
+| Assistants API concept | Migration target | What to verify |
+| --- | --- | --- |
+| Assistant | Prompt/config object or application-owned agent definition | Instructions, model defaults, tools, files, metadata, owner |
+| Thread | Conversation or app-owned session record | User scope, retention, history needed, privacy rules |
+| Message | Conversation item or input item | Role, content type, attachments, file references |
+| Run | Response plus app-owned job state | Status, cancellation, retries, tool calls, completion handling |
+| Run step | Response output items, traces, and app logs | Tool call evidence, intermediate outputs, errors |
+| File search | File search/vector store design in newer stack | Access control, freshness, indexing, citations, cost |
+| Code interpreter | Hosted code execution or external sandbox policy | Dependencies, files, runtime limits, outputs, safety |
+| Function calling | Tool adapter or function-call layer | Schemas, auth, idempotency, approval rules |
+| Assistant metadata | App-owned metadata and audit fields | Owner, tenant, workflow, rollout cohort, support labels |
+
+The table is not enough by itself. Each row should produce a test case before cutover.
+
+## Migration inventory
+
+Before changing code, export a practical inventory.
+
+| Inventory item | Minimum fields |
+| --- | --- |
+| Assistants | ID, name, owner, model, instructions, tools, files, production status |
+| Threads | user or tenant, created date, last activity, active workflow, retention need |
+| Messages | content types, attachments, file references, sensitive data class |
+| Runs | status distribution, failure reasons, tool calls, average duration, retry rate |
+| Tools | function schema, auth method, read/write tier, approval requirement |
+| Files and vector stores | source owner, freshness, deletion policy, indexing cost |
+| Evals | golden cases, tool cases, rejection cases, incident cases |
+| Logs | run lookup path, trace fields, support dashboard dependency |
+
+The inventory usually reveals that some assistants should be retired, not migrated.
+
+## Choose the migration shape
+
+There are three common paths.
+
+| Path | Best fit | Risk |
+| --- | --- | --- |
+| Thin migration | One or two simple assistants with minimal tools | Easy to under-test state and support behavior |
+| Workflow-by-workflow migration | Production products with several user journeys | Requires more planning but lowers blast radius |
+| Platform migration | Many assistants across teams or tenants | Needs owners, dashboarding, migration policy, and rollout gates |
+
+For most production apps, workflow-by-workflow migration is the safest default. It gives each user journey its own parity test and rollback plan.
+
+## What not to migrate blindly
+
+Do not automatically carry forward:
+
+- stale assistants with no owner;
+- broad instructions that were compensating for weak product design;
+- Threads that users no longer need;
+- tool schemas that expose broader authority than the workflow requires;
+- file indexes with unknown freshness or ownership;
+- logs that contain more sensitive data than support actually needs;
+- eval sets that only test happy-path text output.
+
+Migration is a chance to reduce hidden complexity. If the old Assistants implementation had accumulated unclear authority, do not preserve that authority just to claim parity.
+
+## Thread backfill policy
+
+Because old Threads are not automatically migrated to Conversations, define a backfill policy.
+
+| Thread class | Suggested action |
+| --- | --- |
+| Active paid workflow | Backfill or preserve read-only access until the user journey completes |
+| Recent support-sensitive workflow | Backfill summary plus enough source references for support |
+| Old inactive thread | Archive, keep lookup metadata, and avoid full migration unless requested |
+| Regulated or sensitive thread | Review retention and deletion policy before moving content |
+| Test or demo thread | Do not migrate unless it is part of an eval suite |
+
+Avoid importing old state simply because it exists. Conversation history should have a product reason.
+
+## Tool migration checklist
+
+Tool behavior is where many migrations fail.
+
+For each tool, verify:
+
+- schema names and required fields still match product expectations;
+- auth scope is user-scoped, service-scoped, or workflow-scoped intentionally;
+- read, draft, write, delete, purchase, send, and permission-changing actions are separated;
+- idempotency exists for retries;
+- failures produce support-readable errors;
+- approval gates still appear before consequential actions;
+- trace records show tool name, input summary, output summary, and downstream side effect;
+- eval cases include both correct tool use and correct refusal.
+
+Do not let a tool become broader during migration just because the new stack makes it easier to connect.
+
+## Evals before cutover
+
+Build a migration eval set before switching traffic.
+
+| Eval class | Example pass condition |
+| --- | --- |
+| Text parity | Same user intent receives equivalent or better answer quality |
+| Tool selection | New path chooses the same tool class or a safer alternative |
+| Tool refusal | New path refuses tools when input is ambiguous or unauthorized |
+| File retrieval | Sources are relevant, permission-safe, and inspectable |
+| State continuity | Conversation resumes without missing critical prior context |
+| Cost and latency | New path stays inside workflow budget for accepted outcomes |
+| Support lookup | Support can reconstruct request, state, tool calls, and output |
+| Incident replay | A known bad historical case is blocked, escalated, or logged correctly |
+
+The migration should not pass because a single demo looks fine. It should pass because repeated workflow evidence is good enough for production.
+
+## Rollout sequence
+
+<Steps>
+	1. Freeze new Assistants API feature work except critical fixes.
+	2. Create the inventory and mark each assistant as migrate, retire, or archive.
+	3. Build the Responses and Conversations path for one contained workflow.
+	4. Add logging that can compare old runs and new responses by workflow.
+	5. Run evals against representative historical cases.
+	6. Dual-run or shadow-run a small cohort where privacy and cost allow.
+	7. Move new conversations to the new path first.
+	8. Backfill old Threads only according to policy.
+	9. Cut over by workflow, not by global switch.
+	10. Keep old lookup and incident evidence available until support no longer needs it.
+</Steps>
+
+This sequence reduces the chance that migration becomes a surprise product incident.
+
+## Production readiness gate
+
+Do not cut over until the team can answer:
+
+| Gate | Required answer |
+| --- | --- |
+| Ownership | Who owns each migrated workflow after launch? |
+| State | Where does conversation state live, and how is it deleted? |
+| Tools | Which tools can read, draft, write, send, delete, or approve? |
+| Files | Which files and vector stores remain valid and current? |
+| Evals | Which cases prove parity and safety? |
+| Cost | What changed in token, tool, file, code, and retry cost? |
+| Support | Can support find old and new run evidence from one user report? |
+| Rollback | Can traffic return to the old path before the shutdown date if needed? |
+
+The shutdown date creates urgency, but it does not justify skipping migration gates.
+
+## Common migration failures
+
+Watch for these patterns:
+
+- the new path answers well but loses old file citations;
+- conversation state persists longer than the old retention policy allowed;
+- tool calls work but no longer produce useful audit evidence;
+- old retries become duplicate writes because idempotency was not ported;
+- support cannot map old Thread IDs to new Conversation IDs;
+- cost rises because state is replayed instead of managed deliberately;
+- the team migrates stale assistants that should have been retired.
+
+These are operating failures, not only API mistakes.
+
+## FAQ
+
+### Is Responses API always better than Chat Completions for migration?
+
+For a product that used Assistants because it needed tools, state, files, or multi-step behavior, Responses is usually the healthier migration target. Chat Completions can still fit narrow text-only workloads, but it should not be the default replacement for a tool-using Assistants app.
+
+### Do all Threads need to become Conversations?
+
+No. Backfill only the history that users, support, compliance, or active workflows still need. Archive or summarize low-value history instead of migrating it wholesale.
+
+### Should prompt objects become the long-term assistant replacement?
+
+Be careful. OpenAI's migration guide says creating prompts from assistants can help migration, but also notes reusable prompt objects are being deprecated. Treat prompt objects as part of a transition plan unless the current OpenAI guidance for your product says otherwise.
+
+### What should happen to old Assistants API logs?
+
+Keep enough lookup metadata to support incidents, billing disputes, quality reviews, and customer support after cutover. A clean migration still needs old evidence until the old path is no longer relevant.
+
+## Bottom line
+
+The Assistants API migration is a product migration, not just an API migration.
+
+The safest path is to inventory the real workflows, migrate new conversations first, backfill old Threads selectively, test tools and files with evals, preserve audit evidence, and cut over by workflow before August 26, 2026. Teams that treat the migration as a global SDK swap are more likely to lose state, widen tool authority, or break support visibility.
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="Responses API vs Chat Completions"
+		href="/models-and-apis/responses-api-vs-chat-completions-for-tool-using-ai-products/"
+		description="Use this page when the migration decision still includes whether Responses is the right long-term API surface."
+	/>
+	<LinkCard
+		title="Conversation state vs RAG vs long context"
+		href="/models-and-apis/conversation-state-vs-rag-vs-long-context-for-ai-agents/"
+		description="Use this page when migration forces a cleaner state, retrieval, and context architecture."
+	/>
+	<LinkCard
+		title="Agents SDK vs app-owned orchestration"
+		href="/agent-systems/agents-sdk-vs-app-owned-orchestration-for-production-agents/"
+		description="Use this page when migration raises the question of whether orchestration should stay in the app or move into an SDK pattern."
+	/>
+	<LinkCard
+		title="File search vs external vector databases"
+		href="/models-and-apis/file-search-vs-external-vector-databases-for-ai-products/"
+		description="Use this page when Assistants file and retrieval behavior needs a more explicit migration boundary."
+	/>
+	<LinkCard
+		title="OpenAI background processing systems"
+		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
+		description="Use this page when migrated runs become tracked long-running jobs that need status, cancellation, retry, and review behavior."
+	/>
+	<LinkCard
+		title="What should an AI agent audit trail include?"
+		href="/evaluation/what-should-an-ai-agent-audit-trail-include/"
+		description="Use this page when old runs and new responses both need governance-grade evidence."
+	/>
+</div>
+
+## Source notes checked June 30, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [OpenAI Assistants migration guide](https://developers.openai.com/api/docs/assistants/migration) | Assistants API is deprecated, shuts down on August 26, 2026, and should move to Responses API; new user chats should move to Conversations and Responses, with old Threads backfilled as needed. |
+| [OpenAI Responses API reference](https://developers.openai.com/api/docs/api-reference/responses) | Responses is the newer response-generation surface and includes operations such as create, retrieve, delete, list input items, count tokens, cancel, and compact responses. |
+| [OpenAI Conversations API reference](https://developers.openai.com/api/reference/resources/conversations) | Conversations and conversation items provide the stateful object model that replaces hand-managed thread-style state for many products. |
+| [OpenAI tools guide](https://developers.openai.com/api/docs/guides/tools) | The newer tool stack includes built-in tools, function calling, tool search, and remote MCP servers, which should be reviewed during migration. |
+| [OpenAI Agents SDK guide](https://developers.openai.com/api/docs/guides/agents) | OpenAI frames the Responses API as enough for one model call plus tools and app-owned logic, while the Agents SDK fits applications that own orchestration, tool execution, approvals, and state. |

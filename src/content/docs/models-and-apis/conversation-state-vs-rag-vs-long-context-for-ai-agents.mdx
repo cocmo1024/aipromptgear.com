@@ -34,7 +34,7 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-06-30
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -65,13 +65,13 @@ Conversation state is usually enough when the product mostly needs:
 - resumable work across sessions or jobs;
 - a cleaner way to continue a conversation without replaying the full transcript manually.
 
-OpenAI now explicitly recommends the Responses API for this because it is stateful, and the Conversations API persists conversation items as a long-running object rather than forcing teams to hand-chain everything themselves【turn2view2†L1034-L1055】. The same guide also notes that `previous_response_id` is a lighter continuation method, but the full prior tokens in that chain are still billed as input tokens【turn3view3†L1213-L1229】. That matters because some teams accidentally treat response chaining like free memory. It is not.
+OpenAI's current API docs make Conversations a first-class state object alongside Responses. That matters because active thread continuity can be modeled as conversation items instead of manually replaying everything through the application. Response chaining can still be useful, but it is not free memory; teams still need token, retention, and summarization rules.
 
 ## When long context is the simpler answer
 
-Long context is attractive when the task genuinely depends on a large body of material being visible in one reasoning pass. Google frames this as a real paradigm shift: many-shot in-context learning and long-document reasoning are now viable enough that some teams can solve tasks with context instead of additional fine-tuning or retrieval layers【turn2view8†L225-L226】.
+Long context is attractive when the task genuinely depends on a large body of material being visible in one reasoning pass. Google's Gemini long-context guidance frames many-shot in-context learning as one of the capabilities unlocked by long context, but long context is still a cost and latency decision.
 
-But long context is still a cost and latency decision. Google's long-context guidance explicitly pushes teams toward context caching because the big constraint is not only capability, but cost【turn3view4†L252-L268】. That is the key design implication: long context is not "free memory." It is rented working space.
+Google's context-caching guidance exists because repeated large inputs need cost and performance controls. That is the key design implication: long context is not free memory. It is rented working space.
 
 ## When retrieval is still the better tool
 
@@ -112,9 +112,23 @@ That ordering avoids most memory-layer sprawl.
 - Deep research products: use state for the job thread, retrieval or search for source discovery, and long context when synthesis genuinely needs a larger evidence set.
 - Coding agents: keep run state and tool outputs in the conversation, but pull repository or doc context selectively instead of pasting everything every turn.
 
+## Source notes checked June 30, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [OpenAI Conversations API reference](https://developers.openai.com/api/reference/resources/conversations) | Conversations and conversation items are first-class API resources for stateful product flows. |
+| [OpenAI Assistants migration guide](https://developers.openai.com/api/docs/assistants/migration) | New Assistants-era chats should move to Conversations and Responses; old Threads need selective backfill rather than an automatic migration. |
+| [Google Gemini long context guide](https://ai.google.dev/gemini-api/docs/long-context) | Long context enables many-shot and large-context workflows, but it should still be matched to the task shape. |
+| [Google Gemini context caching guide](https://ai.google.dev/gemini-api/docs/caching) | Repeated large inputs need cost and performance controls through caching behavior. |
+
 ## Compare next
 
 <div class="portal-links">
+	<LinkCard
+		title="OpenAI Assistants API migration"
+		href="/models-and-apis/openai-assistants-api-migration-to-responses-api-checklist/"
+		description="Use this when legacy Threads, Runs, files, and tools need to move into Conversations, Responses, and explicit state ownership."
+	/>
 	<LinkCard
 		title="Do you need RAG for an AI agent or AI product?"
 		href="/models-and-apis/do-you-need-rag-for-an-ai-agent-or-ai-product/"

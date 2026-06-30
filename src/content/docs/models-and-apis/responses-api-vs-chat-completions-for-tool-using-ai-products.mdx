@@ -35,7 +35,7 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-06-30
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -51,7 +51,7 @@ Use **Responses API** for most new tool-using AI products. Keep **Chat Completio
 
 This is one of the clearest current platform shifts in applied AI. OpenAI now positions the Responses API as the building block for new agentic and tool-connected products, while keeping Chat Completions available for compatibility and simpler interactions. That makes this a durable decision page, not just a release-note reaction: teams shipping products today need to know whether they are building on the long-term lane or keeping an older abstraction for a good reason.
 
-## Official platform direction checked April 10, 2026
+## Official platform direction checked June 30, 2026
 
 These are official capability signals, not community interpretation:
 
@@ -61,7 +61,7 @@ These are official capability signals, not community interpretation:
 | [OpenAI built-in tools guide](https://platform.openai.com/docs/guides/tools) | Built-in tools such as web search, file search, computer use, code interpreter, and remote MCP servers are documented under the Responses stack | Tool-heavy roadmaps now fit more naturally on Responses than on a minimal chat wrapper |
 | [OpenAI conversation state guide](https://platform.openai.com/docs/guides/conversation-state) | Responses supports state handling through response chaining and conversation context patterns | Stateful multi-step UX is easier to structure without hand-rolling every thread detail |
 | [OpenAI Chat Completions guide](https://platform.openai.com/docs/guides/chat-completions-api) | Chat Completions remains supported for message-based interactions | Existing products do not need a panic migration if the workload is still simple |
-| [OpenAI Assistants migration note](https://platform.openai.com/docs/guides/migrate-to-responses) | OpenAI explicitly guides teams toward Responses as the long-term surface for newer agentic patterns | Product teams should avoid building new complexity on an older abstraction by default |
+| [OpenAI Assistants migration guide](https://developers.openai.com/api/docs/assistants/migration) | OpenAI says the Assistants API is deprecated, shuts down on August 26, 2026, and should move to Responses API and Conversations | Existing Assistants API products now have a concrete migration deadline, not only an architectural preference |
 
 The takeaway is not "migrate everything immediately." It is that teams should stop treating both APIs as equally future-facing when the roadmap clearly depends on tools and orchestration.
 
@@ -154,6 +154,11 @@ That is the point where the API choice becomes product strategy, not just SDK pr
 ## Compare next
 
 <div class="portal-links">
+	<LinkCard
+		title="OpenAI Assistants API migration"
+		href="/models-and-apis/openai-assistants-api-migration-to-responses-api-checklist/"
+		description="Use this checklist when an existing Assistants API product needs a controlled move to Responses API, Conversations, tools, files, evals, and rollout gates."
+	/>
 	<LinkCard
 		title="Model Context Protocol for enterprise AI teams"
 		href="/agent-systems/model-context-protocol-for-enterprise-ai-teams/"

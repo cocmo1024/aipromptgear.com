@@ -21,7 +21,7 @@ pageType: market-signal
 lifecycle: market-signal
 refreshPriority: high
 datePublished: 2026-06-06
-lastReviewed: 2026-06-27
+lastReviewed: 2026-06-30
 problemSolved: How to turn June 2026 AI industry attention into durable implementation, measurement, security, procurement, and workflow decisions.
 readerTakeaway: You should leave with a prioritized map of June 2026 AI hotspots and the next internal decision page to use for each one.
 keyQuestions:
@@ -45,7 +45,7 @@ editorKey: review-desk
 
 import { LinkCard } from '@astrojs/starlight/components';
 
-This page was checked on June 27, 2026. The useful question is not "what is trending in AI?" The useful question is which signal creates a durable decision that a product, engineering, growth, security, or operations team must make.
+This page was checked on June 30, 2026. The useful question is not "what is trending in AI?" The useful question is which signal creates a durable decision that a product, engineering, growth, security, or operations team must make.
 
 The June pattern is clear: AI is moving deeper into search, shopping, browsers, coding workbenches, connector infrastructure, and inference operations. That creates strong search demand, but generic trend summaries are not enough. The pages that can earn durable traffic are the pages that help a reader decide what to measure, approve, build, buy, or refuse to automate.
 
@@ -61,6 +61,7 @@ The highest-value June 2026 AI hotspots are:
 | AI memory security and channel agents | Microsoft published new AI memory security guidance, Microsoft research documented AI recommendation poisoning, and Anthropic introduced Claude Tag for Slack workspaces | Memory provenance, write gates, retrieval checks, channel scope, tool tiers, spend limits, audit events, rollback, and evals |
 | Coding agents as managed workbenches | OpenAI Codex app, Codex Automations, Claude Code desktop sessions, and team coding-agent tools keep moving from assistant to supervised work layer | Reviewer queues, background jobs, PR gates, sandbox policy, cost per accepted PR, and team metrics |
 | AI cyber defense and patch automation | OpenAI Daybreak, Patch the Planet, Anthropic Project Glasswing, and Microsoft MDASH all point toward AI-assisted vulnerability discovery moving into validation, patching, and review | Authorized targets, vulnerability triage, patch PRs, human security review, evidence packets, and eval cases |
+| OpenAI Assistants API migration | OpenAI says the Assistants API is deprecated and shuts down on August 26, 2026 | Responses API, Conversations, thread backfill, tool migration, file migration, eval coverage, support evidence, and staged rollout gates |
 | MCP and connector infrastructure | OpenAI documents remote MCP servers for ChatGPT connectors, deep research, and API integrations; Google UCP explicitly aligns with A2A, AP2, and MCP | Connector lifecycle, OAuth, tool descriptions, read/write scopes, versioning, generated SDKs, and incident rollback |
 | Agentic inference and AI factories | NVIDIA says Vera Rubin is ramping into production for agentic AI factories, with context memory, AI inference, and security controls at rack scale | Runtime lanes, capacity planning, accelerator procurement, cost per successful workflow, and infrastructure security |
 
@@ -98,6 +99,11 @@ These are the strongest internal paths because they connect current attention to
 		title="OpenAI background processing systems"
 		href="/models-and-apis/background-mode-and-async-agents-for-long-running-ai-tasks/"
 		description="Use this when long-running AI work needs a real product-owned job system instead of a spinner."
+	/>
+	<LinkCard
+		title="OpenAI Assistants API migration"
+		href="/models-and-apis/openai-assistants-api-migration-to-responses-api-checklist/"
+		description="Move Assistants API apps to Responses API and Conversations with state, tool, file, eval, support, and rollout controls before the August 26, 2026 shutdown."
 	/>
 	<LinkCard
 		title="OpenAI Model Spec: tool outputs are untrusted"
@@ -240,6 +246,24 @@ For security and engineering teams, the durable content angle is practical workf
 
 This is closely related to coding-agent review, but the risk profile is different. Security-agent output can affect disclosure, customer trust, and production risk, so the page must demand stronger evidence and scope control than an ordinary coding-agent PR.
 
+## Hotspot 4c: Assistants API migration becomes a deadline
+
+OpenAI's Assistants API migration guide says the Assistants API is deprecated and shuts down on August 26, 2026. That makes this a high-intent implementation topic because teams are not only asking "what is the new API?" They need to know how to inventory existing assistants, threads, runs, files, tools, evaluations, support workflows, and customer-visible behavior before the deadline.
+
+The durable question is:
+
+**Which Assistants-era product behavior should move to Responses API, which state should move to Conversations, and which old workflows should be retired instead of migrated?**
+
+| Migration layer | Decision to make |
+| --- | --- |
+| Assistants and prompts | Which instructions become reusable prompts, app-owned configuration, or SDK-owned agent definitions? |
+| Threads and Conversations | Which new chats move immediately, and which old Threads are worth backfilling for support or user continuity? |
+| Runs and background work | Which workflows should become live Responses, background Responses, Batch jobs, or product-owned queues? |
+| Tools and files | Which tool calls, file search behavior, code execution, and vector stores need parity tests before cutover? |
+| Evals and rollout | Which workflows need golden cases, regression tests, support screenshots, rollback gates, and staged traffic migration? |
+
+This is a better editorial target than another generic "OpenAI API update" post because the visitor has a deadline, an existing system, and a migration risk.
+
 ## Hotspot 5: MCP moves from novelty to connector governance
 
 OpenAI's MCP documentation describes remote MCP servers as a way to connect models to new data sources and capabilities across ChatGPT connectors, deep research, and API integrations. Google UCP's compatibility with A2A, AP2, and MCP is another signal that agent systems are becoming protocol-heavy.
@@ -292,13 +316,14 @@ Strong candidates:
 | AI agent memory security controls | Workspace agents and channel agents need provenance, write gates, retrieval checks, audit events, rollback, and evals before memory influences actions |
 | Slack channel AI agent governance checklist | Claude Tag, OpenAI workspace agents, Slack's agentic platform, and MCP-style app access make channel scope, memory, tools, approvals, spend, logs, and private pilots a concrete admin problem |
 | AI security agent vulnerability triage | Security teams need to convert AI-generated findings into authorized validation, patch evidence, PR review, and eval updates |
+| OpenAI Assistants API migration checklist | Existing Assistants API products now have a concrete August 26, 2026 shutdown deadline and need practical state, tool, file, eval, support, and rollout guidance |
 | Coding-agent reviewer capacity dashboard | Coding agents create value only when review throughput keeps up |
 | MCP connector approval and rollback runbook | Enterprise agent systems need connector lifecycle control, not only integration demos |
 | Agentic inference capacity planning for long-running jobs | Background jobs, tool loops, and reasoning-heavy workflows need runtime lanes and cost discipline |
 
 Avoid topics that cannot answer a reader's next decision. A page that only says "AI agents are hot" will not satisfy the visitor's purpose, AdSense quality standards, or a serious buyer or builder.
 
-## Source notes checked June 26, 2026
+## Source notes checked June 30, 2026
 
 | Source | Signal used |
 | --- | --- |
@@ -317,6 +342,7 @@ Avoid topics that cannot answer a reader's next decision. A page that only says 
 | [OpenAI Patch the Planet](https://openai.com/index/patch-the-planet/) | AI-assisted security research paired with expert review, patch development, testing, and maintainer coordination |
 | [Anthropic Project Glasswing expansion](https://www.anthropic.com/news/expanding-project-glasswing) | Trusted cyber access expanding to critical-infrastructure and open-source organizations with a focus on fixing and deploying patches |
 | [Microsoft MDASH update](https://www.microsoft.com/en-us/security/blog/2026/06/17/beyond-the-benchmark-advancing-security-at-ai-speed/) | Agentic vulnerability discovery moving toward real-world triage, fixing, and workflow evaluation |
+| [OpenAI Assistants API migration guide](https://developers.openai.com/api/docs/assistants/migration) | Assistants API deprecation, August 26, 2026 shutdown date, Responses API migration path, and Conversations backfill guidance |
 | [OpenAI MCP documentation](https://platform.openai.com/docs/mcp/) | Remote MCP servers for ChatGPT connectors, deep research, and API integrations |
 | [Anthropic Claude Opus 4.5](https://www.anthropic.com/news/claude-opus-4-5) | Claude Code desktop sessions, plan mode, browser tasks, spreadsheets, and long-running work |
 | [NVIDIA Vera Rubin production update](https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Vera-Rubin-Ramps-Into-Full-Production-to-Power-Agentic-AI-Factories-Worldwide/default.aspx) | Agentic AI factories, context memory, AI inference, rack-scale security, and infrastructure operations |

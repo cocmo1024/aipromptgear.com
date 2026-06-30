@@ -33,7 +33,7 @@ lifecycle: evergreen
 refreshPriority: high
 authorKey: editorial-desk
 editorKey: review-desk
-lastReviewed: 2026-05-09
+lastReviewed: 2026-06-30
 ---
 
 import { LinkCard } from '@astrojs/starlight/components';
@@ -89,9 +89,15 @@ If the answer is mostly no, stay simpler.
 
 ## Where current platform trends fit
 
-This topic is more relevant now because orchestration stacks are getting richer. OpenAI's current SDK guidance explicitly points teams toward orchestration, handoffs, state, guardrails, and observability as workflows grow more complex【turn3view2†L640-L658】. That creates more room for well-designed multi-agent systems, but it also lowers the barrier to building them before they are needed.
+OpenAI's Agents SDK guidance now gives teams explicit primitives for orchestration, handoffs, state, guardrails, and observability. That creates more room for well-designed multi-agent systems, but it also lowers the barrier to building them before they are needed.
 
 The point is not to avoid multi-agent systems. It is to introduce them only where the handoff creates a cleaner operating model.
+
+## Source notes checked June 30, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [OpenAI Agents SDK guide](https://developers.openai.com/api/docs/guides/agents) | OpenAI frames agents as applications that plan, call tools, collaborate across specialists, and keep enough state for multi-step work, while still distinguishing when Responses API plus app-owned logic is enough. |
 
 ## Good examples of useful handoffs
 
