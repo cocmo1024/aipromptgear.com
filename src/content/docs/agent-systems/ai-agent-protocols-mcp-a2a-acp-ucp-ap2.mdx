@@ -1,0 +1,306 @@
+---
+title: "AI Agent Protocols Decision Map: MCP, A2A, ACP, UCP, AP2"
+description: Choose the right AI agent protocol layer for tool access, agent interoperability, commerce discovery, checkout, payment authorization, and connector governance.
+referenceType: comparison
+adProfile: tool-comparison
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI agent protocols
+searchIntent: compare
+decisionStage: solution-aware
+targetRoles:
+  - AI platform architects
+  - Product engineers
+  - Commerce product teams
+  - Enterprise architects
+contentStatus: growing
+contentCluster: agent-systems
+canonicalCluster: agent-systems
+pageType: protocol-guide
+lifecycle: market-signal
+refreshPriority: high
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-06-30
+lastReviewed: 2026-06-30
+problemSolved: Helps teams separate AI agent protocols by job, including tool access, agent-to-agent interoperability, product discovery, checkout, payment authorization, and connector governance.
+readerTakeaway: You should leave with a practical map for choosing MCP, A2A, ACP, UCP, AP2, or no protocol yet.
+keyQuestions:
+  - What is the difference between MCP, A2A, ACP, UCP, and AP2?
+  - Which AI agent protocol belongs to tools, agents, commerce, checkout, and payment?
+  - When should a team avoid adding another protocol layer?
+notFor:
+  - Readers looking for a daily news list
+  - Teams without agent, connector, commerce, delegated-action, or payment-authorization requirements
+  - Product teams that only need a simple direct API integration
+updateTriggers:
+  - Changes in MCP, A2A, ACP, UCP, AP2, or agentic payment specifications
+  - New OpenAI, Google, payment network, commerce-platform, or connector integrations
+  - Security incidents involving agent connectors, checkout handoff, delegated payments, or tool authorization
+searchPreview:
+  key: ai-agent-protocols
+  image: /search-previews/agent-systems-16x9.webp
+  image4x3: /search-previews/agent-systems-4x3.webp
+  image1x1: /search-previews/agent-systems-1x1.webp
+  alt: AI agent protocol map connecting tools, agents, commerce, checkout, and payment approval.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+Teams are starting to ask for "the agent protocol" as if one standard can cover every part of an AI system. That is the wrong starting point. MCP, A2A, ACP, UCP, and AP2 sit in different layers of the stack, and a useful architecture may need one of them, several of them, or none of them yet.
+
+The better question is:
+
+**Which boundary needs to become reusable, auditable, and interoperable?**
+
+If the boundary is tool access, MCP may fit. If the boundary is peer-agent collaboration, A2A may fit. If the boundary is commerce discovery or shopping handoff, ACP or UCP may fit. If the boundary is who approved a purchase, AP2-style payment authorization belongs in the discussion. If the boundary is one internal workflow with one owned API, a direct integration may still be the cleanest answer.
+
+## Quick answer
+
+| Protocol or path | Best for | Do not use it for | First internal page to read |
+| --- | --- | --- | --- |
+| MCP | Exposing tools, resources, prompts, and external systems to AI applications through a reusable connector layer | Replacing product authorization, peer-agent coordination, or commerce checkout logic | [Model Context Protocol for enterprise teams](/agent-systems/model-context-protocol-for-enterprise-ai-teams/) |
+| A2A | Letting independently deployed agents discover capabilities, exchange messages, coordinate tasks, and return artifacts | Ordinary tool calls, simple retrieval, or one app-owned workflow | [A2A vs MCP](/agent-systems/a2a-vs-mcp-for-enterprise-agent-systems/) |
+| ACP | Product discovery and commerce participation in ChatGPT-style shopping experiences | Generic internal tools, broad agent orchestration, or payment governance by itself | [Agentic commerce product feed readiness](/models-and-apis/agentic-commerce-product-feed-readiness-checklist/) |
+| UCP | Commerce interoperability across discovery, buying, and post-purchase flows where Google-style agentic shopping surfaces matter | Non-commerce agent integration or general enterprise tool access | [AI Search ads and Direct Offers readiness](/models-and-apis/ai-search-ads-and-direct-offers-readiness-for-commerce-teams/) |
+| AP2 | Delegated payment authorization, spending guardrails, signed mandates, and audit evidence for agent-led purchases | Product data, product discovery, catalog quality, or tool execution | [Agentic commerce payment approvals](/workflows/agentic-commerce-payment-approval-workflow/) |
+| Direct integration | One owned app calling one owned API with clear authorization and limited reuse pressure | Shared connector infrastructure, multi-agent interoperability, marketplace commerce, or cross-platform payment flows | [Remote MCP servers vs direct tool integrations](/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/) |
+
+## The layer map
+
+Agent protocols are easier to reason about when they are mapped to layers instead of brands.
+
+| Layer | Practical question | Better starting point |
+| --- | --- | --- |
+| Tool access | Should an agent call this system, retrieve this data, or invoke this operation? | MCP or a direct tool integration |
+| Tool authority | Which reads, writes, approvals, credentials, and logs make that tool safe enough? | Least-privilege scopes, user-scoped auth, approval gates, traces |
+| Agent interoperability | Should one agent hand work to another agent operated by a different product, team, vendor, or runtime? | A2A |
+| Product discovery | Should product data appear in AI-assisted shopping, comparison, or answer surfaces? | ACP, UCP, product feeds, merchant pages |
+| Checkout handoff | Where does the buyer confirm the cart, seller identity, shipping, tax, support, and return rules? | ACP, UCP, merchant-owned checkout design |
+| Payment authorization | Who approved the purchase, under what mandate, for what amount, and with what audit trail? | AP2-style mandates, PSP controls, human approval workflows |
+| Governance | Can the team replay, revoke, test, version, and shut down this capability? | Connector lifecycle, incident rollback, evals, runbooks |
+
+The common mistake is choosing a protocol before naming the boundary. A protocol is useful only when it makes a boundary more reusable, safer, clearer, or easier to operate.
+
+## Decision sequence
+
+Use this sequence before adding another protocol to the stack.
+
+### 1. Is the agent calling a tool or reading external state?
+
+Start with tool access. If the agent needs a reusable way to see tools, resources, prompts, files, databases, search results, or workflow actions, evaluate MCP. MCP is strongest when several clients or products need the same connector surface, or when tool definitions, auth, logging, and versioning would otherwise be repeated.
+
+Use a direct integration instead when the scope is narrow:
+
+- one product owns the API;
+- one agent or workflow calls it;
+- the integration is unlikely to be reused;
+- the team can test and authorize it more simply without a shared connector layer.
+
+The decision is not "MCP or no MCP." It is "shared connector interface or app-owned tool wiring." That is why the authorization model matters more than the protocol name.
+
+### 2. Is another agent responsible for part of the work?
+
+If the remote system is a tool, MCP may be enough. If the remote system is itself an agent that can reason, negotiate task state, return artifacts, and operate behind its own runtime, evaluate A2A.
+
+A2A becomes relevant when:
+
+- a specialist agent owns a domain workflow;
+- the caller should not need to know every internal tool behind that agent;
+- the remote agent may need long-running task state;
+- output needs to be treated as an artifact, not just a function return;
+- vendor, framework, or platform boundaries are real.
+
+Do not add A2A just because the product has several prompts. Many "multi-agent" systems are still one orchestrator calling tools. That may be a workflow design problem, not an interoperability problem.
+
+### 3. Is the use case about shopping discovery or product comparison?
+
+If the agentic experience helps a buyer discover, compare, shortlist, or evaluate products, the core asset is product truth. That means feeds, pages, policy URLs, inventory, price freshness, images, reviews, specs, and fit logic matter before checkout automation.
+
+ACP is the OpenAI commerce path for product discovery and shopping experiences in ChatGPT. UCP is Google's open commerce protocol direction for discovery, buying, and post-purchase support across agentic shopping surfaces. A merchant may need to understand both because buyers will not stay inside one assistant or search surface.
+
+The internal work is not only "support a protocol." It is:
+
+- make catalog data complete and current;
+- make product pages match the feed;
+- expose clear policy pages for returns, shipping, privacy, and support;
+- define what makes a product a good or poor fit;
+- track assisted discovery separately from crawler activity;
+- keep checkout and customer support ownership clear.
+
+### 4. Can money move or can a purchase be committed?
+
+If an agent can buy, reserve, renew, upgrade, subscribe, transfer, or spend, payment authorization is a separate layer. Do not hide it inside a product feed or a tool call.
+
+AP2-style payment authorization is about proof of intent, guardrails, mandates, and audit evidence. It answers questions such as:
+
+- Who authorized the agent to spend?
+- Which merchant, item class, amount, time window, and currency were allowed?
+- Was the final cart inside the allowed mandate?
+- Did the action require human approval?
+- Can finance, fraud, support, or compliance teams reconstruct the decision?
+
+Even if the team is not directly implementing AP2, it still needs the same operating controls before letting agents complete purchases.
+
+### 5. Is this really only one internal workflow?
+
+If the team controls the user interface, the API, the identity layer, and the review workflow, a direct integration may be better. Protocol adoption has a cost: specifications change, SDKs move, connectors need versioning, and security review becomes broader.
+
+Use no new protocol yet when:
+
+- the action is low reuse and low interoperability;
+- the user base is internal;
+- the workflow is easier to explain as a standard API call;
+- the team has not defined approval, logging, or rollback;
+- the protocol would mostly be used for optics.
+
+A disciplined "not yet" decision can be stronger than a premature protocol launch.
+
+## Most common wrong mappings
+
+| Wrong mapping | Why it fails | Better framing |
+| --- | --- | --- |
+| "Use MCP for everything an agent touches" | MCP exposes tools and context, but it does not automatically solve business authorization, peer-agent contracts, or commerce checkout | Use MCP only for the tool-access layer, then define auth, approvals, and traces separately |
+| "A2A replaces MCP" | A2A and MCP solve different boundaries. A2A is for agent collaboration; MCP is for tool and context access | A multi-agent system may use A2A between agents and MCP inside one or more agents |
+| "ACP or UCP means checkout is solved" | Commerce discovery, product feed quality, checkout handoff, payment authorization, and post-purchase support are different layers | Treat discovery, cart, payment, support, and measurement as separate controls |
+| "AP2 is the shopping protocol" | AP2 is about authorization and payment evidence, not product discovery or product truth | Pair payment mandates with feed quality, checkout logic, fraud review, and support evidence |
+| "Direct API means we are behind" | Many production systems are safer with one explicit API than a general connector surface | Use direct integration when interoperability and reuse are not yet real requirements |
+| "Protocol support equals production readiness" | A protocol can make integration possible while the operational model remains unsafe | Require owner, scope, approval, logging, replay, versioning, evals, and shutdown controls |
+
+## Protocol-by-protocol decision notes
+
+### MCP
+
+MCP is the most useful starting point when the problem is connector sprawl. If every team is hand-writing tool definitions and auth wrappers for the same systems, MCP can turn repeated integration work into shared infrastructure.
+
+The hard part is not making a tool visible. The hard part is making the visible tool safe:
+
+- tool descriptions should be precise enough that models choose them correctly;
+- read and write operations should be separated;
+- high-impact writes should require approval;
+- user-scoped auth and service accounts should be chosen deliberately;
+- tool responses should be treated as untrusted input;
+- logs should preserve prompts, tool inputs, approvals, and side effects;
+- versioning should prevent silent behavior drift.
+
+Read next: [MCP security and approval boundaries](/agent-systems/mcp-security-and-approval-boundaries-for-enterprise-ai-teams/) and [MCP server security audit checklist](/agent-systems/mcp-server-security-audit-checklist-for-ai-agents/).
+
+### A2A
+
+A2A belongs in the conversation when the architecture crosses agent boundaries. The remote participant is not only a callable function. It may have its own memory, tools, policy, task lifecycle, UI expectations, and ownership.
+
+That makes A2A attractive for enterprise workflows such as procurement, HR, support, finance, security review, research, sales operations, or vendor-managed specialist agents. The caller should not need to know every internal step. It should know the remote agent's capability, task contract, identity, permissions, and output evidence.
+
+The risk is turning every subtask into a remote agent. Prefer a single-agent workflow when the handoff does not reduce ownership confusion or improve evidence quality.
+
+Read next: [Single-agent vs multi-agent systems](/agent-systems/single-agent-vs-multi-agent-systems-when-handoffs-help/).
+
+### ACP
+
+ACP matters for merchants, marketplaces, SaaS commerce teams, feed providers, and product teams that want products to appear correctly in ChatGPT shopping experiences. The current practical emphasis is product discovery: complete product data, visual shopping, comparisons, feeds, and merchant-controlled checkout paths.
+
+The first implementation question is not "Can we accept agent purchases?" It is:
+
+**Will an AI shopping surface understand the product accurately enough to recommend it only when it is a good fit?**
+
+That requires product attributes, images, specs, pricing, availability, reviews, policy pages, eligibility rules, and comparison logic. Without those inputs, protocol adoption only gives the assistant weak data faster.
+
+Read next: [Product comparison page structure](/models-and-apis/product-comparison-page-structure-for-ai-assisted-discovery/).
+
+### UCP
+
+UCP matters when Google-style agentic shopping surfaces, merchant discovery, direct offers, business agents, and post-purchase support are part of the acquisition or commerce strategy. Google's current framing makes UCP an open commerce layer that can align with A2A, AP2, and MCP instead of replacing them.
+
+For a retailer or commerce platform, the near-term work is operational:
+
+- keep Merchant Center data complete;
+- prepare brand answers for conversational shopping;
+- document offer eligibility and exclusions;
+- keep product pages and feeds consistent;
+- preserve seller identity and support ownership;
+- measure assisted discovery and checkout quality.
+
+Read next: [Google AI Mode Search agents readiness](/models-and-apis/google-ai-mode-search-agents-preferred-sources-readiness/).
+
+### AP2
+
+AP2 is relevant when the agent can participate in payment authorization or delegated purchasing. It should not be treated as a generic checkout badge. It is a control layer for proof of intent, spending limits, merchant constraints, signed mandates, receipts, and audit trails.
+
+Use AP2-style thinking even before direct implementation:
+
+- decide which purchases can be pre-approved;
+- set amount, merchant, item, region, and time limits;
+- require human approval above thresholds;
+- log why the cart matched the user's intent;
+- preserve receipts and mandate evidence;
+- define refund, dispute, and support escalation paths.
+
+Read next: [When should an AI agent ask for confirmation before acting?](/workflows/when-should-an-ai-agent-ask-for-confirmation-before-acting/).
+
+## What to document before adopting any protocol
+
+Before a team says "we support MCP" or "we are adding A2A," it should be able to answer these questions in one internal page.
+
+| Decision | What good looks like |
+| --- | --- |
+| Owner | One team owns the protocol surface, docs, incidents, and version changes |
+| Boundary | The protocol is mapped to a specific layer, not used as a vague agent strategy |
+| Identity | User, workspace, tenant, service, merchant, and agent identities are not collapsed |
+| Scope | Read, write, spend, approve, and admin operations are separated |
+| Approval | High-impact actions require explicit approval or signed mandate evidence |
+| Testing | Golden cases cover tool choice, refusal, error handling, and side-effect safety |
+| Logging | Inputs, outputs, tool calls, remote-agent messages, approvals, receipts, and errors are replayable |
+| Versioning | Protocol, schema, tool, feed, and policy changes have rollout and rollback paths |
+| Shutdown | The team can disable one connector, agent, merchant path, or payment operation without disabling the whole product |
+
+If those answers are missing, the team is not blocked from experimentation. It is blocked from pretending the protocol is production ready.
+
+## Internal linking map
+
+Use the protocol map as a routing page, then send readers deeper based on the boundary they actually need to solve.
+
+<div class="portal-links">
+	<LinkCard
+		title="A2A vs MCP"
+		href="/agent-systems/a2a-vs-mcp-for-enterprise-agent-systems/"
+		description="Separate tool access from peer-agent interoperability before the architecture turns every integration into an agent."
+	/>
+	<LinkCard
+		title="Remote MCP servers vs direct tools"
+		href="/agent-systems/remote-mcp-servers-vs-direct-tool-integrations/"
+		description="Decide whether a shared connector layer is worth the extra ownership, auth, testing, and versioning burden."
+	/>
+	<LinkCard
+		title="MCP security audit checklist"
+		href="/agent-systems/mcp-server-security-audit-checklist-for-ai-agents/"
+		description="Audit prompt injection, SSRF, browser tools, credentials, approvals, traceability, and shutdown design."
+	/>
+	<LinkCard
+		title="Agentic commerce product feed readiness"
+		href="/models-and-apis/agentic-commerce-product-feed-readiness-checklist/"
+		description="Prepare product data, policy URLs, checkout handoff, feed freshness, and merchant ownership for AI shopping surfaces."
+	/>
+	<LinkCard
+		title="Agentic commerce payment approvals"
+		href="/workflows/agentic-commerce-payment-approval-workflow/"
+		description="Design approval, delegated payment, fraud review, buyer intent, refund, and audit evidence before agents can buy."
+	/>
+	<LinkCard
+		title="June 2026 AI hotspot map"
+		href="/market-signals/ai-industry-hotspots-june-2026-decision-map/"
+		description="Route current AI protocol, commerce, browser-agent, coding-agent, and infrastructure signals into durable decision pages."
+	/>
+</div>
+
+## Source notes checked June 30, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [Google A2A announcement](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/) | A2A is positioned as an open protocol for agent-to-agent communication, secure information exchange, task coordination, and interoperability across vendors and frameworks. |
+| [Model Context Protocol introduction](https://modelcontextprotocol.io/docs/getting-started/intro) | MCP is an open-source standard for connecting AI applications to external systems including data sources, tools, and workflows. |
+| [OpenAI MCP documentation](https://developers.openai.com/api/docs/mcp) | Remote MCP servers allow OpenAI products and APIs to access data, take actions in connected services, and require careful treatment of sensitive data and tool definitions. |
+| [OpenAI product discovery in ChatGPT](https://chatgpt.com/merchants/) | OpenAI frames ACP around product discovery, richer product feeds, merchant-controlled checkout paths, and product data that remains current and under merchant control. |
+| [OpenAI Instant Checkout and ACP announcement](https://openai.com/index/buy-it-in-chatgpt/) | ACP was introduced as an open AI commerce standard co-developed with Stripe for people, agents, and businesses to complete purchases. |
+| [Google agentic shopping and UCP](https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/) | UCP is framed as an open standard for agentic commerce across discovery, buying, and post-purchase support, with compatibility signals for A2A, AP2, and MCP. |
+| [Google developer guide to AI agent protocols](https://developers.googleblog.com/developers-guide-to-ai-agent-protocols/) | AP2 is described as the authorization and audit layer for delegated purchases, while UCP handles what is ordered and from whom. |
+| [OpenAI Delegated Payment Spec](https://developers.openai.com/commerce/specs/payment) | Delegated payment handling needs scoped payment details, PSP or merchant vault responsibilities, allowances, and secure token handling. |

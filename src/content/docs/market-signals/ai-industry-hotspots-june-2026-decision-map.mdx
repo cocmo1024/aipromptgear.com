@@ -47,7 +47,7 @@ import { LinkCard } from '@astrojs/starlight/components';
 
 This page was checked on June 30, 2026. The useful question is not "what is trending in AI?" The useful question is which signal creates a durable decision that a product, engineering, growth, security, or operations team must make.
 
-The June pattern is clear: AI is moving deeper into search, shopping, browsers, coding workbenches, connector infrastructure, and inference operations. That creates strong search demand, but generic trend summaries are not enough. The pages that can earn durable traffic are the pages that help a reader decide what to measure, approve, build, buy, or refuse to automate.
+The June pattern is clear: AI is moving deeper into search, shopping, browsers, coding workbenches, connector infrastructure, and inference operations. That creates real reader demand, but generic trend summaries are not enough. The pages that become durable reference material are the pages that help a reader decide what to measure, approve, build, buy, or refuse to automate.
 
 ## Quick answer
 
@@ -89,6 +89,11 @@ These are the strongest internal paths because they connect current attention to
 		title="AI Search ads and Direct Offers readiness"
 		href="/models-and-apis/ai-search-ads-and-direct-offers-readiness-for-commerce-teams/"
 		description="Prepare product evidence, feeds, offers, Business Agent answers, checkout handoff, and measurement for AI-assisted commerce."
+	/>
+	<LinkCard
+		title="AI agent protocol decision map"
+		href="/agent-systems/ai-agent-protocols-mcp-a2a-acp-ucp-ap2/"
+		description="Separate MCP, A2A, ACP, UCP, AP2, direct integrations, commerce discovery, checkout handoff, and payment approval into the right layers."
 	/>
 	<LinkCard
 		title="AI crawler referral measurement"
@@ -168,6 +173,8 @@ This is why the best incremental content is not another generic "AI search trend
 ## Hotspot 2: agentic commerce becomes a feed, policy, and checkout problem
 
 OpenAI's product discovery update says more shopping starts in ChatGPT, where users explore, compare, and decide what to buy conversationally. Google frames agentic shopping through Universal Commerce Protocol, Business Agent, Merchant Center data attributes, direct offers, AP2, A2A, and MCP compatibility.
+
+For the cross-protocol routing problem, use the [AI agent protocol decision map](/agent-systems/ai-agent-protocols-mcp-a2a-acp-ucp-ap2/) before treating product feeds, agent interoperability, checkout, and payment authorization as one generic agentic-commerce project.
 
 The durable topic is not only "AI shopping." It is the operating chain behind a trustworthy recommendation:
 
@@ -268,6 +275,8 @@ This is a better editorial target than another generic "OpenAI API update" post 
 
 OpenAI's MCP documentation describes remote MCP servers as a way to connect models to new data sources and capabilities across ChatGPT connectors, deep research, and API integrations. Google UCP's compatibility with A2A, AP2, and MCP is another signal that agent systems are becoming protocol-heavy.
 
+The practical question is no longer only "what is MCP?" Teams now need to separate MCP, A2A, ACP, UCP, and AP2 by layer so a connector decision does not accidentally become an agent-interoperability, shopping, or payment-authorization decision.
+
 The risk is overstandardizing before the team has an authority model. A connector is not good because it exists. It is good when the tool surface is narrow, documented, testable, authorized, observable, and reversible.
 
 For connector pages, the durable value is a checklist:
@@ -318,6 +327,7 @@ Strong candidates:
 | AI security agent vulnerability triage | Security teams need to convert AI-generated findings into authorized validation, patch evidence, PR review, and eval updates |
 | OpenAI Assistants API migration checklist | Existing Assistants API products now have a concrete August 26, 2026 shutdown deadline and need practical state, tool, file, eval, support, and rollout guidance |
 | Coding-agent reviewer capacity dashboard | Coding agents create value only when review throughput keeps up |
+| AI agent protocol decision map | Teams are now comparing MCP, A2A, ACP, UCP, and AP2 but need to separate tool access, agent interoperability, commerce discovery, checkout, and payment approval |
 | MCP connector approval and rollback runbook | Enterprise agent systems need connector lifecycle control, not only integration demos |
 | Agentic inference capacity planning for long-running jobs | Background jobs, tool loops, and reasoning-heavy workflows need runtime lanes and cost discipline |
 
@@ -329,7 +339,10 @@ Avoid topics that cannot answer a reader's next decision. A page that only says 
 | --- | --- |
 | [Google AI Mode usage update](https://blog.google/products-and-platforms/products/search/ai-mode-us-insights/) | AI Mode scale, longer questions, planning use, and changing search behavior |
 | [Google agentic shopping and UCP](https://blog.google/products/ads-commerce/agentic-commerce-ai-tools-protocol-retailers-platforms/) | Universal Commerce Protocol, Business Agent, Merchant Center attributes, and agentic shopping tools |
+| [Google A2A announcement](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/) | A2A as an agent-to-agent interoperability layer that complements MCP rather than replacing it |
+| [Google developer guide to AI agent protocols](https://developers.googleblog.com/developers-guide-to-ai-agent-protocols/) | AP2 as the delegated payment authorization and audit layer that complements UCP-style commerce flows |
 | [OpenAI Product Discovery in ChatGPT](https://openai.com/index/powering-product-discovery-in-chatgpt/) | Agentic Commerce Protocol expansion into visual product discovery and comparison |
+| [OpenAI merchant product discovery page](https://chatgpt.com/merchants/) | Product-feed participation, merchant-owned checkout, and current ChatGPT shopping merchant requirements |
 | [OpenAI ChatGPT Atlas](https://openai.com/index/introducing-chatgpt-atlas/) | Browser agent mode, browsing context, action-taking, safeguards, and website-owner implications |
 | [OpenAI hardening Atlas against prompt injection](https://openai.com/index/hardening-atlas-against-prompt-injection/) | Prompt-injection risk for browser agents and the need for ongoing defenses |
 | [Microsoft Guarding AI memory](https://www.microsoft.com/en-us/security/blog/2026/06/22/guarding-ai-memory/) | AI memory can extend risk across time and needs provenance, boundaries, visibility, and user control. |
