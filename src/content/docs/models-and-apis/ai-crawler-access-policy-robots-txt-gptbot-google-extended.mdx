@@ -1,0 +1,351 @@
+---
+title: "AI Crawler Access Policy: robots.txt, GPTBot, OAI-SearchBot, Google-Extended"
+description: Decide how public sites should allow, restrict, monitor, and document AI crawler access without damaging search visibility or hiding weak content behind robots.txt.
+referenceType: tooling
+adProfile: tooling
+commercialIntent: high
+reviewCadence: Monthly review
+primaryKeyword: AI crawler access policy
+searchIntent: design
+decisionStage: implementation
+targetRoles:
+  - SEO leads
+  - Publisher growth teams
+  - Product marketers
+  - Analytics leads
+  - Site reliability teams
+contentStatus: growing
+contentCluster: models-and-apis
+canonicalCluster: models-and-apis
+pageType: implementation-guide
+lifecycle: market-signal
+refreshPriority: high
+authorKey: editorial-desk
+editorKey: review-desk
+datePublished: 2026-07-02
+lastReviewed: 2026-07-02
+problemSolved: Helps publishers, SaaS teams, and product sites design an AI crawler access policy for robots.txt, OpenAI crawlers, Google-Extended, Common Crawl, and Cloudflare-style controls.
+readerTakeaway: You should leave with a practical policy model for separating search visibility, AI search inclusion, user-triggered fetching, model training, and bot enforcement.
+keyQuestions:
+  - Should a site allow OAI-SearchBot while blocking GPTBot?
+  - What does Google-Extended control, and what does it not control?
+  - How should robots.txt, Content Signals, logs, WAF rules, and analytics fit together?
+notFor:
+  - Teams trying to hide private or sensitive pages with robots.txt alone
+  - Sites with no server-log, edge, or analytics access
+  - Content programs that want crawler policy to compensate for thin or stale pages
+updateTriggers:
+  - OpenAI, Google, Cloudflare, Common Crawl, or other major crawler documentation changes
+  - New AI crawl-control, bot-verification, content-signal, or pay-per-crawl behavior
+  - Noticeable changes in AI crawler logs, referral quality, or Search Console coverage
+searchPreview:
+  key: ai-crawler-access-policy
+  image: /search-previews/models-and-apis-16x9.webp
+  image4x3: /search-previews/models-and-apis-4x3.webp
+  image1x1: /search-previews/models-and-apis-1x1.webp
+  alt: AI crawler access policy map for robots.txt, search bots, training bots, and measurement.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+AI crawler policy is now a real site-operations decision. A public site may want ordinary Google visibility, ChatGPT search inclusion, assistant-user fetching, and product discovery. The same site may not want every page used for model training, scraped by unknown bots, or fetched so aggressively that logs and analytics become useless.
+
+The mistake is copying a giant `robots.txt` blocklist without naming the business goal. A crawler policy should answer five questions:
+
+1. Which public pages should be easy to discover?
+2. Which bots are useful for search, answers, product discovery, or user-triggered research?
+3. Which crawlers are only useful for training or broad data collection?
+4. Which pages need authentication, `noindex`, removal, or WAF rules instead of robots directives?
+5. How will the team measure whether the policy is working?
+
+## Quick answer
+
+For most public product, publisher, and documentation sites, start with a split policy instead of an all-or-nothing policy.
+
+| Bot or control | Primary job | Default posture for public decision pages | Watch out for |
+| --- | --- | --- | --- |
+| Googlebot and Google common crawlers | Search indexing and Google product crawls | Keep important public pages crawlable | Do not use robots.txt as a privacy boundary |
+| Google-Extended | Control token for Gemini and Vertex AI training or grounding use, not a separate request user agent | Decide separately from Google Search crawling | Blocking Google-Extended does not remove pages from Google Search |
+| OAI-SearchBot | OpenAI search crawler for ChatGPT search features | Usually allow for public pages that deserve discovery | Blocking it can reduce inclusion in ChatGPT search answers |
+| GPTBot | OpenAI crawler for content that may be used in foundation-model training | Decide based on publisher rights, licensing, and content strategy | It is independent from OAI-SearchBot policy |
+| ChatGPT-User | User-triggered visits from ChatGPT or Custom GPT actions | Treat as a user-style fetch, then protect sensitive data with auth and server controls | OpenAI says robots.txt rules may not apply because the action is user-initiated |
+| CCBot | Common Crawl crawler for the public crawl corpus | Decide by licensing and public-data posture | Broad blocks may reduce downstream research reuse |
+| Cloudflare AI Crawl Control and Content Signals | Visibility, policy expression, and enforcement support | Use for monitoring, crawler-specific rules, and explicit content-use preferences | Content signals express preferences; they are not technical enforcement by themselves |
+
+The practical policy is:
+
+- allow search crawlers to reach public pages that should be discoverable;
+- separate AI search crawlers from training crawlers where providers allow it;
+- keep private, account, admin, pricing-experiment, staging, and customer pages behind authentication;
+- monitor logs before and after any policy change;
+- never use crawler policy as a substitute for useful page content.
+
+## Decision matrix by site type
+
+| Site type | Strong default | Why |
+| --- | --- | --- |
+| B2B SaaS product site | Allow Googlebot and OAI-SearchBot on product, comparison, pricing, docs, and policy pages; review GPTBot and CCBot by company policy | Discovery and comparison pages need to be understood by both buyers and assistants |
+| Publisher or analyst site | Keep high-value public pages crawlable for search; use Google-Extended, GPTBot, CCBot, licensing, or pay-per-crawl decisions based on content rights | Publishers need visibility, but may need stronger control over training and reuse |
+| Ecommerce or marketplace site | Allow public product, category, policy, and feed-support pages; protect checkout, account, cart, and inventory admin paths | Product discovery benefits from clean public facts, while transactional surfaces need control |
+| Technical documentation site | Allow stable public docs and changelog pages; block or authenticate internal, beta, and customer-specific docs | Assistants can help developers find docs, but stale or private docs create support risk |
+| Internal knowledge base | Do not rely on robots.txt; require authentication and access control | Robots.txt is only a request instruction, not a security boundary |
+
+## The layer model
+
+Crawler policy becomes clearer when each rule is assigned to a layer.
+
+| Layer | Question | Better control |
+| --- | --- | --- |
+| Discovery | Should this public page be found and linked? | Allow search and AI search crawlers, keep sitemap current |
+| Training preference | May this content be used to train or improve models? | GPTBot, Google-Extended, CCBot, licensing, Content Signals |
+| User-triggered access | Can a user ask an assistant to fetch this page? | Authentication, paywall, rate limits, server-side authorization |
+| Sensitive data | Could this page expose private information if fetched? | Authentication, `noindex`, removal, access control, WAF |
+| Enforcement | Are bots following the policy? | Logs, bot verification, edge rules, AI Crawl Control, incident review |
+| Measurement | Did access produce useful reader behavior? | Server logs, analytics, CRM notes, conversion quality review |
+
+This prevents the most common failure: using a training-crawler rule to solve a security problem, or using a search-crawler block to express a licensing preference.
+
+## robots.txt is not a security boundary
+
+Google's Search Central documentation is blunt about the limitation: robots.txt can manage crawler access, but it should not be used to hide pages from Search or secure sensitive content. A disallowed URL can still appear if other pages link to it, and different crawlers may interpret or ignore rules differently.
+
+Use stronger controls when a URL should not be public:
+
+- require login or signed access;
+- remove the URL;
+- return the right status code;
+- use `noindex` where appropriate and crawlable;
+- block abusive traffic at the edge;
+- avoid placing secrets, customer data, or private docs on public URLs.
+
+For public decision pages, robots.txt should express crawl preference. It should not carry the burden of privacy.
+
+## OpenAI crawler policy
+
+OpenAI currently separates important crawler roles.
+
+| OpenAI user agent | Practical policy question |
+| --- | --- |
+| OAI-SearchBot | Do we want public pages to be eligible for ChatGPT search answers? |
+| GPTBot | Do we allow this content to be used for training OpenAI foundation models? |
+| ChatGPT-User | Are user-triggered fetches safe because the page itself has the right authentication and public-data boundary? |
+| OAI-AdsBot | Are ad landing pages safe, compliant, and aligned with submitted advertising use? |
+
+For a public product or publisher site, the common split is to allow OAI-SearchBot on pages that should be found while making a separate GPTBot decision. That split matters because a site can want assistant search visibility without granting the same preference for model training.
+
+Example pattern for a public product site that wants ChatGPT search inclusion but wants to reserve training rights:
+
+```txt
+User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+Sitemap: https://example.com/sitemap-index.xml
+```
+
+Do not copy this blindly. If your business wants broad reuse of public educational material, the GPTBot decision may be different. The important thing is to make the split deliberately and monitor the outcome.
+
+## Google crawler policy
+
+Google has two separate ideas that teams often mix together:
+
+- Googlebot and related crawlers for Search and Google products;
+- Google-Extended as a robots.txt control token for whether crawled content may be used for Gemini and Vertex AI model training or grounding.
+
+Google's crawler documentation says Google-Extended is not a separate HTTP request user agent. It is a robots.txt token used in a control capacity. Google also says Google-Extended does not affect inclusion in Google Search and is not a Google Search ranking signal.
+
+That means a site can keep Google Search crawling open while expressing a separate Google-Extended preference.
+
+Example pattern for a publisher that wants Search crawling but does not want Google-Extended uses for the full site:
+
+```txt
+User-agent: *
+Allow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+Sitemap: https://example.com/sitemap-index.xml
+```
+
+For a product site, be careful with broad blocks. The stronger long-term move is to make public pages accurate, crawlable, and useful, while protecting private or low-quality surfaces through stronger controls.
+
+## Content Signals and Cloudflare controls
+
+Cloudflare's Content Signals Policy adds a way to express preferences for uses such as search, AI input, and AI training inside `robots.txt`. Cloudflare also documents AI Crawl Control for seeing which AI services access content, setting crawler-specific policies, checking robots.txt compliance, and exploring pay-per-crawl.
+
+Content Signals can be useful as a public rights and preference statement:
+
+```txt
+User-agent: *
+Content-Signal: search=yes, ai-train=no
+Allow: /
+```
+
+Treat this as a policy signal, not a complete technical barrier. Pair it with:
+
+- bot and request logs;
+- crawler-specific allow or block rules;
+- WAF or bot-management rules for abusive behavior;
+- authentication for private data;
+- a monthly review of which pages are being fetched.
+
+## A practical 14-day implementation plan
+
+### Days 1-2: inventory public surfaces
+
+List page groups instead of individual URLs first:
+
+- homepage and hubs;
+- product and pricing pages;
+- comparison and alternatives pages;
+- documentation and changelogs;
+- policies and support pages;
+- blog or market-signal pages;
+- account, checkout, admin, staging, and customer-specific paths.
+
+Mark each group as public discovery, public but rights-sensitive, private, or low-value.
+
+### Days 3-5: choose crawler posture by group
+
+For each group, decide:
+
+| Question | Good answer |
+| --- | --- |
+| Should Google Search crawl this? | Yes for public source and product pages; no for private or low-value utility paths |
+| Should ChatGPT search discover this? | Yes for public pages that can answer a real reader question |
+| Should training crawlers access this? | Depends on publisher rights, company policy, and licensing posture |
+| Should user-triggered assistant fetches be safe? | Yes only if the page is safe for any unauthenticated user to view |
+| Should the page appear in sitemaps? | Yes for canonical public pages that deserve maintenance |
+
+### Days 6-8: update robots and edge rules
+
+Make the smallest useful change. Avoid giant vendor lists if you cannot maintain them.
+
+For a discovery-first product site, the policy may stay simple:
+
+```txt
+User-agent: *
+Allow: /
+
+Sitemap: https://example.com/sitemap-index.xml
+```
+
+For a rights-sensitive publisher, add targeted rules and content signals only after deciding what each rule means:
+
+```txt
+User-agent: *
+Content-Signal: search=yes, ai-train=no
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://example.com/sitemap-index.xml
+```
+
+For private paths, use real access control:
+
+```txt
+User-agent: *
+Disallow: /account/
+Disallow: /admin/
+Disallow: /checkout/
+```
+
+Then verify that those paths are also protected by authentication or server rules. The `Disallow` lines are not enough by themselves.
+
+### Days 9-11: monitor logs and coverage
+
+Check:
+
+- status codes for important public pages;
+- requests from known search and AI user agents;
+- sitemap fetches;
+- blocked paths that are still requested often;
+- user-triggered fetch behavior;
+- differences between bot activity and real sessions.
+
+This connects the policy to the [AI crawler referral measurement](/models-and-apis/ai-crawler-referral-and-conversion-measurement-for-product-sites/) layer.
+
+### Days 12-14: refresh pages that earn access
+
+If a page is important enough to allow and monitor, it should be useful enough to maintain.
+
+Prioritize pages that:
+
+- answer a specific buyer or operator question;
+- include source notes and reviewed dates;
+- have clear fit and poor-fit cases;
+- link to adjacent implementation pages;
+- avoid stale pricing, model, availability, or policy claims.
+
+Crawler policy can make access clearer. It cannot make a weak page valuable.
+
+## Failure modes
+
+| Failure | Why it hurts | Better move |
+| --- | --- | --- |
+| Blocking every AI crawler because it feels safer | The site may lose useful discovery paths without actually securing private data | Separate search, training, user-triggered fetching, and private access |
+| Allowing every bot because visibility sounds good | Logs become noisy and rights-sensitive content may be reused in ways the team did not approve | Define a crawler register and review it monthly |
+| Relying on robots.txt for secrets | Robots directives are not security controls | Use authentication, authorization, and removal |
+| Blocking important resources | Crawlers may understand pages less accurately | Keep CSS, JS, images, and public assets accessible unless there is a clear reason |
+| Updating robots.txt without measurement | The team cannot tell whether the change helped or harmed discovery | Compare logs, search coverage, assistant referrals, and qualified sessions before and after |
+| Treating Content Signals as enforcement | Some crawlers may ignore preference signals | Pair signals with edge rules, legal policy, and bot controls where needed |
+
+## Compare next
+
+<div class="portal-links">
+	<LinkCard
+		title="AI crawler referral measurement"
+		href="/models-and-apis/ai-crawler-referral-and-conversion-measurement-for-product-sites/"
+		description="Measure crawler access, visible referrals, landing-page behavior, and conversion quality after policy changes."
+	/>
+	<LinkCard
+		title="Generative search source-link readiness"
+		href="/models-and-apis/generative-search-source-link-readiness-for-publishers-and-product-teams/"
+		description="Make pages easier to understand, preview, cite, and link in AI-assisted research surfaces."
+	/>
+	<LinkCard
+		title="Google AI Mode Search agents readiness"
+		href="/models-and-apis/google-ai-mode-search-agents-preferred-sources-readiness/"
+		description="Prepare publisher, product, and comparison pages for AI Mode, Search agents, Preferred Sources, and task-oriented discovery."
+	/>
+	<LinkCard
+		title="AI browser search readiness"
+		href="/models-and-apis/ai-browser-search-and-product-discovery-readiness/"
+		description="Connect crawler policy to broader AI browser, product discovery, and page-evidence readiness."
+	/>
+	<LinkCard
+		title="Product comparison page structure"
+		href="/models-and-apis/product-comparison-page-structure-for-ai-assisted-discovery/"
+		description="Strengthen comparison pages that crawlers and buyers are most likely to reuse."
+	/>
+	<LinkCard
+		title="Deep research source quality"
+		href="/workflows/deep-research-source-quality-and-citation-policy/"
+		description="Set source-quality rules for research workflows that depend on public pages."
+	/>
+</div>
+
+## Source notes checked July 2, 2026
+
+| Source | Signal used |
+| --- | --- |
+| [OpenAI crawler documentation](https://developers.openai.com/api/docs/bots) | OpenAI separates OAI-SearchBot, GPTBot, OAI-AdsBot, and ChatGPT-User roles; OAI-SearchBot and GPTBot can be managed independently in robots.txt. |
+| [Google common crawlers documentation](https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers) | Google-Extended is a robots.txt token rather than a separate HTTP user agent and does not affect Google Search inclusion or ranking. |
+| [Google robots.txt guide](https://developers.google.com/search/docs/crawling-indexing/robots/intro) | robots.txt manages crawler access but is not a secure way to hide pages; disallowed URLs may still appear if linked elsewhere. |
+| [Cloudflare AI Crawl Control](https://developers.cloudflare.com/ai-crawl-control/) | Cloudflare provides AI crawler visibility, crawler-specific controls, robots.txt compliance monitoring, and pay-per-crawl options. |
+| [Cloudflare Content Signals Policy](https://blog.cloudflare.com/content-signals-policy/) | Content Signals can express preferences for search, AI input, and AI training in robots.txt, but should be paired with enforcement controls where needed. |
+| [Common Crawl CCBot documentation](https://commoncrawl.org/ccbot) | CCBot identifies itself in its user agent and can be controlled with a CCBot robots.txt rule. |
