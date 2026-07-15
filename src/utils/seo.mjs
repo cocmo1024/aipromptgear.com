@@ -74,6 +74,8 @@ function getStringArray(value) {
 }
 
 function buildDocumentTitle(title) {
+	if (title === siteMeta.name) return title;
+
 	const brandedTitle = `${title} | ${siteMeta.name}`;
 	return brandedTitle.length <= 75 ? brandedTitle : title;
 }
