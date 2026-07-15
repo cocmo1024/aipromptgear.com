@@ -2,6 +2,8 @@
 
 Starlight-based documentation site for `aipromptgear.com`.
 
+> 新增或更新任何公开内容前，请先阅读 [CONTENT_UPDATE_GUIDE.md](./CONTENT_UPDATE_GUIDE.md)。
+
 ## Focus
 
 - Prompt workflows and reusable operator playbooks
@@ -23,9 +25,11 @@ npm run build
 
 ## Deployment
 
-Use Cloudflare Pages with:
+The production target is Cloudflare Workers Static Assets, configured by `wrangler.jsonc`:
 
-- Build command: `npm run build`
-- Output directory: `dist`
+```bash
+npm run build
+npm run cf:deploy
+```
 
-Do not use `wrangler deploy` for this repository.
+The deployed static asset directory is `dist`.
